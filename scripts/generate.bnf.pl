@@ -88,7 +88,92 @@ sub process_html
 
 # ----------------------------------------------
 
-my($command) = process_html;
+sub process_parameters
+{
+	my($lines) = @_;
+
+	my($count, @command);
+	my(@field, $field);
+	my(@parameters);
+	my($temp, @temp);
+
+	for my $line (@$lines)
+	{
+		if ($$line[2] =~ /\[/)
+		{
+			# Expect:
+			# (Keep together)
+			# o host:display[.screen]
+			# o sx,rx,ry,sy[,tx,ty]
+			# (Nested)
+			# o Width[xHeight[+Angle]]
+			# (Simple)
+			# o radius[xsigma]
+			# (Multiple)
+			# o media[offset][{^!<>}]
+
+			$count		= 0;
+			@field		= split(/(\[)/, $$line[2]);
+			@parameters	= ();
+
+			while ($field = shift @field)
+			{
+				$count++;
+
+				if ($field =~ /^XdegreesxYdegrees/)
+				{
+					@temp = split(/(x)/, $field);
+
+					push @parameters, join(' ', @temp);
+				}
+				elsif ($count == 1)
+				{
+					push @parameters, $field;
+				}
+				elsif ( ($field eq '[') && ($field[0] =~ /^[.,]/) )
+				{	# Keep together.
+					push @parameters, $field . shift @field;
+				}
+				elsif ( ($field eq '[') && ($field[$#field] =~ /]]$/) )
+				{	# Nested.
+
+					$temp = 'x ' . substr(shift @field, 1) . ' ' . join('', @field);
+
+					push @parameters, "$field$temp";
+
+					@field = ();
+				}
+				elsif ( ($field eq '[') && ($field[0] =~ /^x/) )
+				{	# Simple.
+
+					$temp = 'x ' . substr(shift @field, 1);
+
+					push @parameters, "$field$temp";
+
+					@field = ();
+				}
+				elsif ($field eq '[')
+				{
+					push @parameters, $field . shift @field;
+				}
+			}
+
+			push @command, [$$line[0], $$line[1], join(' ', @parameters)];
+		}
+		else
+		{
+			push @command, $line;
+		}
+	}
+
+	return [@command];
+
+} # End of process_parameters.
+
+# ----------------------------------------------
+
+my($command)	= process_html;
+$command		= process_parameters($command);
 
 my($output_file)	= 'data/command.line.options.csv';
 my($csv)			= Text::CSV -> new
