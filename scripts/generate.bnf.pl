@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 
 use feature 'say';
+use integer; # For $x % $y.
 use strict;
 use warnings;
 use warnings qw(FATAL utf8);
@@ -12,7 +13,73 @@ use File::Slurp; # For read_file().
 use HTML::Entities;
 use HTML::TreeBuilder;
 
-use Text::CSV; # Not ::Encoded.
+# ----------------------------------------------
+
+sub build_bnf
+{
+	my($lines)		= @_;
+	my($max_length)	= 0;
+
+	my(%bnf);
+	my($option);
+
+	for my $line (@$lines)
+	{
+		$option			= $$line[0];
+		$bnf{$option}	= [] if (! $bnf{$option});
+		$max_length		= length($option) if (length($option) > $max_length);
+
+		push @{$bnf{$option}}, [$$line[1], $$line[2] ];
+	}
+
+	$max_length += 5; # 5 = length('_rule').
+
+	my(@bnf);
+	my($count);
+	my($item);
+	my($parameters);
+	my($sign, $spacer, $s);
+	my($token, $token_length, $temp, $tabs4token, $tabs4gap);
+
+	for $option (sort keys %bnf)
+	{
+		$count = 0;
+
+		for my $i (0 .. $#{$bnf{$option} })
+		{
+			$count++;
+
+			$item			= $bnf{$option}[$i];
+			$sign			= $$item[0] eq '-' ? 'minus_sign' : 'plus_sign';
+			$parameters		= $$item[1];
+			$token			= $option =~ s/-/_/gr;
+			$token_length	= length "${token}_word";
+
+			if ($count == 1)
+			{
+				$temp		= $max_length - $token_length;
+				$tabs4gap	= int($temp / 4) + ($temp % 4 == 0 ? 0 : 1);
+				$spacer		= "\t" x ($tabs4gap - 1); # Perl needs \t before ::=, so subtract 1.
+				$s			= "${token}_rule$spacer\t::= $sign ${token}_word $parameters\t action => ${token}_action_$count";
+			}
+			else
+			{
+				$tabs4token	= int($max_length / 4) + ($max_length % 4 == 0 ? 0 : 1);
+				$temp		= $max_length - $token_length;
+				$tabs4gap	= int($temp / 4) + ($temp % 4 == 0 ? 0 : 1);
+				$spacer		= "\t" x ($tabs4token + $tabs4gap - 1);
+				$s			= "$spacer\t| $sign ${token}_word $parameters\t action => ${token}_action_$count";
+			}
+
+			$s .= "\n" if ($count == $#{$bnf{$option} } + 1);
+
+			push @bnf, $s;
+		}
+	}
+
+	return [@bnf];
+
+} # End of build_bnf.
 
 # ----------------------------------------------
 
@@ -172,26 +239,16 @@ sub process_parameters
 
 # ----------------------------------------------
 
-my($command)	= process_html;
-$command		= process_parameters($command);
+my($command)		= process_html;
+$command			= process_parameters($command);
+my($bnf)			= build_bnf($command);
+my($output_file)	= 'data/command.line.options.bnf';
 
-my($output_file)	= 'data/command.line.options.csv';
-my($csv)			= Text::CSV -> new
-({
-	always_quote => 1,
-});
+open(my $fh, '>', $output_file) || die "Can't open(> $output_file): $!";
 
-open(OUT, '>:encoding(utf-8)', $output_file) || die "Can't open(> $output_file): $!";
-
-$csv -> combine('command', 'prefix', 'parameters');
-
-print OUT $csv -> string, "\n";
-
-for (@$command)
+for (@$bnf)
 {
-	$csv -> combine($$_[0], $$_[1], $$_[2]);
-
-	print OUT $csv -> string, "\n";
+	say $fh $_;
 }
 
-close OUT;
+close $fh;

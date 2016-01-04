@@ -1,0 +1,604 @@
+adaptive_blur_rule			::= minus_sign adaptive_blur_word radius [x sigma]	 action => adaptive_blur_action_1
+
+adaptive_resize_rule			::= minus_sign adaptive_resize_word geometry	 action => adaptive_resize_action_1
+
+adaptive_sharpen_rule		::= minus_sign adaptive_sharpen_word radius [x sigma]	 action => adaptive_sharpen_action_1
+
+adjoin_rule					::= minus_sign adjoin_word 	 action => adjoin_action_1
+
+affine_rule					::= minus_sign affine_word sx,rx,ry,sy [,tx,ty]	 action => affine_action_1
+
+alpha_rule					::= minus_sign alpha_word type	 action => alpha_action_1
+
+annotate_rule				::= minus_sign annotate_word degrees text	 action => annotate_action_1
+												| minus_sign annotate_word XdegreesxYdegrees text	 action => annotate_action_2
+												| minus_sign annotate_word XdegreesxYdegrees {+-}tx{+-}ty text	 action => annotate_action_3
+												| minus_sign annotate_word {+-}tx{+-}ty text	 action => annotate_action_4
+
+antialias_rule				::= minus_sign antialias_word 	 action => antialias_action_1
+
+append_rule					::= minus_sign append_word 	 action => append_action_1
+
+attenuate_rule				::= minus_sign attenuate_word value	 action => attenuate_action_1
+
+authenticate_rule			::= minus_sign authenticate_word password	 action => authenticate_action_1
+
+auto_gamma_rule				::= minus_sign auto_gamma_word 	 action => auto_gamma_action_1
+
+auto_level_rule				::= minus_sign auto_level_word 	 action => auto_level_action_1
+
+auto_orient_rule				::= minus_sign auto_orient_word 	 action => auto_orient_action_1
+
+average_rule					::= minus_sign average_word 	 action => average_action_1
+
+backdrop_rule				::= minus_sign backdrop_word 	 action => backdrop_action_1
+
+background_rule				::= minus_sign background_word color	 action => background_action_1
+
+bench_rule					::= minus_sign bench_word iterations	 action => bench_action_1
+
+bias_rule					::= minus_sign bias_word value{%}	 action => bias_action_1
+
+black_point_compensation_rule	::= minus_sign black_point_compensation_word 	 action => black_point_compensation_action_1
+
+black_threshold_rule			::= minus_sign black_threshold_word value{%}	 action => black_threshold_action_1
+
+blend_rule					::= minus_sign blend_word geometry	 action => blend_action_1
+
+blue_primary_rule			::= minus_sign blue_primary_word x,y	 action => blue_primary_action_1
+
+blue_shift_rule				::= minus_sign blue_shift_word factor	 action => blue_shift_action_1
+
+blur_rule					::= minus_sign blur_word radius	 action => blur_action_1
+													| minus_sign blur_word radiusxsigma	 action => blur_action_2
+													| minus_sign blur_word Width [x Height [+Angle]]	 action => blur_action_3
+
+border_rule					::= minus_sign border_word geometry	 action => border_action_1
+
+bordercolor_rule				::= minus_sign bordercolor_word color	 action => bordercolor_action_1
+
+borderwidth_rule				::= minus_sign borderwidth_word geometry	 action => borderwidth_action_1
+
+brightness_contrast_rule		::= minus_sign brightness_contrast_word brightness	 action => brightness_contrast_action_1
+										| minus_sign brightness_contrast_word brightness{xcontrast}{%}}	 action => brightness_contrast_action_2
+
+cache_rule					::= minus_sign cache_word threshold	 action => cache_action_1
+
+canny_rule					::= minus_sign canny_word radius	 action => canny_action_1
+													| minus_sign canny_word radiusxsigma{+lower-percent}{+upper-percent}	 action => canny_action_2
+
+caption_rule					::= minus_sign caption_word string	 action => caption_action_1
+
+cdl_rule						::= minus_sign cdl_word filename	 action => cdl_action_1
+
+channel_rule					::= minus_sign channel_word type	 action => channel_action_1
+
+charcoal_rule				::= minus_sign charcoal_word factor	 action => charcoal_action_1
+
+chop_rule					::= minus_sign chop_word geometry	 action => chop_action_1
+
+clamp_rule					::= minus_sign clamp_word 	 action => clamp_action_1
+
+clip_rule					::= minus_sign clip_word 	 action => clip_action_1
+
+clip_mask_rule				::= minus_sign clip_mask_word 	 action => clip_mask_action_1
+
+clip_path_rule				::= minus_sign clip_path_word id	 action => clip_path_action_1
+
+clone_rule					::= minus_sign clone_word index(s)	 action => clone_action_1
+
+clut_rule					::= minus_sign clut_word 	 action => clut_action_1
+
+coalesce_rule				::= minus_sign coalesce_word 	 action => coalesce_action_1
+
+color_matrix_rule			::= minus_sign color_matrix_word matrix	 action => color_matrix_action_1
+
+colorize_rule				::= minus_sign colorize_word value	 action => colorize_action_1
+
+colormap_rule				::= minus_sign colormap_word type	 action => colormap_action_1
+
+colors_rule					::= minus_sign colors_word value	 action => colors_action_1
+
+colorspace_rule				::= minus_sign colorspace_word value	 action => colorspace_action_1
+
+combine_rule					::= minus_sign combine_word 	 action => combine_action_1
+
+comment_rule					::= minus_sign comment_word string	 action => comment_action_1
+
+compare_rule					::= minus_sign compare_word 	 action => compare_action_1
+
+complex_rule					::= minus_sign complex_word operator	 action => complex_action_1
+
+compose_rule					::= minus_sign compose_word operator	 action => compose_action_1
+
+composite_rule				::= minus_sign composite_word 	 action => composite_action_1
+
+compress_rule				::= minus_sign compress_word type	 action => compress_action_1
+
+connected_components_rule	::= minus_sign connected_components_word connectivity	 action => connected_components_action_1
+
+contrast_rule				::= minus_sign contrast_word 	 action => contrast_action_1
+
+contrast_stretch_rule		::= minus_sign contrast_stretch_word black-point	 action => contrast_stretch_action_1
+										| minus_sign contrast_stretch_word black-point{xwhite-point}{%}}	 action => contrast_stretch_action_2
+
+convolve_rule				::= minus_sign convolve_word kernel	 action => convolve_action_1
+
+copy_rule					::= minus_sign copy_word geometry offset	 action => copy_action_1
+
+crop_rule					::= minus_sign crop_word geometry{@}{!}	 action => crop_action_1
+
+cycle_rule					::= minus_sign cycle_word amount	 action => cycle_action_1
+
+debug_rule					::= minus_sign debug_word events	 action => debug_action_1
+
+decipher_rule				::= minus_sign decipher_word filename	 action => decipher_action_1
+
+deconstruct_rule				::= minus_sign deconstruct_word 	 action => deconstruct_action_1
+
+define_rule					::= minus_sign define_word key{=value}...	 action => define_action_1
+
+delay_rule					::= minus_sign delay_word ticks	 action => delay_action_1
+													| minus_sign delay_word ticksxticks-per-second {<} {>}	 action => delay_action_2
+
+delete_rule					::= minus_sign delete_word indexes	 action => delete_action_1
+
+density_rule					::= minus_sign density_word width	 action => density_action_1
+													| minus_sign density_word widthxheight	 action => density_action_2
+
+depth_rule					::= minus_sign depth_word value	 action => depth_action_1
+
+descend_rule					::= minus_sign descend_word 	 action => descend_action_1
+
+deskew_rule					::= minus_sign deskew_word threshold	 action => deskew_action_1
+
+despeckle_rule				::= minus_sign despeckle_word 	 action => despeckle_action_1
+
+direction_rule				::= minus_sign direction_word type	 action => direction_action_1
+
+displace_rule				::= minus_sign displace_word horizontal-scale	 action => displace_action_1
+												| minus_sign displace_word horizontal-scalexvertical-scale	 action => displace_action_2
+
+display_rule					::= minus_sign display_word host:display [.screen]	 action => display_action_1
+
+dispose_rule					::= minus_sign dispose_word method	 action => dispose_action_1
+
+dissimilarity_threshold_rule	::= minus_sign dissimilarity_threshold_word value	 action => dissimilarity_threshold_action_1
+
+dissolve_rule				::= minus_sign dissolve_word src_percent [x dst_percent]	 action => dissolve_action_1
+
+distort_rule					::= minus_sign distort_word method arguments	 action => distort_action_1
+
+distribute_cache_rule		::= minus_sign distribute_cache_word port	 action => distribute_cache_action_1
+
+dither_rule					::= minus_sign dither_word method	 action => dither_action_1
+
+draw_rule					::= minus_sign draw_word string	 action => draw_action_1
+
+duplicate_rule				::= minus_sign duplicate_word count,indexes	 action => duplicate_action_1
+
+edge_rule					::= minus_sign edge_word radius	 action => edge_action_1
+
+emboss_rule					::= minus_sign emboss_word radius	 action => emboss_action_1
+
+encipher_rule				::= minus_sign encipher_word filename	 action => encipher_action_1
+
+encoding_rule				::= minus_sign encoding_word type	 action => encoding_action_1
+
+endian_rule					::= minus_sign endian_word type	 action => endian_action_1
+
+enhance_rule					::= minus_sign enhance_word 	 action => enhance_action_1
+
+equalize_rule				::= minus_sign equalize_word 	 action => equalize_action_1
+
+evaluate_rule				::= minus_sign evaluate_word operator value	 action => evaluate_action_1
+
+evaluate_sequence_rule		::= minus_sign evaluate_sequence_word operator	 action => evaluate_sequence_action_1
+
+extent_rule					::= minus_sign extent_word geometry	 action => extent_action_1
+
+extract_rule					::= minus_sign extract_word geometry	 action => extract_action_1
+
+family_rule					::= minus_sign family_word fontFamily	 action => family_action_1
+
+features_rule				::= minus_sign features_word distance	 action => features_action_1
+
+fft_rule						::= minus_sign fft_word 	 action => fft_action_1
+
+fill_rule					::= minus_sign fill_word color	 action => fill_action_1
+
+filter_rule					::= minus_sign filter_word type	 action => filter_action_1
+
+flatten_rule					::= minus_sign flatten_word 	 action => flatten_action_1
+
+flip_rule					::= minus_sign flip_word 	 action => flip_action_1
+
+floodfill_rule				::= minus_sign floodfill_word {+-}x{+-}y color	 action => floodfill_action_1
+
+flop_rule					::= minus_sign flop_word 	 action => flop_action_1
+
+font_rule					::= minus_sign font_word name	 action => font_action_1
+
+foreground_rule				::= minus_sign foreground_word color	 action => foreground_action_1
+
+format_rule					::= minus_sign format_word type	 action => format_action_1
+													| minus_sign format_word string	 action => format_action_2
+
+frame_rule					::= minus_sign frame_word geometry	 action => frame_action_1
+													| minus_sign frame_word 	 action => frame_action_2
+
+function_rule				::= minus_sign function_word function parameters	 action => function_action_1
+
+fuzz_rule					::= minus_sign fuzz_word distance{%}	 action => fuzz_action_1
+
+fx_rule						::= minus_sign fx_word expression	 action => fx_action_1
+
+gamma_rule					::= minus_sign gamma_word value	 action => gamma_action_1
+
+gaussian_blur_rule			::= minus_sign gaussian_blur_word radius	 action => gaussian_blur_action_1
+											| minus_sign gaussian_blur_word radiusxsigma	 action => gaussian_blur_action_2
+
+geometry_rule				::= minus_sign geometry_word geometry	 action => geometry_action_1
+
+gravity_rule					::= minus_sign gravity_word type	 action => gravity_action_1
+
+grayscale_rule				::= minus_sign grayscale_word method	 action => grayscale_action_1
+
+green_primary_rule			::= minus_sign green_primary_word x,y	 action => green_primary_action_1
+
+hald_clut_rule				::= minus_sign hald_clut_word 	 action => hald_clut_action_1
+
+help_rule					::= minus_sign help_word 	 action => help_action_1
+
+highlight_color_rule			::= minus_sign highlight_color_word color	 action => highlight_color_action_1
+
+hough_lines_rule				::= minus_sign hough_lines_word widthxheight{+threshold}	 action => hough_lines_action_1
+
+iconGeometry_rule			::= minus_sign iconGeometry_word geometry	 action => iconGeometry_action_1
+
+iconic_rule					::= minus_sign iconic_word 	 action => iconic_action_1
+
+identify_rule				::= minus_sign identify_word 	 action => identify_action_1
+
+ift_rule						::= minus_sign ift_word 	 action => ift_action_1
+
+immutable_rule				::= minus_sign immutable_word 	 action => immutable_action_1
+
+implode_rule					::= minus_sign implode_word factor	 action => implode_action_1
+
+insert_rule					::= minus_sign insert_word index	 action => insert_action_1
+
+intensity_rule				::= minus_sign intensity_word method	 action => intensity_action_1
+
+intent_rule					::= minus_sign intent_word type	 action => intent_action_1
+
+interlace_rule				::= minus_sign interlace_word type	 action => interlace_action_1
+
+interline_spacing_rule		::= minus_sign interline_spacing_word value	 action => interline_spacing_action_1
+
+interpolate_rule				::= minus_sign interpolate_word type	 action => interpolate_action_1
+
+interword_spacing_rule		::= minus_sign interword_spacing_word value	 action => interword_spacing_action_1
+
+kerning_rule					::= minus_sign kerning_word value	 action => kerning_action_1
+
+kuwahara_rule				::= minus_sign kuwahara_word radius	 action => kuwahara_action_1
+												| minus_sign kuwahara_word radiusxsigma	 action => kuwahara_action_2
+
+label_rule					::= minus_sign label_word name	 action => label_action_1
+
+lat_rule						::= minus_sign lat_word width	 action => lat_action_1
+														| minus_sign lat_word widthxheight{+-}offset{%}	 action => lat_action_2
+
+layers_rule					::= minus_sign layers_word method	 action => layers_action_1
+
+level_rule					::= minus_sign level_word black_point{,white_point}{%}{,gamma}	 action => level_action_1
+
+level_colors_rule			::= minus_sign level_colors_word {black_color}{,}{white_color}	 action => level_colors_action_1
+
+limit_rule					::= minus_sign limit_word type value	 action => limit_action_1
+
+linear_stretch_rule			::= minus_sign linear_stretch_word black-point	 action => linear_stretch_action_1
+											| minus_sign linear_stretch_word black-point{xwhite-point}{%}}	 action => linear_stretch_action_2
+
+linewidth_rule				::= minus_sign linewidth_word 	 action => linewidth_action_1
+
+liquid_rescale_rule			::= minus_sign liquid_rescale_word geometry	 action => liquid_rescale_action_1
+
+list_rule					::= minus_sign list_word type	 action => list_action_1
+
+log_rule						::= minus_sign log_word string	 action => log_action_1
+
+loop_rule					::= minus_sign loop_word iterations	 action => loop_action_1
+
+lowlight_color_rule			::= minus_sign lowlight_color_word color	 action => lowlight_color_action_1
+
+magnify_rule					::= minus_sign magnify_word 	 action => magnify_action_1
+
+map_rule						::= minus_sign map_word type	 action => map_action_1
+														| minus_sign map_word components	 action => map_action_2
+
+mask_rule					::= minus_sign mask_word filename	 action => mask_action_1
+
+mattecolor_rule				::= minus_sign mattecolor_word color	 action => mattecolor_action_1
+
+maximum_rule					::= minus_sign maximum_word 	 action => maximum_action_1
+
+mean_shift_rule				::= minus_sign mean_shift_word widthxheight{+distance{%}}	 action => mean_shift_action_1
+
+median_rule					::= minus_sign median_word geometry	 action => median_action_1
+
+metric_rule					::= minus_sign metric_word type	 action => metric_action_1
+
+minimum_rule					::= minus_sign minimum_word 	 action => minimum_action_1
+
+mode_rule					::= minus_sign mode_word geometry	 action => mode_action_1
+													| minus_sign mode_word value	 action => mode_action_2
+
+modulate_rule				::= minus_sign modulate_word brightness [,saturation,hue]	 action => modulate_action_1
+
+moments_rule					::= minus_sign moments_word 	 action => moments_action_1
+
+monitor_rule					::= minus_sign monitor_word 	 action => monitor_action_1
+
+monochrome_rule				::= minus_sign monochrome_word 	 action => monochrome_action_1
+
+morph_rule					::= minus_sign morph_word frames	 action => morph_action_1
+
+morphology_rule				::= minus_sign morphology_word 	 action => morphology_action_1
+												| minus_sign morphology_word method kernel	 action => morphology_action_2
+
+mosaic_rule					::= minus_sign mosaic_word 	 action => mosaic_action_1
+
+motion_blur_rule				::= minus_sign motion_blur_word radius	 action => motion_blur_action_1
+												| minus_sign motion_blur_word radiusxsigma+angle	 action => motion_blur_action_2
+
+name_rule					::= minus_sign name_word 	 action => name_action_1
+
+negate_rule					::= minus_sign negate_word 	 action => negate_action_1
+
+noise_rule					::= minus_sign noise_word geometry	 action => noise_action_1
+													| plus_sign noise_word type	 action => noise_action_2
+
+normalize_rule				::= minus_sign normalize_word 	 action => normalize_action_1
+
+opaque_rule					::= minus_sign opaque_word color	 action => opaque_action_1
+
+ordered_dither_rule			::= minus_sign ordered_dither_word threshold_map{,level...}	 action => ordered_dither_action_1
+
+orient_rule					::= minus_sign orient_word image orientation	 action => orient_action_1
+
+page_rule					::= minus_sign page_word geometry	 action => page_action_1
+													| minus_sign page_word media [offset] [{^!<>}]	 action => page_action_2
+													| plus_sign page_word 	 action => page_action_3
+
+paint_rule					::= minus_sign paint_word radius	 action => paint_action_1
+
+path_rule					::= minus_sign path_word path	 action => path_action_1
+
+pause_rule					::= minus_sign pause_word seconds	 action => pause_action_1
+													| minus_sign pause_word seconds	 action => pause_action_2
+
+perceptible_rule				::= minus_sign perceptible_word epsilon	 action => perceptible_action_1
+
+ping_rule					::= minus_sign ping_word 	 action => ping_action_1
+
+pointsize_rule				::= minus_sign pointsize_word value	 action => pointsize_action_1
+
+polaroid_rule				::= minus_sign polaroid_word angle	 action => polaroid_action_1
+
+poly_rule					::= minus_sign poly_word "wt,exp ..."	 action => poly_action_1
+
+posterize_rule				::= minus_sign posterize_word levels	 action => posterize_action_1
+
+precision_rule				::= minus_sign precision_word value	 action => precision_action_1
+
+preview_rule					::= minus_sign preview_word type	 action => preview_action_1
+
+print_rule					::= minus_sign print_word string	 action => print_action_1
+
+process_rule					::= minus_sign process_word command	 action => process_action_1
+
+profile_rule					::= minus_sign profile_word filename	 action => profile_action_1
+													| plus_sign profile_word profile_name	 action => profile_action_2
+
+quality_rule					::= minus_sign quality_word value	 action => quality_action_1
+
+quantize_rule				::= minus_sign quantize_word colorspace	 action => quantize_action_1
+
+quiet_rule					::= minus_sign quiet_word 	 action => quiet_action_1
+
+radial_blur_rule				::= minus_sign radial_blur_word angle	 action => radial_blur_action_1
+
+raise_rule					::= minus_sign raise_word thickness	 action => raise_action_1
+
+random_threshold_rule		::= minus_sign random_threshold_word lowxhigh	 action => random_threshold_action_1
+
+red_primary_rule				::= minus_sign red_primary_word x,y	 action => red_primary_action_1
+
+regard_warnings_rule			::= minus_sign regard_warnings_word 	 action => regard_warnings_action_1
+
+region_rule					::= minus_sign region_word geometry	 action => region_action_1
+
+remap_rule					::= minus_sign remap_word filename	 action => remap_action_1
+
+remote_rule					::= minus_sign remote_word 	 action => remote_action_1
+
+render_rule					::= minus_sign render_word 	 action => render_action_1
+
+repage_rule					::= minus_sign repage_word geometry	 action => repage_action_1
+
+resample_rule				::= minus_sign resample_word horizontalxvertical	 action => resample_action_1
+
+resize_rule					::= minus_sign resize_word geometry	 action => resize_action_1
+
+respect_parentheses_rule		::= minus_sign respect_parentheses_word 	 action => respect_parentheses_action_1
+
+reverse_rule					::= minus_sign reverse_word 	 action => reverse_action_1
+
+roll_rule					::= minus_sign roll_word {+-}x{+-}y	 action => roll_action_1
+
+rotate_rule					::= minus_sign rotate_word degrees{<}{>}	 action => rotate_action_1
+
+sample_rule					::= minus_sign sample_word geometry	 action => sample_action_1
+
+sampling_factor_rule			::= minus_sign sampling_factor_word horizontal-factorxvertical-factor	 action => sampling_factor_action_1
+
+scale_rule					::= minus_sign scale_word geometry	 action => scale_action_1
+
+scene_rule					::= minus_sign scene_word value	 action => scene_action_1
+
+screen_rule					::= minus_sign screen_word 	 action => screen_action_1
+
+seed_rule					::= minus_sign seed_word 	 action => seed_action_1
+
+segment_rule					::= minus_sign segment_word cluster-thresholdxsmoothing-threshold	 action => segment_action_1
+
+selective_blur_rule			::= minus_sign selective_blur_word radius	 action => selective_blur_action_1
+											| minus_sign selective_blur_word radiusxsigma{+threshold}	 action => selective_blur_action_2
+
+separate_rule				::= minus_sign separate_word 	 action => separate_action_1
+
+sepia_tone_rule				::= minus_sign sepia_tone_word threshold	 action => sepia_tone_action_1
+
+set_rule						::= minus_sign set_word key value	 action => set_action_1
+														| plus_sign set_word key	 action => set_action_2
+
+shade_rule					::= minus_sign shade_word azimuthxelevation	 action => shade_action_1
+
+shadow_rule					::= minus_sign shadow_word percent-opacity{xsigma}{+-}x{+-}y{%}	 action => shadow_action_1
+
+shared_memory_rule			::= minus_sign shared_memory_word 	 action => shared_memory_action_1
+
+sharpen_rule					::= minus_sign sharpen_word radius	 action => sharpen_action_1
+													| minus_sign sharpen_word radiusxsigma	 action => sharpen_action_2
+
+shave_rule					::= minus_sign shave_word geometry	 action => shave_action_1
+
+shear_rule					::= minus_sign shear_word Xdegrees [x Ydegrees]	 action => shear_action_1
+
+sigmoidal_contrast_rule		::= minus_sign sigmoidal_contrast_word contrastxmid-point	 action => sigmoidal_contrast_action_1
+
+silent_rule					::= minus_sign silent_word 	 action => silent_action_1
+
+similarity_threshold_rule	::= minus_sign similarity_threshold_word value	 action => similarity_threshold_action_1
+
+size_rule					::= minus_sign size_word width [x height]	 action => size_action_1
+
+sketch_rule					::= minus_sign sketch_word radius	 action => sketch_action_1
+													| minus_sign sketch_word radiusxsigma+angle	 action => sketch_action_2
+
+smush_rule					::= minus_sign smush_word offset	 action => smush_action_1
+
+snaps_rule					::= minus_sign snaps_word value	 action => snaps_action_1
+
+solarize_rule				::= minus_sign solarize_word threshold	 action => solarize_action_1
+
+sparse_color_rule			::= minus_sign sparse_color_word method 'x,y color ...'	 action => sparse_color_action_1
+
+splice_rule					::= minus_sign splice_word geometry	 action => splice_action_1
+
+spread_rule					::= minus_sign spread_word amount	 action => spread_action_1
+
+statistic_rule				::= minus_sign statistic_word type geometry	 action => statistic_action_1
+
+stegano_rule					::= minus_sign stegano_word offset	 action => stegano_action_1
+
+stereo_rule					::= minus_sign stereo_word +x{+y}	 action => stereo_action_1
+
+storage_type_rule			::= minus_sign storage_type_word type	 action => storage_type_action_1
+
+stretch_rule					::= minus_sign stretch_word fontStretch	 action => stretch_action_1
+
+strip_rule					::= minus_sign strip_word 	 action => strip_action_1
+
+stroke_rule					::= minus_sign stroke_word color	 action => stroke_action_1
+
+strokewidth_rule				::= minus_sign strokewidth_word value	 action => strokewidth_action_1
+
+style_rule					::= minus_sign style_word fontStyle	 action => style_action_1
+
+subimage_search_rule			::= minus_sign subimage_search_word 	 action => subimage_search_action_1
+
+swap_rule					::= minus_sign swap_word index,index	 action => swap_action_1
+
+swirl_rule					::= minus_sign swirl_word degrees	 action => swirl_action_1
+
+synchronize_rule				::= minus_sign synchronize_word 	 action => synchronize_action_1
+
+taint_rule					::= minus_sign taint_word 	 action => taint_action_1
+
+text_font_rule				::= minus_sign text_font_word name	 action => text_font_action_1
+
+texture_rule					::= minus_sign texture_word filename	 action => texture_action_1
+
+threshold_rule				::= minus_sign threshold_word value{%}	 action => threshold_action_1
+
+thumbnail_rule				::= minus_sign thumbnail_word geometry	 action => thumbnail_action_1
+
+tile_rule					::= minus_sign tile_word filename	 action => tile_action_1
+													| minus_sign tile_word geometry	 action => tile_action_2
+													| minus_sign tile_word 	 action => tile_action_3
+
+tile_offset_rule				::= minus_sign tile_offset_word {+-}x{+-}y	 action => tile_offset_action_1
+
+tint_rule					::= minus_sign tint_word value	 action => tint_action_1
+
+title_rule					::= minus_sign title_word string	 action => title_action_1
+
+transform_rule				::= minus_sign transform_word 	 action => transform_action_1
+
+transparent_rule				::= minus_sign transparent_word color	 action => transparent_action_1
+
+transparent_color_rule		::= minus_sign transparent_color_word color	 action => transparent_color_action_1
+
+transpose_rule				::= minus_sign transpose_word 	 action => transpose_action_1
+
+transverse_rule				::= minus_sign transverse_word 	 action => transverse_action_1
+
+treedepth_rule				::= minus_sign treedepth_word value	 action => treedepth_action_1
+
+trim_rule					::= minus_sign trim_word 	 action => trim_action_1
+
+type_rule					::= minus_sign type_word type	 action => type_action_1
+
+undercolor_rule				::= minus_sign undercolor_word color	 action => undercolor_action_1
+
+unique_colors_rule			::= minus_sign unique_colors_word 	 action => unique_colors_action_1
+
+units_rule					::= minus_sign units_word type	 action => units_action_1
+
+unsharp_rule					::= minus_sign unsharp_word radius	 action => unsharp_action_1
+													| minus_sign unsharp_word radiusxsigma{+gain}{+threshold}	 action => unsharp_action_2
+
+update_rule					::= minus_sign update_word seconds	 action => update_action_1
+
+verbose_rule					::= minus_sign verbose_word 	 action => verbose_action_1
+
+version_rule					::= minus_sign version_word 	 action => version_action_1
+
+view_rule					::= minus_sign view_word string	 action => view_action_1
+
+vignette_rule				::= minus_sign vignette_word radius{xsigma}{+-}x{+-}y{%}	 action => vignette_action_1
+
+virtual_pixel_rule			::= minus_sign virtual_pixel_word method	 action => virtual_pixel_action_1
+
+visual_rule					::= minus_sign visual_word type	 action => visual_action_1
+
+watermark_rule				::= minus_sign watermark_word brightnessxsaturation	 action => watermark_action_1
+
+wave_rule					::= minus_sign wave_word amplitude	 action => wave_action_1
+													| minus_sign wave_word amplitudexwavelength	 action => wave_action_2
+
+weight_rule					::= minus_sign weight_word fontWeight	 action => weight_action_1
+
+white_point_rule				::= minus_sign white_point_word x,y	 action => white_point_action_1
+
+white_threshold_rule			::= minus_sign white_threshold_word value{%}	 action => white_threshold_action_1
+
+window_rule					::= minus_sign window_word id	 action => window_action_1
+
+window_group_rule			::= minus_sign window_group_word 	 action => window_group_action_1
+
+write_rule					::= minus_sign write_word filename	 action => write_action_1
+
