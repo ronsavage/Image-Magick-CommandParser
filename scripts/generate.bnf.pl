@@ -33,9 +33,10 @@ sub build_bnf
 	$max_length		+= 5; # 5 = length('_rule').
 	my($total_tabs)	= ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
 
-	my(@bnf, %parameters);
+	my(@bnf);
 	my($count);
 	my($item);
+	my(%lexeme);
 	my($parameters);
 	my($sign, $spacer, $s);
 	my($token, $token_length, $tab_count);
@@ -54,12 +55,12 @@ sub build_bnf
 			$token			= $option =~ s/-/_/gr;
 			$token_length	= length "${token}_word";
 
-			if (! $parameters{$parameters})
+			if (! $lexeme{$parameters})
 			{
-				$parameters{$parameters} = build_parameters($parameters);
+				$lexeme{$parameters} = build_parameters($parameters);
 			}
 
-			$parameters = join(' ', @{$parameters{$parameters} });
+			$parameters = join(' ', @{$lexeme{$parameters} });
 
 			if ($count == 1)
 			{
@@ -89,13 +90,15 @@ sub build_parameters
 {
 	my($parameters)		= @_;
 	my(%special_words)	=
-	(
+	(	# These contain 'x'.
 		expression	=> 1,
 		indexes		=> 1,
 		text		=> 1,
 	);
 
-	my(@factor, @field);
+	my(@field);
+	my($infix);
+	my(@lexeme);
 	my($prefix);
 	my($suffix);
 
@@ -107,36 +110,36 @@ sub build_parameters
 		{
 			if ($special_words{$token})
 			{
-				push @factor, $token;
+				push @lexeme, $token;
 			}
 			elsif ($token =~ /(.+)x(.+)/)
 			{
-				# Expect:
+				# Expect, for 'annotate':
 				# o XdegreesxYdegrees.
 
-				push @factor, $1, 'x', $2;
+				push @lexeme, $1, 'x', $2;
 			}
 			else
 			{
-				push @factor, $token;
+				push @lexeme, $token;
 			}
 		}
 		elsif ($token eq 'host:display[.screen]')
 		{
-			push @factor, 'host_display_optional_dot_screen';
+			push @lexeme, 'host_display_optional_dot_screen';
 		}
 		elsif ($token =~ /^([_,a-zA-Z]+)\[([_,a-zA-Z]+)\]$/)
 		{
 			# Expect:
-			# o radius[xsigma].
-			# o sx,rx,ry,sy[,tx,ty].
+			# o radius[xsigma], for 'adaptive_blur'.
+			# o sx,rx,ry,sy[,tx,ty], for 'affine'.
 
 			$field[0]	= $1;
 			$field[1]	= $2;
 
 			if ($field[1] =~ /^x(.+)/)
 			{
-				push @factor, "$field[0]_optional_x_$1";
+				push @lexeme, "$field[0]_optional_x_$1";
 			}
 			else
 			{
@@ -146,16 +149,41 @@ sub build_parameters
 				$prefix	= join('_', split(/,/, $field[0]) );
 				$suffix	= join('_', split(/,/, $field[1]) );
 
-				push @factor, "${prefix}_optional$suffix";
-			}
+				push @lexeme, "${prefix}_optional$suffix";
+			 }
+		}
+		elsif ($token =~ /^([a-zA-Z]+)\[x([a-zA-Z]+)\]\[\+([a-zA-Z]+)\]$/)
+		{
+			# Expect:
+			# o width[xheight][+offset], for 'size'.
+
+			push @lexeme, "$1 optional_x_$2 optional_plus_$3";
+		}
+		elsif ($token =~ /^([a-zA-Z]+)\[([a-zA-Z]+)\]\[(.+)\]$/)
+		{
+			# Expect:
+			# o media[offset][{^!<>}], for 'page'.
+
+			push @lexeme, "$1 optional_$2 optional_geometry_suffix";
+		}
+		elsif ($token =~ /^([a-zA-Z]+)\[x([a-zA-Z]+)\[\+([a-zA-Z]+)\]\]$/)
+		{
+			# Expect:
+			# o Width[xHeight[+Angle]], for 'blur'.
+
+			$field[0]	= lc $1;
+			$field[1]	= lc $2;
+			$field[2]	= lc $3;
+
+			push @lexeme, "$field[0] optional_x_$field[1]_optional_plus_$field[2]";
 		}
 		else
 		{
-			push @factor, $token;
+			push @lexeme, $token;
 		}
 	}
 
-	return [@factor];
+	return [@lexeme];
 
 } # End of build_parameters.
 

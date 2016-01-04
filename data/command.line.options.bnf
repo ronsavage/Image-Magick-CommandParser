@@ -51,7 +51,7 @@ blue_shift_rule					::= minus_sign blue_shift_word factor	 action => blue_shift_
 
 blur_rule						::= minus_sign blur_word radius	 action => blur_action_1
 									| minus_sign blur_word radius x sigma	 action => blur_action_2
-									| minus_sign blur_word Width[xHeight[+Angle]]	 action => blur_action_3
+									| minus_sign blur_word width optional_x_height_optional_plus_angle	 action => blur_action_3
 
 border_rule						::= minus_sign border_word geometry	 action => border_action_1
 
@@ -159,7 +159,7 @@ direction_rule					::= minus_sign direction_word type	 action => direction_actio
 displace_rule					::= minus_sign displace_word horizontal_scale	 action => displace_action_1
 									| minus_sign displace_word horizontal_scale x vertical_scale	 action => displace_action_2
 
-display_rule					::= minus_sign display_word host:display_optional_dot_screen	 action => display_action_1
+display_rule					::= minus_sign display_word host_display_optional_dot_screen	 action => display_action_1
 
 dispose_rule					::= minus_sign dispose_word method	 action => dispose_action_1
 
@@ -369,7 +369,7 @@ ordered_dither_rule				::= minus_sign ordered_dither_word threshold_map{,level..
 orient_rule						::= minus_sign orient_word image orientation	 action => orient_action_1
 
 page_rule						::= minus_sign page_word geometry	 action => page_action_1
-									| minus_sign page_word media[offset][{^!<>}]	 action => page_action_2
+									| minus_sign page_word media optional_offset optional_geometry_suffix	 action => page_action_2
 									| plus_sign page_word 	 action => page_action_3
 
 paint_rule						::= minus_sign paint_word radius	 action => paint_action_1
@@ -483,7 +483,7 @@ silent_rule						::= minus_sign silent_word 	 action => silent_action_1
 
 similarity_threshold_rule		::= minus_sign similarity_threshold_word value	 action => similarity_threshold_action_1
 
-size_rule						::= minus_sign size_word width[xheight][+offset]	 action => size_action_1
+size_rule						::= minus_sign size_word width optional_x_height optional_plus_offset	 action => size_action_1
 
 sketch_rule						::= minus_sign sketch_word radius	 action => sketch_action_1
 									| minus_sign sketch_word radiusxsigma+angle	 action => sketch_action_2
