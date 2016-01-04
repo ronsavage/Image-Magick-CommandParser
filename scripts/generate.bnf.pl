@@ -59,7 +59,7 @@ sub build_bnf
 			{
 				$temp		= $max_length - $token_length;
 				$tabs4gap	= int($temp / 4) + ($temp % 4 == 0 ? 0 : 1);
-				$spacer		= "\t" x ($tabs4gap - 1); # Perl needs \t before ::=, so subtract 1.
+				$spacer		= "\t" x $tabs4gap; # Perl needs \t before ::=, so subtract 1.
 				$s			= "${token}_rule$spacer\t::= $sign ${token}_word $parameters\t action => ${token}_action_$count";
 			}
 			else
