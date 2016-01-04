@@ -3,12 +3,11 @@
 # $DR is my web server's doc root within Debian's RAM disk :-).
 # The latter is at /run/shm, so $DR is /run/shm/html.
 
-DIR=Perl-modules/html/Tree/Cladogram
+DIR=Perl-modules/html/Image/Magick
+FILE=CommandParser
 
-mkdir -p $DR/$DIR
+mkdir -p $DR/$DIR ~/savage.net.au/$DIR
 
-pod2html.pl -i lib/Tree/Cladogram.pm             -o $DR/$DIR.html
-pod2html.pl -i lib/Tree/Cladogram/Imager.pm      -o $DR/$DIR/Imager.html
-pod2html.pl -i lib/Tree/Cladogram/ImageMagick.pm -o $DR/$DIR/ImageMagick.html
+pod2html.pl -i lib/Image/Magick/$FILE.pm -o $DR/$DIR/$FILE.html
 
-cp -r $DR/$DIR ~/savage.net.au/$DIR
+cp -r $DR/$DIR/$FILE.html ~/savage.net.au/$DIR

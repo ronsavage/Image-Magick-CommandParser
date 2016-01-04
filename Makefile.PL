@@ -13,7 +13,7 @@ my(%params) =
 	($] ge '5.005') ?
 	(
 		AUTHOR   => 'Ron Savage (ron@savage.net.au)',
-		ABSTRACT => 'Render a cladogram using Imager or Image::Magick',
+		ABSTRACT => 'Parse any command line used by ImageMagick',
 	) : (),
 	clean =>
 	{
