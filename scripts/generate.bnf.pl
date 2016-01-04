@@ -6,7 +6,7 @@ use strict;
 use warnings;
 use warnings qw(FATAL utf8);
 
-use File::Slurper; # For read_file().
+use File::Slurper 'read_lines';
 
 use HTML::Entities;
 use HTML::TreeBuilder;
@@ -82,7 +82,7 @@ sub process_html
 {
 	my($input_file)	= 'data/command.line.options.html';
 	my($root)		= HTML::TreeBuilder -> new();
-	my $content		= read_file($input_file);
+	my $content		= join(' ', read_lines($input_file) );
 	my($result)		= $root -> parse_content($content);
 	my(@h3)			= $root -> look_down(_tag => 'h3');
 	my($count)		= 0;
