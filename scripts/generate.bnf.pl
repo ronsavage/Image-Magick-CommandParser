@@ -6,9 +6,7 @@ use strict;
 use warnings;
 use warnings qw(FATAL utf8);
 
-use Data::Dumper::Concise;
-
-use File::Slurp; # For read_file().
+use File::Slurper; # For read_file().
 
 use HTML::Entities;
 use HTML::TreeBuilder;
@@ -32,14 +30,15 @@ sub build_bnf
 		push @{$bnf{$option}}, [$$line[1], $$line[2] ];
 	}
 
-	$max_length += 5; # 5 = length('_rule').
+	$max_length		+= 5; # 5 = length('_rule').
+	my($total_tabs)	= ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
 
 	my(@bnf);
 	my($count);
 	my($item);
 	my($parameters);
 	my($sign, $spacer, $s);
-	my($token, $token_length, $temp, $tabs4token, $tabs4gap);
+	my($token, $token_length, $tab_count);
 
 	for $option (sort keys %bnf)
 	{
@@ -57,17 +56,13 @@ sub build_bnf
 
 			if ($count == 1)
 			{
-				$temp		= $max_length - $token_length;
-				$tabs4gap	= int($temp / 4) + ($temp % 4 == 0 ? 0 : 1);
-				$spacer		= "\t" x $tabs4gap; # Perl needs \t before ::=, so subtract 1.
+				$tab_count	= ($token_length / 4) + 1;
+				$spacer		= "\t" x ($total_tabs - $tab_count - 1); # Perl needs \t before ::=.
 				$s			= "${token}_rule$spacer\t::= $sign ${token}_word $parameters\t action => ${token}_action_$count";
 			}
 			else
 			{
-				$tabs4token	= int($max_length / 4) + ($max_length % 4 == 0 ? 0 : 1);
-				$temp		= $max_length - $token_length;
-				$tabs4gap	= int($temp / 4) + ($temp % 4 == 0 ? 0 : 1);
-				$spacer		= "\t" x ($tabs4token + $tabs4gap - 1);
+				$spacer		= "\t" x ($total_tabs - 1);
 				$s			= "$spacer\t| $sign ${token}_word $parameters\t action => ${token}_action_$count";
 			}
 
@@ -87,7 +82,7 @@ sub process_html
 {
 	my($input_file)	= 'data/command.line.options.html';
 	my($root)		= HTML::TreeBuilder -> new();
-	my $content		= read_file($input_file, binmode => ':utf8');
+	my $content		= read_file($input_file);
 	my($result)		= $root -> parse_content($content);
 	my(@h3)			= $root -> look_down(_tag => 'h3');
 	my($count)		= 0;
@@ -155,92 +150,7 @@ sub process_html
 
 # ----------------------------------------------
 
-sub process_parameters
-{
-	my($lines) = @_;
-
-	my($count, @command);
-	my(@field, $field);
-	my(@parameters);
-	my($temp, @temp);
-
-	for my $line (@$lines)
-	{
-		if ($$line[2] =~ /\[/)
-		{
-			# Expect:
-			# (Keep together)
-			# o host:display[.screen]
-			# o sx,rx,ry,sy[,tx,ty]
-			# (Nested)
-			# o Width[xHeight[+Angle]]
-			# (Simple)
-			# o radius[xsigma]
-			# (Multiple)
-			# o media[offset][{^!<>}]
-
-			$count		= 0;
-			@field		= split(/(\[)/, $$line[2]);
-			@parameters	= ();
-
-			while ($field = shift @field)
-			{
-				$count++;
-
-				if ($field =~ /^XdegreesxYdegrees/)
-				{
-					@temp = split(/(x)/, $field);
-
-					push @parameters, join(' ', @temp);
-				}
-				elsif ($count == 1)
-				{
-					push @parameters, $field;
-				}
-				elsif ( ($field eq '[') && ($field[0] =~ /^[.,]/) )
-				{	# Keep together.
-					push @parameters, $field . shift @field;
-				}
-				elsif ( ($field eq '[') && ($field[$#field] =~ /]]$/) )
-				{	# Nested.
-
-					$temp = 'x ' . substr(shift @field, 1) . ' ' . join('', @field);
-
-					push @parameters, "$field$temp";
-
-					@field = ();
-				}
-				elsif ( ($field eq '[') && ($field[0] =~ /^x/) )
-				{	# Simple.
-
-					$temp = 'x ' . substr(shift @field, 1);
-
-					push @parameters, "$field$temp";
-
-					@field = ();
-				}
-				elsif ($field eq '[')
-				{
-					push @parameters, $field . shift @field;
-				}
-			}
-
-			push @command, [$$line[0], $$line[1], join(' ', @parameters)];
-		}
-		else
-		{
-			push @command, $line;
-		}
-	}
-
-	return [@command];
-
-} # End of process_parameters.
-
-# ----------------------------------------------
-
 my($command)		= process_html;
-$command			= process_parameters($command);
 my($bnf)			= build_bnf($command);
 my($output_file)	= 'data/command.line.options.bnf';
 
