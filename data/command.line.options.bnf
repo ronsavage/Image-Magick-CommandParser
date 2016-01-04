@@ -1,19 +1,19 @@
-adaptive_blur_rule				::= minus_sign adaptive_blur_word radius[xsigma]	 action => adaptive_blur_action_1
+adaptive_blur_rule				::= minus_sign adaptive_blur_word radius_optional_x_sigma	 action => adaptive_blur_action_1
 
 adaptive_resize_rule			::= minus_sign adaptive_resize_word geometry	 action => adaptive_resize_action_1
 
-adaptive_sharpen_rule			::= minus_sign adaptive_sharpen_word radius[xsigma]	 action => adaptive_sharpen_action_1
+adaptive_sharpen_rule			::= minus_sign adaptive_sharpen_word radius_optional_x_sigma	 action => adaptive_sharpen_action_1
 
 adjoin_rule						::= minus_sign adjoin_word 	 action => adjoin_action_1
 
-affine_rule						::= minus_sign affine_word sx,rx,ry,sy[,tx,ty]	 action => affine_action_1
+affine_rule						::= minus_sign affine_word sx_rx_ry_sy_optional_tx_ty	 action => affine_action_1
 
 alpha_rule						::= minus_sign alpha_word type	 action => alpha_action_1
 
 annotate_rule					::= minus_sign annotate_word degrees text	 action => annotate_action_1
-									| minus_sign annotate_word XdegreesxYdegrees text	 action => annotate_action_2
-									| minus_sign annotate_word XdegreesxYdegrees {+-}tx{+-}ty text	 action => annotate_action_3
-									| minus_sign annotate_word {+-}tx{+-}ty text	 action => annotate_action_4
+									| minus_sign annotate_word Xdegrees x Ydegrees text	 action => annotate_action_2
+									| minus_sign annotate_word Xdegrees x Ydegrees {+_}tx{+_}ty text	 action => annotate_action_3
+									| minus_sign annotate_word {+_}tx{+_}ty text	 action => annotate_action_4
 
 antialias_rule					::= minus_sign antialias_word 	 action => antialias_action_1
 
@@ -50,7 +50,7 @@ blue_primary_rule				::= minus_sign blue_primary_word x,y	 action => blue_primar
 blue_shift_rule					::= minus_sign blue_shift_word factor	 action => blue_shift_action_1
 
 blur_rule						::= minus_sign blur_word radius	 action => blur_action_1
-									| minus_sign blur_word radiusxsigma	 action => blur_action_2
+									| minus_sign blur_word radius x sigma	 action => blur_action_2
 									| minus_sign blur_word Width[xHeight[+Angle]]	 action => blur_action_3
 
 border_rule						::= minus_sign border_word geometry	 action => border_action_1
@@ -65,7 +65,7 @@ brightness_contrast_rule		::= minus_sign brightness_contrast_word brightness	 ac
 cache_rule						::= minus_sign cache_word threshold	 action => cache_action_1
 
 canny_rule						::= minus_sign canny_word radius	 action => canny_action_1
-									| minus_sign canny_word radiusxsigma{+lower-percent}{+upper-percent}	 action => canny_action_2
+									| minus_sign canny_word radiusxsigma{+lower_percent}{+upper_percent}	 action => canny_action_2
 
 caption_rule					::= minus_sign caption_word string	 action => caption_action_1
 
@@ -119,8 +119,8 @@ connected_components_rule		::= minus_sign connected_components_word connectivity
 
 contrast_rule					::= minus_sign contrast_word 	 action => contrast_action_1
 
-contrast_stretch_rule			::= minus_sign contrast_stretch_word black-point	 action => contrast_stretch_action_1
-									| minus_sign contrast_stretch_word black-point{xwhite-point}{%}}	 action => contrast_stretch_action_2
+contrast_stretch_rule			::= minus_sign contrast_stretch_word black_point	 action => contrast_stretch_action_1
+									| minus_sign contrast_stretch_word black_point{xwhite_point}{%}}	 action => contrast_stretch_action_2
 
 convolve_rule					::= minus_sign convolve_word kernel	 action => convolve_action_1
 
@@ -139,12 +139,12 @@ deconstruct_rule				::= minus_sign deconstruct_word 	 action => deconstruct_acti
 define_rule						::= minus_sign define_word key{=value}...	 action => define_action_1
 
 delay_rule						::= minus_sign delay_word ticks	 action => delay_action_1
-									| minus_sign delay_word ticksxticks-per-second {<} {>}	 action => delay_action_2
+									| minus_sign delay_word ticks x ticks_per_second {<} {>}	 action => delay_action_2
 
 delete_rule						::= minus_sign delete_word indexes	 action => delete_action_1
 
 density_rule					::= minus_sign density_word width	 action => density_action_1
-									| minus_sign density_word widthxheight	 action => density_action_2
+									| minus_sign density_word width x height	 action => density_action_2
 
 depth_rule						::= minus_sign depth_word value	 action => depth_action_1
 
@@ -156,16 +156,16 @@ despeckle_rule					::= minus_sign despeckle_word 	 action => despeckle_action_1
 
 direction_rule					::= minus_sign direction_word type	 action => direction_action_1
 
-displace_rule					::= minus_sign displace_word horizontal-scale	 action => displace_action_1
-									| minus_sign displace_word horizontal-scalexvertical-scale	 action => displace_action_2
+displace_rule					::= minus_sign displace_word horizontal_scale	 action => displace_action_1
+									| minus_sign displace_word horizontal_scale x vertical_scale	 action => displace_action_2
 
-display_rule					::= minus_sign display_word host:display[.screen]	 action => display_action_1
+display_rule					::= minus_sign display_word host:display_optional_dot_screen	 action => display_action_1
 
 dispose_rule					::= minus_sign dispose_word method	 action => dispose_action_1
 
 dissimilarity_threshold_rule	::= minus_sign dissimilarity_threshold_word value	 action => dissimilarity_threshold_action_1
 
-dissolve_rule					::= minus_sign dissolve_word src_percent[xdst_percent]	 action => dissolve_action_1
+dissolve_rule					::= minus_sign dissolve_word src_percent_optional_x_dst_percent	 action => dissolve_action_1
 
 distort_rule					::= minus_sign distort_word method arguments	 action => distort_action_1
 
@@ -213,7 +213,7 @@ flatten_rule					::= minus_sign flatten_word 	 action => flatten_action_1
 
 flip_rule						::= minus_sign flip_word 	 action => flip_action_1
 
-floodfill_rule					::= minus_sign floodfill_word {+-}x{+-}y color	 action => floodfill_action_1
+floodfill_rule					::= minus_sign floodfill_word {+_}x{+_}y color	 action => floodfill_action_1
 
 flop_rule						::= minus_sign flop_word 	 action => flop_action_1
 
@@ -236,7 +236,7 @@ fx_rule							::= minus_sign fx_word expression	 action => fx_action_1
 gamma_rule						::= minus_sign gamma_word value	 action => gamma_action_1
 
 gaussian_blur_rule				::= minus_sign gaussian_blur_word radius	 action => gaussian_blur_action_1
-									| minus_sign gaussian_blur_word radiusxsigma	 action => gaussian_blur_action_2
+									| minus_sign gaussian_blur_word radius x sigma	 action => gaussian_blur_action_2
 
 geometry_rule					::= minus_sign geometry_word geometry	 action => geometry_action_1
 
@@ -283,12 +283,12 @@ interword_spacing_rule			::= minus_sign interword_spacing_word value	 action => 
 kerning_rule					::= minus_sign kerning_word value	 action => kerning_action_1
 
 kuwahara_rule					::= minus_sign kuwahara_word radius	 action => kuwahara_action_1
-									| minus_sign kuwahara_word radiusxsigma	 action => kuwahara_action_2
+									| minus_sign kuwahara_word radius x sigma	 action => kuwahara_action_2
 
 label_rule						::= minus_sign label_word name	 action => label_action_1
 
 lat_rule						::= minus_sign lat_word width	 action => lat_action_1
-									| minus_sign lat_word widthxheight{+-}offset{%}	 action => lat_action_2
+									| minus_sign lat_word widthxheight{+_}offset{%}	 action => lat_action_2
 
 layers_rule						::= minus_sign layers_word method	 action => layers_action_1
 
@@ -298,8 +298,8 @@ level_colors_rule				::= minus_sign level_colors_word {black_color}{,}{white_col
 
 limit_rule						::= minus_sign limit_word type value	 action => limit_action_1
 
-linear_stretch_rule				::= minus_sign linear_stretch_word black-point	 action => linear_stretch_action_1
-									| minus_sign linear_stretch_word black-point{xwhite-point}{%}}	 action => linear_stretch_action_2
+linear_stretch_rule				::= minus_sign linear_stretch_word black_point	 action => linear_stretch_action_1
+									| minus_sign linear_stretch_word black_point{xwhite_point}{%}}	 action => linear_stretch_action_2
 
 linewidth_rule					::= minus_sign linewidth_word 	 action => linewidth_action_1
 
@@ -335,7 +335,7 @@ minimum_rule					::= minus_sign minimum_word 	 action => minimum_action_1
 mode_rule						::= minus_sign mode_word geometry	 action => mode_action_1
 									| minus_sign mode_word value	 action => mode_action_2
 
-modulate_rule					::= minus_sign modulate_word brightness[,saturation,hue]	 action => modulate_action_1
+modulate_rule					::= minus_sign modulate_word brightness_optional_saturation_hue	 action => modulate_action_1
 
 moments_rule					::= minus_sign moments_word 	 action => moments_action_1
 
@@ -412,7 +412,7 @@ radial_blur_rule				::= minus_sign radial_blur_word angle	 action => radial_blur
 
 raise_rule						::= minus_sign raise_word thickness	 action => raise_action_1
 
-random_threshold_rule			::= minus_sign random_threshold_word lowxhigh	 action => random_threshold_action_1
+random_threshold_rule			::= minus_sign random_threshold_word low x high	 action => random_threshold_action_1
 
 red_primary_rule				::= minus_sign red_primary_word x,y	 action => red_primary_action_1
 
@@ -428,7 +428,7 @@ render_rule						::= minus_sign render_word 	 action => render_action_1
 
 repage_rule						::= minus_sign repage_word geometry	 action => repage_action_1
 
-resample_rule					::= minus_sign resample_word horizontalxvertical	 action => resample_action_1
+resample_rule					::= minus_sign resample_word horizontal x vertical	 action => resample_action_1
 
 resize_rule						::= minus_sign resize_word geometry	 action => resize_action_1
 
@@ -436,13 +436,13 @@ respect_parentheses_rule		::= minus_sign respect_parentheses_word 	 action => re
 
 reverse_rule					::= minus_sign reverse_word 	 action => reverse_action_1
 
-roll_rule						::= minus_sign roll_word {+-}x{+-}y	 action => roll_action_1
+roll_rule						::= minus_sign roll_word {+_}x{+_}y	 action => roll_action_1
 
 rotate_rule						::= minus_sign rotate_word degrees{<}{>}	 action => rotate_action_1
 
 sample_rule						::= minus_sign sample_word geometry	 action => sample_action_1
 
-sampling_factor_rule			::= minus_sign sampling_factor_word horizontal-factorxvertical-factor	 action => sampling_factor_action_1
+sampling_factor_rule			::= minus_sign sampling_factor_word horizontal_factor x vertical_factor	 action => sampling_factor_action_1
 
 scale_rule						::= minus_sign scale_word geometry	 action => scale_action_1
 
@@ -452,7 +452,7 @@ screen_rule						::= minus_sign screen_word 	 action => screen_action_1
 
 seed_rule						::= minus_sign seed_word 	 action => seed_action_1
 
-segment_rule					::= minus_sign segment_word cluster-thresholdxsmoothing-threshold	 action => segment_action_1
+segment_rule					::= minus_sign segment_word cluster_threshold x smoothing_threshold	 action => segment_action_1
 
 selective_blur_rule				::= minus_sign selective_blur_word radius	 action => selective_blur_action_1
 									| minus_sign selective_blur_word radiusxsigma{+threshold}	 action => selective_blur_action_2
@@ -464,20 +464,20 @@ sepia_tone_rule					::= minus_sign sepia_tone_word threshold	 action => sepia_to
 set_rule						::= minus_sign set_word key value	 action => set_action_1
 									| plus_sign set_word key	 action => set_action_2
 
-shade_rule						::= minus_sign shade_word azimuthxelevation	 action => shade_action_1
+shade_rule						::= minus_sign shade_word azimuth x elevation	 action => shade_action_1
 
-shadow_rule						::= minus_sign shadow_word percent-opacity{xsigma}{+-}x{+-}y{%}	 action => shadow_action_1
+shadow_rule						::= minus_sign shadow_word percent_opacity{xsigma}{+_}x{+_}y{%}	 action => shadow_action_1
 
 shared_memory_rule				::= minus_sign shared_memory_word 	 action => shared_memory_action_1
 
 sharpen_rule					::= minus_sign sharpen_word radius	 action => sharpen_action_1
-									| minus_sign sharpen_word radiusxsigma	 action => sharpen_action_2
+									| minus_sign sharpen_word radius x sigma	 action => sharpen_action_2
 
 shave_rule						::= minus_sign shave_word geometry	 action => shave_action_1
 
-shear_rule						::= minus_sign shear_word Xdegrees[xYdegrees]	 action => shear_action_1
+shear_rule						::= minus_sign shear_word Xdegrees_optional_x_Ydegrees	 action => shear_action_1
 
-sigmoidal_contrast_rule			::= minus_sign sigmoidal_contrast_word contrastxmid-point	 action => sigmoidal_contrast_action_1
+sigmoidal_contrast_rule			::= minus_sign sigmoidal_contrast_word contrast x mid_point	 action => sigmoidal_contrast_action_1
 
 silent_rule						::= minus_sign silent_word 	 action => silent_action_1
 
@@ -540,7 +540,7 @@ tile_rule						::= minus_sign tile_word filename	 action => tile_action_1
 									| minus_sign tile_word geometry	 action => tile_action_2
 									| minus_sign tile_word 	 action => tile_action_3
 
-tile_offset_rule				::= minus_sign tile_offset_word {+-}x{+-}y	 action => tile_offset_action_1
+tile_offset_rule				::= minus_sign tile_offset_word {+_}x{+_}y	 action => tile_offset_action_1
 
 tint_rule						::= minus_sign tint_word value	 action => tint_action_1
 
@@ -579,16 +579,16 @@ version_rule					::= minus_sign version_word 	 action => version_action_1
 
 view_rule						::= minus_sign view_word string	 action => view_action_1
 
-vignette_rule					::= minus_sign vignette_word radius{xsigma}{+-}x{+-}y{%}	 action => vignette_action_1
+vignette_rule					::= minus_sign vignette_word radius{xsigma}{+_}x{+_}y{%}	 action => vignette_action_1
 
 virtual_pixel_rule				::= minus_sign virtual_pixel_word method	 action => virtual_pixel_action_1
 
 visual_rule						::= minus_sign visual_word type	 action => visual_action_1
 
-watermark_rule					::= minus_sign watermark_word brightnessxsaturation	 action => watermark_action_1
+watermark_rule					::= minus_sign watermark_word brightness x saturation	 action => watermark_action_1
 
 wave_rule						::= minus_sign wave_word amplitude	 action => wave_action_1
-									| minus_sign wave_word amplitudexwavelength	 action => wave_action_2
+									| minus_sign wave_word amplitude x wavelength	 action => wave_action_2
 
 weight_rule						::= minus_sign weight_word fontWeight	 action => weight_action_1
 

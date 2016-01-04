@@ -33,7 +33,7 @@ sub build_bnf
 	$max_length		+= 5; # 5 = length('_rule').
 	my($total_tabs)	= ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
 
-	my(@bnf);
+	my(@bnf, %parameters);
 	my($count);
 	my($item);
 	my($parameters);
@@ -50,9 +50,16 @@ sub build_bnf
 
 			$item			= $bnf{$option}[$i];
 			$sign			= $$item[0] eq '-' ? 'minus_sign' : 'plus_sign';
-			$parameters		= $$item[1];
+			$parameters		= $$item[1] =~ s/-/_/gr;
 			$token			= $option =~ s/-/_/gr;
 			$token_length	= length "${token}_word";
+
+			if (! $parameters{$parameters})
+			{
+				$parameters{$parameters} = build_parameters($parameters);
+			}
+
+			$parameters = join(' ', @{$parameters{$parameters} });
 
 			if ($count == 1)
 			{
@@ -75,6 +82,82 @@ sub build_bnf
 	return [@bnf];
 
 } # End of build_bnf.
+
+# ----------------------------------------------
+
+sub build_parameters
+{
+	my($parameters)		= @_;
+	my(%special_words)	=
+	(
+		expression	=> 1,
+		indexes		=> 1,
+		text		=> 1,
+	);
+
+	my(@factor, @field);
+	my($prefix);
+	my($suffix);
+
+	say "Parsing $parameters";
+
+	for my $token (split(/\s+/, $parameters) )
+	{
+		if ($token =~ /^([_a-zA-Z]+)$/)
+		{
+			if ($special_words{$token})
+			{
+				push @factor, $token;
+			}
+			elsif ($token =~ /(.+)x(.+)/)
+			{
+				# Expect:
+				# o XdegreesxYdegrees.
+
+				push @factor, $1, 'x', $2;
+			}
+			else
+			{
+				push @factor, $token;
+			}
+		}
+		elsif ($token eq 'host:display[.screen]')
+		{
+			push @factor, 'host_display_optional_dot_screen';
+		}
+		elsif ($token =~ /^([_,a-zA-Z]+)\[([_,a-zA-Z]+)\]$/)
+		{
+			# Expect:
+			# o radius[xsigma].
+			# o sx,rx,ry,sy[,tx,ty].
+
+			$field[0]	= $1;
+			$field[1]	= $2;
+
+			if ($field[1] =~ /^x(.+)/)
+			{
+				push @factor, "$field[0]_optional_x_$1";
+			}
+			else
+			{
+				# Note: the 2nd split has a leading ','.
+				# Hence not "...optional_$suffix".
+
+				$prefix	= join('_', split(/,/, $field[0]) );
+				$suffix	= join('_', split(/,/, $field[1]) );
+
+				push @factor, "${prefix}_optional$suffix";
+			}
+		}
+		else
+		{
+			push @factor, $token;
+		}
+	}
+
+	return [@factor];
+
+} # End of build_parameters.
 
 # ----------------------------------------------
 
