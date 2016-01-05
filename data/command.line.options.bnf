@@ -11,8 +11,8 @@ affine_rule						::= minus_sign affine_word sx_rx_ry_sy_optional_tx_ty	 action =
 alpha_rule						::= minus_sign alpha_word type	 action => alpha_action_1
 
 annotate_rule					::= minus_sign annotate_word degrees text	 action => annotate_action_1
-									| minus_sign annotate_word Xdegrees x Ydegrees text	 action => annotate_action_2
-									| minus_sign annotate_word Xdegrees x Ydegrees plus_or_minus tx plus_or_minus ty text	 action => annotate_action_3
+									| minus_sign annotate_word Xdegrees string Ydegrees text	 action => annotate_action_2
+									| minus_sign annotate_word Xdegrees string Ydegrees plus_or_minus tx plus_or_minus ty text	 action => annotate_action_3
 									| minus_sign annotate_word plus_or_minus tx plus_or_minus ty text	 action => annotate_action_4
 
 antialias_rule					::= minus_sign antialias_word 	 action => antialias_action_1
@@ -50,7 +50,7 @@ blue_primary_rule				::= minus_sign blue_primary_word x comma y	 action => blue_
 blue_shift_rule					::= minus_sign blue_shift_word factor	 action => blue_shift_action_1
 
 blur_rule						::= minus_sign blur_word radius	 action => blur_action_1
-									| minus_sign blur_word radius x sigma	 action => blur_action_2
+									| minus_sign blur_word radius string sigma	 action => blur_action_2
 									| minus_sign blur_word width optional_x_height_optional_plus_angle	 action => blur_action_3
 
 border_rule						::= minus_sign border_word geometry	 action => border_action_1
@@ -85,7 +85,7 @@ clip_mask_rule					::= minus_sign clip_mask_word 	 action => clip_mask_action_1
 
 clip_path_rule					::= minus_sign clip_path_word id	 action => clip_path_action_1
 
-clone_rule						::= minus_sign clone_word index(s)	 action => clone_action_1
+clone_rule						::= minus_sign clone_word indexes	 action => clone_action_1
 
 clut_rule						::= minus_sign clut_word 	 action => clut_action_1
 
@@ -137,12 +137,12 @@ decipher_rule					::= minus_sign decipher_word filename	 action => decipher_acti
 deconstruct_rule				::= minus_sign deconstruct_word 	 action => deconstruct_action_1
 
 delay_rule						::= minus_sign delay_word ticks	 action => delay_action_1
-									| minus_sign delay_word ticks x ticks_per_second optional_less_than optional_greater_than	 action => delay_action_2
+									| minus_sign delay_word ticks string ticks_per_second optional_less_than optional_greater_than	 action => delay_action_2
 
 delete_rule						::= minus_sign delete_word indexes	 action => delete_action_1
 
 density_rule					::= minus_sign density_word width	 action => density_action_1
-									| minus_sign density_word width x height	 action => density_action_2
+									| minus_sign density_word width string height	 action => density_action_2
 
 depth_rule						::= minus_sign depth_word value	 action => depth_action_1
 
@@ -155,7 +155,7 @@ despeckle_rule					::= minus_sign despeckle_word 	 action => despeckle_action_1
 direction_rule					::= minus_sign direction_word type	 action => direction_action_1
 
 displace_rule					::= minus_sign displace_word horizontal_scale	 action => displace_action_1
-									| minus_sign displace_word horizontal_scale x vertical_scale	 action => displace_action_2
+									| minus_sign displace_word horizontal_scale string vertical_scale	 action => displace_action_2
 
 display_rule					::= minus_sign display_word host_display_optional_dot_screen	 action => display_action_1
 
@@ -164,8 +164,6 @@ dispose_rule					::= minus_sign dispose_word method	 action => dispose_action_1
 dissimilarity_threshold_rule	::= minus_sign dissimilarity_threshold_word value	 action => dissimilarity_threshold_action_1
 
 dissolve_rule					::= minus_sign dissolve_word src_percent_optional_x_dst_percent	 action => dissolve_action_1
-
-distort_rule					::= minus_sign distort_word method arguments	 action => distort_action_1
 
 distribute_cache_rule			::= minus_sign distribute_cache_word port	 action => distribute_cache_action_1
 
@@ -234,7 +232,7 @@ fx_rule							::= minus_sign fx_word expression	 action => fx_action_1
 gamma_rule						::= minus_sign gamma_word value	 action => gamma_action_1
 
 gaussian_blur_rule				::= minus_sign gaussian_blur_word radius	 action => gaussian_blur_action_1
-									| minus_sign gaussian_blur_word radius x sigma	 action => gaussian_blur_action_2
+									| minus_sign gaussian_blur_word radius string sigma	 action => gaussian_blur_action_2
 
 geometry_rule					::= minus_sign geometry_word geometry	 action => geometry_action_1
 
@@ -281,7 +279,7 @@ interword_spacing_rule			::= minus_sign interword_spacing_word value	 action => 
 kerning_rule					::= minus_sign kerning_word value	 action => kerning_action_1
 
 kuwahara_rule					::= minus_sign kuwahara_word radius	 action => kuwahara_action_1
-									| minus_sign kuwahara_word radius x sigma	 action => kuwahara_action_2
+									| minus_sign kuwahara_word radius string sigma	 action => kuwahara_action_2
 
 label_rule						::= minus_sign label_word name	 action => label_action_1
 
@@ -343,9 +341,6 @@ monochrome_rule					::= minus_sign monochrome_word 	 action => monochrome_action
 
 morph_rule						::= minus_sign morph_word frames	 action => morph_action_1
 
-morphology_rule					::= minus_sign morphology_word 	 action => morphology_action_1
-									| minus_sign morphology_word method kernel	 action => morphology_action_2
-
 mosaic_rule						::= minus_sign mosaic_word 	 action => mosaic_action_1
 
 motion_blur_rule				::= minus_sign motion_blur_word radius	 action => motion_blur_action_1
@@ -406,7 +401,7 @@ radial_blur_rule				::= minus_sign radial_blur_word angle	 action => radial_blur
 
 raise_rule						::= minus_sign raise_word thickness	 action => raise_action_1
 
-random_threshold_rule			::= minus_sign random_threshold_word low x high	 action => random_threshold_action_1
+random_threshold_rule			::= minus_sign random_threshold_word low string high	 action => random_threshold_action_1
 
 red_primary_rule				::= minus_sign red_primary_word x comma y	 action => red_primary_action_1
 
@@ -422,7 +417,7 @@ render_rule						::= minus_sign render_word 	 action => render_action_1
 
 repage_rule						::= minus_sign repage_word geometry	 action => repage_action_1
 
-resample_rule					::= minus_sign resample_word horizontal x vertical	 action => resample_action_1
+resample_rule					::= minus_sign resample_word horizontal string vertical	 action => resample_action_1
 
 resize_rule						::= minus_sign resize_word geometry	 action => resize_action_1
 
@@ -436,7 +431,7 @@ rotate_rule						::= minus_sign rotate_word degrees less_than greater_than	 acti
 
 sample_rule						::= minus_sign sample_word geometry	 action => sample_action_1
 
-sampling_factor_rule			::= minus_sign sampling_factor_word horizontal_factor x vertical_factor	 action => sampling_factor_action_1
+sampling_factor_rule			::= minus_sign sampling_factor_word horizontal_factor string vertical_factor	 action => sampling_factor_action_1
 
 scale_rule						::= minus_sign scale_word geometry	 action => scale_action_1
 
@@ -446,7 +441,7 @@ screen_rule						::= minus_sign screen_word 	 action => screen_action_1
 
 seed_rule						::= minus_sign seed_word 	 action => seed_action_1
 
-segment_rule					::= minus_sign segment_word cluster_threshold x smoothing_threshold	 action => segment_action_1
+segment_rule					::= minus_sign segment_word cluster_threshold string smoothing_threshold	 action => segment_action_1
 
 selective_blur_rule				::= minus_sign selective_blur_word radius	 action => selective_blur_action_1
 									| minus_sign selective_blur_word radius x sigma optional_threshold	 action => selective_blur_action_2
@@ -458,20 +453,20 @@ sepia_tone_rule					::= minus_sign sepia_tone_word threshold	 action => sepia_to
 set_rule						::= minus_sign set_word key value	 action => set_action_1
 									| plus_sign set_word key	 action => set_action_2
 
-shade_rule						::= minus_sign shade_word azimuth x elevation	 action => shade_action_1
+shade_rule						::= minus_sign shade_word azimuth string elevation	 action => shade_action_1
 
 shadow_rule						::= minus_sign shadow_word percent_opacity optional_x_sigma plus_or_minus x plus_or_minus y optional_percent	 action => shadow_action_1
 
 shared_memory_rule				::= minus_sign shared_memory_word 	 action => shared_memory_action_1
 
 sharpen_rule					::= minus_sign sharpen_word radius	 action => sharpen_action_1
-									| minus_sign sharpen_word radius x sigma	 action => sharpen_action_2
+									| minus_sign sharpen_word radius string sigma	 action => sharpen_action_2
 
 shave_rule						::= minus_sign shave_word geometry	 action => shave_action_1
 
 shear_rule						::= minus_sign shear_word Xdegrees_optional_x_Ydegrees	 action => shear_action_1
 
-sigmoidal_contrast_rule			::= minus_sign sigmoidal_contrast_word contrast x mid_point	 action => sigmoidal_contrast_action_1
+sigmoidal_contrast_rule			::= minus_sign sigmoidal_contrast_word contrast string mid_point	 action => sigmoidal_contrast_action_1
 
 silent_rule						::= minus_sign silent_word 	 action => silent_action_1
 
@@ -577,10 +572,10 @@ virtual_pixel_rule				::= minus_sign virtual_pixel_word method	 action => virtua
 
 visual_rule						::= minus_sign visual_word type	 action => visual_action_1
 
-watermark_rule					::= minus_sign watermark_word brightness x saturation	 action => watermark_action_1
+watermark_rule					::= minus_sign watermark_word brightness string saturation	 action => watermark_action_1
 
 wave_rule						::= minus_sign wave_word amplitude	 action => wave_action_1
-									| minus_sign wave_word amplitude x wavelength	 action => wave_action_2
+									| minus_sign wave_word amplitude string wavelength	 action => wave_action_2
 
 weight_rule						::= minus_sign weight_word fontWeight	 action => weight_action_1
 
@@ -594,119 +589,231 @@ window_group_rule				::= minus_sign window_group_word 	 action => window_group_a
 
 write_rule						::= minus_sign write_word filename	 action => write_action_1
 
-Xdegrees								~ ...
-Xdegrees_optional_x_Ydegrees			~ ...
-Ydegrees								~ ...
-amount									~ ...
-amplitude								~ ...
-angle									~ ...
-arguments								~ ...
-azimuth									~ ...
-black_color								~ ...
-black_point								~ ...
-brightness								~ ...
-brightness_optional_saturation_hue		~ ...
-cluster_threshold						~ ...
-color									~ ...
-colorspace								~ ...
-comma									~ ...
-command									~ ...
-components								~ ...
-connectivity							~ ...
-contrast								~ ...
-count									~ ...
-degrees									~ ...
-distance								~ ...
-elevation								~ ...
-epsilon									~ ...
-events									~ ...
-expression								~ ...
-factor									~ ...
-filename								~ ...
-fontFamily								~ ...
-fontStretch								~ ...
-fontStyle								~ ...
-fontWeight								~ ...
-frames									~ ...
-function								~ ...
-gamma									~ ...
-geometry								~ ...
-greater_than							~ ...
-height									~ ...
-high									~ ...
-horizontal								~ ...
-horizontal_factor						~ ...
-horizontal_scale						~ ...
-host_display_optional_dot_screen		~ ...
-id										~ ...
-image									~ ...
-index									~ ...
-index(s)								~ ...
-indexes									~ ...
-iterations								~ ...
-kernel									~ ...
-key										~ ...
-less_than								~ ...
-levels									~ ...
-low										~ ...
-matrix									~ ...
-media									~ ...
-method									~ ...
-mid_point								~ ...
-name									~ ...
-offset									~ ...
-operator								~ ...
-optional_at_sign						~ ...
-optional_exclamation_point				~ ...
-optional_gain							~ ...
-optional_geometry_suffix				~ ...
-optional_greater_than					~ ...
-optional_less_than						~ ...
-optional_lower_percent					~ ...
-optional_offset							~ ...
-optional_percent						~ ...
-optional_plus_distance_optional_percent	~ ...
-optional_plus_offset					~ ...
-optional_threshold						~ ...
-optional_upper_percent					~ ...
-optional_x_contrast						~ ...
-optional_x_height						~ ...
-optional_x_height_optional_plus_angle	~ ...
-optional_x_sigma						~ ...
-optional_x_white_point					~ ...
-orientation								~ ...
-parameters								~ ...
-password								~ ...
-path									~ ...
-percent_opacity							~ ...
-plus									~ ...
-plus_or_minus							~ ...
-port									~ ...
-profile_name							~ ...
-radius									~ ...
-radius_optional_x_sigma					~ ...
-saturation								~ ...
-seconds									~ ...
-sigma									~ ...
-smoothing_threshold						~ ...
-src_percent_optional_x_dst_percent		~ ...
-string									~ ...
-sx_rx_ry_sy_optional_tx_ty				~ ...
-text									~ ...
-thickness								~ ...
-threshold								~ ...
-ticks									~ ...
-ticks_per_second						~ ...
-tx										~ ...
-ty										~ ...
-type									~ ...
-value									~ ...
-vertical								~ ...
-vertical_factor							~ ...
-vertical_scale							~ ...
-wavelength								~ ...
-white_color								~ ...
-white_point								~ ...
-width									~ ...
-x										~ ...
-y										~ ...
+amount									~ comma_separated_integers
+
+amplitude								~ real_number
+
+angle									~ real_number
+
+azimuth									~ real_number
+
+black_color								~ color
+
+black_point								~ string
+
+brightness								~ real_number
+
+brightness_optional_saturation_hue		~ real_number
+
+cluster_threshold						~ integer
+
+color									~ color
+
+colorspace								~ color_space_list
+
+comma									~ ','
+
+command									~ string
+
+components								~ color_prefix_list
+
+connectivity							~ integer
+
+contrast								~ integer
+
+count									~ integer
+
+degrees									~ real_number
+
+distance								~ string
+
+elevation								~ real_number
+
+epsilon									~ real_number
+
+events									~ comma_separated_events
+
+expression								~ string
+
+factor									~ real_number
+
+filename								~ string
+
+fontFamily								~ string
+
+fontStretch								~ string
+
+fontStyle								~ string
+
+fontWeight								~ string
+
+frames									~ integer
+
+function								~ string
+
+gamma									~ real_number
+
+geometry								~ geometry_string
+
+greater_than							~ '>'
+
+height									~ real_number
+
+high									~ real_number
+
+horizontal								~ integer
+
+horizontal_factor						~ integer
+
+horizontal_scale						~ integer
+
+host_display_optional_dot_screen		~ string
+
+id										~ string
+
+image									~ string
+
+index									~ image_list
+
+indexes									~ image_list
+
+iterations								~ integer
+
+kernel									~ comma_separated_real_numbers
+
+key										~ string
+
+less_than								~ '<'
+
+levels									~ comma_separated_integers
+
+low										~ real_number
+
+matrix									~ string
+
+media									~ string
+
+method									~ string
+
+mid_point								~ integer
+
+name									~ string
+
+offset									~ offset_list
+
+operator								~ string
+
+optional_at_sign						~ string
+
+optional_exclamation_point				~ string
+
+optional_gain							~ string
+
+optional_geometry_suffix				~ string
+
+optional_greater_than					~ string
+
+optional_less_than						~ string
+
+optional_lower_percent					~ string
+
+optional_offset							~ string
+
+optional_percent						~ string
+
+optional_plus_distance_optional_percent	~ string
+
+optional_plus_offset					~ string
+
+optional_threshold						~ string
+
+optional_upper_percent					~ string
+
+optional_x_contrast						~ string
+
+optional_x_height						~ string
+
+optional_x_height_optional_plus_angle	~ string
+
+optional_x_sigma						~ string
+
+optional_x_white_point					~ string
+
+orientation								~ string
+
+parameters								~ string
+
+password								~ string
+
+path									~ string
+
+percent_opacity							~ real_number
+
+plus									~ '+'
+
+plus_or_minus							~ [+-]
+
+port									~ integer
+
+profile_name							~ string
+
+radius									~ real_number
+
+radius_optional_x_sigma					~ real_number
+
+saturation								~ real_number
+
+seconds									~ integer
+
+sigma									~ real_number
+
+smoothing_threshold						~ real_number
+
+src_percent_optional_x_dst_percent		~ real_number
+
+string									~ [a-zA-Z]+
+
+sx_rx_ry_sy_optional_tx_ty				~ comma_separated_real_numbers
+
+text									~ string
+
+thickness								~ integer
+
+threshold								~ real_number
+
+ticks									~ integer
+
+ticks_per_second						~ integer
+
+tx										~ real_number
+
+ty										~ real_number
+
+type									~ string
+
+value									~ string
+
+vertical								~ integer
+
+vertical_factor							~ real_number
+
+vertical_scale							~ integer
+
+wavelength								~ real_number
+
+white_color								~ color
+
+white_point								~ string
+
+width									~ real_number
+
+x										~ integer
+
+Xdegrees								~ real_number
+
+Xdegrees_optional_x_Ydegrees			~ real_number
+
+y										~ integer
+
+Ydegrees								~ real_number
+

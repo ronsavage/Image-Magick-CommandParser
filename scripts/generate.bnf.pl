@@ -80,37 +80,7 @@ sub build_bnf
 		}
 	}
 
-	$max_length = 0;
-
-	my(%seen);
-
-	for my $value (values %lexemes)
-	{
-		for my $lexeme (@$value)
-		{
-			for my $token (split(/\s/, $lexeme) )
-			{
-				if (! $seen{$lexeme})
-				{
-					$seen{$token}	= 1;
-					$max_length		= length($token) if (length($token) > $max_length);
-				}
-			}
-		}
-	}
-
-	$total_tabs = ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
-
-	for my $lexeme (sort keys %seen)
-	{
-		$token_length	= length($lexeme);
-		$tab_count		= ($token_length / 4) + 1;
-		$spacer			= "\t" x ($total_tabs - $tab_count - 1);
-
-		push @bnf, "$lexeme$spacer\t~ ...";
-	}
-
-	return [@bnf];
+	return (\@bnf, \%lexemes);
 
 } # End of build_bnf.
 
@@ -132,8 +102,6 @@ sub build_parameters
 	my($prefix);
 	my($suffix);
 
-	say "Parsing $parameters";
-
 	for my $token (split(/\s+/, $parameters) )
 	{
 		if ($token =~ /^([_a-zA-Z]+)$/)
@@ -147,7 +115,7 @@ sub build_parameters
 				# Expect, for 'annotate':
 				# o XdegreesxYdegrees.
 
-				push @lexeme, $1, 'x', $2;
+				push @lexeme, $1, 'string', $2;
 			}
 			else
 			{
@@ -161,21 +129,28 @@ sub build_parameters
 
 			push @lexeme, $1 eq '<' ? 'optional_less_than' : 'optional_greater_than';
 		}
-		elsif ($token =~ /^([_,a-zA-Z]+)\{<}\{>}$/)
+		elsif ($token =~ /^([a-zA-Z]+)\(s\)$/)
+		{
+			# Expect:
+			# o index(s), for 'clone'.
+
+			push @lexeme, "$1es";
+		}
+		elsif ($token =~ /^([a-zA-Z]+)\{<}\{>}$/)
 		{
 			# Expect:
 			# o degrees{<}{>}, for 'rotate'.
 
 			push @lexeme, "$1 less_than greater_than";
 		}
-		elsif ($token =~ /^([_,a-zA-Z]+),([_,a-zA-Z]+)$/)
+		elsif ($token =~ /^([_a-zA-Z]+),([_a-zA-Z]+)$/)
 		{
 			# Expect:
 			# o x,y, for 'blue_primary'.
 
 			push @lexeme, "$1 comma $2";
 		}
-		elsif ($token =~ /^\+([_,a-zA-Z]+)\{\+([_,a-zA-Z]+)}$/)
+		elsif ($token =~ /^\+([_a-zA-Z]+)\{\+([_a-zA-Z]+)}$/)
 		{
 			# Expect:
 			# o +x{+y}, for 'stereo'.
@@ -341,6 +316,167 @@ sub build_parameters
 
 # ----------------------------------------------
 
+sub format_bnf
+{
+	my($bnf, $lexemes) = @_;
+	my($max_length)		= 0;
+
+	my(%seen);
+
+	for my $value (values %$lexemes)
+	{
+		for my $lexeme (@$value)
+		{
+			for my $token (split(/\s/, $lexeme) )
+			{
+				if (! $seen{$lexeme})
+				{
+					$seen{$token}	= 1;
+					$max_length		= length($token) if (length($token) > $max_length);
+				}
+			}
+		}
+	}
+
+	my($total_tabs) 	= ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
+	my(%lexeme_value)	=
+	(
+		amount									=> 'comma_separated_integers',
+		amplitude								=> 'real_number',
+		angle									=> 'real_number',
+		azimuth									=> 'real_number',
+		black_color								=> 'color',
+		black_point								=> 'string',
+		brightness								=> 'real_number',
+		brightness_optional_saturation_hue		=> 'real_number',
+		cluster_threshold						=> 'integer',
+		color									=> 'color',
+		colorspace								=> 'color_space_list',
+		comma									=> "','",
+		command									=> 'string',
+		components								=> 'color_prefix_list',
+		connectivity							=> 'integer',
+		contrast								=> 'integer',
+		count									=> 'integer',
+		degrees									=> 'real_number',
+		distance								=> 'string',
+		elevation								=> 'real_number',
+		epsilon									=> 'real_number',
+		events									=> 'comma_separated_events',
+		expression								=> 'string',
+		factor									=> 'real_number',
+		filename								=> 'string',
+		fontFamily								=> 'string',
+		fontStretch								=> 'string',
+		fontStyle								=> 'string',
+		fontWeight								=> 'string',
+		frames									=> 'integer',
+		function								=> 'string',
+		gamma									=> 'real_number',
+		geometry								=> 'geometry_string',
+		greater_than							=> "'>'",
+		height									=> 'real_number',
+		high									=> 'real_number',
+		horizontal								=> 'integer',
+		horizontal_factor						=> 'integer',
+		horizontal_scale						=> 'integer',
+		host_display_optional_dot_screen		=> 'string',
+		id										=> 'string',
+		image									=> 'string',
+		index									=> 'image_list',
+		indexes									=> 'image_list',
+		iterations								=> 'integer',
+		kernel									=> 'comma_separated_real_numbers',
+		key										=> 'string',
+		less_than								=> "'<'",
+		levels									=> 'comma_separated_integers',
+		low										=> 'real_number',
+		matrix									=> 'string',
+		media									=> 'string',
+		method									=> 'string',
+		mid_point								=> 'integer',
+		name									=> 'string',
+		offset									=> 'offset_list',
+		operator								=> 'string',
+		optional_at_sign						=> 'string',
+		optional_exclamation_point				=> 'string',
+		optional_gain							=> 'string',
+		optional_geometry_suffix				=> 'string',
+		optional_greater_than					=> 'string',
+		optional_less_than						=> 'string',
+		optional_lower_percent					=> 'string',
+		optional_offset							=> 'string',
+		optional_percent						=> 'string',
+		optional_plus_distance_optional_percent	=> 'string',
+		optional_plus_offset					=> 'string',
+		optional_threshold						=> 'string',
+		optional_upper_percent					=> 'string',
+		optional_x_contrast						=> 'string',
+		optional_x_height						=> 'string',
+		optional_x_height_optional_plus_angle	=> 'string',
+		optional_x_sigma						=> 'string',
+		optional_x_white_point					=> 'string',
+		orientation								=> 'string',
+		parameters								=> 'string',
+		password								=> 'string',
+		path									=> 'string',
+		percent_opacity							=> 'real_number',
+		plus									=> "'+'",
+		plus_or_minus							=> '[+-]',
+		port									=> 'integer',
+		profile_name							=> 'string',
+		radius									=> 'real_number',
+		radius_optional_x_sigma					=> 'real_number',
+		saturation								=> 'real_number',
+		seconds									=> 'integer',
+		sigma									=> 'real_number',
+		smoothing_threshold						=> 'real_number',
+		src_percent_optional_x_dst_percent		=> 'real_number',
+		string									=> '[a-zA-Z]+',
+		sx_rx_ry_sy_optional_tx_ty				=> 'comma_separated_real_numbers',
+		text									=> 'string',
+		thickness								=> 'integer',
+		threshold								=> 'real_number',
+		ticks									=> 'integer',
+		ticks_per_second						=> 'integer',
+		tx										=> 'real_number',
+		ty										=> 'real_number',
+		type									=> 'string',
+		value									=> 'string',
+		vertical								=> 'integer',
+		vertical_factor							=> 'real_number',
+		vertical_scale							=> 'integer',
+		wavelength								=> 'real_number',
+		white_color								=> 'color',
+		white_point								=> 'string',
+		width									=> 'real_number',
+		x										=> 'integer',
+		Xdegrees								=> 'real_number',
+		Xdegrees_optional_x_Ydegrees			=> 'real_number',
+		y										=> 'integer',
+		Ydegrees								=> 'real_number',
+	);
+
+	my($spacer);
+	my($token_length, $tab_count);
+
+	for my $lexeme (sort{lc $a cmp lc $b} keys %seen)
+	{
+		$token_length	= length($lexeme);
+		$tab_count		= ($token_length / 4) + 1;
+		$spacer			= "\t" x ($total_tabs - $tab_count - 1);
+
+		die "Unknown lexeme '$lexeme'\n" if (! $lexeme_value{$lexeme});
+
+		push @$bnf, "$lexeme$spacer\t~ $lexeme_value{$lexeme}\n";
+	}
+
+	return $bnf;
+
+} # End of format_bnf.
+
+# ----------------------------------------------
+
 sub process_html
 {
 	my($input_file)	= 'data/command.line.options.html';
@@ -376,7 +512,7 @@ sub process_html
 
 			# Abandon some cases.
 
-			next if ($name =~ /define|ordered-dither|poly|sparse-color/);
+			next if ($name =~ /define|distort|morphology|ordered-dither|poly|sparse-color/);
 
 			$parameters	= $3;
 			$parameters	=~ s/^\s+//;
@@ -422,7 +558,8 @@ sub process_html
 # ----------------------------------------------
 
 my($command)		= process_html;
-my($bnf)			= build_bnf($command);
+my($bnf, $lexemes)	= build_bnf($command);
+$bnf				= format_bnf($bnf, $lexemes);
 my($output_file)	= 'data/command.line.options.bnf';
 
 open(my $fh, '>', $output_file) || die "Can't open(> $output_file): $!";
