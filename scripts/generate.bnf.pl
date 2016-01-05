@@ -338,8 +338,7 @@ sub format_bnf
 		}
 	}
 
-	my($total_tabs) 	= ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
-	my(%lexeme_value)	=
+	my(%lexeme_value) =
 	(
 		amount									=> 'comma_separated_integers',
 		amplitude								=> 'real_number',
@@ -456,6 +455,7 @@ sub format_bnf
 		y										=> 'integer',
 		Ydegrees								=> 'real_number',
 	);
+	my($total_tabs) = ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
 
 	my($spacer);
 	my($token_length, $tab_count);
@@ -471,7 +471,7 @@ sub format_bnf
 		push @$bnf, "$lexeme$spacer\t~ $lexeme_value{$lexeme}\n";
 	}
 
-	return $bnf;
+	save_bnf($bnf);
 
 } # End of format_bnf.
 
@@ -489,7 +489,7 @@ sub process_html
 	my(@h3)			= $root -> look_down(_tag => 'h3');
 	my($count)		= 0;
 
-	my(@command);
+	my($command);
 	my(@field);
 	my($line);
 	my($name);
@@ -520,7 +520,7 @@ sub process_html
 
 			if ($#field == 0)
 			{
-				push @command, [$name, $prefix, $parameters];
+				push @$command, [$name, $prefix, $parameters];
 			}
 			else
 			{
@@ -529,7 +529,7 @@ sub process_html
 					$parameters =~ s/^\s+//;
 					$parameters =~ s/\s+$//;
 
-					push @command, [$name, $prefix, $parameters];
+					push @$command, [$name, $prefix, $parameters];
 
 					$name = shift @field;
 
@@ -540,7 +540,7 @@ sub process_html
 					}
 				}
 
-				push @command, [$name, $prefix, ''] if ($name);
+				push @$command, [$name, $prefix, ''] if ($name);
 			}
 		}
 		else
@@ -551,22 +551,71 @@ sub process_html
 
 	$root -> delete();
 
-	return [@command];
+	save_raw_commands($command);
+
+	return $command;
 
 } # End of process_html.
 
 # ----------------------------------------------
 
+sub save_bnf
+{
+	my($bnf)			= @_;
+	my($output_file)	= 'data/command.line.options.bnf';
+
+	open(my $fh, '>', $output_file) || die "Can't open(> $output_file): $!";
+
+	for (@$bnf)
+	{
+		say $fh $_;
+	}
+
+	close $fh;
+
+} # End of save_bnf.
+
+# ----------------------------------------------
+
+sub save_raw_commands
+{
+	my($command)		= @_;
+	my($output_file)	= 'data/command.line.options.raw';
+	my($max_length)		= 0;
+
+	my($lexeme);
+
+	for my $item (@$command)
+	{
+		$lexeme		= $$item[0];
+		$max_length = length($lexeme) if (length($lexeme) > $max_length);
+
+	}
+
+	my($total_tabs) = ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
+
+	my($spacer);
+	my($token_length, $tab_count);
+
+	open(my $fh, '>', $output_file) || die "Can't open(> $output_file): $!";
+
+	for my $item (@$command)
+	{
+		$lexeme			= $$item[0];
+		$token_length	= length($lexeme);
+		$tab_count		= ($token_length / 4);
+		$spacer			= "\t" x ($total_tabs - $tab_count - 1);
+
+		say $fh "$lexeme$spacer\t$$item[1]\t$$item[2]";
+	}
+
+	close $fh;
+
+} # End of save_raw_commands.
+
+# ----------------------------------------------
+
 my($command)		= process_html;
 my($bnf, $lexemes)	= build_bnf($command);
-$bnf				= format_bnf($bnf, $lexemes);
-my($output_file)	= 'data/command.line.options.bnf';
 
-open(my $fh, '>', $output_file) || die "Can't open(> $output_file): $!";
-
-for (@$bnf)
-{
-	say $fh $_;
-}
-
-close $fh;
+format_bnf($bnf, $lexemes);
