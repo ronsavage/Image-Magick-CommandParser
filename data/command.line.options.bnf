@@ -60,7 +60,7 @@ bordercolor_rule				::= minus_sign bordercolor_word color	 action => bordercolor
 borderwidth_rule				::= minus_sign borderwidth_word geometry	 action => borderwidth_action_1
 
 brightness_contrast_rule		::= minus_sign brightness_contrast_word brightness	 action => brightness_contrast_action_1
-									| minus_sign brightness_contrast_word brightness optional_x_contrast optional_percent	 action => brightness_contrast_action_2
+									| minus_sign brightness_contrast_word brightness optional_percent optional_x_contrast optional_percent	 action => brightness_contrast_action_2
 
 cache_rule						::= minus_sign cache_word threshold	 action => cache_action_1
 
@@ -120,7 +120,7 @@ connected_components_rule		::= minus_sign connected_components_word connectivity
 contrast_rule					::= minus_sign contrast_word 	 action => contrast_action_1
 
 contrast_stretch_rule			::= minus_sign contrast_stretch_word black_point	 action => contrast_stretch_action_1
-									| minus_sign contrast_stretch_word black_point optional_x_white_point optional_percent	 action => contrast_stretch_action_2
+									| minus_sign contrast_stretch_word black_point optional_percent optional_x_white_point optional_percent	 action => contrast_stretch_action_2
 
 convolve_rule					::= minus_sign convolve_word kernel	 action => convolve_action_1
 
@@ -137,7 +137,7 @@ decipher_rule					::= minus_sign decipher_word filename	 action => decipher_acti
 deconstruct_rule				::= minus_sign deconstruct_word 	 action => deconstruct_action_1
 
 delay_rule						::= minus_sign delay_word ticks	 action => delay_action_1
-									| minus_sign delay_word ticks string ticks_per_second optional_less_than optional_greater_than	 action => delay_action_2
+									| minus_sign delay_word ticks string ticks_per_second optional_greater_than optional_greater_than	 action => delay_action_2
 
 delete_rule						::= minus_sign delete_word indexes	 action => delete_action_1
 
@@ -288,14 +288,14 @@ lat_rule						::= minus_sign lat_word width	 action => lat_action_1
 
 layers_rule						::= minus_sign layers_word method	 action => layers_action_1
 
-level_rule						::= minus_sign level_word black_point comma white_point optional_percent comma gamma	 action => level_action_1
+level_rule						::= minus_sign level_word black_point optional_percent optional_comma_white_point optional_percent optional_comma_gamma	 action => level_action_1
 
 level_colors_rule				::= minus_sign level_colors_word black_color comma white_color	 action => level_colors_action_1
 
 limit_rule						::= minus_sign limit_word type value	 action => limit_action_1
 
 linear_stretch_rule				::= minus_sign linear_stretch_word black_point	 action => linear_stretch_action_1
-									| minus_sign linear_stretch_word black_point optional_x_white_point optional_percent	 action => linear_stretch_action_2
+									| minus_sign linear_stretch_word black_point optional_percent optional_x_white_point optional_percent	 action => linear_stretch_action_2
 
 linewidth_rule					::= minus_sign linewidth_word 	 action => linewidth_action_1
 
@@ -320,7 +320,7 @@ mattecolor_rule					::= minus_sign mattecolor_word color	 action => mattecolor_a
 
 maximum_rule					::= minus_sign maximum_word 	 action => maximum_action_1
 
-mean_shift_rule					::= minus_sign mean_shift_word width x height optional_plus_distance_optional_percent	 action => mean_shift_action_1
+mean_shift_rule					::= minus_sign mean_shift_word width x height optional_plus_distance optional_percent	 action => mean_shift_action_1
 
 median_rule						::= minus_sign median_word geometry	 action => median_action_1
 
@@ -427,7 +427,7 @@ reverse_rule					::= minus_sign reverse_word 	 action => reverse_action_1
 
 roll_rule						::= minus_sign roll_word plus_or_minus x plus_or_minus y	 action => roll_action_1
 
-rotate_rule						::= minus_sign rotate_word degrees less_than greater_than	 action => rotate_action_1
+rotate_rule						::= minus_sign rotate_word degrees optional_less_or_greater_than	 action => rotate_action_1
 
 sample_rule						::= minus_sign sample_word geometry	 action => sample_action_1
 
@@ -491,7 +491,7 @@ statistic_rule					::= minus_sign statistic_word type geometry	 action => statis
 
 stegano_rule					::= minus_sign stegano_word offset	 action => stegano_action_1
 
-stereo_rule						::= minus_sign stereo_word plus x plus y	 action => stereo_action_1
+stereo_rule						::= minus_sign stereo_word plus x optional_plus_y	 action => stereo_action_1
 
 storage_type_rule				::= minus_sign storage_type_word type	 action => storage_type_action_1
 
@@ -651,11 +651,7 @@ frames									~ integer
 
 function								~ string
 
-gamma									~ real_number
-
 geometry								~ geometry_string
-
-greater_than							~ '>'
 
 height									~ real_number
 
@@ -683,8 +679,6 @@ kernel									~ comma_separated_real_numbers
 
 key										~ string
 
-less_than								~ '<'
-
 levels									~ comma_separated_integers
 
 low										~ real_number
@@ -703,27 +697,33 @@ offset									~ offset_list
 
 operator								~ string
 
-optional_at_sign						~ string
+optional_at_sign						~ '@'
 
-optional_exclamation_point				~ string
+optional_comma_gamma					~ string
+
+optional_comma_white_point				~ string
+
+optional_exclamation_point				~ '!'
 
 optional_gain							~ string
 
 optional_geometry_suffix				~ string
 
-optional_greater_than					~ string
+optional_greater_than					~ '>'
 
-optional_less_than						~ string
+optional_less_or_greater_than			~ '<'
 
 optional_lower_percent					~ string
 
 optional_offset							~ string
 
-optional_percent						~ string
+optional_percent						~ '%'
 
-optional_plus_distance_optional_percent	~ string
+optional_plus_distance					~ string
 
 optional_plus_offset					~ string
+
+optional_plus_y							~ '+'
 
 optional_threshold						~ string
 
@@ -802,8 +802,6 @@ vertical_scale							~ integer
 wavelength								~ real_number
 
 white_color								~ color
-
-white_point								~ string
 
 width									~ real_number
 

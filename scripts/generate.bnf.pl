@@ -27,7 +27,7 @@ sub build_bnf
 		$bnf{$option}	= [] if (! $bnf{$option});
 		$max_length		= length($option) if (length($option) > $max_length);
 
-		push @{$bnf{$option}}, [$$line[1], $$line[2] ];
+		push @{$bnf{$option} }, [$$line[1], $$line[2] ];
 	}
 
 	$max_length		+= 5; # 5 = length('_rule').
@@ -57,7 +57,7 @@ sub build_bnf
 
 			if (! $lexemes{$parameters})
 			{
-				$lexemes{$parameters} = build_parameters($parameters);
+				$lexemes{$parameters} = build_parameters($token, $parameters);
 			}
 
 			$parameters = join(' ', @{$lexemes{$parameters} });
@@ -88,8 +88,8 @@ sub build_bnf
 
 sub build_parameters
 {
-	my($parameters)		= @_;
-	my(%special_words)	=
+	my($option, $parameters)	= @_;
+	my(%special_words)			=
 	(	# These contain 'x'.
 		expression	=> 1,
 		indexes		=> 1,
@@ -100,6 +100,7 @@ sub build_parameters
 	my($infix);
 	my(@lexeme);
 	my($prefix);
+	my($result);
 	my($suffix);
 
 	for my $token (split(/\s+/, $parameters) )
@@ -108,71 +109,75 @@ sub build_parameters
 		{
 			if ($special_words{$token})
 			{
-				push @lexeme, $token;
+				$result = $token;
 			}
 			elsif ($token =~ /(.+)x(.+)/)
 			{
-				# Expect, for 'annotate':
-				# o XdegreesxYdegrees.
+				# Expect:
+				# o 'XdegreesxYdegrees', for 'annotate'.
 
-				push @lexeme, $1, 'string', $2;
+				$field[0]	= $1;
+				$field[1]	= $2;
+				$result		= "$field[0] x $field[1]";
 			}
 			else
 			{
-				push @lexeme, $token;
+				$result = $token;
 			}
 		}
-		elsif ($token =~ /^\{([<>])}$/)
+		elsif ($token =~ /^(\{[<>]})$/)
 		{
 			# Expect:
-			# o ticks x ticks_per_second {<} {>}, for 'delay'.
+			# o 'ticksxticks_per_second {<} {>}', for 'delay'.
 
-			push @lexeme, $1 eq '<' ? 'optional_less_than' : 'optional_greater_than';
+			$result = $1 eq '<' ? 'optional_less_than' : 'optional_greater_than';
 		}
 		elsif ($token =~ /^([a-zA-Z]+)\(s\)$/)
 		{
 			# Expect:
-			# o index(s), for 'clone'.
+			# o 'index(s)', for 'clone'.
 
-			push @lexeme, "$1es";
+			$result = "$1es";
 		}
 		elsif ($token =~ /^([a-zA-Z]+)\{<}\{>}$/)
 		{
 			# Expect:
-			# o degrees{<}{>}, for 'rotate'.
+			# o 'degrees{<}{>}', for 'rotate'.
 
-			push @lexeme, "$1 less_than greater_than";
+			$result = "$1 optional_less_or_greater_than";
 		}
 		elsif ($token =~ /^([_a-zA-Z]+),([_a-zA-Z]+)$/)
 		{
 			# Expect:
-			# o x,y, for 'blue_primary'.
+			# o 'x,y', for 'blue_primary'.
 
-			push @lexeme, "$1 comma $2";
+			$result = "$1 comma $2";
 		}
 		elsif ($token =~ /^\+([_a-zA-Z]+)\{\+([_a-zA-Z]+)}$/)
 		{
 			# Expect:
-			# o +x{+y}, for 'stereo'.
+			# o '+x{+y}', for 'stereo'.
 
-			push @lexeme, "plus $1 plus $2";
+			$result = "plus $1 optional_plus_$2";
 		}
 		elsif ($token eq 'host:display[.screen]')
 		{
-			push @lexeme, 'host_display_optional_dot_screen';
+			$result = 'host_display_optional_dot_screen';
 		}
 		elsif ($token =~ /^([_,a-zA-Z]+)\[([_,a-zA-Z]+)\]$/)
 		{
 			# Expect:
-			# o radius[xsigma], for 'adaptive_blur'.
-			# o sx,rx,ry,sy[,tx,ty], for 'affine'.
+			# o 'radius[xsigma]', for 'adaptive_blur'.
+			# o 'sx,rx,ry,sy[,tx,ty]', for 'affine'.
+			# o 'Xdegrees[xYdegrees]' for 'shear'.
 
 			$field[0]	= $1;
 			$field[1]	= $2;
 
 			if ($field[1] =~ /^x(.+)/)
 			{
-				push @lexeme, "$field[0]_optional_x_$1";
+				$field[1]	= $1;
+				$result		= "$field[0] optional_x_$field[1]";
 			}
 			else
 			{
@@ -182,132 +187,136 @@ sub build_parameters
 				$prefix	= join('_', split(/,/, $field[0]) );
 				$suffix	= join('_', split(/,/, $field[1]) );
 
-				push @lexeme, "${prefix}_optional$suffix";
+				$result = "${prefix}_optional$suffix";
 			 }
 		}
 		elsif ($token =~ /^([a-zA-Z]+)\[x([a-zA-Z]+)\]\[\+([a-zA-Z]+)\]$/)
 		{
 			# Expect:
-			# o width[xheight][+offset], for 'size'.
+			# o 'width[xheight][+offset]' for 'size'.
 
-			push @lexeme, "$1 optional_x_$2 optional_plus_$3";
+			$result = "$1 optional_x_$2 optional_plus_$3";
 		}
 		elsif ($token =~ /^([a-zA-Z]+)\[([a-zA-Z]+)\]\[(.+)\]$/)
 		{
 			# Expect:
-			# o media[offset][{^!<>}], for 'page'.
+			# o 'media[offset][{^!<>}]' for 'page'.
 
-			push @lexeme, "$1 optional_$2 optional_geometry_suffix";
+			$result = "$1 optional_$2 optional_geometry_suffix";
 		}
 		elsif ($token =~ /^([a-zA-Z]+)\[x([a-zA-Z]+)\[\+([a-zA-Z]+)\]\]$/)
 		{
 			# Expect:
-			# o Width[xHeight[+Angle]], for 'blur'.
+			# o 'Width[xHeight[+Angle]]' for 'blur'.
 
 			$field[0]	= lc $1;
 			$field[1]	= lc $2;
 			$field[2]	= lc $3;
 
-			push @lexeme, "$field[0] optional_x_$field[1]_optional_plus_$field[2]";
+			$result = "$field[0] optional_x_$field[1]_optional_plus_$field[2]";
 		}
 		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)\+([a-zA-Z]+)$/)
 		{
 			# Expect:
-			# o radiusxsigma+angle, for 'motion-blur'.
+			# o 'radiusxsigma+angle' for 'motion-blur'.
 
-			push @lexeme, "$1 x $2 plus $3";
+			$result = "$1 x $2 plus $3";
 		}
 		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)\{\+([a-zA-Z]+)\{%}}$/)
 		{
 			# Expect:
-			# o widthxheight{+distance{%}}, for 'mean_shift'.
+			# o 'widthxheight{+distance{%}}' for 'mean_shift'.
 
-			push @lexeme, "$1 x $2 optional_plus_$3_optional_percent";
+			$result = "$1 x $2 optional_plus_$3 optional_percent";
 		}
-		elsif ($token =~ /^(?:\{\+_})([a-zA-Z]+)(?:\{\+_})([a-zA-Z]+)$/)
+		elsif ($token =~ /^\{\+_}([a-zA-Z]+)\{\+_}([a-zA-Z]+)$/)
 		{
 			# Note: Code above converted '-' into '_'.
 			# Expect:
-			# o {+_}tx{+_}ty, for 'annotate'.
-			# o {+_}x{+_}y, for 'floodfill'.
+			# o '{+_}tx{+_}ty' for 'annotate'.
+			# o '{+_}x{+_}y' for 'floodfill' and 'roll'.
 
-			push @lexeme, "plus_or_minus $1 plus_or_minus $2";
+			$result = "plus_or_minus $1 plus_or_minus $2";
 		}
 		elsif ($token =~ /^([a-zA-Z]+)\{%}$/)
 		{
 			# Expect:
-			# o value{%}, for 'bias'.
+			# o 'value{%}' for 'bias'.
 
-			push @lexeme, "$1 optional_percent";
+			$result = "$1 optional_percent";
 		}
 		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)\{\+([_a-zA-Z]+)}\{\+([_a-zA-Z]+)}$/)
 		{
 			# Expect:
-			# o radiusxsigma{+lower_percent}{+upper_percent}, for 'canny'.
+			# o 'radiusxsigma{+lower_percent}{+upper_percent}' for 'canny'.
 
-			push @lexeme, "$1 x $2 optional_$3 optional_$4";
+			$result = "$1 x $2 optional_$3 optional_$4";
 		}
 		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)\{\+([_a-zA-Z]+)}$/)
 		{
 			# Expect:
-			# o widthxheight{+threshold}, for 'hough_lines'.
+			# o 'widthxheight{+threshold}' for 'hough_lines'.
 
-			push @lexeme, "$1 x $2 optional_$3";
+			$result = "$1 x $2 optional_$3";
 		}
-		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)(?:\{\+_})([_a-zA-Z]+)\{%}$/)
+		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)\{\+_}([_a-zA-Z]+)\{%}$/)
 		{
 			# Note: Code above converted '-' into '_'.
 			# Expect:
-			# o widthxheight{+_}offset{%}, for 'lat'.
+			# o 'widthxheight{+_}offset{%}' for 'lat'.
 
-			push @lexeme, "$1 x $2 plus_or_minus $3 optional_percent";
+			$result = "$1 x $2 plus_or_minus $3 optional_percent";
 		}
 		elsif ($token =~ /^([_a-zA-Z]+)\{,([_a-zA-Z]+)}\{%}\{,([_a-zA-Z]+)}$/)
 		{
 			# Note: Code above converted '-' into '_'.
 			# Expect:
-			# o black_point{,white_point}{%}{,gamma}, for 'level'.
+			# o 'black_point{,white_point}{%}{,gamma}' for 'level'.
 
-			push @lexeme, "$1 comma $2 optional_percent comma $3";
+			$result = "$1 optional_percent optional_comma_$2 optional_percent optional_comma_$3";
 		}
 		elsif ($token =~ /^\{([_a-zA-Z]+)}\{,}\{([_a-zA-Z]+)}$/)
 		{
 			# Note: Code above converted '-' into '_'.
 			# Expect:
-			# o {black_color}{,}{white_color}, for 'level_colors'.
+			# o '{black_color}{,}{white_color}' for 'level_colors'.
 
-			push @lexeme, "$1 comma $2";
+			$result = "$1 comma $2";
 		}
 		elsif ($token =~ /^([_a-zA-Z]+)\{x([_a-zA-Z]+)}\{%}}$/)
 		{
 			# Warning: Fake '}}' instead of '}' at end of regexp.
 			# Note: Code above converted '-' into '_'.
 			# Expect:
-			# o brightness{xcontrast}{%}, for 'brightness_contrast'.
-			# o black_point{xwhite_point}{%}, for 'contrast_stretch'.
+			# o 'brightness{xcontrast}{%}' for 'brightness_contrast'.
+			# o 'black_point{xwhite_point}{%}' for 'contrast_stretch'.
 
-			push @lexeme, "$1 optional_x_$2 optional_percent";
+			$result = "$1 optional_percent optional_x_$2 optional_percent";
 		}
 		elsif ($token =~ /^([_a-zA-Z]+)\{x([a-zA-Z]+)}(?:\{\+_})([a-zA-Z]+)(?:\{\+_})([a-zA-Z]+)\{%}$/)
 		{
 			# Note: Code above converted '-' into '_'.
 			# Expect:
-			# o percent_opacity{xsigma}{+_}x{+_}y{%}, for 'shadow'.
-			# o radius{xsigma}{+_}x{+_}y{%}, for 'vignette'.
+			# o 'percent_opacity{xsigma}{+_}x{+_}y{%}' for 'shadow'.
+			# o 'radius{xsigma}{+_}x{+_}y{%}' for 'vignette'.
 
-			push @lexeme, "$1 optional_x_$2 plus_or_minus $3 plus_or_minus $4 optional_percent";
+			$result = "$1 optional_x_$2 plus_or_minus $3 plus_or_minus $4 optional_percent";
 		}
 		elsif ($token =~ /^([a-zA-Z]+)\{@}\{!}$/)
 		{
 			# Expect:
-			# o geometry{@}{!}, for 'crop'.
+			# o 'geometry{@}{!}' for 'crop'.
 
-			push @lexeme, "$1 optional_at_sign optional_exclamation_point";
+			$result = "$1 optional_at_sign optional_exclamation_point";
 		}
 		else
 		{
-			push @lexeme, $token;
+			$result = $token;
 		}
+
+		say "1 !$option! !$token! !$result!" if ($token =~ /X/);
+
+		push @lexeme, $result;
 	}
 
 	return [@lexeme];
@@ -331,6 +340,8 @@ sub format_bnf
 			{
 				if (! $seen{$lexeme})
 				{
+					say "2 !$lexeme! !$token!" if ($token =~ /X/);
+
 					$seen{$token}	= 1;
 					$max_length		= length($token) if (length($token) > $max_length);
 				}
@@ -397,17 +408,21 @@ sub format_bnf
 		name									=> 'string',
 		offset									=> 'offset_list',
 		operator								=> 'string',
-		optional_at_sign						=> 'string',
-		optional_exclamation_point				=> 'string',
+		optional_at_sign						=> "'\@'",
+		optional_comma_gamma					=> 'string',
+		optional_comma_white_point				=> 'string',
+		optional_exclamation_point				=> "'!'",
 		optional_gain							=> 'string',
 		optional_geometry_suffix				=> 'string',
-		optional_greater_than					=> 'string',
-		optional_less_than						=> 'string',
+		optional_greater_than					=> "'>'",
+		optional_less_or_greater_than			=> "'<'",
+		optional_less_than						=> "'<'",
 		optional_lower_percent					=> 'string',
 		optional_offset							=> 'string',
-		optional_percent						=> 'string',
-		optional_plus_distance_optional_percent	=> 'string',
+		optional_percent						=> "'%'",
+		optional_plus_distance					=> 'string',
 		optional_plus_offset					=> 'string',
+		optional_plus_y							=> "'+'",
 		optional_threshold						=> 'string',
 		optional_upper_percent					=> 'string',
 		optional_x_contrast						=> 'string',
@@ -415,6 +430,7 @@ sub format_bnf
 		optional_x_height_optional_plus_angle	=> 'string',
 		optional_x_sigma						=> 'string',
 		optional_x_white_point					=> 'string',
+		optional_x_Ydegrees						=> 'real_number',
 		orientation								=> 'string',
 		parameters								=> 'string',
 		password								=> 'string',
@@ -451,10 +467,10 @@ sub format_bnf
 		width									=> 'real_number',
 		x										=> 'integer',
 		Xdegrees								=> 'real_number',
-		Xdegrees_optional_x_Ydegrees			=> 'real_number',
 		y										=> 'integer',
 		Ydegrees								=> 'real_number',
 	);
+	%seen			= ();
 	my($total_tabs) = ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
 
 	my($spacer);
@@ -462,13 +478,23 @@ sub format_bnf
 
 	for my $lexeme (sort{lc $a cmp lc $b} keys %seen)
 	{
+		$seen{$lexeme}	= 1;
 		$token_length	= length($lexeme);
 		$tab_count		= ($token_length / 4) + 1;
 		$spacer			= "\t" x ($total_tabs - $tab_count - 1);
 
 		die "Unknown lexeme '$lexeme'\n" if (! $lexeme_value{$lexeme});
 
+		say "3 !$lexeme! !$lexeme_value{$lexeme}!" if ($lexeme_value{$lexeme} =~ /X/);
+
 		push @$bnf, "$lexeme$spacer\t~ $lexeme_value{$lexeme}\n";
+	}
+
+	# Cross-check, looking for junk left over in %lexeme_value;
+
+	for my $lexeme (sort keys %lexeme_value)
+	{
+		die "Delete $lexeme from %lexeme_value in format_bnf()\n" if (! $seen{$lexeme});
 	}
 
 	save_bnf($bnf);
