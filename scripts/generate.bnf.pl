@@ -177,6 +177,43 @@ sub build_parameters
 
 			push @lexeme, "$field[0] optional_x_$field[1]_optional_plus_$field[2]";
 		}
+		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)\+([a-zA-Z]+)$/)
+		{
+			# Expect:
+			# o radiusxsigma+angle, for 'motion-blur'.
+
+			push @lexeme, "$1 x $2 plus $3";
+		}
+		elsif ($token =~ /^\{(?:\+_)\}([a-zA-Z]+)\{(?:\+_)\}([a-zA-Z]+)$/)
+		{
+			# Note: Code above converted '-' into '_'.
+			# Expect:
+			# o {+_}tx{+_}ty, for 'annotate'.
+			# o {+_}x{+_}y, for 'floodfill'.
+
+			push @lexeme, "plus_or_minus $1 plus_or_minus $2";
+		}
+		elsif ($token =~ /^([a-zA-Z]+)\{%\}$/)
+		{
+			# Expect:
+			# o value{%}, for 'bias'.
+
+			push @lexeme, "$1 optional_percent";
+		}
+		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)\{\+([_a-zA-Z]+)}\{\+([_a-zA-Z]+)}$/)
+		{
+			# Expect:
+			# o radiusxsigma{+lower_percent}{+upper_percent}, for 'canny'.
+
+			push @lexeme, "$1 x $2 optional_$3 optional_$4";
+		}
+		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)\{\+([_a-zA-Z]+)}$/)
+		{
+			# Expect:
+			# o widthxheight{+threshold}, for 'hough_lines'.
+
+			push @lexeme, "$1 x $2 optional_$3";
+		}
 		else
 		{
 			push @lexeme, $token;
