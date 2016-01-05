@@ -36,7 +36,7 @@ sub build_bnf
 	my(@bnf);
 	my($count);
 	my($item);
-	my(%lexeme);
+	my(%lexemes);
 	my($parameters);
 	my($sign, $spacer, $s);
 	my($token, $token_length, $tab_count);
@@ -55,12 +55,12 @@ sub build_bnf
 			$token			= $option =~ s/-/_/gr;
 			$token_length	= length "${token}_word";
 
-			if (! $lexeme{$parameters})
+			if (! $lexemes{$parameters})
 			{
-				$lexeme{$parameters} = build_parameters($parameters);
+				$lexemes{$parameters} = build_parameters($parameters);
 			}
 
-			$parameters = join(' ', @{$lexeme{$parameters} });
+			$parameters = join(' ', @{$lexemes{$parameters} });
 
 			if ($count == 1)
 			{
@@ -78,6 +78,36 @@ sub build_bnf
 
 			push @bnf, $s;
 		}
+	}
+
+	$max_length = 0;
+
+	my(%seen);
+
+	for my $value (values %lexemes)
+	{
+		for my $lexeme (@$value)
+		{
+			for my $token (split(/\s/, $lexeme) )
+			{
+				if (! $seen{$lexeme})
+				{
+					$seen{$token}	= 1;
+					$max_length		= length($token) if (length($token) > $max_length);
+				}
+			}
+		}
+	}
+
+	$total_tabs = ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
+
+	for my $lexeme (sort keys %seen)
+	{
+		$token_length	= length($lexeme);
+		$tab_count		= ($token_length / 4) + 1;
+		$spacer			= "\t" x ($total_tabs - $tab_count - 1);
+
+		push @bnf, "$lexeme$spacer\t~ ...";
 	}
 
 	return [@bnf];
@@ -123,6 +153,34 @@ sub build_parameters
 			{
 				push @lexeme, $token;
 			}
+		}
+		elsif ($token =~ /^\{([<>])}$/)
+		{
+			# Expect:
+			# o ticks x ticks_per_second {<} {>}, for 'delay'.
+
+			push @lexeme, $1 eq '<' ? 'optional_less_than' : 'optional_greater_than';
+		}
+		elsif ($token =~ /^([_,a-zA-Z]+)\{<}\{>}$/)
+		{
+			# Expect:
+			# o degrees{<}{>}, for 'rotate'.
+
+			push @lexeme, "$1 less_than greater_than";
+		}
+		elsif ($token =~ /^([_,a-zA-Z]+),([_,a-zA-Z]+)$/)
+		{
+			# Expect:
+			# o x,y, for 'blue_primary'.
+
+			push @lexeme, "$1 comma $2";
+		}
+		elsif ($token =~ /^\+([_,a-zA-Z]+)\{\+([_,a-zA-Z]+)}$/)
+		{
+			# Expect:
+			# o +x{+y}, for 'stereo'.
+
+			push @lexeme, "plus $1 plus $2";
 		}
 		elsif ($token eq 'host:display[.screen]')
 		{
@@ -184,7 +242,14 @@ sub build_parameters
 
 			push @lexeme, "$1 x $2 plus $3";
 		}
-		elsif ($token =~ /^\{(?:\+_)\}([a-zA-Z]+)\{(?:\+_)\}([a-zA-Z]+)$/)
+		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)\{\+([a-zA-Z]+)\{%}}$/)
+		{
+			# Expect:
+			# o widthxheight{+distance{%}}, for 'mean_shift'.
+
+			push @lexeme, "$1 x $2 optional_plus_$3_optional_percent";
+		}
+		elsif ($token =~ /^(?:\{\+_})([a-zA-Z]+)(?:\{\+_})([a-zA-Z]+)$/)
 		{
 			# Note: Code above converted '-' into '_'.
 			# Expect:
@@ -193,7 +258,7 @@ sub build_parameters
 
 			push @lexeme, "plus_or_minus $1 plus_or_minus $2";
 		}
-		elsif ($token =~ /^([a-zA-Z]+)\{%\}$/)
+		elsif ($token =~ /^([a-zA-Z]+)\{%}$/)
 		{
 			# Expect:
 			# o value{%}, for 'bias'.
@@ -214,6 +279,56 @@ sub build_parameters
 
 			push @lexeme, "$1 x $2 optional_$3";
 		}
+		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)(?:\{\+_})([_a-zA-Z]+)\{%}$/)
+		{
+			# Note: Code above converted '-' into '_'.
+			# Expect:
+			# o widthxheight{+_}offset{%}, for 'lat'.
+
+			push @lexeme, "$1 x $2 plus_or_minus $3 optional_percent";
+		}
+		elsif ($token =~ /^([_a-zA-Z]+)\{,([_a-zA-Z]+)}\{%}\{,([_a-zA-Z]+)}$/)
+		{
+			# Note: Code above converted '-' into '_'.
+			# Expect:
+			# o black_point{,white_point}{%}{,gamma}, for 'level'.
+
+			push @lexeme, "$1 comma $2 optional_percent comma $3";
+		}
+		elsif ($token =~ /^\{([_a-zA-Z]+)}\{,}\{([_a-zA-Z]+)}$/)
+		{
+			# Note: Code above converted '-' into '_'.
+			# Expect:
+			# o {black_color}{,}{white_color}, for 'level_colors'.
+
+			push @lexeme, "$1 comma $2";
+		}
+		elsif ($token =~ /^([_a-zA-Z]+)\{x([_a-zA-Z]+)}\{%}}$/)
+		{
+			# Warning: Fake '}}' instead of '}' at end of regexp.
+			# Note: Code above converted '-' into '_'.
+			# Expect:
+			# o brightness{xcontrast}{%}, for 'brightness_contrast'.
+			# o black_point{xwhite_point}{%}, for 'contrast_stretch'.
+
+			push @lexeme, "$1 optional_x_$2 optional_percent";
+		}
+		elsif ($token =~ /^([_a-zA-Z]+)\{x([a-zA-Z]+)}(?:\{\+_})([a-zA-Z]+)(?:\{\+_})([a-zA-Z]+)\{%}$/)
+		{
+			# Note: Code above converted '-' into '_'.
+			# Expect:
+			# o percent_opacity{xsigma}{+_}x{+_}y{%}, for 'shadow'.
+			# o radius{xsigma}{+_}x{+_}y{%}, for 'vignette'.
+
+			push @lexeme, "$1 optional_x_$2 plus_or_minus $3 plus_or_minus $4 optional_percent";
+		}
+		elsif ($token =~ /^([a-zA-Z]+)\{@}\{!}$/)
+		{
+			# Expect:
+			# o geometry{@}{!}, for 'crop'.
+
+			push @lexeme, "$1 optional_at_sign optional_exclamation_point";
+		}
 		else
 		{
 			push @lexeme, $token;
@@ -231,6 +346,9 @@ sub process_html
 	my($input_file)	= 'data/command.line.options.html';
 	my($root)		= HTML::TreeBuilder -> new();
 	my $content		= join(' ', read_lines($input_file) );
+
+	decode_entities $content;
+
 	my($result)		= $root -> parse_content($content);
 	my(@h3)			= $root -> look_down(_tag => 'h3');
 	my($count)		= 0;
@@ -253,8 +371,13 @@ sub process_html
 
 		if ($s =~ /^(-|\+)([^\s]+)(.*)/)
 		{
-			$prefix		= $1;
-			$name		= $2;
+			$prefix	= $1;
+			$name	= $2;
+
+			# Abandon some cases.
+
+			next if ($name =~ /define|ordered-dither|poly|sparse-color/);
+
 			$parameters	= $3;
 			$parameters	=~ s/^\s+//;
 			@field		= split(/((?:-|\+)$name)/, $parameters);
