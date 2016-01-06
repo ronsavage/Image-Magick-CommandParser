@@ -42,6 +42,40 @@ sub build_bnf
 	my($sign, $spacer, $s);
 	my($token, $token_length, $tab_count);
 
+	push @bnf, << "EOS";
+
+# This grammar is for a path's 'd' attribute.
+
+:default							::= action => [values]
+
+lexeme default						= latm => 1
+
+# G1 stuff.
+
+:start								::= image_magick_command
+
+image_magick_command				::= command_list
+
+command_list						::= command_and_options+
+
+command_and_options					::= command option_set
+
+command								::= convert
+										| identify
+										| mogrify
+
+option_set							::= plus_minus option_name option_list
+
+option_list							::= option+
+
+option								::= string
+EOS
+
+	for $option (sort keys %bnf)
+	{
+		push @bnf, "$option\t\t::='$option'\n";
+	}
+
 	for $option (sort keys %bnf)
 	{
 		$count = 0;
@@ -54,7 +88,7 @@ sub build_bnf
 			$sign			= $$item[0] eq '-' ? 'minus_sign' : 'plus_sign';
 			$parameters		= $$item[1] =~ s/-/_/gr;
 			$token			= $option =~ s/-/_/gr;
-			$token_length	= length "${token}_word";
+			$token_length	= length($token) + 5; # # 5 = length('_rule').
 
 			if (! $lexemes{$parameters})
 			{
@@ -69,12 +103,12 @@ sub build_bnf
 			{
 				$tab_count	= ($token_length / 4) + 1;
 				$spacer		= "\t" x ($total_tabs - $tab_count); # Perl needs \t before ::=.
-				$s			= "${token}_rule$spacer\t::= $sign ${token}_word $parameters\t action => $action";
+				$s			= "${token}_rule$spacer\t::= $sign $token $parameters\t action => $action";
 			}
 			else
 			{
 				$spacer		= "\t" x $total_tabs;
-				$s			= "$spacer\t| $sign ${token}_word $parameters\t action => $action";
+				$s			= "$spacer\t| $sign $token $parameters\t action => $action";
 			}
 
 			$s .= "\n" if ($count == $#{$bnf{$option} } + 1);
@@ -470,7 +504,7 @@ sub format_bnf
 	);
 	my($total_tabs) = ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
 
-	push @$bnf, '# 1: Lexemes from ImageMagick command options', '';
+	push @$bnf, '# 1: Lexemes from ImageMagick command options.', '';
 
 	my(%check);
 	my($spacer);
@@ -514,7 +548,7 @@ sub format_bnf
 		string						=> '[[:print:]]',
 	);
 
-	push @$bnf, '# 2: Lexemes from option values', '';
+	push @$bnf, '# 2: Lexemes from option values.', '';
 
 	for my $lexeme (sort keys %definition_2)
 	{
@@ -524,6 +558,29 @@ sub format_bnf
 
 		push @$bnf, "$lexeme$spacer~ $definition_2{$lexeme}\n";
 	}
+
+	push @$bnf, '# 3: Lexemes ImageMagick command names.', '';
+
+	for my $lexeme (qw/convert identify mogrify/)
+	{
+		$token_length	= length($lexeme);
+		$tab_count		= ($token_length / 4) + 1;
+		$spacer			= "\t" x ($total_tabs - $tab_count);
+
+		push @$bnf, "$lexeme$spacer~ '$lexeme'\n";
+	}
+
+	$spacer = "\t" x ($total_tabs - $tab_count - 1);
+
+	push @$bnf, <<"EOS";
+
+# 4: Boilerplate.
+
+# \\x{09} => \\t. \\x{0A} => \\n. \\x{0D} => \\r. \\x{20} => \\s.
+
+:discard$spacer~ whitespace
+whitespace$spacer~ [\\s]+
+EOS
 
 	save_bnf($bnf);
 

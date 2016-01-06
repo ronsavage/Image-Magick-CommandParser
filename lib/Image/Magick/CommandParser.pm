@@ -1,26 +1,159 @@
 package Image::Magick::CommandParser;
 
+use strict;
+use utf8;
+use warnings;
+use warnings  qw(FATAL utf8);    # Fatalize encoding glitches.
+
+use File::Slurper 'read_lines';
+
+use Image::Magick::CommandParser::Actions;
+
 use Marpa::R2;
 
 use Moo;
 
-use Types::Standard qw/Int/;
+use Types::Standard qw/Any Str/;
 
-has title_x =>
+has grammar =>
 (
-	default  => sub{return 0},
+	default  => sub{return ''},
 	is       => 'rw',
-	isa      => Int,
+	isa      => Any, # 'Marpa::R2::Scanless::G'.
+	required => 0,
+);
+
+has input_file_name =>
+(
+	default  => sub{return ''},
+	is       => 'rw',
+	isa      => Str,
+	required => 0,
+);
+
+has logger =>
+(
+	default  => sub{return undef},
+	is       => 'rw',
+	isa      => Any,
+	required => 0,
+);
+
+has recce =>
+(
+	default  => sub{return ''},
+	is       => 'rw',
+	isa      => Any, # 'Marpa::R2::Scanless::R'.
 	required => 0,
 );
 
 our $VERSION = '1.00';
 
+# -----------------------------------------------
+
+sub BUILD
+{
+	my($self) = @_;
+
+	# 1 of 2: Initialize the action class via global variables - Yuk!
+	# The point is that we don't create an action instance.
+	# Marpa creates one but we can't get our hands on it.
+
+#	$Image::Magick::CommandParser::Actions::logger = $self -> logger;
+
+	my(@bnf) = read_lines('data/command.line.options.bnf');
+
+	$self -> grammar
+	(
+		Marpa::R2::Scanless::G -> new({source => \join("\n", @bnf)})
+	);
+
+	$self -> recce
+	(
+		Marpa::R2::Scanless::R -> new
+		({
+			grammar           => $self -> grammar,
+			semantics_package => 'Image::Magick::CommandParser::Actions',
+		})
+	);
+
+} # End of BUILD.
+
+# ------------------------------------------------
+
+sub decode_result
+{
+	my($self, $result) = @_;
+	my(@worklist) = $result;
+
+	my($obj);
+	my($ref_type);
+	my(@stack);
+
+	do
+	{
+		$obj      = shift @worklist;
+		$ref_type = ref $obj;
+
+		if ($ref_type eq 'ARRAY')
+		{
+			unshift @worklist, @$obj;
+		}
+		elsif ($ref_type eq 'HASH')
+		{
+			push @stack, {%$obj};
+		}
+		else
+		{
+			die "Unsupported object type $ref_type\n" if ($ref_type);
+		}
+	} while (@worklist);
+
+	return [@stack];
+
+} # End of decode_result.
+
+# --------------------------------------------------
+
+sub log
+{
+	my($self, $level, $s) = @_;
+	$level = 'notice' if (! defined $level);
+	$s     = ''       if (! defined $s);
+
+	$self -> logger -> $level($s) if ($self -> logger);
+
+} # End of log.
+
 # ------------------------------------------------
 
 sub run
 {
-	my($self) = @_;
+	my($self)	= @_;
+	my($value)	= 'convert -type test';
+
+	$self -> recce -> read(\$value);
+
+	my($result) = $self -> recce -> value;
+
+	die "Marpa's parse failed\n" if (! defined $result);
+
+	for my $item (@{$self -> decode_result($$result)})
+	{
+		if ($$item{type} eq 'command')
+		{
+			$self -> new_item($$item{type}, $$item{name}, '-');
+
+			for my $param (@{$self -> decode_result($$item{value})})
+			{
+				$self -> new_item($$param{type}, $$param{name}, $$param{value});
+			}
+		}
+		else
+		{
+			$self -> new_item($$item{type}, $$item{name}, $$item{value});
+		}
+	}
 
 	# Return 0 for success and 1 for failure.
 
