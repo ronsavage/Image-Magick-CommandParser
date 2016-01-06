@@ -43,7 +43,8 @@ sub build_bnf
 	my($item);
 	my(%lexemes);
 	my($parameters);
-	my($sign, $spacer, $s);
+	my($rhs);
+	my($sign, $spacer, $s, %seen);
 	my($token, $token_length, $tab_count);
 
 	push @bnf, << "EOS";
@@ -58,7 +59,6 @@ lexeme default							= latm => 1		# Longest Acceptable Token Match.
 command_and_options						::= command_name option
 
 command_name							::= convert_name
-											| identify_name
 											| mogrify_name
 EOS
 
@@ -88,23 +88,33 @@ EOS
 				$lexemes{$parameters} = build_parameters($debug_target, $token, $parameters);
 			}
 
+			# Add a '_name' suffix to the names of each rule,
+			# in the same way we add a '_rule' suffix to their defining rules.
+			# We have to do this because some option parameters, such as 'type',
+			# also option names in their own right.
+			# Also, check %seen because of rules likes 'pause'.
+
 			$action				= "${token}_action_$count";
 			$actions{$action}	= 1;
 			$parameters 		= join(' ', @{$lexemes{$parameters} });
+			$rhs				= "$sign ${token}_name $parameters";
+
+			next if ($seen{$rhs});
 
 			if ($count == 1)
 			{
 				$tab_count	= ($token_length / 4) + 1;
 				$spacer		= "\t" x ($total_tabs - $tab_count + 1); # Perl needs \t before ::=.
-				$s			= "${token}_rule$spacer\t::= $sign $token $parameters\t action => $action";
+				$s			= "${token}_rule$spacer\t::= $rhs\taction => $action";
 			}
 			else
 			{
 				$spacer		= "\t" x ($total_tabs + 1);
-				$s			= "$spacer\t| $sign $token $parameters\t action => $action";
+				$s			= "$spacer\t| $rhs\taction => $action";
 			}
 
-			$s .= "\n" if ($count == $#{$bnf{$option} } + 1);
+			$seen{$rhs}	= 1;
+			$s			.= "\n" if ($count == $#{$bnf{$option} } + 1);
 
 			push @bnf, $s;
 		}
@@ -385,110 +395,110 @@ sub format_bnf
 		amplitude								=> 'real_number',
 		angle									=> 'real_number',
 		azimuth									=> 'real_number',
-		black_color								=> 'color',
-		black_point								=> 'string',
+		black_color								=> '[[:print:]]+',
+		black_point								=> '[[:print:]]+',
 		brightness								=> 'real_number',
 		brightness_optional_saturation_hue		=> 'real_number',
 		cluster_threshold						=> 'integer',
-		color									=> 'string',
+		color									=> '[[:print:]]+',
 		colorspace								=> 'color_space_list',
 		comma									=> "','",
-		command									=> 'string',
+		command									=> '[[:print:]]+',
 		components								=> 'color_prefix_list',
 		connectivity							=> 'integer',
 		contrast								=> 'integer',
 		count									=> 'integer',
 		degrees									=> 'real_number',
-		distance								=> 'string',
+		distance								=> '[[:print:]]+',
 		elevation								=> 'real_number',
 		epsilon									=> 'real_number',
 		events									=> 'comma_separated_events',
-		expression								=> 'string',
+		expression								=> '[[:print:]]+',
 		factor									=> 'real_number',
-		filename								=> 'string',
-		fontFamily								=> 'string',
-		fontStretch								=> 'string',
-		fontStyle								=> 'string',
-		fontWeight								=> 'string',
+		filename								=> '[[:print:]]+',
+		fontFamily								=> '[[:print:]]+',
+		fontStretch								=> '[[:print:]]+',
+		fontStyle								=> '[[:print:]]+',
+		fontWeight								=> '[[:print:]]+',
 		frames									=> 'integer',
-		function								=> 'string',
+		function								=> '[[:print:]]+',
 		geometry								=> 'geometry_string',
 		height									=> 'real_number',
 		high									=> 'real_number',
 		horizontal								=> 'integer',
 		horizontal_factor						=> 'integer',
 		horizontal_scale						=> 'integer',
-		host_display_optional_dot_screen		=> 'string',
-		id										=> 'string',
-		image									=> 'string',
+		host_display_optional_dot_screen		=> '[[:print:]]+',
+		id										=> '[[:print:]]+',
+		image									=> '[[:print:]]+',
 		index									=> 'image_list',
 		indexes									=> 'image_list',
 		iterations								=> 'integer',
 		kernel									=> 'comma_separated_reals',
-		key										=> 'string',
+		key										=> '[[:print:]]+',
 		levels									=> 'comma_separated_integers',
 		low										=> 'real_number',
-		matrix									=> 'string',
-		media									=> 'string',
-		method									=> 'string',
+		matrix									=> '[[:print:]]+',
+		media									=> '[[:print:]]+',
+		method									=> '[[:print:]]+',
 		mid_point								=> 'integer',
-		name									=> 'string',
+		name									=> '[[:print:]]+',
 		offset									=> 'offset_list',
-		operator								=> 'string',
+		operator								=> '[[:print:]]+',
 		optional_at_sign						=> "'\@'",
-		optional_comma_gamma					=> 'string',
-		optional_comma_white_point				=> 'string',
+		optional_comma_gamma					=> '[[:print:]]+',
+		optional_comma_white_point				=> '[[:print:]]+',
 		optional_x_dst_percent					=> 'real_number',
 		optional_exclamation_point				=> "'!'",
-		optional_gain							=> 'string',
-		optional_geometry_suffix				=> 'string',
+		optional_gain							=> '[[:print:]]+',
+		optional_geometry_suffix				=> '[[:print:]]+',
 		optional_greater_than					=> "'>'",
 		optional_less_or_greater_than			=> "'<'",
-		optional_lower_percent					=> 'string',
-		optional_offset							=> 'string',
+		optional_lower_percent					=> '[[:print:]]+',
+		optional_offset							=> '[[:print:]]+',
 		optional_percent						=> "'%'",
-		optional_plus_distance					=> 'string',
-		optional_plus_offset					=> 'string',
+		optional_plus_distance					=> '[[:print:]]+',
+		optional_plus_offset					=> '[[:print:]]+',
 		optional_plus_y							=> "'+'",
-		optional_threshold						=> 'string',
-		optional_upper_percent					=> 'string',
-		optional_x_contrast						=> 'string',
-		optional_x_height						=> 'string',
-		optional_x_height_optional_plus_angle	=> 'string',
-		optional_x_sigma						=> 'string',
-		optional_x_white_point					=> 'string',
+		optional_threshold						=> '[[:print:]]+',
+		optional_upper_percent					=> '[[:print:]]+',
+		optional_x_contrast						=> '[[:print:]]+',
+		optional_x_height						=> '[[:print:]]+',
+		optional_x_height_optional_plus_angle	=> '[[:print:]]+',
+		optional_x_sigma						=> '[[:print:]]+',
+		optional_x_white_point					=> '[[:print:]]+',
 		optional_x_Ydegrees						=> 'real_number',
-		orientation								=> 'string',
-		parameters								=> 'string',
-		password								=> 'string',
-		path									=> 'string',
+		orientation								=> '[[:print:]]+',
+		parameters								=> '[[:print:]]+',
+		password								=> '[[:print:]]+',
+		path									=> '[[:print:]]+',
 		percent_opacity							=> 'real_number',
 		plus									=> "'+'",
 		plus_or_minus							=> '[+-]',
 		port									=> 'integer',
-		profile_name							=> 'string',
+		profile_name							=> '[[:print:]]+',
 		radius									=> 'real_number',
 		saturation								=> 'real_number',
 		seconds									=> 'integer',
 		sigma									=> 'real_number',
 		smoothing_threshold						=> 'real_number',
 		src_percent								=> 'real_number',
-		string									=> '[[:print:]]',
+		string									=> '[[:print:]]+',
 		sx_rx_ry_sy_optional_tx_ty				=> 'comma_separated_reals',
-		text									=> 'string',
+		text									=> '[[:print:]]+',
 		thickness								=> 'integer',
 		threshold								=> 'real_number',
 		ticks									=> 'integer',
 		ticks_per_second						=> 'integer',
 		tx										=> 'real_number',
 		ty										=> 'real_number',
-		type									=> 'string',
-		value									=> 'string',
+		type									=> '[[:print:]]+',
+		value									=> '[[:print:]]+',
 		vertical								=> 'integer',
 		vertical_factor							=> 'real_number',
 		vertical_scale							=> 'integer',
 		wavelength								=> 'real_number',
-		white_color								=> 'color',
+		white_color								=> '[[:print:]]+',
 		width									=> 'real_number',
 		x										=> 'integer',
 		Xdegrees								=> 'real_number',
@@ -526,18 +536,19 @@ sub format_bnf
 
 	my(%definition_2)	=
 	(
-		color_prefix_list			=> 'string',
-		color_space_list			=> 'string',
-		comma_separated_events		=> 'string',
-		comma_separated_integers	=> 'string',
-		comma_separated_reals		=> 'string',
-		geometry_string				=> 'string',
-		image_list					=> 'string',
+		color_prefix_list			=> '[[:print:]]+',
+		color_space_list			=> '[[:print:]]+',
+		comma_separated_events		=> '[[:print:]]+',
+		comma_separated_integers	=> '[[:print:]]+',
+		comma_separated_reals		=> '[[:print:]]+',
+		geometry_string				=> '[[:print:]]+',
+		image_list					=> '[[:print:]]+',
 		integer						=> '[\d]+',
-		offset_list					=> 'string',
-		image_list					=> 'string',
+		offset_list					=> '[[:print:]]+',
+		image_list					=> '[[:print:]]+',
 		minus_sign					=> "'-'",
-		real_number					=> 'string',
+		plus_sign					=> "'+'",
+		real_number					=> '[[:print:]]+',
 	);
 
 	push @$bnf, '# L0 lexemes from option parameters.', '';
@@ -555,7 +566,7 @@ sub format_bnf
 
 	my($token);
 
-	for my $lexeme (qw/convert identify mogrify/)
+	for my $lexeme (qw/convert mogrify/)
 	{
 		$token			= "${lexeme}_name";
 		$token_length	= length($token);
@@ -567,16 +578,19 @@ sub format_bnf
 
 	push @$bnf, '# L0 lexemes from option names.', '';
 
+	my($name);
+
 	for my $lexeme (@$option_name)
 	{
-		$token_length	= length($lexeme);
+		$name			= "${lexeme}_name";
+		$token_length	= length($name);
 		$tab_count		= ($token_length / 4) + 1;
 		$spacer			= "\t" x ($total_tabs - $tab_count);
 
-		push @$bnf, "$lexeme$spacer~ '$lexeme'\n";
+		push @$bnf, "$name$spacer~ '$lexeme'\n";
 	}
 
-	$spacer = "\t" x ($total_tabs - $tab_count - 1);
+	$spacer = "\t" x ($total_tabs - $tab_count);
 
 	push @$bnf, <<"EOS";
 # L0 lexemes for the boilerplate.
@@ -637,6 +651,8 @@ EOS
 sub $action
 {
 	my(\$cache, \@param) = \@_;
+
+	print "type_action_1: ", join(', ', \@param), "\\n";
 
 	return \$param[0];
 
@@ -762,7 +778,7 @@ sub process_html
 
 			next if ($name =~ /define|distort|morphology|ordered_dither|poly|sparse_color/);
 
-			@field = split(/((?:_|\+)$name)/, $parameters);
+			@field	= split(/((?:_|\+)$name)/, $parameters);
 
 			if ($#field == 0)
 			{

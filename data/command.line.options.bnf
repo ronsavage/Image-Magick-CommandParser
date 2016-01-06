@@ -9,600 +9,598 @@ lexeme default							= latm => 1		# Longest Acceptable Token Match.
 command_and_options						::= command_name option
 
 command_name							::= convert_name
-											| identify_name
 											| mogrify_name
 
 option									::= adaptive_blur_rule | adaptive_resize_rule | adaptive_sharpen_rule | adjoin_rule | affine_rule | alpha_rule | annotate_rule | antialias_rule | append_rule | attenuate_rule | authenticate_rule | auto_gamma_rule | auto_level_rule | auto_orient_rule | average_rule | backdrop_rule | background_rule | bench_rule | bias_rule | black_point_compensation_rule | black_threshold_rule | blend_rule | blue_primary_rule | blue_shift_rule | blur_rule | border_rule | bordercolor_rule | borderwidth_rule | brightness_contrast_rule | cache_rule | canny_rule | caption_rule | cdl_rule | channel_rule | charcoal_rule | chop_rule | clamp_rule | clip_rule | clip_mask_rule | clip_path_rule | clone_rule | clut_rule | coalesce_rule | color_matrix_rule | colorize_rule | colormap_rule | colors_rule | colorspace_rule | combine_rule | comment_rule | compare_rule | complex_rule | compose_rule | composite_rule | compress_rule | connected_components_rule | contrast_rule | contrast_stretch_rule | convolve_rule | copy_rule | crop_rule | cycle_rule | debug_rule | decipher_rule | deconstruct_rule | delay_rule | delete_rule | density_rule | depth_rule | descend_rule | deskew_rule | despeckle_rule | direction_rule | displace_rule | display_rule | dispose_rule | dissimilarity_threshold_rule | dissolve_rule | distribute_cache_rule | dither_rule | draw_rule | duplicate_rule | edge_rule | emboss_rule | encipher_rule | encoding_rule | endian_rule | enhance_rule | equalize_rule | evaluate_rule | evaluate_sequence_rule | extent_rule | extract_rule | family_rule | features_rule | fft_rule | fill_rule | filter_rule | flatten_rule | flip_rule | floodfill_rule | flop_rule | font_rule | foreground_rule | format_rule | frame_rule | function_rule | fuzz_rule | fx_rule | gamma_rule | gaussian_blur_rule | geometry_rule | gravity_rule | grayscale_rule | green_primary_rule | hald_clut_rule | help_rule | highlight_color_rule | hough_lines_rule | iconGeometry_rule | iconic_rule | identify_rule | ift_rule | immutable_rule | implode_rule | insert_rule | intensity_rule | intent_rule | interlace_rule | interline_spacing_rule | interpolate_rule | interword_spacing_rule | kerning_rule | kuwahara_rule | label_rule | lat_rule | layers_rule | level_rule | level_colors_rule | limit_rule | linear_stretch_rule | linewidth_rule | liquid_rescale_rule | list_rule | log_rule | loop_rule | lowlight_color_rule | magnify_rule | map_rule | mask_rule | mattecolor_rule | maximum_rule | mean_shift_rule | median_rule | metric_rule | minimum_rule | mode_rule | modulate_rule | moments_rule | monitor_rule | monochrome_rule | morph_rule | mosaic_rule | motion_blur_rule | name_rule | negate_rule | noise_rule | normalize_rule | opaque_rule | orient_rule | page_rule | paint_rule | path_rule | pause_rule | perceptible_rule | ping_rule | pointsize_rule | polaroid_rule | posterize_rule | precision_rule | preview_rule | print_rule | process_rule | profile_rule | quality_rule | quantize_rule | quiet_rule | radial_blur_rule | raise_rule | random_threshold_rule | red_primary_rule | regard_warnings_rule | region_rule | remap_rule | remote_rule | render_rule | repage_rule | resample_rule | resize_rule | respect_parentheses_rule | reverse_rule | roll_rule | rotate_rule | sample_rule | sampling_factor_rule | scale_rule | scene_rule | screen_rule | seed_rule | segment_rule | selective_blur_rule | separate_rule | sepia_tone_rule | set_rule | shade_rule | shadow_rule | shared_memory_rule | sharpen_rule | shave_rule | shear_rule | sigmoidal_contrast_rule | silent_rule | similarity_threshold_rule | size_rule | sketch_rule | smush_rule | snaps_rule | solarize_rule | splice_rule | spread_rule | statistic_rule | stegano_rule | stereo_rule | storage_type_rule | stretch_rule | strip_rule | stroke_rule | strokewidth_rule | style_rule | subimage_search_rule | swap_rule | swirl_rule | synchronize_rule | taint_rule | text_font_rule | texture_rule | threshold_rule | thumbnail_rule | tile_rule | tile_offset_rule | tint_rule | title_rule | transform_rule | transparent_rule | transparent_color_rule | transpose_rule | transverse_rule | treedepth_rule | trim_rule | type_rule | undercolor_rule | unique_colors_rule | units_rule | unsharp_rule | update_rule | verbose_rule | version_rule | view_rule | vignette_rule | virtual_pixel_rule | visual_rule | watermark_rule | wave_rule | weight_rule | white_point_rule | white_threshold_rule | window_rule | window_group_rule | write_rule
 
-adaptive_blur_rule						::= minus_sign adaptive_blur radius optional_x_sigma	 action => adaptive_blur_action_1
+adaptive_blur_rule						::= minus_sign adaptive_blur_name radius optional_x_sigma	action => adaptive_blur_action_1
 
-adaptive_resize_rule					::= minus_sign adaptive_resize geometry	 action => adaptive_resize_action_1
+adaptive_resize_rule					::= minus_sign adaptive_resize_name geometry	action => adaptive_resize_action_1
 
-adaptive_sharpen_rule					::= minus_sign adaptive_sharpen radius optional_x_sigma	 action => adaptive_sharpen_action_1
+adaptive_sharpen_rule					::= minus_sign adaptive_sharpen_name radius optional_x_sigma	action => adaptive_sharpen_action_1
 
-adjoin_rule								::= minus_sign adjoin 	 action => adjoin_action_1
+adjoin_rule								::= minus_sign adjoin_name 	action => adjoin_action_1
 
-affine_rule								::= minus_sign affine sx_rx_ry_sy_optional_tx_ty	 action => affine_action_1
+affine_rule								::= minus_sign affine_name sx_rx_ry_sy_optional_tx_ty	action => affine_action_1
 
-alpha_rule								::= minus_sign alpha type	 action => alpha_action_1
+alpha_rule								::= minus_sign alpha_name type	action => alpha_action_1
 
-annotate_rule							::= minus_sign annotate degrees text	 action => annotate_action_1
-											| plus_sign annotate Xdegrees x Ydegrees text	 action => annotate_action_2
-											| plus_sign annotate Xdegrees x Ydegrees plus_or_minus tx plus_or_minus ty text	 action => annotate_action_3
-											| plus_sign annotate plus_or_minus tx plus_or_minus ty text	 action => annotate_action_4
+annotate_rule							::= minus_sign annotate_name degrees text	action => annotate_action_1
+											| plus_sign annotate_name Xdegrees x Ydegrees text	action => annotate_action_2
+											| plus_sign annotate_name Xdegrees x Ydegrees plus_or_minus tx plus_or_minus ty text	action => annotate_action_3
+											| plus_sign annotate_name plus_or_minus tx plus_or_minus ty text	action => annotate_action_4
 
-antialias_rule							::= minus_sign antialias 	 action => antialias_action_1
+antialias_rule							::= minus_sign antialias_name 	action => antialias_action_1
 
-append_rule								::= minus_sign append 	 action => append_action_1
+append_rule								::= minus_sign append_name 	action => append_action_1
 
-attenuate_rule							::= minus_sign attenuate value	 action => attenuate_action_1
+attenuate_rule							::= minus_sign attenuate_name value	action => attenuate_action_1
 
-authenticate_rule						::= minus_sign authenticate password	 action => authenticate_action_1
+authenticate_rule						::= minus_sign authenticate_name password	action => authenticate_action_1
 
-auto_gamma_rule							::= minus_sign auto_gamma 	 action => auto_gamma_action_1
+auto_gamma_rule							::= minus_sign auto_gamma_name 	action => auto_gamma_action_1
 
-auto_level_rule							::= minus_sign auto_level 	 action => auto_level_action_1
+auto_level_rule							::= minus_sign auto_level_name 	action => auto_level_action_1
 
-auto_orient_rule						::= minus_sign auto_orient 	 action => auto_orient_action_1
+auto_orient_rule						::= minus_sign auto_orient_name 	action => auto_orient_action_1
 
-average_rule							::= minus_sign average 	 action => average_action_1
+average_rule							::= minus_sign average_name 	action => average_action_1
 
-backdrop_rule							::= minus_sign backdrop 	 action => backdrop_action_1
+backdrop_rule							::= minus_sign backdrop_name 	action => backdrop_action_1
 
-background_rule							::= minus_sign background color	 action => background_action_1
+background_rule							::= minus_sign background_name color	action => background_action_1
 
-bench_rule								::= minus_sign bench iterations	 action => bench_action_1
+bench_rule								::= minus_sign bench_name iterations	action => bench_action_1
 
-bias_rule								::= minus_sign bias value optional_percent	 action => bias_action_1
+bias_rule								::= minus_sign bias_name value optional_percent	action => bias_action_1
 
-black_point_compensation_rule			::= minus_sign black_point_compensation 	 action => black_point_compensation_action_1
+black_point_compensation_rule			::= minus_sign black_point_compensation_name 	action => black_point_compensation_action_1
 
-black_threshold_rule					::= minus_sign black_threshold value optional_percent	 action => black_threshold_action_1
+black_threshold_rule					::= minus_sign black_threshold_name value optional_percent	action => black_threshold_action_1
 
-blend_rule								::= minus_sign blend geometry	 action => blend_action_1
+blend_rule								::= minus_sign blend_name geometry	action => blend_action_1
 
-blue_primary_rule						::= minus_sign blue_primary x comma y	 action => blue_primary_action_1
+blue_primary_rule						::= minus_sign blue_primary_name x comma y	action => blue_primary_action_1
 
-blue_shift_rule							::= minus_sign blue_shift factor	 action => blue_shift_action_1
+blue_shift_rule							::= minus_sign blue_shift_name factor	action => blue_shift_action_1
 
-blur_rule								::= minus_sign blur radius	 action => blur_action_1
-											| plus_sign blur radius x sigma	 action => blur_action_2
-											| minus_sign blur width optional_x_height_optional_plus_angle	 action => blur_action_3
+blur_rule								::= minus_sign blur_name radius	action => blur_action_1
+											| plus_sign blur_name radius x sigma	action => blur_action_2
+											| minus_sign blur_name width optional_x_height_optional_plus_angle	action => blur_action_3
 
-border_rule								::= minus_sign border geometry	 action => border_action_1
+border_rule								::= minus_sign border_name geometry	action => border_action_1
 
-bordercolor_rule						::= minus_sign bordercolor color	 action => bordercolor_action_1
+bordercolor_rule						::= minus_sign bordercolor_name color	action => bordercolor_action_1
 
-borderwidth_rule						::= minus_sign borderwidth geometry	 action => borderwidth_action_1
+borderwidth_rule						::= minus_sign borderwidth_name geometry	action => borderwidth_action_1
 
-brightness_contrast_rule				::= minus_sign brightness_contrast brightness	 action => brightness_contrast_action_1
-											| plus_sign brightness_contrast brightness optional_percent optional_x_contrast optional_percent	 action => brightness_contrast_action_2
+brightness_contrast_rule				::= minus_sign brightness_contrast_name brightness	action => brightness_contrast_action_1
+											| plus_sign brightness_contrast_name brightness optional_percent optional_x_contrast optional_percent	action => brightness_contrast_action_2
 
-cache_rule								::= minus_sign cache threshold	 action => cache_action_1
+cache_rule								::= minus_sign cache_name threshold	action => cache_action_1
 
-canny_rule								::= minus_sign canny radius	 action => canny_action_1
-											| plus_sign canny radius x sigma optional_lower_percent optional_upper_percent	 action => canny_action_2
+canny_rule								::= minus_sign canny_name radius	action => canny_action_1
+											| plus_sign canny_name radius x sigma optional_lower_percent optional_upper_percent	action => canny_action_2
 
-caption_rule							::= minus_sign caption string	 action => caption_action_1
+caption_rule							::= minus_sign caption_name string	action => caption_action_1
 
-cdl_rule								::= minus_sign cdl filename	 action => cdl_action_1
+cdl_rule								::= minus_sign cdl_name filename	action => cdl_action_1
 
-channel_rule							::= minus_sign channel type	 action => channel_action_1
+channel_rule							::= minus_sign channel_name type	action => channel_action_1
 
-charcoal_rule							::= minus_sign charcoal factor	 action => charcoal_action_1
+charcoal_rule							::= minus_sign charcoal_name factor	action => charcoal_action_1
 
-chop_rule								::= minus_sign chop geometry	 action => chop_action_1
+chop_rule								::= minus_sign chop_name geometry	action => chop_action_1
 
-clamp_rule								::= minus_sign clamp 	 action => clamp_action_1
+clamp_rule								::= minus_sign clamp_name 	action => clamp_action_1
 
-clip_rule								::= minus_sign clip 	 action => clip_action_1
+clip_rule								::= minus_sign clip_name 	action => clip_action_1
 
-clip_mask_rule							::= minus_sign clip_mask 	 action => clip_mask_action_1
+clip_mask_rule							::= minus_sign clip_mask_name 	action => clip_mask_action_1
 
-clip_path_rule							::= minus_sign clip_path id	 action => clip_path_action_1
+clip_path_rule							::= minus_sign clip_path_name id	action => clip_path_action_1
 
-clone_rule								::= minus_sign clone indexes	 action => clone_action_1
+clone_rule								::= minus_sign clone_name indexes	action => clone_action_1
 
-clut_rule								::= minus_sign clut 	 action => clut_action_1
+clut_rule								::= minus_sign clut_name 	action => clut_action_1
 
-coalesce_rule							::= minus_sign coalesce 	 action => coalesce_action_1
+coalesce_rule							::= minus_sign coalesce_name 	action => coalesce_action_1
 
-color_matrix_rule						::= minus_sign color_matrix matrix	 action => color_matrix_action_1
+color_matrix_rule						::= minus_sign color_matrix_name matrix	action => color_matrix_action_1
 
-colorize_rule							::= minus_sign colorize value	 action => colorize_action_1
+colorize_rule							::= minus_sign colorize_name value	action => colorize_action_1
 
-colormap_rule							::= minus_sign colormap type	 action => colormap_action_1
+colormap_rule							::= minus_sign colormap_name type	action => colormap_action_1
 
-colors_rule								::= minus_sign colors value	 action => colors_action_1
+colors_rule								::= minus_sign colors_name value	action => colors_action_1
 
-colorspace_rule							::= minus_sign colorspace value	 action => colorspace_action_1
+colorspace_rule							::= minus_sign colorspace_name value	action => colorspace_action_1
 
-combine_rule							::= minus_sign combine 	 action => combine_action_1
+combine_rule							::= minus_sign combine_name 	action => combine_action_1
 
-comment_rule							::= minus_sign comment string	 action => comment_action_1
+comment_rule							::= minus_sign comment_name string	action => comment_action_1
 
-compare_rule							::= minus_sign compare 	 action => compare_action_1
+compare_rule							::= minus_sign compare_name 	action => compare_action_1
 
-complex_rule							::= minus_sign complex operator	 action => complex_action_1
+complex_rule							::= minus_sign complex_name operator	action => complex_action_1
 
-compose_rule							::= minus_sign compose operator	 action => compose_action_1
+compose_rule							::= minus_sign compose_name operator	action => compose_action_1
 
-composite_rule							::= minus_sign composite 	 action => composite_action_1
+composite_rule							::= minus_sign composite_name 	action => composite_action_1
 
-compress_rule							::= minus_sign compress type	 action => compress_action_1
+compress_rule							::= minus_sign compress_name type	action => compress_action_1
 
-connected_components_rule				::= minus_sign connected_components connectivity	 action => connected_components_action_1
+connected_components_rule				::= minus_sign connected_components_name connectivity	action => connected_components_action_1
 
-contrast_rule							::= minus_sign contrast 	 action => contrast_action_1
+contrast_rule							::= minus_sign contrast_name 	action => contrast_action_1
 
-contrast_stretch_rule					::= minus_sign contrast_stretch black_point	 action => contrast_stretch_action_1
-											| plus_sign contrast_stretch black_point optional_percent optional_x_white_point optional_percent	 action => contrast_stretch_action_2
+contrast_stretch_rule					::= minus_sign contrast_stretch_name black_point	action => contrast_stretch_action_1
+											| plus_sign contrast_stretch_name black_point optional_percent optional_x_white_point optional_percent	action => contrast_stretch_action_2
 
-convolve_rule							::= minus_sign convolve kernel	 action => convolve_action_1
+convolve_rule							::= minus_sign convolve_name kernel	action => convolve_action_1
 
-copy_rule								::= minus_sign copy geometry offset	 action => copy_action_1
+copy_rule								::= minus_sign copy_name geometry offset	action => copy_action_1
 
-crop_rule								::= minus_sign crop geometry optional_at_sign optional_exclamation_point	 action => crop_action_1
+crop_rule								::= minus_sign crop_name geometry optional_at_sign optional_exclamation_point	action => crop_action_1
 
-cycle_rule								::= minus_sign cycle amount	 action => cycle_action_1
+cycle_rule								::= minus_sign cycle_name amount	action => cycle_action_1
 
-debug_rule								::= minus_sign debug events	 action => debug_action_1
+debug_rule								::= minus_sign debug_name events	action => debug_action_1
 
-decipher_rule							::= minus_sign decipher filename	 action => decipher_action_1
+decipher_rule							::= minus_sign decipher_name filename	action => decipher_action_1
 
-deconstruct_rule						::= minus_sign deconstruct 	 action => deconstruct_action_1
+deconstruct_rule						::= minus_sign deconstruct_name 	action => deconstruct_action_1
 
-delay_rule								::= minus_sign delay ticks	 action => delay_action_1
-											| plus_sign delay ticks x ticks_per_second optional_greater_than optional_greater_than	 action => delay_action_2
+delay_rule								::= minus_sign delay_name ticks	action => delay_action_1
+											| plus_sign delay_name ticks x ticks_per_second optional_greater_than optional_greater_than	action => delay_action_2
 
-delete_rule								::= minus_sign delete indexes	 action => delete_action_1
+delete_rule								::= minus_sign delete_name indexes	action => delete_action_1
 
-density_rule							::= minus_sign density width	 action => density_action_1
-											| plus_sign density width x height	 action => density_action_2
+density_rule							::= minus_sign density_name width	action => density_action_1
+											| plus_sign density_name width x height	action => density_action_2
 
-depth_rule								::= minus_sign depth value	 action => depth_action_1
+depth_rule								::= minus_sign depth_name value	action => depth_action_1
 
-descend_rule							::= minus_sign descend 	 action => descend_action_1
+descend_rule							::= minus_sign descend_name 	action => descend_action_1
 
-deskew_rule								::= minus_sign deskew threshold	 action => deskew_action_1
+deskew_rule								::= minus_sign deskew_name threshold	action => deskew_action_1
 
-despeckle_rule							::= minus_sign despeckle 	 action => despeckle_action_1
+despeckle_rule							::= minus_sign despeckle_name 	action => despeckle_action_1
 
-direction_rule							::= minus_sign direction type	 action => direction_action_1
+direction_rule							::= minus_sign direction_name type	action => direction_action_1
 
-displace_rule							::= minus_sign displace horizontal_scale	 action => displace_action_1
-											| plus_sign displace horizontal_scale x vertical_scale	 action => displace_action_2
+displace_rule							::= minus_sign displace_name horizontal_scale	action => displace_action_1
+											| plus_sign displace_name horizontal_scale x vertical_scale	action => displace_action_2
 
-display_rule							::= minus_sign display host_display_optional_dot_screen	 action => display_action_1
+display_rule							::= minus_sign display_name host_display_optional_dot_screen	action => display_action_1
 
-dispose_rule							::= minus_sign dispose method	 action => dispose_action_1
+dispose_rule							::= minus_sign dispose_name method	action => dispose_action_1
 
-dissimilarity_threshold_rule			::= minus_sign dissimilarity_threshold value	 action => dissimilarity_threshold_action_1
+dissimilarity_threshold_rule			::= minus_sign dissimilarity_threshold_name value	action => dissimilarity_threshold_action_1
 
-dissolve_rule							::= minus_sign dissolve src_percent optional_x_dst_percent	 action => dissolve_action_1
+dissolve_rule							::= minus_sign dissolve_name src_percent optional_x_dst_percent	action => dissolve_action_1
 
-distribute_cache_rule					::= minus_sign distribute_cache port	 action => distribute_cache_action_1
+distribute_cache_rule					::= minus_sign distribute_cache_name port	action => distribute_cache_action_1
 
-dither_rule								::= minus_sign dither method	 action => dither_action_1
+dither_rule								::= minus_sign dither_name method	action => dither_action_1
 
-draw_rule								::= minus_sign draw string	 action => draw_action_1
+draw_rule								::= minus_sign draw_name string	action => draw_action_1
 
-duplicate_rule							::= minus_sign duplicate count comma indexes	 action => duplicate_action_1
+duplicate_rule							::= minus_sign duplicate_name count comma indexes	action => duplicate_action_1
 
-edge_rule								::= minus_sign edge radius	 action => edge_action_1
+edge_rule								::= minus_sign edge_name radius	action => edge_action_1
 
-emboss_rule								::= minus_sign emboss radius	 action => emboss_action_1
+emboss_rule								::= minus_sign emboss_name radius	action => emboss_action_1
 
-encipher_rule							::= minus_sign encipher filename	 action => encipher_action_1
+encipher_rule							::= minus_sign encipher_name filename	action => encipher_action_1
 
-encoding_rule							::= minus_sign encoding type	 action => encoding_action_1
+encoding_rule							::= minus_sign encoding_name type	action => encoding_action_1
 
-endian_rule								::= minus_sign endian type	 action => endian_action_1
+endian_rule								::= minus_sign endian_name type	action => endian_action_1
 
-enhance_rule							::= minus_sign enhance 	 action => enhance_action_1
+enhance_rule							::= minus_sign enhance_name 	action => enhance_action_1
 
-equalize_rule							::= minus_sign equalize 	 action => equalize_action_1
+equalize_rule							::= minus_sign equalize_name 	action => equalize_action_1
 
-evaluate_rule							::= minus_sign evaluate operator value	 action => evaluate_action_1
+evaluate_rule							::= minus_sign evaluate_name operator value	action => evaluate_action_1
 
-evaluate_sequence_rule					::= minus_sign evaluate_sequence operator	 action => evaluate_sequence_action_1
+evaluate_sequence_rule					::= minus_sign evaluate_sequence_name operator	action => evaluate_sequence_action_1
 
-extent_rule								::= minus_sign extent geometry	 action => extent_action_1
+extent_rule								::= minus_sign extent_name geometry	action => extent_action_1
 
-extract_rule							::= minus_sign extract geometry	 action => extract_action_1
+extract_rule							::= minus_sign extract_name geometry	action => extract_action_1
 
-family_rule								::= minus_sign family fontFamily	 action => family_action_1
+family_rule								::= minus_sign family_name fontFamily	action => family_action_1
 
-features_rule							::= minus_sign features distance	 action => features_action_1
+features_rule							::= minus_sign features_name distance	action => features_action_1
 
-fft_rule								::= minus_sign fft 	 action => fft_action_1
+fft_rule								::= minus_sign fft_name 	action => fft_action_1
 
-fill_rule								::= minus_sign fill color	 action => fill_action_1
+fill_rule								::= minus_sign fill_name color	action => fill_action_1
 
-filter_rule								::= minus_sign filter type	 action => filter_action_1
+filter_rule								::= minus_sign filter_name type	action => filter_action_1
 
-flatten_rule							::= minus_sign flatten 	 action => flatten_action_1
+flatten_rule							::= minus_sign flatten_name 	action => flatten_action_1
 
-flip_rule								::= minus_sign flip 	 action => flip_action_1
+flip_rule								::= minus_sign flip_name 	action => flip_action_1
 
-floodfill_rule							::= minus_sign floodfill plus_or_minus x plus_or_minus y color	 action => floodfill_action_1
+floodfill_rule							::= minus_sign floodfill_name plus_or_minus x plus_or_minus y color	action => floodfill_action_1
 
-flop_rule								::= minus_sign flop 	 action => flop_action_1
+flop_rule								::= minus_sign flop_name 	action => flop_action_1
 
-font_rule								::= minus_sign font name	 action => font_action_1
+font_rule								::= minus_sign font_name name	action => font_action_1
 
-foreground_rule							::= minus_sign foreground color	 action => foreground_action_1
+foreground_rule							::= minus_sign foreground_name color	action => foreground_action_1
 
-format_rule								::= minus_sign format type	 action => format_action_1
-											| minus_sign format string	 action => format_action_2
+format_rule								::= minus_sign format_name type	action => format_action_1
+											| minus_sign format_name string	action => format_action_2
 
-frame_rule								::= minus_sign frame geometry	 action => frame_action_1
-											| minus_sign frame 	 action => frame_action_2
+frame_rule								::= minus_sign frame_name geometry	action => frame_action_1
+											| minus_sign frame_name 	action => frame_action_2
 
-function_rule							::= minus_sign function function parameters	 action => function_action_1
+function_rule							::= minus_sign function_name function parameters	action => function_action_1
 
-fuzz_rule								::= minus_sign fuzz distance optional_percent	 action => fuzz_action_1
+fuzz_rule								::= minus_sign fuzz_name distance optional_percent	action => fuzz_action_1
 
-fx_rule									::= minus_sign fx expression	 action => fx_action_1
+fx_rule									::= minus_sign fx_name expression	action => fx_action_1
 
-gamma_rule								::= minus_sign gamma value	 action => gamma_action_1
+gamma_rule								::= minus_sign gamma_name value	action => gamma_action_1
 
-gaussian_blur_rule						::= minus_sign gaussian_blur radius	 action => gaussian_blur_action_1
-											| plus_sign gaussian_blur radius x sigma	 action => gaussian_blur_action_2
+gaussian_blur_rule						::= minus_sign gaussian_blur_name radius	action => gaussian_blur_action_1
+											| plus_sign gaussian_blur_name radius x sigma	action => gaussian_blur_action_2
 
-geometry_rule							::= minus_sign geometry geometry	 action => geometry_action_1
+geometry_rule							::= minus_sign geometry_name geometry	action => geometry_action_1
 
-gravity_rule							::= minus_sign gravity type	 action => gravity_action_1
+gravity_rule							::= minus_sign gravity_name type	action => gravity_action_1
 
-grayscale_rule							::= minus_sign grayscale method	 action => grayscale_action_1
+grayscale_rule							::= minus_sign grayscale_name method	action => grayscale_action_1
 
-green_primary_rule						::= minus_sign green_primary x comma y	 action => green_primary_action_1
+green_primary_rule						::= minus_sign green_primary_name x comma y	action => green_primary_action_1
 
-hald_clut_rule							::= minus_sign hald_clut 	 action => hald_clut_action_1
+hald_clut_rule							::= minus_sign hald_clut_name 	action => hald_clut_action_1
 
-help_rule								::= minus_sign help 	 action => help_action_1
+help_rule								::= minus_sign help_name 	action => help_action_1
 
-highlight_color_rule					::= minus_sign highlight_color color	 action => highlight_color_action_1
+highlight_color_rule					::= minus_sign highlight_color_name color	action => highlight_color_action_1
 
-hough_lines_rule						::= minus_sign hough_lines width x height optional_threshold	 action => hough_lines_action_1
+hough_lines_rule						::= minus_sign hough_lines_name width x height optional_threshold	action => hough_lines_action_1
 
-iconGeometry_rule						::= minus_sign iconGeometry geometry	 action => iconGeometry_action_1
+iconGeometry_rule						::= minus_sign iconGeometry_name geometry	action => iconGeometry_action_1
 
-iconic_rule								::= minus_sign iconic 	 action => iconic_action_1
+iconic_rule								::= minus_sign iconic_name 	action => iconic_action_1
 
-identify_rule							::= minus_sign identify 	 action => identify_action_1
+identify_rule							::= minus_sign identify_name 	action => identify_action_1
 
-ift_rule								::= minus_sign ift 	 action => ift_action_1
+ift_rule								::= minus_sign ift_name 	action => ift_action_1
 
-immutable_rule							::= minus_sign immutable 	 action => immutable_action_1
+immutable_rule							::= minus_sign immutable_name 	action => immutable_action_1
 
-implode_rule							::= minus_sign implode factor	 action => implode_action_1
+implode_rule							::= minus_sign implode_name factor	action => implode_action_1
 
-insert_rule								::= minus_sign insert index	 action => insert_action_1
+insert_rule								::= minus_sign insert_name index	action => insert_action_1
 
-intensity_rule							::= minus_sign intensity method	 action => intensity_action_1
+intensity_rule							::= minus_sign intensity_name method	action => intensity_action_1
 
-intent_rule								::= minus_sign intent type	 action => intent_action_1
+intent_rule								::= minus_sign intent_name type	action => intent_action_1
 
-interlace_rule							::= minus_sign interlace type	 action => interlace_action_1
+interlace_rule							::= minus_sign interlace_name type	action => interlace_action_1
 
-interline_spacing_rule					::= minus_sign interline_spacing value	 action => interline_spacing_action_1
+interline_spacing_rule					::= minus_sign interline_spacing_name value	action => interline_spacing_action_1
 
-interpolate_rule						::= minus_sign interpolate type	 action => interpolate_action_1
+interpolate_rule						::= minus_sign interpolate_name type	action => interpolate_action_1
 
-interword_spacing_rule					::= minus_sign interword_spacing value	 action => interword_spacing_action_1
+interword_spacing_rule					::= minus_sign interword_spacing_name value	action => interword_spacing_action_1
 
-kerning_rule							::= minus_sign kerning value	 action => kerning_action_1
+kerning_rule							::= minus_sign kerning_name value	action => kerning_action_1
 
-kuwahara_rule							::= minus_sign kuwahara radius	 action => kuwahara_action_1
-											| plus_sign kuwahara radius x sigma	 action => kuwahara_action_2
+kuwahara_rule							::= minus_sign kuwahara_name radius	action => kuwahara_action_1
+											| plus_sign kuwahara_name radius x sigma	action => kuwahara_action_2
 
-label_rule								::= minus_sign label name	 action => label_action_1
+label_rule								::= minus_sign label_name name	action => label_action_1
 
-lat_rule								::= minus_sign lat width	 action => lat_action_1
-											| plus_sign lat width x height plus_or_minus offset optional_percent	 action => lat_action_2
+lat_rule								::= minus_sign lat_name width	action => lat_action_1
+											| plus_sign lat_name width x height plus_or_minus offset optional_percent	action => lat_action_2
 
-layers_rule								::= minus_sign layers method	 action => layers_action_1
+layers_rule								::= minus_sign layers_name method	action => layers_action_1
 
-level_rule								::= minus_sign level black_point optional_percent optional_comma_white_point optional_percent optional_comma_gamma	 action => level_action_1
+level_rule								::= minus_sign level_name black_point optional_percent optional_comma_white_point optional_percent optional_comma_gamma	action => level_action_1
 
-level_colors_rule						::= minus_sign level_colors black_color comma white_color	 action => level_colors_action_1
+level_colors_rule						::= minus_sign level_colors_name black_color comma white_color	action => level_colors_action_1
 
-limit_rule								::= minus_sign limit type value	 action => limit_action_1
+limit_rule								::= minus_sign limit_name type value	action => limit_action_1
 
-linear_stretch_rule						::= minus_sign linear_stretch black_point	 action => linear_stretch_action_1
-											| plus_sign linear_stretch black_point optional_percent optional_x_white_point optional_percent	 action => linear_stretch_action_2
+linear_stretch_rule						::= minus_sign linear_stretch_name black_point	action => linear_stretch_action_1
+											| plus_sign linear_stretch_name black_point optional_percent optional_x_white_point optional_percent	action => linear_stretch_action_2
 
-linewidth_rule							::= minus_sign linewidth 	 action => linewidth_action_1
+linewidth_rule							::= minus_sign linewidth_name 	action => linewidth_action_1
 
-liquid_rescale_rule						::= minus_sign liquid_rescale geometry	 action => liquid_rescale_action_1
+liquid_rescale_rule						::= minus_sign liquid_rescale_name geometry	action => liquid_rescale_action_1
 
-list_rule								::= minus_sign list type	 action => list_action_1
+list_rule								::= minus_sign list_name type	action => list_action_1
 
-log_rule								::= minus_sign log string	 action => log_action_1
+log_rule								::= minus_sign log_name string	action => log_action_1
 
-loop_rule								::= minus_sign loop iterations	 action => loop_action_1
+loop_rule								::= minus_sign loop_name iterations	action => loop_action_1
 
-lowlight_color_rule						::= minus_sign lowlight_color color	 action => lowlight_color_action_1
+lowlight_color_rule						::= minus_sign lowlight_color_name color	action => lowlight_color_action_1
 
-magnify_rule							::= minus_sign magnify 	 action => magnify_action_1
+magnify_rule							::= minus_sign magnify_name 	action => magnify_action_1
 
-map_rule								::= minus_sign map type	 action => map_action_1
-											| minus_sign map components	 action => map_action_2
+map_rule								::= minus_sign map_name type	action => map_action_1
+											| minus_sign map_name components	action => map_action_2
 
-mask_rule								::= minus_sign mask filename	 action => mask_action_1
+mask_rule								::= minus_sign mask_name filename	action => mask_action_1
 
-mattecolor_rule							::= minus_sign mattecolor color	 action => mattecolor_action_1
+mattecolor_rule							::= minus_sign mattecolor_name color	action => mattecolor_action_1
 
-maximum_rule							::= minus_sign maximum 	 action => maximum_action_1
+maximum_rule							::= minus_sign maximum_name 	action => maximum_action_1
 
-mean_shift_rule							::= minus_sign mean_shift width x height optional_plus_distance optional_percent	 action => mean_shift_action_1
+mean_shift_rule							::= minus_sign mean_shift_name width x height optional_plus_distance optional_percent	action => mean_shift_action_1
 
-median_rule								::= minus_sign median geometry	 action => median_action_1
+median_rule								::= minus_sign median_name geometry	action => median_action_1
 
-metric_rule								::= minus_sign metric type	 action => metric_action_1
+metric_rule								::= minus_sign metric_name type	action => metric_action_1
 
-minimum_rule							::= minus_sign minimum 	 action => minimum_action_1
+minimum_rule							::= minus_sign minimum_name 	action => minimum_action_1
 
-mode_rule								::= minus_sign mode geometry	 action => mode_action_1
-											| minus_sign mode value	 action => mode_action_2
+mode_rule								::= minus_sign mode_name geometry	action => mode_action_1
+											| minus_sign mode_name value	action => mode_action_2
 
-modulate_rule							::= minus_sign modulate brightness_optional_saturation_hue	 action => modulate_action_1
+modulate_rule							::= minus_sign modulate_name brightness_optional_saturation_hue	action => modulate_action_1
 
-moments_rule							::= minus_sign moments 	 action => moments_action_1
+moments_rule							::= minus_sign moments_name 	action => moments_action_1
 
-monitor_rule							::= minus_sign monitor 	 action => monitor_action_1
+monitor_rule							::= minus_sign monitor_name 	action => monitor_action_1
 
-monochrome_rule							::= minus_sign monochrome 	 action => monochrome_action_1
+monochrome_rule							::= minus_sign monochrome_name 	action => monochrome_action_1
 
-morph_rule								::= minus_sign morph frames	 action => morph_action_1
+morph_rule								::= minus_sign morph_name frames	action => morph_action_1
 
-mosaic_rule								::= minus_sign mosaic 	 action => mosaic_action_1
+mosaic_rule								::= minus_sign mosaic_name 	action => mosaic_action_1
 
-motion_blur_rule						::= minus_sign motion_blur radius	 action => motion_blur_action_1
-											| plus_sign motion_blur radius x sigma plus angle	 action => motion_blur_action_2
+motion_blur_rule						::= minus_sign motion_blur_name radius	action => motion_blur_action_1
+											| plus_sign motion_blur_name radius x sigma plus angle	action => motion_blur_action_2
 
-name_rule								::= minus_sign name 	 action => name_action_1
+name_rule								::= minus_sign name_name 	action => name_action_1
 
-negate_rule								::= minus_sign negate 	 action => negate_action_1
+negate_rule								::= minus_sign negate_name 	action => negate_action_1
 
-noise_rule								::= minus_sign noise geometry	 action => noise_action_1
-											| plus_sign noise type	 action => noise_action_2
+noise_rule								::= minus_sign noise_name geometry	action => noise_action_1
+											| plus_sign noise_name type	action => noise_action_2
 
-normalize_rule							::= minus_sign normalize 	 action => normalize_action_1
+normalize_rule							::= minus_sign normalize_name 	action => normalize_action_1
 
-opaque_rule								::= minus_sign opaque color	 action => opaque_action_1
+opaque_rule								::= minus_sign opaque_name color	action => opaque_action_1
 
-orient_rule								::= minus_sign orient image orientation	 action => orient_action_1
+orient_rule								::= minus_sign orient_name image orientation	action => orient_action_1
 
-page_rule								::= minus_sign page geometry	 action => page_action_1
-											| plus_sign page media optional_offset optional_geometry_suffix	 action => page_action_2
-											| plus_sign page 	 action => page_action_3
+page_rule								::= minus_sign page_name geometry	action => page_action_1
+											| plus_sign page_name media optional_offset optional_geometry_suffix	action => page_action_2
+											| plus_sign page_name 	action => page_action_3
 
-paint_rule								::= minus_sign paint radius	 action => paint_action_1
+paint_rule								::= minus_sign paint_name radius	action => paint_action_1
 
-path_rule								::= minus_sign path path	 action => path_action_1
+path_rule								::= minus_sign path_name path	action => path_action_1
 
-pause_rule								::= minus_sign pause seconds	 action => pause_action_1
+pause_rule								::= minus_sign pause_name seconds	action => pause_action_1
+perceptible_rule						::= minus_sign perceptible_name epsilon	action => perceptible_action_1
 
-perceptible_rule						::= minus_sign perceptible epsilon	 action => perceptible_action_1
+ping_rule								::= minus_sign ping_name 	action => ping_action_1
 
-ping_rule								::= minus_sign ping 	 action => ping_action_1
+pointsize_rule							::= minus_sign pointsize_name value	action => pointsize_action_1
 
-pointsize_rule							::= minus_sign pointsize value	 action => pointsize_action_1
+polaroid_rule							::= minus_sign polaroid_name angle	action => polaroid_action_1
 
-polaroid_rule							::= minus_sign polaroid angle	 action => polaroid_action_1
+posterize_rule							::= minus_sign posterize_name levels	action => posterize_action_1
 
-posterize_rule							::= minus_sign posterize levels	 action => posterize_action_1
+precision_rule							::= minus_sign precision_name value	action => precision_action_1
 
-precision_rule							::= minus_sign precision value	 action => precision_action_1
+preview_rule							::= minus_sign preview_name type	action => preview_action_1
 
-preview_rule							::= minus_sign preview type	 action => preview_action_1
+print_rule								::= minus_sign print_name string	action => print_action_1
 
-print_rule								::= minus_sign print string	 action => print_action_1
+process_rule							::= minus_sign process_name command	action => process_action_1
 
-process_rule							::= minus_sign process command	 action => process_action_1
+profile_rule							::= minus_sign profile_name filename	action => profile_action_1
+											| plus_sign profile_name profile_name	action => profile_action_2
 
-profile_rule							::= minus_sign profile filename	 action => profile_action_1
-											| plus_sign profile profile_name	 action => profile_action_2
+quality_rule							::= minus_sign quality_name value	action => quality_action_1
 
-quality_rule							::= minus_sign quality value	 action => quality_action_1
+quantize_rule							::= minus_sign quantize_name colorspace	action => quantize_action_1
 
-quantize_rule							::= minus_sign quantize colorspace	 action => quantize_action_1
+quiet_rule								::= minus_sign quiet_name 	action => quiet_action_1
 
-quiet_rule								::= minus_sign quiet 	 action => quiet_action_1
+radial_blur_rule						::= minus_sign radial_blur_name angle	action => radial_blur_action_1
 
-radial_blur_rule						::= minus_sign radial_blur angle	 action => radial_blur_action_1
+raise_rule								::= minus_sign raise_name thickness	action => raise_action_1
 
-raise_rule								::= minus_sign raise thickness	 action => raise_action_1
+random_threshold_rule					::= minus_sign random_threshold_name low x high	action => random_threshold_action_1
 
-random_threshold_rule					::= minus_sign random_threshold low x high	 action => random_threshold_action_1
+red_primary_rule						::= minus_sign red_primary_name x comma y	action => red_primary_action_1
 
-red_primary_rule						::= minus_sign red_primary x comma y	 action => red_primary_action_1
+regard_warnings_rule					::= minus_sign regard_warnings_name 	action => regard_warnings_action_1
 
-regard_warnings_rule					::= minus_sign regard_warnings 	 action => regard_warnings_action_1
+region_rule								::= minus_sign region_name geometry	action => region_action_1
 
-region_rule								::= minus_sign region geometry	 action => region_action_1
+remap_rule								::= minus_sign remap_name filename	action => remap_action_1
 
-remap_rule								::= minus_sign remap filename	 action => remap_action_1
+remote_rule								::= minus_sign remote_name 	action => remote_action_1
 
-remote_rule								::= minus_sign remote 	 action => remote_action_1
+render_rule								::= minus_sign render_name 	action => render_action_1
 
-render_rule								::= minus_sign render 	 action => render_action_1
+repage_rule								::= minus_sign repage_name geometry	action => repage_action_1
 
-repage_rule								::= minus_sign repage geometry	 action => repage_action_1
+resample_rule							::= minus_sign resample_name horizontal x vertical	action => resample_action_1
 
-resample_rule							::= minus_sign resample horizontal x vertical	 action => resample_action_1
+resize_rule								::= minus_sign resize_name geometry	action => resize_action_1
 
-resize_rule								::= minus_sign resize geometry	 action => resize_action_1
+respect_parentheses_rule				::= minus_sign respect_parentheses_name 	action => respect_parentheses_action_1
 
-respect_parentheses_rule				::= minus_sign respect_parentheses 	 action => respect_parentheses_action_1
+reverse_rule							::= minus_sign reverse_name 	action => reverse_action_1
 
-reverse_rule							::= minus_sign reverse 	 action => reverse_action_1
+roll_rule								::= minus_sign roll_name plus_or_minus x plus_or_minus y	action => roll_action_1
 
-roll_rule								::= minus_sign roll plus_or_minus x plus_or_minus y	 action => roll_action_1
+rotate_rule								::= minus_sign rotate_name degrees optional_less_or_greater_than	action => rotate_action_1
 
-rotate_rule								::= minus_sign rotate degrees optional_less_or_greater_than	 action => rotate_action_1
+sample_rule								::= minus_sign sample_name geometry	action => sample_action_1
 
-sample_rule								::= minus_sign sample geometry	 action => sample_action_1
+sampling_factor_rule					::= minus_sign sampling_factor_name horizontal_factor x vertical_factor	action => sampling_factor_action_1
 
-sampling_factor_rule					::= minus_sign sampling_factor horizontal_factor x vertical_factor	 action => sampling_factor_action_1
+scale_rule								::= minus_sign scale_name geometry	action => scale_action_1
 
-scale_rule								::= minus_sign scale geometry	 action => scale_action_1
+scene_rule								::= minus_sign scene_name value	action => scene_action_1
 
-scene_rule								::= minus_sign scene value	 action => scene_action_1
+screen_rule								::= minus_sign screen_name 	action => screen_action_1
 
-screen_rule								::= minus_sign screen 	 action => screen_action_1
+seed_rule								::= minus_sign seed_name 	action => seed_action_1
 
-seed_rule								::= minus_sign seed 	 action => seed_action_1
+segment_rule							::= minus_sign segment_name cluster_threshold x smoothing_threshold	action => segment_action_1
 
-segment_rule							::= minus_sign segment cluster_threshold x smoothing_threshold	 action => segment_action_1
+selective_blur_rule						::= minus_sign selective_blur_name radius	action => selective_blur_action_1
+											| plus_sign selective_blur_name radius x sigma optional_threshold	action => selective_blur_action_2
 
-selective_blur_rule						::= minus_sign selective_blur radius	 action => selective_blur_action_1
-											| plus_sign selective_blur radius x sigma optional_threshold	 action => selective_blur_action_2
+separate_rule							::= minus_sign separate_name 	action => separate_action_1
 
-separate_rule							::= minus_sign separate 	 action => separate_action_1
+sepia_tone_rule							::= minus_sign sepia_tone_name threshold	action => sepia_tone_action_1
 
-sepia_tone_rule							::= minus_sign sepia_tone threshold	 action => sepia_tone_action_1
+set_rule								::= minus_sign set_name key value	action => set_action_1
+											| plus_sign set_name key	action => set_action_2
 
-set_rule								::= minus_sign set key value	 action => set_action_1
-											| plus_sign set key	 action => set_action_2
+shade_rule								::= minus_sign shade_name azimuth x elevation	action => shade_action_1
 
-shade_rule								::= minus_sign shade azimuth x elevation	 action => shade_action_1
+shadow_rule								::= minus_sign shadow_name percent_opacity optional_x_sigma plus_or_minus x plus_or_minus y optional_percent	action => shadow_action_1
 
-shadow_rule								::= minus_sign shadow percent_opacity optional_x_sigma plus_or_minus x plus_or_minus y optional_percent	 action => shadow_action_1
+shared_memory_rule						::= minus_sign shared_memory_name 	action => shared_memory_action_1
 
-shared_memory_rule						::= minus_sign shared_memory 	 action => shared_memory_action_1
+sharpen_rule							::= minus_sign sharpen_name radius	action => sharpen_action_1
+											| plus_sign sharpen_name radius x sigma	action => sharpen_action_2
 
-sharpen_rule							::= minus_sign sharpen radius	 action => sharpen_action_1
-											| plus_sign sharpen radius x sigma	 action => sharpen_action_2
+shave_rule								::= minus_sign shave_name geometry	action => shave_action_1
 
-shave_rule								::= minus_sign shave geometry	 action => shave_action_1
+shear_rule								::= minus_sign shear_name Xdegrees optional_x_Ydegrees	action => shear_action_1
 
-shear_rule								::= minus_sign shear Xdegrees optional_x_Ydegrees	 action => shear_action_1
+sigmoidal_contrast_rule					::= minus_sign sigmoidal_contrast_name contrast x mid_point	action => sigmoidal_contrast_action_1
 
-sigmoidal_contrast_rule					::= minus_sign sigmoidal_contrast contrast x mid_point	 action => sigmoidal_contrast_action_1
+silent_rule								::= minus_sign silent_name 	action => silent_action_1
 
-silent_rule								::= minus_sign silent 	 action => silent_action_1
+similarity_threshold_rule				::= minus_sign similarity_threshold_name value	action => similarity_threshold_action_1
 
-similarity_threshold_rule				::= minus_sign similarity_threshold value	 action => similarity_threshold_action_1
+size_rule								::= minus_sign size_name width optional_x_height optional_plus_offset	action => size_action_1
 
-size_rule								::= minus_sign size width optional_x_height optional_plus_offset	 action => size_action_1
+sketch_rule								::= minus_sign sketch_name radius	action => sketch_action_1
+											| plus_sign sketch_name radius x sigma plus angle	action => sketch_action_2
 
-sketch_rule								::= minus_sign sketch radius	 action => sketch_action_1
-											| plus_sign sketch radius x sigma plus angle	 action => sketch_action_2
+smush_rule								::= minus_sign smush_name offset	action => smush_action_1
 
-smush_rule								::= minus_sign smush offset	 action => smush_action_1
+snaps_rule								::= minus_sign snaps_name value	action => snaps_action_1
 
-snaps_rule								::= minus_sign snaps value	 action => snaps_action_1
+solarize_rule							::= minus_sign solarize_name threshold	action => solarize_action_1
 
-solarize_rule							::= minus_sign solarize threshold	 action => solarize_action_1
+splice_rule								::= minus_sign splice_name geometry	action => splice_action_1
 
-splice_rule								::= minus_sign splice geometry	 action => splice_action_1
+spread_rule								::= minus_sign spread_name amount	action => spread_action_1
 
-spread_rule								::= minus_sign spread amount	 action => spread_action_1
+statistic_rule							::= minus_sign statistic_name type geometry	action => statistic_action_1
 
-statistic_rule							::= minus_sign statistic type geometry	 action => statistic_action_1
+stegano_rule							::= minus_sign stegano_name offset	action => stegano_action_1
 
-stegano_rule							::= minus_sign stegano offset	 action => stegano_action_1
+stereo_rule								::= minus_sign stereo_name plus x optional_plus_y	action => stereo_action_1
 
-stereo_rule								::= minus_sign stereo plus x optional_plus_y	 action => stereo_action_1
+storage_type_rule						::= minus_sign storage_type_name type	action => storage_type_action_1
 
-storage_type_rule						::= minus_sign storage_type type	 action => storage_type_action_1
+stretch_rule							::= minus_sign stretch_name fontStretch	action => stretch_action_1
 
-stretch_rule							::= minus_sign stretch fontStretch	 action => stretch_action_1
+strip_rule								::= minus_sign strip_name 	action => strip_action_1
 
-strip_rule								::= minus_sign strip 	 action => strip_action_1
+stroke_rule								::= minus_sign stroke_name color	action => stroke_action_1
 
-stroke_rule								::= minus_sign stroke color	 action => stroke_action_1
+strokewidth_rule						::= minus_sign strokewidth_name value	action => strokewidth_action_1
 
-strokewidth_rule						::= minus_sign strokewidth value	 action => strokewidth_action_1
+style_rule								::= minus_sign style_name fontStyle	action => style_action_1
 
-style_rule								::= minus_sign style fontStyle	 action => style_action_1
+subimage_search_rule					::= minus_sign subimage_search_name 	action => subimage_search_action_1
 
-subimage_search_rule					::= minus_sign subimage_search 	 action => subimage_search_action_1
+swap_rule								::= minus_sign swap_name index comma index	action => swap_action_1
 
-swap_rule								::= minus_sign swap index comma index	 action => swap_action_1
+swirl_rule								::= minus_sign swirl_name degrees	action => swirl_action_1
 
-swirl_rule								::= minus_sign swirl degrees	 action => swirl_action_1
+synchronize_rule						::= minus_sign synchronize_name 	action => synchronize_action_1
 
-synchronize_rule						::= minus_sign synchronize 	 action => synchronize_action_1
+taint_rule								::= minus_sign taint_name 	action => taint_action_1
 
-taint_rule								::= minus_sign taint 	 action => taint_action_1
+text_font_rule							::= minus_sign text_font_name name	action => text_font_action_1
 
-text_font_rule							::= minus_sign text_font name	 action => text_font_action_1
+texture_rule							::= minus_sign texture_name filename	action => texture_action_1
 
-texture_rule							::= minus_sign texture filename	 action => texture_action_1
+threshold_rule							::= minus_sign threshold_name value optional_percent	action => threshold_action_1
 
-threshold_rule							::= minus_sign threshold value optional_percent	 action => threshold_action_1
+thumbnail_rule							::= minus_sign thumbnail_name geometry	action => thumbnail_action_1
 
-thumbnail_rule							::= minus_sign thumbnail geometry	 action => thumbnail_action_1
+tile_rule								::= minus_sign tile_name filename	action => tile_action_1
+											| minus_sign tile_name geometry	action => tile_action_2
+											| minus_sign tile_name 	action => tile_action_3
 
-tile_rule								::= minus_sign tile filename	 action => tile_action_1
-											| minus_sign tile geometry	 action => tile_action_2
-											| minus_sign tile 	 action => tile_action_3
+tile_offset_rule						::= minus_sign tile_offset_name plus_or_minus x plus_or_minus y	action => tile_offset_action_1
 
-tile_offset_rule						::= minus_sign tile_offset plus_or_minus x plus_or_minus y	 action => tile_offset_action_1
+tint_rule								::= minus_sign tint_name value	action => tint_action_1
 
-tint_rule								::= minus_sign tint value	 action => tint_action_1
+title_rule								::= minus_sign title_name string	action => title_action_1
 
-title_rule								::= minus_sign title string	 action => title_action_1
+transform_rule							::= minus_sign transform_name 	action => transform_action_1
 
-transform_rule							::= minus_sign transform 	 action => transform_action_1
+transparent_rule						::= minus_sign transparent_name color	action => transparent_action_1
 
-transparent_rule						::= minus_sign transparent color	 action => transparent_action_1
+transparent_color_rule					::= minus_sign transparent_color_name color	action => transparent_color_action_1
 
-transparent_color_rule					::= minus_sign transparent_color color	 action => transparent_color_action_1
+transpose_rule							::= minus_sign transpose_name 	action => transpose_action_1
 
-transpose_rule							::= minus_sign transpose 	 action => transpose_action_1
+transverse_rule							::= minus_sign transverse_name 	action => transverse_action_1
 
-transverse_rule							::= minus_sign transverse 	 action => transverse_action_1
+treedepth_rule							::= minus_sign treedepth_name value	action => treedepth_action_1
 
-treedepth_rule							::= minus_sign treedepth value	 action => treedepth_action_1
+trim_rule								::= minus_sign trim_name 	action => trim_action_1
 
-trim_rule								::= minus_sign trim 	 action => trim_action_1
+type_rule								::= minus_sign type_name type	action => type_action_1
 
-type_rule								::= minus_sign type type	 action => type_action_1
+undercolor_rule							::= minus_sign undercolor_name color	action => undercolor_action_1
 
-undercolor_rule							::= minus_sign undercolor color	 action => undercolor_action_1
+unique_colors_rule						::= minus_sign unique_colors_name 	action => unique_colors_action_1
 
-unique_colors_rule						::= minus_sign unique_colors 	 action => unique_colors_action_1
+units_rule								::= minus_sign units_name type	action => units_action_1
 
-units_rule								::= minus_sign units type	 action => units_action_1
+unsharp_rule							::= minus_sign unsharp_name radius	action => unsharp_action_1
+											| plus_sign unsharp_name radius x sigma optional_gain optional_threshold	action => unsharp_action_2
 
-unsharp_rule							::= minus_sign unsharp radius	 action => unsharp_action_1
-											| plus_sign unsharp radius x sigma optional_gain optional_threshold	 action => unsharp_action_2
+update_rule								::= minus_sign update_name seconds	action => update_action_1
 
-update_rule								::= minus_sign update seconds	 action => update_action_1
+verbose_rule							::= minus_sign verbose_name 	action => verbose_action_1
 
-verbose_rule							::= minus_sign verbose 	 action => verbose_action_1
+version_rule							::= minus_sign version_name 	action => version_action_1
 
-version_rule							::= minus_sign version 	 action => version_action_1
+view_rule								::= minus_sign view_name string	action => view_action_1
 
-view_rule								::= minus_sign view string	 action => view_action_1
+vignette_rule							::= minus_sign vignette_name radius optional_x_sigma plus_or_minus x plus_or_minus y optional_percent	action => vignette_action_1
 
-vignette_rule							::= minus_sign vignette radius optional_x_sigma plus_or_minus x plus_or_minus y optional_percent	 action => vignette_action_1
+virtual_pixel_rule						::= minus_sign virtual_pixel_name method	action => virtual_pixel_action_1
 
-virtual_pixel_rule						::= minus_sign virtual_pixel method	 action => virtual_pixel_action_1
+visual_rule								::= minus_sign visual_name type	action => visual_action_1
 
-visual_rule								::= minus_sign visual type	 action => visual_action_1
+watermark_rule							::= minus_sign watermark_name brightness x saturation	action => watermark_action_1
 
-watermark_rule							::= minus_sign watermark brightness x saturation	 action => watermark_action_1
+wave_rule								::= minus_sign wave_name amplitude	action => wave_action_1
+											| plus_sign wave_name amplitude x wavelength	action => wave_action_2
 
-wave_rule								::= minus_sign wave amplitude	 action => wave_action_1
-											| plus_sign wave amplitude x wavelength	 action => wave_action_2
+weight_rule								::= minus_sign weight_name fontWeight	action => weight_action_1
 
-weight_rule								::= minus_sign weight fontWeight	 action => weight_action_1
+white_point_rule						::= minus_sign white_point_name x comma y	action => white_point_action_1
 
-white_point_rule						::= minus_sign white_point x comma y	 action => white_point_action_1
+white_threshold_rule					::= minus_sign white_threshold_name value optional_percent	action => white_threshold_action_1
 
-white_threshold_rule					::= minus_sign white_threshold value optional_percent	 action => white_threshold_action_1
+window_rule								::= minus_sign window_name id	action => window_action_1
 
-window_rule								::= minus_sign window id	 action => window_action_1
+window_group_rule						::= minus_sign window_group_name 	action => window_group_action_1
 
-window_group_rule						::= minus_sign window_group 	 action => window_group_action_1
-
-write_rule								::= minus_sign write filename	 action => write_action_1
+write_rule								::= minus_sign write_name filename	action => write_action_1
 
 # L0 lexemes from ImageMagick command options.
 
@@ -614,9 +612,9 @@ angle									~ real_number
 
 azimuth									~ real_number
 
-black_color								~ color
+black_color								~ [[:print:]]
 
-black_point								~ string
+black_point								~ [[:print:]]
 
 brightness								~ real_number
 
@@ -624,13 +622,13 @@ brightness_optional_saturation_hue		~ real_number
 
 cluster_threshold						~ integer
 
-color									~ string
+color									~ [[:print:]]
 
 colorspace								~ color_space_list
 
 comma									~ ','
 
-command									~ string
+command									~ [[:print:]]
 
 components								~ color_prefix_list
 
@@ -642,7 +640,7 @@ count									~ integer
 
 degrees									~ real_number
 
-distance								~ string
+distance								~ [[:print:]]
 
 elevation								~ real_number
 
@@ -650,23 +648,23 @@ epsilon									~ real_number
 
 events									~ comma_separated_events
 
-expression								~ string
+expression								~ [[:print:]]
 
 factor									~ real_number
 
-filename								~ string
+filename								~ [[:print:]]
 
-fontFamily								~ string
+fontFamily								~ [[:print:]]
 
-fontStretch								~ string
+fontStretch								~ [[:print:]]
 
-fontStyle								~ string
+fontStyle								~ [[:print:]]
 
-fontWeight								~ string
+fontWeight								~ [[:print:]]
 
 frames									~ integer
 
-function								~ string
+function								~ [[:print:]]
 
 geometry								~ geometry_string
 
@@ -680,11 +678,11 @@ horizontal_factor						~ integer
 
 horizontal_scale						~ integer
 
-host_display_optional_dot_screen		~ string
+host_display_optional_dot_screen		~ [[:print:]]
 
-id										~ string
+id										~ [[:print:]]
 
-image									~ string
+image									~ [[:print:]]
 
 index									~ image_list
 
@@ -694,79 +692,79 @@ iterations								~ integer
 
 kernel									~ comma_separated_reals
 
-key										~ string
+key										~ [[:print:]]
 
 levels									~ comma_separated_integers
 
 low										~ real_number
 
-matrix									~ string
+matrix									~ [[:print:]]
 
-media									~ string
+media									~ [[:print:]]
 
-method									~ string
+method									~ [[:print:]]
 
 mid_point								~ integer
 
-name									~ string
+name									~ [[:print:]]
 
 offset									~ offset_list
 
-operator								~ string
+operator								~ [[:print:]]
 
 optional_at_sign						~ '@'
 
-optional_comma_gamma					~ string
+optional_comma_gamma					~ [[:print:]]
 
-optional_comma_white_point				~ string
+optional_comma_white_point				~ [[:print:]]
 
 optional_exclamation_point				~ '!'
 
-optional_gain							~ string
+optional_gain							~ [[:print:]]
 
-optional_geometry_suffix				~ string
+optional_geometry_suffix				~ [[:print:]]
 
 optional_greater_than					~ '>'
 
 optional_less_or_greater_than			~ '<'
 
-optional_lower_percent					~ string
+optional_lower_percent					~ [[:print:]]
 
-optional_offset							~ string
+optional_offset							~ [[:print:]]
 
 optional_percent						~ '%'
 
-optional_plus_distance					~ string
+optional_plus_distance					~ [[:print:]]
 
-optional_plus_offset					~ string
+optional_plus_offset					~ [[:print:]]
 
 optional_plus_y							~ '+'
 
-optional_threshold						~ string
+optional_threshold						~ [[:print:]]
 
-optional_upper_percent					~ string
+optional_upper_percent					~ [[:print:]]
 
-optional_x_contrast						~ string
+optional_x_contrast						~ [[:print:]]
 
 optional_x_dst_percent					~ real_number
 
-optional_x_height						~ string
+optional_x_height						~ [[:print:]]
 
-optional_x_height_optional_plus_angle	~ string
+optional_x_height_optional_plus_angle	~ [[:print:]]
 
-optional_x_sigma						~ string
+optional_x_sigma						~ [[:print:]]
 
-optional_x_white_point					~ string
+optional_x_white_point					~ [[:print:]]
 
 optional_x_Ydegrees						~ real_number
 
-orientation								~ string
+orientation								~ [[:print:]]
 
-parameters								~ string
+parameters								~ [[:print:]]
 
-password								~ string
+password								~ [[:print:]]
 
-path									~ string
+path									~ [[:print:]]
 
 percent_opacity							~ real_number
 
@@ -776,7 +774,7 @@ plus_or_minus							~ [+-]
 
 port									~ integer
 
-profile_name							~ string
+profile_name							~ [[:print:]]
 
 radius									~ real_number
 
@@ -794,7 +792,7 @@ string									~ [[:print:]]
 
 sx_rx_ry_sy_optional_tx_ty				~ comma_separated_reals
 
-text									~ string
+text									~ [[:print:]]
 
 thickness								~ integer
 
@@ -808,9 +806,9 @@ tx										~ real_number
 
 ty										~ real_number
 
-type									~ string
+type									~ [[:print:]]+
 
-value									~ string
+value									~ [[:print:]]
 
 vertical								~ integer
 
@@ -820,7 +818,7 @@ vertical_scale							~ integer
 
 wavelength								~ real_number
 
-white_color								~ color
+white_color								~ [[:print:]]
 
 width									~ real_number
 
@@ -834,595 +832,595 @@ Ydegrees								~ real_number
 
 # L0 lexemes from option parameters.
 
-color_prefix_list						~ string
+color_prefix_list						~ [[:print:]]
 
-color_space_list						~ string
+color_space_list						~ [[:print:]]
 
-comma_separated_events					~ string
+comma_separated_events					~ [[:print:]]
 
-comma_separated_integers				~ string
+comma_separated_integers				~ [[:print:]]
 
-comma_separated_reals					~ string
+comma_separated_reals					~ [[:print:]]
 
-geometry_string							~ string
+geometry_string							~ [[:print:]]
 
-image_list								~ string
+image_list								~ [[:print:]]
 
 integer									~ [\d]+
 
 minus_sign								~ '-'
 
-offset_list								~ string
+offset_list								~ [[:print:]]
 
-real_number								~ string
+plus_sign								~ '+'
+
+real_number								~ [[:print:]]
 
 # L0 lexemes from ImageMagick command names.
 
 convert_name							~ 'convert'
 
-identify_name							~ 'identify'
-
 mogrify_name							~ 'mogrify'
 
 # L0 lexemes from option names.
 
-adaptive_blur							~ 'adaptive_blur'
+adaptive_blur_name						~ 'adaptive_blur'
 
-adaptive_resize							~ 'adaptive_resize'
+adaptive_resize_name					~ 'adaptive_resize'
 
-adaptive_sharpen						~ 'adaptive_sharpen'
+adaptive_sharpen_name					~ 'adaptive_sharpen'
 
-adjoin									~ 'adjoin'
+adjoin_name								~ 'adjoin'
 
-affine									~ 'affine'
+affine_name								~ 'affine'
 
-alpha									~ 'alpha'
+alpha_name								~ 'alpha'
 
-annotate								~ 'annotate'
+annotate_name							~ 'annotate'
 
-antialias								~ 'antialias'
+antialias_name							~ 'antialias'
 
-append									~ 'append'
+append_name								~ 'append'
 
-attenuate								~ 'attenuate'
+attenuate_name							~ 'attenuate'
 
-authenticate							~ 'authenticate'
+authenticate_name						~ 'authenticate'
 
-auto_gamma								~ 'auto_gamma'
+auto_gamma_name							~ 'auto_gamma'
 
-auto_level								~ 'auto_level'
+auto_level_name							~ 'auto_level'
 
-auto_orient								~ 'auto_orient'
+auto_orient_name						~ 'auto_orient'
 
-average									~ 'average'
+average_name							~ 'average'
 
-backdrop								~ 'backdrop'
+backdrop_name							~ 'backdrop'
 
-background								~ 'background'
+background_name							~ 'background'
 
-bench									~ 'bench'
+bench_name								~ 'bench'
 
-bias									~ 'bias'
+bias_name								~ 'bias'
 
-black_point_compensation				~ 'black_point_compensation'
+black_point_compensation_name			~ 'black_point_compensation'
 
-black_threshold							~ 'black_threshold'
+black_threshold_name					~ 'black_threshold'
 
-blend									~ 'blend'
+blend_name								~ 'blend'
 
-blue_primary							~ 'blue_primary'
+blue_primary_name						~ 'blue_primary'
 
-blue_shift								~ 'blue_shift'
+blue_shift_name							~ 'blue_shift'
 
-blur									~ 'blur'
+blur_name								~ 'blur'
 
-border									~ 'border'
+border_name								~ 'border'
 
-bordercolor								~ 'bordercolor'
+bordercolor_name						~ 'bordercolor'
 
-borderwidth								~ 'borderwidth'
+borderwidth_name						~ 'borderwidth'
 
-brightness_contrast						~ 'brightness_contrast'
+brightness_contrast_name				~ 'brightness_contrast'
 
-cache									~ 'cache'
+cache_name								~ 'cache'
 
-canny									~ 'canny'
+canny_name								~ 'canny'
 
-caption									~ 'caption'
+caption_name							~ 'caption'
 
-cdl										~ 'cdl'
+cdl_name								~ 'cdl'
 
-channel									~ 'channel'
+channel_name							~ 'channel'
 
-charcoal								~ 'charcoal'
+charcoal_name							~ 'charcoal'
 
-chop									~ 'chop'
+chop_name								~ 'chop'
 
-clamp									~ 'clamp'
+clamp_name								~ 'clamp'
 
-clip									~ 'clip'
+clip_name								~ 'clip'
 
-clip_mask								~ 'clip_mask'
+clip_mask_name							~ 'clip_mask'
 
-clip_path								~ 'clip_path'
+clip_path_name							~ 'clip_path'
 
-clone									~ 'clone'
+clone_name								~ 'clone'
 
-clut									~ 'clut'
+clut_name								~ 'clut'
 
-coalesce								~ 'coalesce'
+coalesce_name							~ 'coalesce'
 
-color_matrix							~ 'color_matrix'
+color_matrix_name						~ 'color_matrix'
 
-colorize								~ 'colorize'
+colorize_name							~ 'colorize'
 
-colormap								~ 'colormap'
+colormap_name							~ 'colormap'
 
-colors									~ 'colors'
+colors_name								~ 'colors'
 
-colorspace								~ 'colorspace'
+colorspace_name							~ 'colorspace'
 
-combine									~ 'combine'
+combine_name							~ 'combine'
 
-comment									~ 'comment'
+comment_name							~ 'comment'
 
-compare									~ 'compare'
+compare_name							~ 'compare'
 
-complex									~ 'complex'
+complex_name							~ 'complex'
 
-compose									~ 'compose'
+compose_name							~ 'compose'
 
-composite								~ 'composite'
+composite_name							~ 'composite'
 
-compress								~ 'compress'
+compress_name							~ 'compress'
 
-connected_components					~ 'connected_components'
+connected_components_name				~ 'connected_components'
 
-contrast								~ 'contrast'
+contrast_name							~ 'contrast'
 
-contrast_stretch						~ 'contrast_stretch'
+contrast_stretch_name					~ 'contrast_stretch'
 
-convolve								~ 'convolve'
+convolve_name							~ 'convolve'
 
-copy									~ 'copy'
+copy_name								~ 'copy'
 
-crop									~ 'crop'
+crop_name								~ 'crop'
 
-cycle									~ 'cycle'
+cycle_name								~ 'cycle'
 
-debug									~ 'debug'
+debug_name								~ 'debug'
 
-decipher								~ 'decipher'
+decipher_name							~ 'decipher'
 
-deconstruct								~ 'deconstruct'
+deconstruct_name						~ 'deconstruct'
 
-delay									~ 'delay'
+delay_name								~ 'delay'
 
-delete									~ 'delete'
+delete_name								~ 'delete'
 
-density									~ 'density'
+density_name							~ 'density'
 
-depth									~ 'depth'
+depth_name								~ 'depth'
 
-descend									~ 'descend'
+descend_name							~ 'descend'
 
-deskew									~ 'deskew'
+deskew_name								~ 'deskew'
 
-despeckle								~ 'despeckle'
+despeckle_name							~ 'despeckle'
 
-direction								~ 'direction'
+direction_name							~ 'direction'
 
-displace								~ 'displace'
+displace_name							~ 'displace'
 
-display									~ 'display'
+display_name							~ 'display'
 
-dispose									~ 'dispose'
+dispose_name							~ 'dispose'
 
-dissimilarity_threshold					~ 'dissimilarity_threshold'
+dissimilarity_threshold_name			~ 'dissimilarity_threshold'
 
-dissolve								~ 'dissolve'
+dissolve_name							~ 'dissolve'
 
-distribute_cache						~ 'distribute_cache'
+distribute_cache_name					~ 'distribute_cache'
 
-dither									~ 'dither'
+dither_name								~ 'dither'
 
-draw									~ 'draw'
+draw_name								~ 'draw'
 
-duplicate								~ 'duplicate'
+duplicate_name							~ 'duplicate'
 
-edge									~ 'edge'
+edge_name								~ 'edge'
 
-emboss									~ 'emboss'
+emboss_name								~ 'emboss'
 
-encipher								~ 'encipher'
+encipher_name							~ 'encipher'
 
-encoding								~ 'encoding'
+encoding_name							~ 'encoding'
 
-endian									~ 'endian'
+endian_name								~ 'endian'
 
-enhance									~ 'enhance'
+enhance_name							~ 'enhance'
 
-equalize								~ 'equalize'
+equalize_name							~ 'equalize'
 
-evaluate								~ 'evaluate'
+evaluate_name							~ 'evaluate'
 
-evaluate_sequence						~ 'evaluate_sequence'
+evaluate_sequence_name					~ 'evaluate_sequence'
 
-extent									~ 'extent'
+extent_name								~ 'extent'
 
-extract									~ 'extract'
+extract_name							~ 'extract'
 
-family									~ 'family'
+family_name								~ 'family'
 
-features								~ 'features'
+features_name							~ 'features'
 
-fft										~ 'fft'
+fft_name								~ 'fft'
 
-fill									~ 'fill'
+fill_name								~ 'fill'
 
-filter									~ 'filter'
+filter_name								~ 'filter'
 
-flatten									~ 'flatten'
+flatten_name							~ 'flatten'
 
-flip									~ 'flip'
+flip_name								~ 'flip'
 
-floodfill								~ 'floodfill'
+floodfill_name							~ 'floodfill'
 
-flop									~ 'flop'
+flop_name								~ 'flop'
 
-font									~ 'font'
+font_name								~ 'font'
 
-foreground								~ 'foreground'
+foreground_name							~ 'foreground'
 
-format									~ 'format'
+format_name								~ 'format'
 
-frame									~ 'frame'
+frame_name								~ 'frame'
 
-function								~ 'function'
+function_name							~ 'function'
 
-fuzz									~ 'fuzz'
+fuzz_name								~ 'fuzz'
 
-fx										~ 'fx'
+fx_name									~ 'fx'
 
-gamma									~ 'gamma'
+gamma_name								~ 'gamma'
 
-gaussian_blur							~ 'gaussian_blur'
+gaussian_blur_name						~ 'gaussian_blur'
 
-geometry								~ 'geometry'
+geometry_name							~ 'geometry'
 
-gravity									~ 'gravity'
+gravity_name							~ 'gravity'
 
-grayscale								~ 'grayscale'
+grayscale_name							~ 'grayscale'
 
-green_primary							~ 'green_primary'
+green_primary_name						~ 'green_primary'
 
-hald_clut								~ 'hald_clut'
+hald_clut_name							~ 'hald_clut'
 
-help									~ 'help'
+help_name								~ 'help'
 
-highlight_color							~ 'highlight_color'
+highlight_color_name					~ 'highlight_color'
 
-hough_lines								~ 'hough_lines'
+hough_lines_name						~ 'hough_lines'
 
-iconGeometry							~ 'iconGeometry'
+iconGeometry_name						~ 'iconGeometry'
 
-iconic									~ 'iconic'
+iconic_name								~ 'iconic'
 
-identify								~ 'identify'
+identify_name							~ 'identify'
 
-ift										~ 'ift'
+ift_name								~ 'ift'
 
-immutable								~ 'immutable'
+immutable_name							~ 'immutable'
 
-implode									~ 'implode'
+implode_name							~ 'implode'
 
-insert									~ 'insert'
+insert_name								~ 'insert'
 
-intensity								~ 'intensity'
+intensity_name							~ 'intensity'
 
-intent									~ 'intent'
+intent_name								~ 'intent'
 
-interlace								~ 'interlace'
+interlace_name							~ 'interlace'
 
-interline_spacing						~ 'interline_spacing'
+interline_spacing_name					~ 'interline_spacing'
 
-interpolate								~ 'interpolate'
+interpolate_name						~ 'interpolate'
 
-interword_spacing						~ 'interword_spacing'
+interword_spacing_name					~ 'interword_spacing'
 
-kerning									~ 'kerning'
+kerning_name							~ 'kerning'
 
-kuwahara								~ 'kuwahara'
+kuwahara_name							~ 'kuwahara'
 
-label									~ 'label'
+label_name								~ 'label'
 
-lat										~ 'lat'
+lat_name								~ 'lat'
 
-layers									~ 'layers'
+layers_name								~ 'layers'
 
-level									~ 'level'
+level_name								~ 'level'
 
-level_colors							~ 'level_colors'
+level_colors_name						~ 'level_colors'
 
-limit									~ 'limit'
+limit_name								~ 'limit'
 
-linear_stretch							~ 'linear_stretch'
+linear_stretch_name						~ 'linear_stretch'
 
-linewidth								~ 'linewidth'
+linewidth_name							~ 'linewidth'
 
-liquid_rescale							~ 'liquid_rescale'
+liquid_rescale_name						~ 'liquid_rescale'
 
-list									~ 'list'
+list_name								~ 'list'
 
-log										~ 'log'
+log_name								~ 'log'
 
-loop									~ 'loop'
+loop_name								~ 'loop'
 
-lowlight_color							~ 'lowlight_color'
+lowlight_color_name						~ 'lowlight_color'
 
-magnify									~ 'magnify'
+magnify_name							~ 'magnify'
 
-map										~ 'map'
+map_name								~ 'map'
 
-mask									~ 'mask'
+mask_name								~ 'mask'
 
-mattecolor								~ 'mattecolor'
+mattecolor_name							~ 'mattecolor'
 
-maximum									~ 'maximum'
+maximum_name							~ 'maximum'
 
-mean_shift								~ 'mean_shift'
+mean_shift_name							~ 'mean_shift'
 
-median									~ 'median'
+median_name								~ 'median'
 
-metric									~ 'metric'
+metric_name								~ 'metric'
 
-minimum									~ 'minimum'
+minimum_name							~ 'minimum'
 
-mode									~ 'mode'
+mode_name								~ 'mode'
 
-modulate								~ 'modulate'
+modulate_name							~ 'modulate'
 
-moments									~ 'moments'
+moments_name							~ 'moments'
 
-monitor									~ 'monitor'
+monitor_name							~ 'monitor'
 
-monochrome								~ 'monochrome'
+monochrome_name							~ 'monochrome'
 
-morph									~ 'morph'
+morph_name								~ 'morph'
 
-mosaic									~ 'mosaic'
+mosaic_name								~ 'mosaic'
 
-motion_blur								~ 'motion_blur'
+motion_blur_name						~ 'motion_blur'
 
-name									~ 'name'
+name_name								~ 'name'
 
-negate									~ 'negate'
+negate_name								~ 'negate'
 
-noise									~ 'noise'
+noise_name								~ 'noise'
 
-normalize								~ 'normalize'
+normalize_name							~ 'normalize'
 
-opaque									~ 'opaque'
+opaque_name								~ 'opaque'
 
-orient									~ 'orient'
+orient_name								~ 'orient'
 
-page									~ 'page'
+page_name								~ 'page'
 
-paint									~ 'paint'
+paint_name								~ 'paint'
 
-path									~ 'path'
+path_name								~ 'path'
 
-pause									~ 'pause'
+pause_name								~ 'pause'
 
-perceptible								~ 'perceptible'
+perceptible_name						~ 'perceptible'
 
-ping									~ 'ping'
+ping_name								~ 'ping'
 
-pointsize								~ 'pointsize'
+pointsize_name							~ 'pointsize'
 
-polaroid								~ 'polaroid'
+polaroid_name							~ 'polaroid'
 
-posterize								~ 'posterize'
+posterize_name							~ 'posterize'
 
-precision								~ 'precision'
+precision_name							~ 'precision'
 
-preview									~ 'preview'
+preview_name							~ 'preview'
 
-print									~ 'print'
+print_name								~ 'print'
 
-process									~ 'process'
+process_name							~ 'process'
 
-profile									~ 'profile'
+profile_name							~ 'profile'
 
-quality									~ 'quality'
+quality_name							~ 'quality'
 
-quantize								~ 'quantize'
+quantize_name							~ 'quantize'
 
-quiet									~ 'quiet'
+quiet_name								~ 'quiet'
 
-radial_blur								~ 'radial_blur'
+radial_blur_name						~ 'radial_blur'
 
-raise									~ 'raise'
+raise_name								~ 'raise'
 
-random_threshold						~ 'random_threshold'
+random_threshold_name					~ 'random_threshold'
 
-red_primary								~ 'red_primary'
+red_primary_name						~ 'red_primary'
 
-regard_warnings							~ 'regard_warnings'
+regard_warnings_name					~ 'regard_warnings'
 
-region									~ 'region'
+region_name								~ 'region'
 
-remap									~ 'remap'
+remap_name								~ 'remap'
 
-remote									~ 'remote'
+remote_name								~ 'remote'
 
-render									~ 'render'
+render_name								~ 'render'
 
-repage									~ 'repage'
+repage_name								~ 'repage'
 
-resample								~ 'resample'
+resample_name							~ 'resample'
 
-resize									~ 'resize'
+resize_name								~ 'resize'
 
-respect_parentheses						~ 'respect_parentheses'
+respect_parentheses_name				~ 'respect_parentheses'
 
-reverse									~ 'reverse'
+reverse_name							~ 'reverse'
 
-roll									~ 'roll'
+roll_name								~ 'roll'
 
-rotate									~ 'rotate'
+rotate_name								~ 'rotate'
 
-sample									~ 'sample'
+sample_name								~ 'sample'
 
-sampling_factor							~ 'sampling_factor'
+sampling_factor_name					~ 'sampling_factor'
 
-scale									~ 'scale'
+scale_name								~ 'scale'
 
-scene									~ 'scene'
+scene_name								~ 'scene'
 
-screen									~ 'screen'
+screen_name								~ 'screen'
 
-seed									~ 'seed'
+seed_name								~ 'seed'
 
-segment									~ 'segment'
+segment_name							~ 'segment'
 
-selective_blur							~ 'selective_blur'
+selective_blur_name						~ 'selective_blur'
 
-separate								~ 'separate'
+separate_name							~ 'separate'
 
-sepia_tone								~ 'sepia_tone'
+sepia_tone_name							~ 'sepia_tone'
 
-set										~ 'set'
+set_name								~ 'set'
 
-shade									~ 'shade'
+shade_name								~ 'shade'
 
-shadow									~ 'shadow'
+shadow_name								~ 'shadow'
 
-shared_memory							~ 'shared_memory'
+shared_memory_name						~ 'shared_memory'
 
-sharpen									~ 'sharpen'
+sharpen_name							~ 'sharpen'
 
-shave									~ 'shave'
+shave_name								~ 'shave'
 
-shear									~ 'shear'
+shear_name								~ 'shear'
 
-sigmoidal_contrast						~ 'sigmoidal_contrast'
+sigmoidal_contrast_name					~ 'sigmoidal_contrast'
 
-silent									~ 'silent'
+silent_name								~ 'silent'
 
-similarity_threshold					~ 'similarity_threshold'
+similarity_threshold_name				~ 'similarity_threshold'
 
-size									~ 'size'
+size_name								~ 'size'
 
-sketch									~ 'sketch'
+sketch_name								~ 'sketch'
 
-smush									~ 'smush'
+smush_name								~ 'smush'
 
-snaps									~ 'snaps'
+snaps_name								~ 'snaps'
 
-solarize								~ 'solarize'
+solarize_name							~ 'solarize'
 
-splice									~ 'splice'
+splice_name								~ 'splice'
 
-spread									~ 'spread'
+spread_name								~ 'spread'
 
-statistic								~ 'statistic'
+statistic_name							~ 'statistic'
 
-stegano									~ 'stegano'
+stegano_name							~ 'stegano'
 
-stereo									~ 'stereo'
+stereo_name								~ 'stereo'
 
-storage_type							~ 'storage_type'
+storage_type_name						~ 'storage_type'
 
-stretch									~ 'stretch'
+stretch_name							~ 'stretch'
 
-strip									~ 'strip'
+strip_name								~ 'strip'
 
-stroke									~ 'stroke'
+stroke_name								~ 'stroke'
 
-strokewidth								~ 'strokewidth'
+strokewidth_name						~ 'strokewidth'
 
-style									~ 'style'
+style_name								~ 'style'
 
-subimage_search							~ 'subimage_search'
+subimage_search_name					~ 'subimage_search'
 
-swap									~ 'swap'
+swap_name								~ 'swap'
 
-swirl									~ 'swirl'
+swirl_name								~ 'swirl'
 
-synchronize								~ 'synchronize'
+synchronize_name						~ 'synchronize'
 
-taint									~ 'taint'
+taint_name								~ 'taint'
 
-text_font								~ 'text_font'
+text_font_name							~ 'text_font'
 
-texture									~ 'texture'
+texture_name							~ 'texture'
 
-threshold								~ 'threshold'
+threshold_name							~ 'threshold'
 
-thumbnail								~ 'thumbnail'
+thumbnail_name							~ 'thumbnail'
 
-tile									~ 'tile'
+tile_name								~ 'tile'
 
-tile_offset								~ 'tile_offset'
+tile_offset_name						~ 'tile_offset'
 
-tint									~ 'tint'
+tint_name								~ 'tint'
 
-title									~ 'title'
+title_name								~ 'title'
 
-transform								~ 'transform'
+transform_name							~ 'transform'
 
-transparent								~ 'transparent'
+transparent_name						~ 'transparent'
 
-transparent_color						~ 'transparent_color'
+transparent_color_name					~ 'transparent_color'
 
-transpose								~ 'transpose'
+transpose_name							~ 'transpose'
 
-transverse								~ 'transverse'
+transverse_name							~ 'transverse'
 
-treedepth								~ 'treedepth'
+treedepth_name							~ 'treedepth'
 
-trim									~ 'trim'
+trim_name								~ 'trim'
 
-type									~ 'type'
+type_name								~ 'type'
 
-undercolor								~ 'undercolor'
+undercolor_name							~ 'undercolor'
 
-unique_colors							~ 'unique_colors'
+unique_colors_name						~ 'unique_colors'
 
-units									~ 'units'
+units_name								~ 'units'
 
-unsharp									~ 'unsharp'
+unsharp_name							~ 'unsharp'
 
-update									~ 'update'
+update_name								~ 'update'
 
-verbose									~ 'verbose'
+verbose_name							~ 'verbose'
 
-version									~ 'version'
+version_name							~ 'version'
 
-view									~ 'view'
+view_name								~ 'view'
 
-vignette								~ 'vignette'
+vignette_name							~ 'vignette'
 
-virtual_pixel							~ 'virtual_pixel'
+virtual_pixel_name						~ 'virtual_pixel'
 
-visual									~ 'visual'
+visual_name								~ 'visual'
 
-watermark								~ 'watermark'
+watermark_name							~ 'watermark'
 
-wave									~ 'wave'
+wave_name								~ 'wave'
 
-weight									~ 'weight'
+weight_name								~ 'weight'
 
-white_point								~ 'white_point'
+white_point_name						~ 'white_point'
 
-white_threshold							~ 'white_threshold'
+white_threshold_name					~ 'white_threshold'
 
-window									~ 'window'
+window_name								~ 'window'
 
-window_group							~ 'window_group'
+window_group_name						~ 'window_group'
 
-write									~ 'write'
+write_name								~ 'write'
 
 # L0 lexemes for the boilerplate.
 

@@ -2923,7 +2923,9 @@ sub trim_action_1
 
 sub type_action_1
 {
-	my($cache, @param) = @_;
+	my($cache, @param)	= @_;
+
+	print "type_action_1: ", join(', ', @param), "\n";
 
 	return $param[0];
 
