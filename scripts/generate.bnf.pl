@@ -33,6 +33,7 @@ sub build_bnf
 	$max_length		+= 5; # 5 = length('_rule').
 	my($total_tabs)	= ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
 
+	my($action, %actions);
 	my(@bnf);
 	my($count);
 	my($item);
@@ -60,18 +61,20 @@ sub build_bnf
 				$lexemes{$parameters} = build_parameters($debug_target, $token, $parameters);
 			}
 
-			$parameters = join(' ', @{$lexemes{$parameters} });
+			$action				= "${token}_action_$count";
+			$actions{$action}	= 1;
+			$parameters 		= join(' ', @{$lexemes{$parameters} });
 
 			if ($count == 1)
 			{
 				$tab_count	= ($token_length / 4) + 1;
 				$spacer		= "\t" x ($total_tabs - $tab_count); # Perl needs \t before ::=.
-				$s			= "${token}_rule$spacer\t::= $sign ${token}_word $parameters\t action => ${token}_action_$count";
+				$s			= "${token}_rule$spacer\t::= $sign ${token}_word $parameters\t action => $action";
 			}
 			else
 			{
 				$spacer		= "\t" x $total_tabs;
-				$s			= "$spacer\t| $sign ${token}_word $parameters\t action => ${token}_action_$count";
+				$s			= "$spacer\t| $sign ${token}_word $parameters\t action => $action";
 			}
 
 			$s .= "\n" if ($count == $#{$bnf{$option} } + 1);
@@ -80,7 +83,7 @@ sub build_bnf
 		}
 	}
 
-	return (\@bnf, \%lexemes);
+	return (\@bnf, \%lexemes, \%actions);
 
 } # End of build_bnf.
 
@@ -528,6 +531,135 @@ sub format_bnf
 
 # ----------------------------------------------
 
+sub generate_action_subs
+{
+	my($actions)	= @_;
+	my($code)		= <<'EOS';
+package Image::Magick::CommandParser::Actions;
+
+use strict;
+use warnings;
+
+# Warning: Do not use Moo or anything similar.
+# This class needs a sub new() due to the way
+# Marpa calls the constructor.
+
+our $VERSION = '1.00';
+
+EOS
+
+	my($done_new);
+
+	for my $action (sort keys %$actions)
+	{
+		if (! $done_new && ($action gt 'new') )
+		{
+			$done_new	= 1;
+			$code		.= <<"EOS";
+# ------------------------------------------------
+
+sub new
+{
+	my(\$class) = \@_;
+
+	return bless \{}, \$class;
+
+} # End of new.
+
+EOS
+		}
+
+		$code .= <<"EOS";
+# ------------------------------------------------
+
+sub $action
+{
+	my(\$cache, \@param) = \@_;
+
+	return \$param[0];
+
+} # End of $action.
+
+EOS
+	}
+
+	$code .=<<"EOS";
+# ------------------------------------------------
+
+1;
+
+=pod
+
+=head1 NAME
+
+C<Image::Magick::CommandParser::Actions> - Parse any command line used by ImageMagick
+
+=head1 Synopsis
+
+See L<Image::Magick::CommandParser/Synopsis>.
+
+The module is used automatically by L<Image::Magick::CommandParser> as appropriate.
+
+=head1 Description
+
+See L<Image::Magick::CommandParser/Description>.
+
+=head1 Installation
+
+See L<Image::Magick::CommandParser/Installation>.
+
+=head1 Methods
+
+The functions are called automatically by L<Marpa::R2> as appropriate.
+
+=head2 new()
+
+The constructor is called automatically by L<Marpa::R2> as appropriate.
+
+=head1 Machine-Readable Change Log
+
+The file Changes was converted into Changelog.ini by L<Module::Metadata::Changes>.
+
+=head1 Version Numbers
+
+Version numbers < 1.00 represent development versions. From 1.00 up, they are production versions.
+
+=head1 Support
+
+Email the author, or log a bug on RT:
+
+L<https://rt.cpan.org/Public/Dist/Display.html?Name=Image::Magick::CommandParser>.
+
+=head1 Author
+
+Ron Savage I<E<lt>ron\@savage.net.auE<gt>>.
+
+Home page: L<http://savage.net.au/>.
+
+=head1 Copyright
+
+Australian copyright (c) 2016, Ron Savage.
+
+	All Programs of mine are 'OSI Certified Open Source Software';
+	you can redistribute them and/or modify them under the terms of
+	The Artistic License 2.0, a copy of which is available at:
+	http://www.opensource.org/licenses/index.html
+
+=cut
+EOS
+
+	my($output_file) = 'lib/Image/Magick/CommandParser/Actions.pm';
+
+	open(my $fh, '>', $output_file) || die "Unable to open(> $output_file)\n";
+
+	print $fh $code;
+
+	close $fh;
+
+} # End of generate_action_subs.
+
+# ----------------------------------------------
+
 sub process_html
 {
 	my($input_file)	= 'data/command.line.options.html';
@@ -666,8 +798,10 @@ sub save_raw_commands
 
 # ----------------------------------------------
 
-my($debug_target)	= shift || 'WFT';
-my($command)		= process_html;
-my($bnf, $lexemes)	= build_bnf($debug_target, $command);
+my($debug_target)				= shift || 'WFT';
+my($command)					= process_html;
+my($bnf, $lexemes, $actions)	= build_bnf($debug_target, $command);
 
 format_bnf($debug_target, $bnf, $lexemes);
+
+generate_action_subs($actions);
