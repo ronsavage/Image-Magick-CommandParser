@@ -58,8 +58,11 @@ lexeme default							= latm => 1		# Longest Acceptable Token Match.
 
 command_and_options						::= command_name option
 
-command_name							::= convert_name
-											| mogrify_name
+# Warning: If you change this, also change line 571 of the source. Search for 'mogrify'.
+
+
+command_name							::= convert_command
+											| mogrify_command
 EOS
 
 	my(@option_name)	= sort keys %bnf;
@@ -93,11 +96,12 @@ EOS
 			# We have to do this because some option parameters, such as 'type',
 			# also option names in their own right.
 			# Also, check %seen because of rules likes 'pause'.
+			# Warning: If you change '_word', also change line 589. Search for '_word'.
 
 			$action				= "${token}_action_$count";
 			$actions{$action}	= 1;
 			$parameters 		= join(' ', @{$lexemes{$parameters} });
-			$rhs				= "$sign ${token}_name $parameters";
+			$rhs				= "$sign ${token}_word $parameters";
 
 			next if ($seen{$rhs});
 
@@ -566,9 +570,11 @@ sub format_bnf
 
 	my($token);
 
+	# Warning: If you change this, also change line 63. Search for 'mogrify'.
+
 	for my $lexeme (qw/convert mogrify/)
 	{
-		$token			= "${lexeme}_name";
+		$token			= "${lexeme}_command";
 		$token_length	= length($token);
 		$tab_count		= ($token_length / 4) + 1;
 		$spacer			= "\t" x ($total_tabs - $tab_count);
@@ -580,9 +586,11 @@ sub format_bnf
 
 	my($name);
 
+	# Warning: If you change '_word', also change line 105. Search for '_word'.
+
 	for my $lexeme (@$option_name)
 	{
-		$name			= "${lexeme}_name";
+		$name			= "${lexeme}_word";
 		$token_length	= length($name);
 		$tab_count		= ($token_length / 4) + 1;
 		$spacer			= "\t" x ($total_tabs - $tab_count);
