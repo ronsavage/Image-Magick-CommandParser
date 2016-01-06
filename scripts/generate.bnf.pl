@@ -23,11 +23,15 @@ sub build_bnf
 
 	for my $line (@$lines)
 	{
-		$option			= $$line[0];
+		$option			= $$line{name};
 		$bnf{$option}	= [] if (! $bnf{$option});
 		$max_length		= length($option) if (length($option) > $max_length);
 
-		push @{$bnf{$option} }, [$$line[1], $$line[2] ];
+		push @{$bnf{$option} },
+			{
+				parameters	=> $$line{parameters},
+				sign		=> $$line{sign},
+			};
 	}
 
 	$max_length		+= 5; # 5 = length('_rule').
@@ -43,38 +47,27 @@ sub build_bnf
 	my($token, $token_length, $tab_count);
 
 	push @bnf, << "EOS";
+:default								::= action => [values]
 
-# This grammar is for a path's 'd' attribute.
+lexeme default							= latm => 1		# Longest Acceptable Token Match.
 
-:default							::= action => [values]
+# G1-level rules.
 
-lexeme default						= latm => 1
+:start									::= command_and_options
 
-# G1 stuff.
+command_and_options						::= command_name option
 
-:start								::= image_magick_command
-
-image_magick_command				::= command_list
-
-command_list						::= command_and_options+
-
-command_and_options					::= command option_set
-
-command								::= convert
-										| identify
-										| mogrify
-
-option_set							::= plus_minus option_name option_list
-
-option_list							::= option+
-
-option								::= string
+command_name							::= convert_name
+											| identify_name
+											| mogrify_name
 EOS
 
-	for $option (sort keys %bnf)
-	{
-		push @bnf, "$option\t\t::='$option'\n";
-	}
+	my(@option_name)	= sort keys %bnf;
+	my($option_name)	= join(' | ', map{"${_}_rule"} @option_name);
+
+	push @bnf, << "EOS";
+option									::= $option_name
+EOS
 
 	for $option (sort keys %bnf)
 	{
@@ -85,9 +78,9 @@ EOS
 			$count++;
 
 			$item			= $bnf{$option}[$i];
-			$sign			= $$item[0] eq '-' ? 'minus_sign' : 'plus_sign';
-			$parameters		= $$item[1] =~ s/-/_/gr;
-			$token			= $option =~ s/-/_/gr;
+			$sign			= $$item{sign} eq '-' ? 'minus_sign' : 'plus_sign';
+			$parameters		= $$item{parameters};
+			$token			= $option;
 			$token_length	= length($token) + 5; # # 5 = length('_rule').
 
 			if (! $lexemes{$parameters})
@@ -102,12 +95,12 @@ EOS
 			if ($count == 1)
 			{
 				$tab_count	= ($token_length / 4) + 1;
-				$spacer		= "\t" x ($total_tabs - $tab_count); # Perl needs \t before ::=.
+				$spacer		= "\t" x ($total_tabs - $tab_count + 1); # Perl needs \t before ::=.
 				$s			= "${token}_rule$spacer\t::= $sign $token $parameters\t action => $action";
 			}
 			else
 			{
-				$spacer		= "\t" x $total_tabs;
+				$spacer		= "\t" x ($total_tabs + 1);
 				$s			= "$spacer\t| $sign $token $parameters\t action => $action";
 			}
 
@@ -117,7 +110,7 @@ EOS
 		}
 	}
 
-	return (\@bnf, \%lexemes, \%actions);
+	return (\@bnf, \%lexemes, \@option_name, \%actions);
 
 } # End of build_bnf.
 
@@ -364,8 +357,8 @@ sub build_parameters
 
 sub format_bnf
 {
-	my($debug_target, $bnf, $lexemes)	= @_;
-	my($max_length)						= 0;
+	my($bnf, $lexemes, $option_name, $debug_target)	= @_;
+	my($max_length)									= 0;
 
 	my(%seen);
 
@@ -480,7 +473,7 @@ sub format_bnf
 		sigma									=> 'real_number',
 		smoothing_threshold						=> 'real_number',
 		src_percent								=> 'real_number',
-		string									=> '[a-zA-Z]+',
+		string									=> '[[:print:]]',
 		sx_rx_ry_sy_optional_tx_ty				=> 'comma_separated_reals',
 		text									=> 'string',
 		thickness								=> 'integer',
@@ -504,7 +497,7 @@ sub format_bnf
 	);
 	my($total_tabs) = ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
 
-	push @$bnf, '# 1: Lexemes from ImageMagick command options.', '';
+	push @$bnf, '# L0 lexemes from ImageMagick command options.', '';
 
 	my(%check);
 	my($spacer);
@@ -533,7 +526,6 @@ sub format_bnf
 
 	my(%definition_2)	=
 	(
-		color						=> 'string',
 		color_prefix_list			=> 'string',
 		color_space_list			=> 'string',
 		comma_separated_events		=> 'string',
@@ -544,11 +536,11 @@ sub format_bnf
 		integer						=> '[\d]+',
 		offset_list					=> 'string',
 		image_list					=> 'string',
+		minus_sign					=> "'-'",
 		real_number					=> 'string',
-		string						=> '[[:print:]]',
 	);
 
-	push @$bnf, '# 2: Lexemes from option values.', '';
+	push @$bnf, '# L0 lexemes from option parameters.', '';
 
 	for my $lexeme (sort keys %definition_2)
 	{
@@ -559,9 +551,23 @@ sub format_bnf
 		push @$bnf, "$lexeme$spacer~ $definition_2{$lexeme}\n";
 	}
 
-	push @$bnf, '# 3: Lexemes ImageMagick command names.', '';
+	push @$bnf, '# L0 lexemes from ImageMagick command names.', '';
+
+	my($token);
 
 	for my $lexeme (qw/convert identify mogrify/)
+	{
+		$token			= "${lexeme}_name";
+		$token_length	= length($token);
+		$tab_count		= ($token_length / 4) + 1;
+		$spacer			= "\t" x ($total_tabs - $tab_count);
+
+		push @$bnf, "$token$spacer~ '$lexeme'\n";
+	}
+
+	push @$bnf, '# L0 lexemes from option names.', '';
+
+	for my $lexeme (@$option_name)
 	{
 		$token_length	= length($lexeme);
 		$tab_count		= ($token_length / 4) + 1;
@@ -573,8 +579,7 @@ sub format_bnf
 	$spacer = "\t" x ($total_tabs - $tab_count - 1);
 
 	push @$bnf, <<"EOS";
-
-# 4: Boilerplate.
+# L0 lexemes for the boilerplate.
 
 # \\x{09} => \\t. \\x{0A} => \\n. \\x{0D} => \\r. \\x{20} => \\s.
 
@@ -733,34 +738,40 @@ sub process_html
 	my(@field);
 	my($line);
 	my($name);
-	my($prefix, $parameters);
-	my($s);
+	my($parameters);
+	my($sign, $s);
 
 	for my $h3 (@h3)
 	{
 		$count++;
 
 		$line	= $h3 -> as_text || '-';
-		$line	=~ s/\s\s+/ /g;
+		$line	=~ tr/ //s;
 		$s		= $line =~ s/^\s+//r;
 		$s		=~ s/\s+$//;
 
-		if ($s =~ /^(-|\+)([^\s]+)(.*)/)
+		if ($s =~ /^(-|\+)([^\s]+)\s*(.*)/)
 		{
-			$prefix	= $1;
-			$name	= $2;
+			$sign		= $1;
+			$name		= $2;
+			$parameters	= $3;
+			$name		=~ s/-/_/g;
+			$parameters	=~ s/-/_/g;
 
 			# Abandon some cases.
 
-			next if ($name =~ /define|distort|morphology|ordered-dither|poly|sparse-color/);
+			next if ($name =~ /define|distort|morphology|ordered_dither|poly|sparse_color/);
 
-			$parameters	= $3;
-			$parameters	=~ s/^\s+//;
-			@field		= split(/((?:-|\+)$name)/, $parameters);
+			@field = split(/((?:_|\+)$name)/, $parameters);
 
 			if ($#field == 0)
 			{
-				push @$command, [$name, $prefix, $parameters];
+				push @$command,
+					{
+						name		=> $name,
+						parameters	=> $parameters,
+						sign		=> $sign,
+					};
 			}
 			else
 			{
@@ -769,18 +780,28 @@ sub process_html
 					$parameters =~ s/^\s+//;
 					$parameters =~ s/\s+$//;
 
-					push @$command, [$name, $prefix, $parameters];
+					push @$command,
+						{
+							name		=> $name,
+							parameters	=> $parameters,
+							sign		=> $sign,
+						};
 
 					$name = shift @field;
 
 					if ($name)
 					{
-						$prefix				= substr($name, 0, 1);
+						$sign				= substr($name, 0, 1);
 						substr($name, 0, 1)	= '';
 					}
 				}
 
-				push @$command, [$name, $prefix, ''] if ($name);
+				push @$command,
+					{
+						name		=> $name,
+						parameters	=> '',
+						sign		=> $sign,
+					} if ($name);
 			}
 		}
 		else
@@ -827,9 +848,8 @@ sub save_raw_commands
 
 	for my $item (@$command)
 	{
-		$lexeme		= $$item[0];
+		$lexeme		= $$item{name};
 		$max_length = length($lexeme) if (length($lexeme) > $max_length);
-
 	}
 
 	my($total_tabs) = ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
@@ -841,12 +861,12 @@ sub save_raw_commands
 
 	for my $item (@$command)
 	{
-		$lexeme			= $$item[0];
+		$lexeme			= $$item{name};
 		$token_length	= length($lexeme);
 		$tab_count		= ($token_length / 4);
 		$spacer			= "\t" x ($total_tabs - $tab_count - 1);
 
-		say $fh "$lexeme$spacer\t$$item[1]\t$$item[2]";
+		say $fh "$lexeme$spacer\t$$item{sign}\t$$item{parameters}";
 	}
 
 	close $fh;
@@ -855,10 +875,10 @@ sub save_raw_commands
 
 # ----------------------------------------------
 
-my($debug_target)				= shift || 'WFT';
-my($command)					= process_html;
-my($bnf, $lexemes, $actions)	= build_bnf($debug_target, $command);
+my($debug_target)							= shift || 'Enter option value';
+my($command)								= process_html;
+my($bnf, $lexemes, $option_name, $actions)	= build_bnf($debug_target, $command);
 
-format_bnf($debug_target, $bnf, $lexemes);
+format_bnf($bnf, $lexemes, $option_name, $debug_target);
 
 generate_action_subs($actions);

@@ -1,41 +1,41 @@
-adaptive-blur				-	radius[xsigma]
-adaptive-resize				-	geometry
-adaptive-sharpen			-	radius[xsigma]
+adaptive_blur				-	radius[xsigma]
+adaptive_resize				-	geometry
+adaptive_sharpen			-	radius[xsigma]
 adjoin						-	
 affine						-	sx,rx,ry,sy[,tx,ty]
 alpha						-	type
 annotate					-	degrees text
-annotate					-	XdegreesxYdegrees text
-annotate					-	XdegreesxYdegrees {+-}tx{+-}ty text
-annotate					-	{+-}tx{+-}ty text
+annotate					_	XdegreesxYdegrees text
+annotate					_	XdegreesxYdegrees {+_}tx{+_}ty text
+annotate					_	{+_}tx{+_}ty text
 antialias					-	
 append						-	
 attenuate					-	value
 authenticate				-	password
-auto-gamma					-	
-auto-level					-	
-auto-orient					-	
+auto_gamma					-	
+auto_level					-	
+auto_orient					-	
 average						-	
 backdrop					-	
 background					-	color
 bench						-	iterations
 bias						-	value{%}
-black-point-compensation	-	
-black-threshold				-	value{%}
+black_point_compensation	-	
+black_threshold				-	value{%}
 blend						-	geometry
-blue-primary				-	x,y
-blue-shift					-	factor
+blue_primary				-	x,y
+blue_shift					-	factor
 blur						-	radius
-blur						-	radiusxsigma
+blur						_	radiusxsigma
 blur						-	Width[xHeight[+Angle]]
 border						-	geometry
 bordercolor					-	color
 borderwidth					-	geometry
-brightness-contrast			-	brightness
-brightness-contrast			-	brightness{xcontrast}{%}}
+brightness_contrast			-	brightness
+brightness_contrast			_	brightness{xcontrast}{%}}
 cache						-	threshold
 canny						-	radius
-canny						-	radiusxsigma{+lower-percent}{+upper-percent}
+canny						_	radiusxsigma{+lower_percent}{+upper_percent}
 caption						-	string
 cdl							-	filename
 channel						-	type
@@ -43,15 +43,15 @@ charcoal					-	factor
 chop						-	geometry
 clamp						-	
 clip						-	
-clip-mask					-	
-clip-path					-	id
+clip_mask					-	
+clip_path					-	id
 clone						-	index(s)
 clut						-	
 coalesce					-	
 colorize					-	value
 colormap					-	type
 colors						-	value
-color-matrix				-	matrix
+color_matrix				-	matrix
 colorspace					-	value
 combine						-	
 comment						-	string
@@ -60,10 +60,10 @@ complex						-	operator
 compose						-	operator
 composite					-	
 compress					-	type
-connected-components		-	connectivity
+connected_components		-	connectivity
 contrast					-	
-contrast-stretch			-	black-point
-contrast-stretch			-	black-point{xwhite-point}{%}}
+contrast_stretch			-	black_point
+contrast_stretch			_	black_point{xwhite_point}{%}}
 convolve					-	kernel
 copy						-	geometry offset
 crop						-	geometry{@}{!}
@@ -72,22 +72,22 @@ debug						-	events
 decipher					-	filename
 deconstruct					-	
 delay						-	ticks
-delay						-	ticksxticks-per-second {<} {>}
+delay						_	ticksxticks_per_second {<} {>}
 delete						-	indexes
 density						-	width
-density						-	widthxheight
+density						_	widthxheight
 depth						-	value
 descend						-	
 deskew						-	threshold
 despeckle					-	
 direction					-	type
-displace					-	horizontal-scale
-displace					-	horizontal-scalexvertical-scale
+displace					-	horizontal_scale
+displace					_	horizontal_scalexvertical_scale
 display						-	host:display[.screen]
 dispose						-	method
-dissimilarity-threshold		-	value
+dissimilarity_threshold		-	value
 dissolve					-	src_percent[xdst_percent]
-distribute-cache			-	port
+distribute_cache			-	port
 dither						-	method
 draw						-	string
 duplicate					-	count,indexes
@@ -99,7 +99,7 @@ endian						-	type
 enhance						-	
 equalize					-	
 evaluate					-	operator value
-evaluate-sequence			-	operator
+evaluate_sequence			-	operator
 extent						-	geometry
 extract						-	geometry
 family						-	fontFamily
@@ -109,7 +109,7 @@ fill						-	color
 filter						-	type
 flatten						-	
 flip						-	
-floodfill					-	{+-}x{+-}y color
+floodfill					-	{+_}x{+_}y color
 flop						-	
 font						-	name
 foreground					-	color
@@ -121,16 +121,16 @@ function					-	function parameters
 fuzz						-	distance{%}
 fx							-	expression
 gamma						-	value
-gaussian-blur				-	radius
-gaussian-blur				-	radiusxsigma
+gaussian_blur				-	radius
+gaussian_blur				_	radiusxsigma
 geometry					-	geometry
 gravity						-	type
 grayscale					-	method
-green-primary				-	x,y
-hald-clut					-	
+green_primary				-	x,y
+hald_clut					-	
 help						-	
-highlight-color				-	color
-hough-lines					-	widthxheight{+threshold}
+highlight_color				-	color
+hough_lines					-	widthxheight{+threshold}
 iconGeometry				-	geometry
 iconic						-	
 identify					-	
@@ -142,26 +142,26 @@ intensity					-	method
 intent						-	type
 interlace					-	type
 interpolate					-	type
-interline-spacing			-	value
-interword-spacing			-	value
+interline_spacing			-	value
+interword_spacing			-	value
 kerning						-	value
 kuwahara					-	radius
-kuwahara					-	radiusxsigma
+kuwahara					_	radiusxsigma
 label						-	name
 lat							-	width
-lat							-	widthxheight{+-}offset{%}
+lat							_	widthxheight{+_}offset{%}
 layers						-	method
 level						-	black_point{,white_point}{%}{,gamma}
-level-colors				-	{black_color}{,}{white_color}
+level_colors				-	{black_color}{,}{white_color}
 limit						-	type value
-linear-stretch				-	black-point
-linear-stretch				-	black-point{xwhite-point}{%}}
+linear_stretch				-	black_point
+linear_stretch				_	black_point{xwhite_point}{%}}
 linewidth					-	
-liquid-rescale				-	geometry
+liquid_rescale				-	geometry
 list						-	type
 log							-	string
 loop						-	iterations
-lowlight-color				-	color
+lowlight_color				-	color
 magnify						-	
 map							-	type
 map							-	components
@@ -169,7 +169,7 @@ mask						-	filename
 mattecolor					-	color
 maximum						-	
 median						-	geometry
-mean-shift					-	widthxheight{+distance{%}}
+mean_shift					-	widthxheight{+distance{%}}
 metric						-	type
 minimum						-	
 mode						-	geometry
@@ -180,8 +180,8 @@ monitor						-
 monochrome					-	
 morph						-	frames
 mosaic						-	
-motion-blur					-	radius
-motion-blur					-	radiusxsigma+angle
+motion_blur					-	radius
+motion_blur					_	radiusxsigma+angle
 name						-	
 negate						-	
 noise						-	geometry
@@ -190,7 +190,7 @@ normalize					-
 opaque						-	color
 orient						-	image orientation
 page						-	geometry
-page						-	media[offset][{^!<>}]
+page						_	media[offset][{^!<>}]
 page						+	
 paint						-	radius
 path						-	path
@@ -210,11 +210,11 @@ profile						+	profile_name
 quality						-	value
 quantize					-	colorspace
 quiet						-	
-radial-blur					-	angle
+radial_blur					-	angle
 raise						-	thickness
-random-threshold			-	lowxhigh
-red-primary					-	x,y
-regard-warnings				-	
+random_threshold			-	lowxhigh
+red_primary					-	x,y
+regard_warnings				-	
 remap						-	filename
 region						-	geometry
 remote						-	
@@ -222,36 +222,36 @@ render						-
 repage						-	geometry
 resample					-	horizontalxvertical
 resize						-	geometry
-respect-parentheses			-	
+respect_parentheses			-	
 reverse						-	
-roll						-	{+-}x{+-}y
+roll						-	{+_}x{+_}y
 rotate						-	degrees{<}{>}
 sample						-	geometry
-sampling-factor				-	horizontal-factorxvertical-factor
+sampling_factor				-	horizontal_factorxvertical_factor
 scale						-	geometry
 scene						-	value
 screen						-	
 seed						-	
-segment						-	cluster-thresholdxsmoothing-threshold
-selective-blur				-	radius
-selective-blur				-	radiusxsigma{+threshold}
+segment						-	cluster_thresholdxsmoothing_threshold
+selective_blur				-	radius
+selective_blur				_	radiusxsigma{+threshold}
 separate					-	
-sepia-tone					-	threshold
+sepia_tone					-	threshold
 set							-	key value
 set							+	key
 shade						-	azimuthxelevation
-shadow						-	percent-opacity{xsigma}{+-}x{+-}y{%}
-shared-memory				-	
+shadow						-	percent_opacity{xsigma}{+_}x{+_}y{%}
+shared_memory				-	
 sharpen						-	radius
-sharpen						-	radiusxsigma
+sharpen						_	radiusxsigma
 shave						-	geometry
 shear						-	Xdegrees[xYdegrees]
-sigmoidal-contrast			-	contrastxmid-point
+sigmoidal_contrast			-	contrastxmid_point
 silent						-	
-similarity-threshold		-	value
+similarity_threshold		-	value
 size						-	width[xheight][+offset]
 sketch						-	radius
-sketch						-	radiusxsigma+angle
+sketch						_	radiusxsigma+angle
 smush						-	offset
 snaps						-	value
 solarize					-	threshold
@@ -260,30 +260,30 @@ spread						-	amount
 statistic					-	type geometry
 stegano						-	offset
 stereo						-	+x{+y}
-storage-type				-	type
+storage_type				-	type
 stretch						-	fontStretch
 strip						-	
 stroke						-	color
 strokewidth					-	value
 style						-	fontStyle
-subimage-search				-	
+subimage_search				-	
 swap						-	index,index
 swirl						-	degrees
 synchronize					-	
 taint						-	
-text-font					-	name
+text_font					-	name
 texture						-	filename
 threshold					-	value{%}
 thumbnail					-	geometry
 tile						-	filename
 tile						-	geometry
 tile						-	
-tile-offset					-	{+-}x{+-}y
+tile_offset					-	{+_}x{+_}y
 tint						-	value
 title						-	string
 transform					-	
 transparent					-	color
-transparent-color			-	color
+transparent_color			-	color
 transpose					-	
 transverse					-	
 treedepth					-	value
@@ -291,22 +291,22 @@ trim						-
 type						-	type
 undercolor					-	color
 update						-	seconds
-unique-colors				-	
+unique_colors				-	
 units						-	type
 unsharp						-	radius
-unsharp						-	radiusxsigma{+gain}{+threshold}
+unsharp						_	radiusxsigma{+gain}{+threshold}
 verbose						-	
 version						-	
 view						-	string
-vignette					-	radius{xsigma}{+-}x{+-}y{%}
-virtual-pixel				-	method
+vignette					-	radius{xsigma}{+_}x{+_}y{%}
+virtual_pixel				-	method
 visual						-	type
 watermark					-	brightnessxsaturation
 wave						-	amplitude
-wave						-	amplitudexwavelength
+wave						_	amplitudexwavelength
 weight						-	fontWeight
-white-point					-	x,y
-white-threshold				-	value{%}
+white_point					-	x,y
+white_threshold				-	value{%}
 window						-	id
-window-group				-	
+window_group				-	
 write						-	filename
