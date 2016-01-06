@@ -15,8 +15,8 @@ use HTML::TreeBuilder;
 
 sub build_bnf
 {
-	my($lines)		= @_;
-	my($max_length)	= 0;
+	my($debug_target, $lines)	= @_;
+	my($max_length)				= 0;
 
 	my(%bnf);
 	my($option);
@@ -57,7 +57,7 @@ sub build_bnf
 
 			if (! $lexemes{$parameters})
 			{
-				$lexemes{$parameters} = build_parameters($token, $parameters);
+				$lexemes{$parameters} = build_parameters($debug_target, $token, $parameters);
 			}
 
 			$parameters = join(' ', @{$lexemes{$parameters} });
@@ -65,12 +65,12 @@ sub build_bnf
 			if ($count == 1)
 			{
 				$tab_count	= ($token_length / 4) + 1;
-				$spacer		= "\t" x ($total_tabs - $tab_count - 1); # Perl needs \t before ::=.
+				$spacer		= "\t" x ($total_tabs - $tab_count); # Perl needs \t before ::=.
 				$s			= "${token}_rule$spacer\t::= $sign ${token}_word $parameters\t action => ${token}_action_$count";
 			}
 			else
 			{
-				$spacer		= "\t" x ($total_tabs - 1);
+				$spacer		= "\t" x $total_tabs;
 				$s			= "$spacer\t| $sign ${token}_word $parameters\t action => ${token}_action_$count";
 			}
 
@@ -88,8 +88,8 @@ sub build_bnf
 
 sub build_parameters
 {
-	my($option, $parameters)	= @_;
-	my(%special_words)			=
+	my($debug_target, $option, $parameters)	= @_;
+	my(%special_words)						=
 	(	# These contain 'x'.
 		expression	=> 1,
 		indexes		=> 1,
@@ -314,7 +314,7 @@ sub build_parameters
 			$result = $token;
 		}
 
-		say "1 !$option! !$token! !$result!" if ($token =~ /X/);
+		say "1 !$option! !$token! !$result!" if ($result =~ /$debug_target/);
 
 		push @lexeme, $result;
 	}
@@ -327,8 +327,8 @@ sub build_parameters
 
 sub format_bnf
 {
-	my($bnf, $lexemes) = @_;
-	my($max_length)		= 0;
+	my($debug_target, $bnf, $lexemes)	= @_;
+	my($max_length)						= 0;
 
 	my(%seen);
 
@@ -340,7 +340,7 @@ sub format_bnf
 			{
 				if (! $seen{$lexeme})
 				{
-					say "2 !$lexeme! !$token!" if ($token =~ /X/);
+					say "2 !$lexeme! !$token!" if ($token =~ /$debug_target/);
 
 					$seen{$token}	= 1;
 					$max_length		= length($token) if (length($token) > $max_length);
@@ -349,7 +349,7 @@ sub format_bnf
 		}
 	}
 
-	my(%lexeme_value) =
+	my(%definition_1) =
 	(
 		amount									=> 'comma_separated_integers',
 		amplitude								=> 'real_number',
@@ -360,7 +360,7 @@ sub format_bnf
 		brightness								=> 'real_number',
 		brightness_optional_saturation_hue		=> 'real_number',
 		cluster_threshold						=> 'integer',
-		color									=> 'color',
+		color									=> 'string',
 		colorspace								=> 'color_space_list',
 		comma									=> "','",
 		command									=> 'string',
@@ -382,9 +382,7 @@ sub format_bnf
 		fontWeight								=> 'string',
 		frames									=> 'integer',
 		function								=> 'string',
-		gamma									=> 'real_number',
 		geometry								=> 'geometry_string',
-		greater_than							=> "'>'",
 		height									=> 'real_number',
 		high									=> 'real_number',
 		horizontal								=> 'integer',
@@ -396,9 +394,8 @@ sub format_bnf
 		index									=> 'image_list',
 		indexes									=> 'image_list',
 		iterations								=> 'integer',
-		kernel									=> 'comma_separated_real_numbers',
+		kernel									=> 'comma_separated_reals',
 		key										=> 'string',
-		less_than								=> "'<'",
 		levels									=> 'comma_separated_integers',
 		low										=> 'real_number',
 		matrix									=> 'string',
@@ -411,12 +408,12 @@ sub format_bnf
 		optional_at_sign						=> "'\@'",
 		optional_comma_gamma					=> 'string',
 		optional_comma_white_point				=> 'string',
+		optional_x_dst_percent					=> 'real_number',
 		optional_exclamation_point				=> "'!'",
 		optional_gain							=> 'string',
 		optional_geometry_suffix				=> 'string',
 		optional_greater_than					=> "'>'",
 		optional_less_or_greater_than			=> "'<'",
-		optional_less_than						=> "'<'",
 		optional_lower_percent					=> 'string',
 		optional_offset							=> 'string',
 		optional_percent						=> "'%'",
@@ -441,14 +438,13 @@ sub format_bnf
 		port									=> 'integer',
 		profile_name							=> 'string',
 		radius									=> 'real_number',
-		radius_optional_x_sigma					=> 'real_number',
 		saturation								=> 'real_number',
 		seconds									=> 'integer',
 		sigma									=> 'real_number',
 		smoothing_threshold						=> 'real_number',
-		src_percent_optional_x_dst_percent		=> 'real_number',
+		src_percent								=> 'real_number',
 		string									=> '[a-zA-Z]+',
-		sx_rx_ry_sy_optional_tx_ty				=> 'comma_separated_real_numbers',
+		sx_rx_ry_sy_optional_tx_ty				=> 'comma_separated_reals',
 		text									=> 'string',
 		thickness								=> 'integer',
 		threshold								=> 'real_number',
@@ -463,38 +459,67 @@ sub format_bnf
 		vertical_scale							=> 'integer',
 		wavelength								=> 'real_number',
 		white_color								=> 'color',
-		white_point								=> 'string',
 		width									=> 'real_number',
 		x										=> 'integer',
 		Xdegrees								=> 'real_number',
 		y										=> 'integer',
 		Ydegrees								=> 'real_number',
 	);
-	%seen			= ();
 	my($total_tabs) = ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
 
+	push @$bnf, '# 1: Lexemes from ImageMagick command options', '';
+
+	my(%check);
 	my($spacer);
 	my($token_length, $tab_count);
 
 	for my $lexeme (sort{lc $a cmp lc $b} keys %seen)
 	{
-		$seen{$lexeme}	= 1;
+		die "Unknown lexeme '$lexeme'\n" if (! $definition_1{$lexeme});
+
+		$check{$lexeme}	= $definition_1{$lexeme};
 		$token_length	= length($lexeme);
 		$tab_count		= ($token_length / 4) + 1;
-		$spacer			= "\t" x ($total_tabs - $tab_count - 1);
+		$spacer			= "\t" x ($total_tabs - $tab_count);
 
-		die "Unknown lexeme '$lexeme'\n" if (! $lexeme_value{$lexeme});
+		say "3 !$lexeme! !$definition_1{$lexeme}!" if ($definition_1{$lexeme} =~ /$debug_target/);
 
-		say "3 !$lexeme! !$lexeme_value{$lexeme}!" if ($lexeme_value{$lexeme} =~ /X/);
-
-		push @$bnf, "$lexeme$spacer\t~ $lexeme_value{$lexeme}\n";
+		push @$bnf, "$lexeme$spacer~ $definition_1{$lexeme}\n";
 	}
 
-	# Cross-check, looking for junk left over in %lexeme_value;
+	# Cross-check, looking for junk left over in %definition_1;
 
-	for my $lexeme (sort keys %lexeme_value)
+	for my $lexeme (sort keys %definition_1)
 	{
-		die "Delete $lexeme from %lexeme_value in format_bnf()\n" if (! $seen{$lexeme});
+		die "Delete $lexeme from %definition_1\n" if (! $check{$lexeme});
+	}
+
+	my(%definition_2)	=
+	(
+		color						=> 'string',
+		color_prefix_list			=> 'string',
+		color_space_list			=> 'string',
+		comma_separated_events		=> 'string',
+		comma_separated_integers	=> 'string',
+		comma_separated_reals		=> 'string',
+		geometry_string				=> 'string',
+		image_list					=> 'string',
+		integer						=> '[\d]+',
+		offset_list					=> 'string',
+		image_list					=> 'string',
+		real_number					=> 'string',
+		string						=> '[[:print:]]',
+	);
+
+	push @$bnf, '# 2: Lexemes from option values', '';
+
+	for my $lexeme (sort keys %definition_2)
+	{
+		$token_length	= length($lexeme);
+		$tab_count		= ($token_length / 4) + 1;
+		$spacer			= "\t" x ($total_tabs - $tab_count);
+
+		push @$bnf, "$lexeme$spacer~ $definition_2{$lexeme}\n";
 	}
 
 	save_bnf($bnf);
@@ -641,7 +666,8 @@ sub save_raw_commands
 
 # ----------------------------------------------
 
+my($debug_target)	= shift || 'WFT';
 my($command)		= process_html;
-my($bnf, $lexemes)	= build_bnf($command);
+my($bnf, $lexemes)	= build_bnf($debug_target, $command);
 
-format_bnf($bnf, $lexemes);
+format_bnf($debug_target, $bnf, $lexemes);
