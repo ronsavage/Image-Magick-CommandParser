@@ -621,6 +621,7 @@ EOS
 
 	my(%done) =
 	(
+		command		=> 0,
 		decode		=> 0,
 		input_file	=> 0,
 		new			=> 0,
@@ -632,7 +633,33 @@ EOS
 	{
 		$name = $action =~ s/_action_.+//r;
 
-		if (! $done{decode} && ($action gt 'decode') )
+		if (! $done{command} && ($action gt 'command') )
+		{
+			$done{command}	= 1;
+			$code			.= <<"EOS";
+sub command_action
+{
+	my(\$cache, \@params) = \@_;
+
+	# We ignore \$params[1] since it is just the name of the action.
+
+	\$\$cache{logger} -> log(debug => 'command_action');
+	\$\$cache{items} -> push
+	({
+		params	=> [map{defined(\$_) ? \$_ : ''} \@params],
+		sign	=> '',
+		rule	=> 'command',
+	});
+
+	return \$params[0];
+
+} # End of command_action.
+
+# ------------------------------------------------
+
+EOS
+		}
+		elsif (! $done{decode} && ($action gt 'decode') )
 		{
 			$done{decode}	= 1;
 			$code			.= <<"EOS";
