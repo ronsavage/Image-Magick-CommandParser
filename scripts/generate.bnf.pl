@@ -61,8 +61,8 @@ command_and_options						::= command_name input_file_name option_rule_set
 # Warning: If you change this, also change line 571 of the source. Search for 'mogrify'.
 
 
-command_name							::= convert_command
-											| mogrify_command
+command_name							::= 'convert'	action => command_action
+											| 'mogrify'	action => command_action
 
 input_file_name							::= path_string	action => input_file_action
 input_file_name							::=				action => input_file_action
@@ -106,7 +106,7 @@ EOS
 			$action				= "${token}_action_$count";
 			$actions{$action}	= 1;
 			$parameters 		= join(' ', @{$lexemes{$parameters} });
-			$rhs				= "$sign ${token}_word $parameters";
+			$rhs				= "$sign '$token' $parameters";
 
 			next if ($seen{$rhs});
 
@@ -129,7 +129,7 @@ EOS
 		}
 	}
 
-	return (\@bnf, \%lexemes, \@option_name, \%actions);
+	return (\@bnf, \%lexemes, \%actions);
 
 } # End of build_bnf.
 
@@ -376,7 +376,7 @@ sub build_parameters
 
 sub format_bnf
 {
-	my($bnf, $lexemes, $option_name, $debug_target)	= @_;
+	my($bnf, $lexemes, $debug_target)	= @_;
 	my($max_length)									= 0;
 
 	my(%seen);
@@ -557,10 +557,8 @@ sub format_bnf
 
 	push @lexeme,
 		['comma',							','],
-		['convert_command',					'convert'],
 		['integer',							'[\d]+'],
 		['minus_sign',						'-'],
-		['mogrify_command',					'mogrify'],
 		['optional_at_sign',				'@'],
 		['optional_exclamation_point',		'!'],
 		['optional_greater_than',			'>'],
@@ -569,10 +567,6 @@ sub format_bnf
 		['optional_plus_sign_y',			'+'],
 		['plus_sign',						'+'],
 		['plus_or_minus',					'[+-]'];
-
-	# Warning: If you change '_word', also change line 105. Search for '_word'.
-
-	push @lexeme, map{["${_}_word", $_]} @$option_name;
 
 	my($value);
 
@@ -976,10 +970,10 @@ sub save_raw_commands
 
 # ----------------------------------------------
 
-my($debug_target)							= shift || 'Enter option value';
-my($command)								= process_html;
-my($bnf, $lexemes, $option_name, $actions)	= build_bnf($debug_target, $command);
+my($debug_target)				= shift || 'Enter option value';
+my($command)					= process_html;
+my($bnf, $lexemes, $actions)	= build_bnf($debug_target, $command);
 
-format_bnf($bnf, $lexemes, $option_name, $debug_target);
+format_bnf($bnf, $lexemes, $debug_target);
 
 generate_action_subs($actions);

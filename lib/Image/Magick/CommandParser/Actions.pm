@@ -1131,6 +1131,26 @@ sub combine_action_1
 
 # ------------------------------------------------
 
+sub command_action
+{
+	my($cache, @params) = @_;
+
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'command_action');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params],
+		sign	=> '',
+		rule	=> 'command',
+	});
+
+	return $params[0];
+
+} # End of command_action.
+
+# ------------------------------------------------
+
 sub comment_action_1
 {
 	my($cache, @params) = @_;
