@@ -56,7 +56,7 @@ lexeme default							= latm => 1		# Longest Acceptable Token Match.
 
 :start									::= command_and_options
 
-command_and_options						::= command_name input_file_name option_set
+command_and_options						::= command_name input_file_name option_rule_set
 
 # Warning: If you change this, also change line 571 of the source. Search for 'mogrify'.
 
@@ -67,13 +67,14 @@ command_name							::= convert_command
 input_file_name							::= path_string	action => input_file_action
 input_file_name							::=				action => input_file_action
 
+option_rule_set							::= option_rule+
 EOS
 
 	my(@option_name)	= sort keys %bnf;
 	my($option_name)	= join(' | ', map{"${_}_rule"} @option_name);
 
 	push @bnf, << "EOS";
-option_set								::= $option_name
+option_rule								::= $option_name
 EOS
 
 	for $option (sort keys %bnf)
