@@ -15,7 +15,7 @@ sub adaptive_blur_action_1
 {
 	my($cache, @params) = @_;
 
-	print "adaptive_blur_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "adaptive_blur_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -27,7 +27,7 @@ sub adaptive_resize_action_1
 {
 	my($cache, @params) = @_;
 
-	print "adaptive_resize_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "adaptive_resize_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -39,7 +39,7 @@ sub adaptive_sharpen_action_1
 {
 	my($cache, @params) = @_;
 
-	print "adaptive_sharpen_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "adaptive_sharpen_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -51,7 +51,7 @@ sub adjoin_action_1
 {
 	my($cache, @params) = @_;
 
-	print "adjoin_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "adjoin_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -63,7 +63,7 @@ sub affine_action_1
 {
 	my($cache, @params) = @_;
 
-	print "affine_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "affine_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -75,7 +75,7 @@ sub alpha_action_1
 {
 	my($cache, @params) = @_;
 
-	print "alpha_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "alpha_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -87,7 +87,7 @@ sub annotate_action_1
 {
 	my($cache, @params) = @_;
 
-	print "annotate_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "annotate_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -99,7 +99,7 @@ sub annotate_action_2
 {
 	my($cache, @params) = @_;
 
-	print "annotate_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "annotate_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -111,7 +111,7 @@ sub annotate_action_3
 {
 	my($cache, @params) = @_;
 
-	print "annotate_action_3. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "annotate_action_3. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -123,7 +123,7 @@ sub annotate_action_4
 {
 	my($cache, @params) = @_;
 
-	print "annotate_action_4. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "annotate_action_4. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -135,7 +135,7 @@ sub antialias_action_1
 {
 	my($cache, @params) = @_;
 
-	print "antialias_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "antialias_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -147,7 +147,7 @@ sub append_action_1
 {
 	my($cache, @params) = @_;
 
-	print "append_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "append_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -159,7 +159,7 @@ sub attenuate_action_1
 {
 	my($cache, @params) = @_;
 
-	print "attenuate_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "attenuate_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -171,7 +171,7 @@ sub authenticate_action_1
 {
 	my($cache, @params) = @_;
 
-	print "authenticate_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "authenticate_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -183,7 +183,7 @@ sub auto_gamma_action_1
 {
 	my($cache, @params) = @_;
 
-	print "auto_gamma_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "auto_gamma_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -195,7 +195,7 @@ sub auto_level_action_1
 {
 	my($cache, @params) = @_;
 
-	print "auto_level_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "auto_level_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -207,7 +207,7 @@ sub auto_orient_action_1
 {
 	my($cache, @params) = @_;
 
-	print "auto_orient_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "auto_orient_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -219,7 +219,7 @@ sub average_action_1
 {
 	my($cache, @params) = @_;
 
-	print "average_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "average_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -231,7 +231,7 @@ sub backdrop_action_1
 {
 	my($cache, @params) = @_;
 
-	print "backdrop_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "backdrop_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -243,7 +243,7 @@ sub background_action_1
 {
 	my($cache, @params) = @_;
 
-	print "background_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "background_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -255,7 +255,7 @@ sub bench_action_1
 {
 	my($cache, @params) = @_;
 
-	print "bench_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "bench_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -267,7 +267,7 @@ sub bias_action_1
 {
 	my($cache, @params) = @_;
 
-	print "bias_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "bias_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -279,7 +279,7 @@ sub black_point_compensation_action_1
 {
 	my($cache, @params) = @_;
 
-	print "black_point_compensation_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "black_point_compensation_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -291,7 +291,7 @@ sub black_threshold_action_1
 {
 	my($cache, @params) = @_;
 
-	print "black_threshold_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "black_threshold_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -303,7 +303,7 @@ sub blend_action_1
 {
 	my($cache, @params) = @_;
 
-	print "blend_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "blend_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -315,7 +315,7 @@ sub blue_primary_action_1
 {
 	my($cache, @params) = @_;
 
-	print "blue_primary_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "blue_primary_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -327,7 +327,7 @@ sub blue_shift_action_1
 {
 	my($cache, @params) = @_;
 
-	print "blue_shift_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "blue_shift_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -339,7 +339,7 @@ sub blur_action_1
 {
 	my($cache, @params) = @_;
 
-	print "blur_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "blur_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -351,7 +351,7 @@ sub blur_action_2
 {
 	my($cache, @params) = @_;
 
-	print "blur_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "blur_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -363,7 +363,7 @@ sub blur_action_3
 {
 	my($cache, @params) = @_;
 
-	print "blur_action_3. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "blur_action_3. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -375,7 +375,7 @@ sub border_action_1
 {
 	my($cache, @params) = @_;
 
-	print "border_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "border_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -387,7 +387,7 @@ sub bordercolor_action_1
 {
 	my($cache, @params) = @_;
 
-	print "bordercolor_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "bordercolor_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -399,7 +399,7 @@ sub borderwidth_action_1
 {
 	my($cache, @params) = @_;
 
-	print "borderwidth_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "borderwidth_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -411,7 +411,7 @@ sub brightness_contrast_action_1
 {
 	my($cache, @params) = @_;
 
-	print "brightness_contrast_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "brightness_contrast_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -423,7 +423,7 @@ sub brightness_contrast_action_2
 {
 	my($cache, @params) = @_;
 
-	print "brightness_contrast_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "brightness_contrast_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -435,7 +435,7 @@ sub cache_action_1
 {
 	my($cache, @params) = @_;
 
-	print "cache_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "cache_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -447,7 +447,7 @@ sub canny_action_1
 {
 	my($cache, @params) = @_;
 
-	print "canny_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "canny_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -459,7 +459,7 @@ sub canny_action_2
 {
 	my($cache, @params) = @_;
 
-	print "canny_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "canny_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -471,7 +471,7 @@ sub caption_action_1
 {
 	my($cache, @params) = @_;
 
-	print "caption_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "caption_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -483,7 +483,7 @@ sub cdl_action_1
 {
 	my($cache, @params) = @_;
 
-	print "cdl_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "cdl_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -495,7 +495,7 @@ sub channel_action_1
 {
 	my($cache, @params) = @_;
 
-	print "channel_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "channel_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -507,7 +507,7 @@ sub charcoal_action_1
 {
 	my($cache, @params) = @_;
 
-	print "charcoal_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "charcoal_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -519,7 +519,7 @@ sub chop_action_1
 {
 	my($cache, @params) = @_;
 
-	print "chop_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "chop_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -531,7 +531,7 @@ sub clamp_action_1
 {
 	my($cache, @params) = @_;
 
-	print "clamp_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "clamp_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -543,7 +543,7 @@ sub clip_action_1
 {
 	my($cache, @params) = @_;
 
-	print "clip_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "clip_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -555,7 +555,7 @@ sub clip_mask_action_1
 {
 	my($cache, @params) = @_;
 
-	print "clip_mask_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "clip_mask_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -567,7 +567,7 @@ sub clip_path_action_1
 {
 	my($cache, @params) = @_;
 
-	print "clip_path_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "clip_path_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -579,7 +579,7 @@ sub clone_action_1
 {
 	my($cache, @params) = @_;
 
-	print "clone_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "clone_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -591,7 +591,7 @@ sub clut_action_1
 {
 	my($cache, @params) = @_;
 
-	print "clut_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "clut_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -603,7 +603,7 @@ sub coalesce_action_1
 {
 	my($cache, @params) = @_;
 
-	print "coalesce_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "coalesce_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -615,7 +615,7 @@ sub color_matrix_action_1
 {
 	my($cache, @params) = @_;
 
-	print "color_matrix_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "color_matrix_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -627,7 +627,7 @@ sub colorize_action_1
 {
 	my($cache, @params) = @_;
 
-	print "colorize_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "colorize_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -639,7 +639,7 @@ sub colormap_action_1
 {
 	my($cache, @params) = @_;
 
-	print "colormap_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "colormap_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -651,7 +651,7 @@ sub colors_action_1
 {
 	my($cache, @params) = @_;
 
-	print "colors_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "colors_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -663,7 +663,7 @@ sub colorspace_action_1
 {
 	my($cache, @params) = @_;
 
-	print "colorspace_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "colorspace_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -675,7 +675,7 @@ sub combine_action_1
 {
 	my($cache, @params) = @_;
 
-	print "combine_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "combine_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -687,7 +687,7 @@ sub comment_action_1
 {
 	my($cache, @params) = @_;
 
-	print "comment_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "comment_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -699,7 +699,7 @@ sub compare_action_1
 {
 	my($cache, @params) = @_;
 
-	print "compare_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "compare_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -711,7 +711,7 @@ sub complex_action_1
 {
 	my($cache, @params) = @_;
 
-	print "complex_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "complex_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -723,7 +723,7 @@ sub compose_action_1
 {
 	my($cache, @params) = @_;
 
-	print "compose_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "compose_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -735,7 +735,7 @@ sub composite_action_1
 {
 	my($cache, @params) = @_;
 
-	print "composite_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "composite_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -747,7 +747,7 @@ sub compress_action_1
 {
 	my($cache, @params) = @_;
 
-	print "compress_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "compress_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -759,7 +759,7 @@ sub connected_components_action_1
 {
 	my($cache, @params) = @_;
 
-	print "connected_components_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "connected_components_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -771,7 +771,7 @@ sub contrast_action_1
 {
 	my($cache, @params) = @_;
 
-	print "contrast_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "contrast_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -783,7 +783,7 @@ sub contrast_stretch_action_1
 {
 	my($cache, @params) = @_;
 
-	print "contrast_stretch_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "contrast_stretch_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -795,7 +795,7 @@ sub contrast_stretch_action_2
 {
 	my($cache, @params) = @_;
 
-	print "contrast_stretch_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "contrast_stretch_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -807,7 +807,7 @@ sub convolve_action_1
 {
 	my($cache, @params) = @_;
 
-	print "convolve_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "convolve_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -819,7 +819,7 @@ sub copy_action_1
 {
 	my($cache, @params) = @_;
 
-	print "copy_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "copy_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -831,7 +831,7 @@ sub crop_action_1
 {
 	my($cache, @params) = @_;
 
-	print "crop_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "crop_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -843,7 +843,7 @@ sub cycle_action_1
 {
 	my($cache, @params) = @_;
 
-	print "cycle_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "cycle_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -855,7 +855,7 @@ sub debug_action_1
 {
 	my($cache, @params) = @_;
 
-	print "debug_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "debug_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -867,7 +867,7 @@ sub decipher_action_1
 {
 	my($cache, @params) = @_;
 
-	print "decipher_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "decipher_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -879,7 +879,7 @@ sub deconstruct_action_1
 {
 	my($cache, @params) = @_;
 
-	print "deconstruct_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "deconstruct_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -891,7 +891,7 @@ sub delay_action_1
 {
 	my($cache, @params) = @_;
 
-	print "delay_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "delay_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -903,7 +903,7 @@ sub delay_action_2
 {
 	my($cache, @params) = @_;
 
-	print "delay_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "delay_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -915,7 +915,7 @@ sub delete_action_1
 {
 	my($cache, @params) = @_;
 
-	print "delete_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "delete_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -927,7 +927,7 @@ sub density_action_1
 {
 	my($cache, @params) = @_;
 
-	print "density_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "density_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -939,7 +939,7 @@ sub density_action_2
 {
 	my($cache, @params) = @_;
 
-	print "density_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "density_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -951,7 +951,7 @@ sub depth_action_1
 {
 	my($cache, @params) = @_;
 
-	print "depth_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "depth_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -963,7 +963,7 @@ sub descend_action_1
 {
 	my($cache, @params) = @_;
 
-	print "descend_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "descend_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -975,7 +975,7 @@ sub deskew_action_1
 {
 	my($cache, @params) = @_;
 
-	print "deskew_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "deskew_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -987,7 +987,7 @@ sub despeckle_action_1
 {
 	my($cache, @params) = @_;
 
-	print "despeckle_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "despeckle_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -999,7 +999,7 @@ sub direction_action_1
 {
 	my($cache, @params) = @_;
 
-	print "direction_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "direction_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1011,7 +1011,7 @@ sub displace_action_1
 {
 	my($cache, @params) = @_;
 
-	print "displace_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "displace_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1023,7 +1023,7 @@ sub displace_action_2
 {
 	my($cache, @params) = @_;
 
-	print "displace_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "displace_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1035,7 +1035,7 @@ sub display_action_1
 {
 	my($cache, @params) = @_;
 
-	print "display_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "display_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1047,7 +1047,7 @@ sub dispose_action_1
 {
 	my($cache, @params) = @_;
 
-	print "dispose_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "dispose_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1059,7 +1059,7 @@ sub dissimilarity_threshold_action_1
 {
 	my($cache, @params) = @_;
 
-	print "dissimilarity_threshold_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "dissimilarity_threshold_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1071,7 +1071,7 @@ sub dissolve_action_1
 {
 	my($cache, @params) = @_;
 
-	print "dissolve_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "dissolve_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1083,7 +1083,7 @@ sub distribute_cache_action_1
 {
 	my($cache, @params) = @_;
 
-	print "distribute_cache_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "distribute_cache_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1095,7 +1095,7 @@ sub dither_action_1
 {
 	my($cache, @params) = @_;
 
-	print "dither_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "dither_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1107,7 +1107,7 @@ sub draw_action_1
 {
 	my($cache, @params) = @_;
 
-	print "draw_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "draw_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1119,7 +1119,7 @@ sub duplicate_action_1
 {
 	my($cache, @params) = @_;
 
-	print "duplicate_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "duplicate_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1131,7 +1131,7 @@ sub edge_action_1
 {
 	my($cache, @params) = @_;
 
-	print "edge_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "edge_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1143,7 +1143,7 @@ sub emboss_action_1
 {
 	my($cache, @params) = @_;
 
-	print "emboss_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "emboss_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1155,7 +1155,7 @@ sub encipher_action_1
 {
 	my($cache, @params) = @_;
 
-	print "encipher_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "encipher_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1167,7 +1167,7 @@ sub encoding_action_1
 {
 	my($cache, @params) = @_;
 
-	print "encoding_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "encoding_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1179,7 +1179,7 @@ sub endian_action_1
 {
 	my($cache, @params) = @_;
 
-	print "endian_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "endian_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1191,7 +1191,7 @@ sub enhance_action_1
 {
 	my($cache, @params) = @_;
 
-	print "enhance_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "enhance_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1203,7 +1203,7 @@ sub equalize_action_1
 {
 	my($cache, @params) = @_;
 
-	print "equalize_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "equalize_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1215,7 +1215,7 @@ sub evaluate_action_1
 {
 	my($cache, @params) = @_;
 
-	print "evaluate_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "evaluate_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1227,7 +1227,7 @@ sub evaluate_sequence_action_1
 {
 	my($cache, @params) = @_;
 
-	print "evaluate_sequence_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "evaluate_sequence_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1239,7 +1239,7 @@ sub extent_action_1
 {
 	my($cache, @params) = @_;
 
-	print "extent_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "extent_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1251,7 +1251,7 @@ sub extract_action_1
 {
 	my($cache, @params) = @_;
 
-	print "extract_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "extract_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1263,7 +1263,7 @@ sub family_action_1
 {
 	my($cache, @params) = @_;
 
-	print "family_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "family_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1275,7 +1275,7 @@ sub features_action_1
 {
 	my($cache, @params) = @_;
 
-	print "features_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "features_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1287,7 +1287,7 @@ sub fft_action_1
 {
 	my($cache, @params) = @_;
 
-	print "fft_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "fft_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1299,7 +1299,7 @@ sub fill_action_1
 {
 	my($cache, @params) = @_;
 
-	print "fill_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "fill_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1311,7 +1311,7 @@ sub filter_action_1
 {
 	my($cache, @params) = @_;
 
-	print "filter_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "filter_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1323,7 +1323,7 @@ sub flatten_action_1
 {
 	my($cache, @params) = @_;
 
-	print "flatten_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "flatten_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1335,7 +1335,7 @@ sub flip_action_1
 {
 	my($cache, @params) = @_;
 
-	print "flip_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "flip_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1347,7 +1347,7 @@ sub floodfill_action_1
 {
 	my($cache, @params) = @_;
 
-	print "floodfill_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "floodfill_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1359,7 +1359,7 @@ sub flop_action_1
 {
 	my($cache, @params) = @_;
 
-	print "flop_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "flop_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1371,7 +1371,7 @@ sub font_action_1
 {
 	my($cache, @params) = @_;
 
-	print "font_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "font_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1383,7 +1383,7 @@ sub foreground_action_1
 {
 	my($cache, @params) = @_;
 
-	print "foreground_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "foreground_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1395,7 +1395,7 @@ sub format_action_1
 {
 	my($cache, @params) = @_;
 
-	print "format_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "format_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1407,7 +1407,7 @@ sub format_action_2
 {
 	my($cache, @params) = @_;
 
-	print "format_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "format_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1419,7 +1419,7 @@ sub frame_action_1
 {
 	my($cache, @params) = @_;
 
-	print "frame_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "frame_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1431,7 +1431,7 @@ sub frame_action_2
 {
 	my($cache, @params) = @_;
 
-	print "frame_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "frame_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1443,7 +1443,7 @@ sub function_action_1
 {
 	my($cache, @params) = @_;
 
-	print "function_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "function_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1455,7 +1455,7 @@ sub fuzz_action_1
 {
 	my($cache, @params) = @_;
 
-	print "fuzz_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "fuzz_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1467,7 +1467,7 @@ sub fx_action_1
 {
 	my($cache, @params) = @_;
 
-	print "fx_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "fx_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1479,7 +1479,7 @@ sub gamma_action_1
 {
 	my($cache, @params) = @_;
 
-	print "gamma_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "gamma_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1491,7 +1491,7 @@ sub gaussian_blur_action_1
 {
 	my($cache, @params) = @_;
 
-	print "gaussian_blur_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "gaussian_blur_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1503,7 +1503,7 @@ sub gaussian_blur_action_2
 {
 	my($cache, @params) = @_;
 
-	print "gaussian_blur_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "gaussian_blur_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1515,7 +1515,7 @@ sub geometry_action_1
 {
 	my($cache, @params) = @_;
 
-	print "geometry_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "geometry_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1527,7 +1527,7 @@ sub gravity_action_1
 {
 	my($cache, @params) = @_;
 
-	print "gravity_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "gravity_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1539,7 +1539,7 @@ sub grayscale_action_1
 {
 	my($cache, @params) = @_;
 
-	print "grayscale_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "grayscale_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1551,7 +1551,7 @@ sub green_primary_action_1
 {
 	my($cache, @params) = @_;
 
-	print "green_primary_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "green_primary_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1563,7 +1563,7 @@ sub hald_clut_action_1
 {
 	my($cache, @params) = @_;
 
-	print "hald_clut_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "hald_clut_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1575,7 +1575,7 @@ sub help_action_1
 {
 	my($cache, @params) = @_;
 
-	print "help_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "help_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1587,7 +1587,7 @@ sub highlight_color_action_1
 {
 	my($cache, @params) = @_;
 
-	print "highlight_color_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "highlight_color_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1599,7 +1599,7 @@ sub hough_lines_action_1
 {
 	my($cache, @params) = @_;
 
-	print "hough_lines_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "hough_lines_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1611,7 +1611,7 @@ sub iconGeometry_action_1
 {
 	my($cache, @params) = @_;
 
-	print "iconGeometry_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "iconGeometry_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1623,7 +1623,7 @@ sub iconic_action_1
 {
 	my($cache, @params) = @_;
 
-	print "iconic_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "iconic_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1635,7 +1635,7 @@ sub identify_action_1
 {
 	my($cache, @params) = @_;
 
-	print "identify_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "identify_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1647,7 +1647,7 @@ sub ift_action_1
 {
 	my($cache, @params) = @_;
 
-	print "ift_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "ift_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1659,7 +1659,7 @@ sub immutable_action_1
 {
 	my($cache, @params) = @_;
 
-	print "immutable_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "immutable_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1671,7 +1671,7 @@ sub implode_action_1
 {
 	my($cache, @params) = @_;
 
-	print "implode_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "implode_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1683,7 +1683,7 @@ sub insert_action_1
 {
 	my($cache, @params) = @_;
 
-	print "insert_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "insert_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1695,7 +1695,7 @@ sub intensity_action_1
 {
 	my($cache, @params) = @_;
 
-	print "intensity_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "intensity_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1707,7 +1707,7 @@ sub intent_action_1
 {
 	my($cache, @params) = @_;
 
-	print "intent_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "intent_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1719,7 +1719,7 @@ sub interlace_action_1
 {
 	my($cache, @params) = @_;
 
-	print "interlace_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "interlace_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1731,7 +1731,7 @@ sub interline_spacing_action_1
 {
 	my($cache, @params) = @_;
 
-	print "interline_spacing_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "interline_spacing_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1743,7 +1743,7 @@ sub interpolate_action_1
 {
 	my($cache, @params) = @_;
 
-	print "interpolate_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "interpolate_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1755,7 +1755,7 @@ sub interword_spacing_action_1
 {
 	my($cache, @params) = @_;
 
-	print "interword_spacing_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "interword_spacing_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1767,7 +1767,7 @@ sub kerning_action_1
 {
 	my($cache, @params) = @_;
 
-	print "kerning_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "kerning_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1779,7 +1779,7 @@ sub kuwahara_action_1
 {
 	my($cache, @params) = @_;
 
-	print "kuwahara_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "kuwahara_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1791,7 +1791,7 @@ sub kuwahara_action_2
 {
 	my($cache, @params) = @_;
 
-	print "kuwahara_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "kuwahara_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1803,7 +1803,7 @@ sub label_action_1
 {
 	my($cache, @params) = @_;
 
-	print "label_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "label_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1815,7 +1815,7 @@ sub lat_action_1
 {
 	my($cache, @params) = @_;
 
-	print "lat_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "lat_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1827,7 +1827,7 @@ sub lat_action_2
 {
 	my($cache, @params) = @_;
 
-	print "lat_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "lat_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1839,7 +1839,7 @@ sub layers_action_1
 {
 	my($cache, @params) = @_;
 
-	print "layers_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "layers_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1851,7 +1851,7 @@ sub level_action_1
 {
 	my($cache, @params) = @_;
 
-	print "level_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "level_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1863,7 +1863,7 @@ sub level_colors_action_1
 {
 	my($cache, @params) = @_;
 
-	print "level_colors_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "level_colors_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1875,7 +1875,7 @@ sub limit_action_1
 {
 	my($cache, @params) = @_;
 
-	print "limit_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "limit_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1887,7 +1887,7 @@ sub linear_stretch_action_1
 {
 	my($cache, @params) = @_;
 
-	print "linear_stretch_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "linear_stretch_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1899,7 +1899,7 @@ sub linear_stretch_action_2
 {
 	my($cache, @params) = @_;
 
-	print "linear_stretch_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "linear_stretch_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1911,7 +1911,7 @@ sub linewidth_action_1
 {
 	my($cache, @params) = @_;
 
-	print "linewidth_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "linewidth_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1923,7 +1923,7 @@ sub liquid_rescale_action_1
 {
 	my($cache, @params) = @_;
 
-	print "liquid_rescale_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "liquid_rescale_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1935,7 +1935,7 @@ sub list_action_1
 {
 	my($cache, @params) = @_;
 
-	print "list_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "list_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1947,7 +1947,7 @@ sub log_action_1
 {
 	my($cache, @params) = @_;
 
-	print "log_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "log_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1959,7 +1959,7 @@ sub loop_action_1
 {
 	my($cache, @params) = @_;
 
-	print "loop_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "loop_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1971,7 +1971,7 @@ sub lowlight_color_action_1
 {
 	my($cache, @params) = @_;
 
-	print "lowlight_color_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "lowlight_color_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1983,7 +1983,7 @@ sub magnify_action_1
 {
 	my($cache, @params) = @_;
 
-	print "magnify_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "magnify_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -1995,7 +1995,7 @@ sub map_action_1
 {
 	my($cache, @params) = @_;
 
-	print "map_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "map_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2007,7 +2007,7 @@ sub map_action_2
 {
 	my($cache, @params) = @_;
 
-	print "map_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "map_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2019,7 +2019,7 @@ sub mask_action_1
 {
 	my($cache, @params) = @_;
 
-	print "mask_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "mask_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2031,7 +2031,7 @@ sub mattecolor_action_1
 {
 	my($cache, @params) = @_;
 
-	print "mattecolor_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "mattecolor_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2043,7 +2043,7 @@ sub maximum_action_1
 {
 	my($cache, @params) = @_;
 
-	print "maximum_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "maximum_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2055,7 +2055,7 @@ sub mean_shift_action_1
 {
 	my($cache, @params) = @_;
 
-	print "mean_shift_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "mean_shift_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2067,7 +2067,7 @@ sub median_action_1
 {
 	my($cache, @params) = @_;
 
-	print "median_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "median_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2079,7 +2079,7 @@ sub metric_action_1
 {
 	my($cache, @params) = @_;
 
-	print "metric_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "metric_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2091,7 +2091,7 @@ sub minimum_action_1
 {
 	my($cache, @params) = @_;
 
-	print "minimum_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "minimum_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2103,7 +2103,7 @@ sub mode_action_1
 {
 	my($cache, @params) = @_;
 
-	print "mode_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "mode_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2115,7 +2115,7 @@ sub mode_action_2
 {
 	my($cache, @params) = @_;
 
-	print "mode_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "mode_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2127,7 +2127,7 @@ sub modulate_action_1
 {
 	my($cache, @params) = @_;
 
-	print "modulate_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "modulate_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2139,7 +2139,7 @@ sub moments_action_1
 {
 	my($cache, @params) = @_;
 
-	print "moments_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "moments_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2151,7 +2151,7 @@ sub monitor_action_1
 {
 	my($cache, @params) = @_;
 
-	print "monitor_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "monitor_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2163,7 +2163,7 @@ sub monochrome_action_1
 {
 	my($cache, @params) = @_;
 
-	print "monochrome_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "monochrome_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2175,7 +2175,7 @@ sub morph_action_1
 {
 	my($cache, @params) = @_;
 
-	print "morph_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "morph_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2187,7 +2187,7 @@ sub mosaic_action_1
 {
 	my($cache, @params) = @_;
 
-	print "mosaic_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "mosaic_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2199,7 +2199,7 @@ sub motion_blur_action_1
 {
 	my($cache, @params) = @_;
 
-	print "motion_blur_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "motion_blur_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2211,7 +2211,7 @@ sub motion_blur_action_2
 {
 	my($cache, @params) = @_;
 
-	print "motion_blur_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "motion_blur_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2223,7 +2223,7 @@ sub name_action_1
 {
 	my($cache, @params) = @_;
 
-	print "name_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "name_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2235,7 +2235,7 @@ sub negate_action_1
 {
 	my($cache, @params) = @_;
 
-	print "negate_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "negate_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2257,7 +2257,7 @@ sub noise_action_1
 {
 	my($cache, @params) = @_;
 
-	print "noise_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "noise_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2269,7 +2269,7 @@ sub noise_action_2
 {
 	my($cache, @params) = @_;
 
-	print "noise_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "noise_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2281,7 +2281,7 @@ sub normalize_action_1
 {
 	my($cache, @params) = @_;
 
-	print "normalize_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "normalize_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2293,7 +2293,7 @@ sub opaque_action_1
 {
 	my($cache, @params) = @_;
 
-	print "opaque_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "opaque_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2305,7 +2305,7 @@ sub orient_action_1
 {
 	my($cache, @params) = @_;
 
-	print "orient_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "orient_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2317,7 +2317,7 @@ sub page_action_1
 {
 	my($cache, @params) = @_;
 
-	print "page_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "page_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2329,7 +2329,7 @@ sub page_action_2
 {
 	my($cache, @params) = @_;
 
-	print "page_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "page_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2341,7 +2341,7 @@ sub page_action_3
 {
 	my($cache, @params) = @_;
 
-	print "page_action_3. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "page_action_3. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2353,7 +2353,7 @@ sub paint_action_1
 {
 	my($cache, @params) = @_;
 
-	print "paint_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "paint_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2365,7 +2365,7 @@ sub path_action_1
 {
 	my($cache, @params) = @_;
 
-	print "path_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "path_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2377,7 +2377,7 @@ sub pause_action_1
 {
 	my($cache, @params) = @_;
 
-	print "pause_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "pause_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2389,7 +2389,7 @@ sub pause_action_2
 {
 	my($cache, @params) = @_;
 
-	print "pause_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "pause_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2401,7 +2401,7 @@ sub perceptible_action_1
 {
 	my($cache, @params) = @_;
 
-	print "perceptible_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "perceptible_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2413,7 +2413,7 @@ sub ping_action_1
 {
 	my($cache, @params) = @_;
 
-	print "ping_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "ping_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2425,7 +2425,7 @@ sub pointsize_action_1
 {
 	my($cache, @params) = @_;
 
-	print "pointsize_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "pointsize_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2437,7 +2437,7 @@ sub polaroid_action_1
 {
 	my($cache, @params) = @_;
 
-	print "polaroid_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "polaroid_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2449,7 +2449,7 @@ sub posterize_action_1
 {
 	my($cache, @params) = @_;
 
-	print "posterize_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "posterize_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2461,7 +2461,7 @@ sub precision_action_1
 {
 	my($cache, @params) = @_;
 
-	print "precision_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "precision_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2473,7 +2473,7 @@ sub preview_action_1
 {
 	my($cache, @params) = @_;
 
-	print "preview_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "preview_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2485,7 +2485,7 @@ sub print_action_1
 {
 	my($cache, @params) = @_;
 
-	print "print_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "print_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2497,7 +2497,7 @@ sub process_action_1
 {
 	my($cache, @params) = @_;
 
-	print "process_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "process_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2509,7 +2509,7 @@ sub profile_action_1
 {
 	my($cache, @params) = @_;
 
-	print "profile_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "profile_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2521,7 +2521,7 @@ sub profile_action_2
 {
 	my($cache, @params) = @_;
 
-	print "profile_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "profile_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2533,7 +2533,7 @@ sub quality_action_1
 {
 	my($cache, @params) = @_;
 
-	print "quality_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "quality_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2545,7 +2545,7 @@ sub quantize_action_1
 {
 	my($cache, @params) = @_;
 
-	print "quantize_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "quantize_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2557,7 +2557,7 @@ sub quiet_action_1
 {
 	my($cache, @params) = @_;
 
-	print "quiet_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "quiet_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2569,7 +2569,7 @@ sub radial_blur_action_1
 {
 	my($cache, @params) = @_;
 
-	print "radial_blur_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "radial_blur_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2581,7 +2581,7 @@ sub raise_action_1
 {
 	my($cache, @params) = @_;
 
-	print "raise_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "raise_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2593,7 +2593,7 @@ sub random_threshold_action_1
 {
 	my($cache, @params) = @_;
 
-	print "random_threshold_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "random_threshold_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2605,7 +2605,7 @@ sub red_primary_action_1
 {
 	my($cache, @params) = @_;
 
-	print "red_primary_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "red_primary_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2617,7 +2617,7 @@ sub regard_warnings_action_1
 {
 	my($cache, @params) = @_;
 
-	print "regard_warnings_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "regard_warnings_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2629,7 +2629,7 @@ sub region_action_1
 {
 	my($cache, @params) = @_;
 
-	print "region_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "region_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2641,7 +2641,7 @@ sub remap_action_1
 {
 	my($cache, @params) = @_;
 
-	print "remap_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "remap_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2653,7 +2653,7 @@ sub remote_action_1
 {
 	my($cache, @params) = @_;
 
-	print "remote_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "remote_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2665,7 +2665,7 @@ sub render_action_1
 {
 	my($cache, @params) = @_;
 
-	print "render_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "render_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2677,7 +2677,7 @@ sub repage_action_1
 {
 	my($cache, @params) = @_;
 
-	print "repage_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "repage_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2689,7 +2689,7 @@ sub resample_action_1
 {
 	my($cache, @params) = @_;
 
-	print "resample_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "resample_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2701,7 +2701,7 @@ sub resize_action_1
 {
 	my($cache, @params) = @_;
 
-	print "resize_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "resize_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2713,7 +2713,7 @@ sub respect_parentheses_action_1
 {
 	my($cache, @params) = @_;
 
-	print "respect_parentheses_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "respect_parentheses_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2725,7 +2725,7 @@ sub reverse_action_1
 {
 	my($cache, @params) = @_;
 
-	print "reverse_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "reverse_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2737,7 +2737,7 @@ sub roll_action_1
 {
 	my($cache, @params) = @_;
 
-	print "roll_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "roll_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2749,7 +2749,7 @@ sub rotate_action_1
 {
 	my($cache, @params) = @_;
 
-	print "rotate_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "rotate_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2761,7 +2761,7 @@ sub sample_action_1
 {
 	my($cache, @params) = @_;
 
-	print "sample_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "sample_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2773,7 +2773,7 @@ sub sampling_factor_action_1
 {
 	my($cache, @params) = @_;
 
-	print "sampling_factor_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "sampling_factor_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2785,7 +2785,7 @@ sub scale_action_1
 {
 	my($cache, @params) = @_;
 
-	print "scale_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "scale_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2797,7 +2797,7 @@ sub scene_action_1
 {
 	my($cache, @params) = @_;
 
-	print "scene_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "scene_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2809,7 +2809,7 @@ sub screen_action_1
 {
 	my($cache, @params) = @_;
 
-	print "screen_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "screen_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2821,7 +2821,7 @@ sub seed_action_1
 {
 	my($cache, @params) = @_;
 
-	print "seed_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "seed_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2833,7 +2833,7 @@ sub segment_action_1
 {
 	my($cache, @params) = @_;
 
-	print "segment_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "segment_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2845,7 +2845,7 @@ sub selective_blur_action_1
 {
 	my($cache, @params) = @_;
 
-	print "selective_blur_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "selective_blur_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2857,7 +2857,7 @@ sub selective_blur_action_2
 {
 	my($cache, @params) = @_;
 
-	print "selective_blur_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "selective_blur_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2869,7 +2869,7 @@ sub separate_action_1
 {
 	my($cache, @params) = @_;
 
-	print "separate_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "separate_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2881,7 +2881,7 @@ sub sepia_tone_action_1
 {
 	my($cache, @params) = @_;
 
-	print "sepia_tone_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "sepia_tone_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2893,7 +2893,7 @@ sub set_action_1
 {
 	my($cache, @params) = @_;
 
-	print "set_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "set_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2905,7 +2905,7 @@ sub set_action_2
 {
 	my($cache, @params) = @_;
 
-	print "set_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "set_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2917,7 +2917,7 @@ sub shade_action_1
 {
 	my($cache, @params) = @_;
 
-	print "shade_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "shade_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2929,7 +2929,7 @@ sub shadow_action_1
 {
 	my($cache, @params) = @_;
 
-	print "shadow_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "shadow_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2941,7 +2941,7 @@ sub shared_memory_action_1
 {
 	my($cache, @params) = @_;
 
-	print "shared_memory_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "shared_memory_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2953,7 +2953,7 @@ sub sharpen_action_1
 {
 	my($cache, @params) = @_;
 
-	print "sharpen_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "sharpen_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2965,7 +2965,7 @@ sub sharpen_action_2
 {
 	my($cache, @params) = @_;
 
-	print "sharpen_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "sharpen_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2977,7 +2977,7 @@ sub shave_action_1
 {
 	my($cache, @params) = @_;
 
-	print "shave_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "shave_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -2989,7 +2989,7 @@ sub shear_action_1
 {
 	my($cache, @params) = @_;
 
-	print "shear_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "shear_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3001,7 +3001,7 @@ sub sigmoidal_contrast_action_1
 {
 	my($cache, @params) = @_;
 
-	print "sigmoidal_contrast_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "sigmoidal_contrast_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3013,7 +3013,7 @@ sub silent_action_1
 {
 	my($cache, @params) = @_;
 
-	print "silent_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "silent_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3025,7 +3025,7 @@ sub similarity_threshold_action_1
 {
 	my($cache, @params) = @_;
 
-	print "similarity_threshold_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "similarity_threshold_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3037,7 +3037,7 @@ sub size_action_1
 {
 	my($cache, @params) = @_;
 
-	print "size_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "size_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3049,7 +3049,7 @@ sub sketch_action_1
 {
 	my($cache, @params) = @_;
 
-	print "sketch_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "sketch_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3061,7 +3061,7 @@ sub sketch_action_2
 {
 	my($cache, @params) = @_;
 
-	print "sketch_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "sketch_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3073,7 +3073,7 @@ sub smush_action_1
 {
 	my($cache, @params) = @_;
 
-	print "smush_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "smush_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3085,7 +3085,7 @@ sub snaps_action_1
 {
 	my($cache, @params) = @_;
 
-	print "snaps_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "snaps_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3097,7 +3097,7 @@ sub solarize_action_1
 {
 	my($cache, @params) = @_;
 
-	print "solarize_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "solarize_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3109,7 +3109,7 @@ sub splice_action_1
 {
 	my($cache, @params) = @_;
 
-	print "splice_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "splice_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3121,7 +3121,7 @@ sub spread_action_1
 {
 	my($cache, @params) = @_;
 
-	print "spread_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "spread_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3133,7 +3133,7 @@ sub statistic_action_1
 {
 	my($cache, @params) = @_;
 
-	print "statistic_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "statistic_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3145,7 +3145,7 @@ sub stegano_action_1
 {
 	my($cache, @params) = @_;
 
-	print "stegano_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "stegano_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3157,7 +3157,7 @@ sub stereo_action_1
 {
 	my($cache, @params) = @_;
 
-	print "stereo_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "stereo_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3169,7 +3169,7 @@ sub storage_type_action_1
 {
 	my($cache, @params) = @_;
 
-	print "storage_type_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "storage_type_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3181,7 +3181,7 @@ sub stretch_action_1
 {
 	my($cache, @params) = @_;
 
-	print "stretch_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "stretch_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3193,7 +3193,7 @@ sub strip_action_1
 {
 	my($cache, @params) = @_;
 
-	print "strip_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "strip_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3205,7 +3205,7 @@ sub stroke_action_1
 {
 	my($cache, @params) = @_;
 
-	print "stroke_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "stroke_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3217,7 +3217,7 @@ sub strokewidth_action_1
 {
 	my($cache, @params) = @_;
 
-	print "strokewidth_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "strokewidth_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3229,7 +3229,7 @@ sub style_action_1
 {
 	my($cache, @params) = @_;
 
-	print "style_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "style_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3241,7 +3241,7 @@ sub subimage_search_action_1
 {
 	my($cache, @params) = @_;
 
-	print "subimage_search_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "subimage_search_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3253,7 +3253,7 @@ sub swap_action_1
 {
 	my($cache, @params) = @_;
 
-	print "swap_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "swap_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3265,7 +3265,7 @@ sub swirl_action_1
 {
 	my($cache, @params) = @_;
 
-	print "swirl_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "swirl_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3277,7 +3277,7 @@ sub synchronize_action_1
 {
 	my($cache, @params) = @_;
 
-	print "synchronize_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "synchronize_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3289,7 +3289,7 @@ sub taint_action_1
 {
 	my($cache, @params) = @_;
 
-	print "taint_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "taint_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3301,7 +3301,7 @@ sub text_font_action_1
 {
 	my($cache, @params) = @_;
 
-	print "text_font_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "text_font_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3313,7 +3313,7 @@ sub texture_action_1
 {
 	my($cache, @params) = @_;
 
-	print "texture_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "texture_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3325,7 +3325,7 @@ sub threshold_action_1
 {
 	my($cache, @params) = @_;
 
-	print "threshold_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "threshold_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3337,7 +3337,7 @@ sub thumbnail_action_1
 {
 	my($cache, @params) = @_;
 
-	print "thumbnail_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "thumbnail_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3349,7 +3349,7 @@ sub tile_action_1
 {
 	my($cache, @params) = @_;
 
-	print "tile_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "tile_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3361,7 +3361,7 @@ sub tile_action_2
 {
 	my($cache, @params) = @_;
 
-	print "tile_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "tile_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3373,7 +3373,7 @@ sub tile_action_3
 {
 	my($cache, @params) = @_;
 
-	print "tile_action_3. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "tile_action_3. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3385,7 +3385,7 @@ sub tile_offset_action_1
 {
 	my($cache, @params) = @_;
 
-	print "tile_offset_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "tile_offset_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3397,7 +3397,7 @@ sub tint_action_1
 {
 	my($cache, @params) = @_;
 
-	print "tint_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "tint_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3409,7 +3409,7 @@ sub title_action_1
 {
 	my($cache, @params) = @_;
 
-	print "title_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "title_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3421,7 +3421,7 @@ sub transform_action_1
 {
 	my($cache, @params) = @_;
 
-	print "transform_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "transform_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3433,7 +3433,7 @@ sub transparent_action_1
 {
 	my($cache, @params) = @_;
 
-	print "transparent_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "transparent_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3445,7 +3445,7 @@ sub transparent_color_action_1
 {
 	my($cache, @params) = @_;
 
-	print "transparent_color_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "transparent_color_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3457,7 +3457,7 @@ sub transpose_action_1
 {
 	my($cache, @params) = @_;
 
-	print "transpose_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "transpose_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3469,7 +3469,7 @@ sub transverse_action_1
 {
 	my($cache, @params) = @_;
 
-	print "transverse_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "transverse_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3481,7 +3481,7 @@ sub treedepth_action_1
 {
 	my($cache, @params) = @_;
 
-	print "treedepth_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "treedepth_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3493,7 +3493,7 @@ sub trim_action_1
 {
 	my($cache, @params) = @_;
 
-	print "trim_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "trim_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3505,7 +3505,7 @@ sub type_action_1
 {
 	my($cache, @params) = @_;
 
-	print "type_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "type_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3517,7 +3517,7 @@ sub undercolor_action_1
 {
 	my($cache, @params) = @_;
 
-	print "undercolor_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "undercolor_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3529,7 +3529,7 @@ sub unique_colors_action_1
 {
 	my($cache, @params) = @_;
 
-	print "unique_colors_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "unique_colors_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3541,7 +3541,7 @@ sub units_action_1
 {
 	my($cache, @params) = @_;
 
-	print "units_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "units_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3553,7 +3553,7 @@ sub unsharp_action_1
 {
 	my($cache, @params) = @_;
 
-	print "unsharp_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "unsharp_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3565,7 +3565,7 @@ sub unsharp_action_2
 {
 	my($cache, @params) = @_;
 
-	print "unsharp_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "unsharp_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3577,7 +3577,7 @@ sub update_action_1
 {
 	my($cache, @params) = @_;
 
-	print "update_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "update_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3589,7 +3589,7 @@ sub verbose_action_1
 {
 	my($cache, @params) = @_;
 
-	print "verbose_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "verbose_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3601,7 +3601,7 @@ sub version_action_1
 {
 	my($cache, @params) = @_;
 
-	print "version_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "version_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3613,7 +3613,7 @@ sub view_action_1
 {
 	my($cache, @params) = @_;
 
-	print "view_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "view_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3625,7 +3625,7 @@ sub vignette_action_1
 {
 	my($cache, @params) = @_;
 
-	print "vignette_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "vignette_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3637,7 +3637,7 @@ sub virtual_pixel_action_1
 {
 	my($cache, @params) = @_;
 
-	print "virtual_pixel_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "virtual_pixel_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3649,7 +3649,7 @@ sub visual_action_1
 {
 	my($cache, @params) = @_;
 
-	print "visual_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "visual_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3661,7 +3661,7 @@ sub watermark_action_1
 {
 	my($cache, @params) = @_;
 
-	print "watermark_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "watermark_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3673,7 +3673,7 @@ sub wave_action_1
 {
 	my($cache, @params) = @_;
 
-	print "wave_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "wave_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3685,7 +3685,7 @@ sub wave_action_2
 {
 	my($cache, @params) = @_;
 
-	print "wave_action_2. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "wave_action_2. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3697,7 +3697,7 @@ sub weight_action_1
 {
 	my($cache, @params) = @_;
 
-	print "weight_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "weight_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3709,7 +3709,7 @@ sub white_point_action_1
 {
 	my($cache, @params) = @_;
 
-	print "white_point_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "white_point_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3721,7 +3721,7 @@ sub white_threshold_action_1
 {
 	my($cache, @params) = @_;
 
-	print "white_threshold_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "white_threshold_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3733,7 +3733,7 @@ sub window_action_1
 {
 	my($cache, @params) = @_;
 
-	print "window_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "window_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3745,7 +3745,7 @@ sub window_group_action_1
 {
 	my($cache, @params) = @_;
 
-	print "window_group_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "window_group_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 
@@ -3757,7 +3757,7 @@ sub write_action_1
 {
 	my($cache, @params) = @_;
 
-	print "write_action_1. Params: ", join(', ', @params), "\n";
+	$$cache{logger} -> log(debug => "write_action_1. Params: " . join(', ', @params) );
 
 	return $params[0];
 

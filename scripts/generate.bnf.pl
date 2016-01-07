@@ -206,7 +206,7 @@ sub build_parameters
 			# Expect:
 			# o '+x{+y}', for 'stereo'.
 
-			$result = "plus $1 optional_plus_$2";
+			$result = "plus_sign $1 optional_plus_sign_$2";
 		}
 		elsif ($token eq 'host:display[.screen]')
 		{
@@ -243,7 +243,7 @@ sub build_parameters
 			# Expect:
 			# o 'width[xheight][+offset]' for 'size'.
 
-			$result = "$1 optional_x_$2 optional_plus_$3";
+			$result = "$1 optional_x_$2 optional_plus_sign_$3";
 		}
 		elsif ($token =~ /^([a-zA-Z]+)\[([a-zA-Z]+)\]\[(.+)\]$/)
 		{
@@ -261,21 +261,21 @@ sub build_parameters
 			$field[1]	= lc $2;
 			$field[2]	= lc $3;
 
-			$result = "$field[0] optional_x_$field[1]_optional_plus_$field[2]";
+			$result = "$field[0] optional_x_$field[1]_optional_plus_sign_$field[2]";
 		}
 		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)\+([a-zA-Z]+)$/)
 		{
 			# Expect:
 			# o 'radiusxsigma+angle' for 'motion-blur'.
 
-			$result = "$1 x $2 plus $3";
+			$result = "$1 x $2 plus_sign $3";
 		}
 		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)\{\+([a-zA-Z]+)\{%}}$/)
 		{
 			# Expect:
 			# o 'widthxheight{+distance{%}}' for 'mean_shift'.
 
-			$result = "$1 x $2 optional_plus_$3 optional_percent";
+			$result = "$1 x $2 optional_plus_sign_$3 optional_percent";
 		}
 		elsif ($token =~ /^\{\+_}([a-zA-Z]+)\{\+_}([a-zA-Z]+)$/)
 		{
@@ -403,110 +403,100 @@ sub format_bnf
 		amplitude								=> 'real_number',
 		angle									=> 'real_number',
 		azimuth									=> 'real_number',
-		black_color								=> '[[:print:]]+',
-		black_point								=> '[[:print:]]+',
+		black_color								=> 'string',
+		black_point								=> 'string',
 		brightness								=> 'real_number',
 		brightness_optional_saturation_hue		=> 'real_number',
 		cluster_threshold						=> 'integer',
-		color									=> '[[:print:]]+',
+		color									=> 'string',
 		colorspace								=> 'color_space_list',
-		comma									=> "','",
-		command									=> '[[:print:]]+',
+		command									=> 'string',
 		components								=> 'color_prefix_list',
 		connectivity							=> 'integer',
 		contrast								=> 'integer',
 		count									=> 'integer',
 		degrees									=> 'real_number',
-		distance								=> '[[:print:]]+',
+		distance								=> 'string',
 		elevation								=> 'real_number',
 		epsilon									=> 'real_number',
 		events									=> 'comma_separated_events',
-		expression								=> '[[:print:]]+',
+		expression								=> 'string',
 		factor									=> 'real_number',
-		filename								=> '[[:print:]]+',
-		fontFamily								=> '[[:print:]]+',
-		fontStretch								=> '[[:print:]]+',
-		fontStyle								=> '[[:print:]]+',
-		fontWeight								=> '[[:print:]]+',
+		filename								=> 'string',
+		fontFamily								=> 'string',
+		fontStretch								=> 'string',
+		fontStyle								=> 'string',
+		fontWeight								=> 'string',
 		frames									=> 'integer',
-		function								=> '[[:print:]]+',
+		function								=> 'string',
 		geometry								=> 'geometry_string',
 		height									=> 'real_number',
 		high									=> 'real_number',
 		horizontal								=> 'integer',
 		horizontal_factor						=> 'integer',
 		horizontal_scale						=> 'integer',
-		host_display_optional_dot_screen		=> '[[:print:]]+',
-		id										=> '[[:print:]]+',
-		image									=> '[[:print:]]+',
+		host_display_optional_dot_screen		=> 'string',
+		id										=> 'string',
+		image									=> 'string',
 		index									=> 'image_list',
 		indexes									=> 'image_list',
 		iterations								=> 'integer',
 		kernel									=> 'comma_separated_reals',
-		key										=> '[[:print:]]+',
+		key										=> 'string',
 		levels									=> 'comma_separated_integers',
 		low										=> 'real_number',
-		matrix									=> '[[:print:]]+',
-		media									=> '[[:print:]]+',
-		method									=> '[[:print:]]+',
+		matrix									=> 'string',
+		media									=> 'string',
+		method									=> 'string',
 		mid_point								=> 'integer',
-		name									=> '[[:print:]]+',
+		name									=> 'string',
 		offset									=> 'offset_list',
-		operator								=> '[[:print:]]+',
-		optional_at_sign						=> "'\@'",
-		optional_comma_gamma					=> '[[:print:]]+',
-		optional_comma_white_point				=> '[[:print:]]+',
+		operator								=> 'string',
+		optional_comma_gamma					=> 'string',
+		optional_comma_white_point				=> 'string',
 		optional_x_dst_percent					=> 'real_number',
-		optional_exclamation_point				=> "'!'",
-		optional_gain							=> '[[:print:]]+',
-		optional_geometry_suffix				=> '[[:print:]]+',
-		optional_greater_than					=> "'>'",
-		optional_less_or_greater_than			=> "'<'",
-		optional_lower_percent					=> '[[:print:]]+',
-		optional_offset							=> '[[:print:]]+',
-		optional_percent						=> "'%'",
-		optional_plus_distance					=> '[[:print:]]+',
-		optional_plus_offset					=> '[[:print:]]+',
-		optional_plus_y							=> "'+'",
-		optional_threshold						=> '[[:print:]]+',
-		optional_upper_percent					=> '[[:print:]]+',
-		optional_x_contrast						=> '[[:print:]]+',
-		optional_x_height						=> '[[:print:]]+',
-		optional_x_height_optional_plus_angle	=> '[[:print:]]+',
-		optional_x_sigma						=> '[[:print:]]+',
-		optional_x_white_point					=> '[[:print:]]+',
+		optional_gain							=> 'string',
+		optional_geometry_suffix				=> 'string',
+		optional_lower_percent					=> 'string',
+		optional_offset							=> 'string',
+		optional_plus_sign_distance				=> 'string',
+		optional_plus_sign_offset				=> 'string',
+		optional_threshold						=> 'string',
+		optional_upper_percent					=> 'string',
+		optional_x_contrast						=> 'string',
+		optional_x_height						=> 'string',
+		optional_x_height_optional_plus_sign_angle	=> 'string',
+		optional_x_sigma						=> 'string',
+		optional_x_white_point					=> 'string',
 		optional_x_Ydegrees						=> 'real_number',
-		orientation								=> '[[:print:]]+',
-		parameters								=> '[[:print:]]+',
-		password								=> '[[:print:]]+',
-		path									=> '[[:print:]]+',
+		orientation								=> 'string',
+		parameters								=> 'string',
+		password								=> 'string',
+		path									=> 'string',
 		percent_opacity							=> 'real_number',
-		plus									=> "'+'",
-		plus_or_minus							=> '[+-]',
 		port									=> 'integer',
-		profile_name							=> '[[:print:]]+',
+		profile_name							=> 'string',
 		radius									=> 'real_number',
 		saturation								=> 'real_number',
 		seconds									=> 'integer',
 		sigma									=> 'real_number',
 		smoothing_threshold						=> 'real_number',
 		src_percent								=> 'real_number',
-		string									=> '[[:print:]]+',
 		sx_rx_ry_sy_optional_tx_ty				=> 'comma_separated_reals',
-		text									=> '[[:print:]]+',
+		text									=> 'string',
 		thickness								=> 'integer',
 		threshold								=> 'real_number',
 		ticks									=> 'integer',
 		ticks_per_second						=> 'integer',
 		tx										=> 'real_number',
 		ty										=> 'real_number',
-		type									=> '[[:print:]]+',
-		value									=> '[[:print:]]+',
+		type									=> 'string',
+		value									=> 'string',
 		vertical								=> 'integer',
 		vertical_factor							=> 'real_number',
 		vertical_scale							=> 'integer',
 		wavelength								=> 'real_number',
-		white_color								=> '[[:print:]]+',
+		white_color								=> 'string',
 		width									=> 'real_number',
 		x										=> 'integer',
 		Xdegrees								=> 'real_number',
@@ -515,7 +505,7 @@ sub format_bnf
 	);
 	my($total_tabs) = ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
 
-	push @$bnf, '# L0 lexemes from ImageMagick command options.', '';
+	push @$bnf, '# G1 lexemes from ImageMagick command options.', '';
 
 	my(%check);
 	my($spacer);
@@ -523,16 +513,14 @@ sub format_bnf
 
 	for my $lexeme (sort{lc $a cmp lc $b} keys %seen)
 	{
-		die "Unknown lexeme '$lexeme'\n" if (! $definition_1{$lexeme});
-
 		$check{$lexeme}	= $definition_1{$lexeme};
 		$token_length	= length($lexeme);
 		$tab_count		= ($token_length / 4) + 1;
-		$spacer			= "\t" x ($total_tabs - $tab_count);
+		$spacer			= "\t" x ($total_tabs - $tab_count - 1); # Perl needs \t before ::=.
 
-		say "3 !$lexeme! !$definition_1{$lexeme}!" if ($definition_1{$lexeme} =~ /$debug_target/);
+		# The 'if' is because some lexemes are defined a next.
 
-		push @$bnf, "$lexeme$spacer~ $definition_1{$lexeme}\n";
+		push @$bnf, "$lexeme$spacer\t::= $definition_1{$lexeme}\n" if ($definition_1{$lexeme});
 	}
 
 	# Cross-check, looking for junk left over in %definition_1;
@@ -544,62 +532,59 @@ sub format_bnf
 
 	my(%definition_2)	=
 	(
-		color_prefix_list			=> '[[:print:]]+',
-		color_space_list			=> '[[:print:]]+',
-		comma_separated_events		=> '[[:print:]]+',
-		comma_separated_integers	=> '[[:print:]]+',
-		comma_separated_reals		=> '[[:print:]]+',
-		geometry_string				=> '[[:print:]]+',
-		image_list					=> '[[:print:]]+',
-		integer						=> '[\d]+',
-		offset_list					=> '[[:print:]]+',
-		image_list					=> '[[:print:]]+',
-		minus_sign					=> "'-'",
-		plus_sign					=> "'+'",
-		real_number					=> '[[:print:]]+',
+		color_prefix_list			=> 'string',
+		color_space_list			=> 'string',
+		comma_separated_events		=> 'string',
+		comma_separated_integers	=> 'string',
+		comma_separated_reals		=> 'string',
+		geometry_string				=> 'string',
+		image_list					=> 'string',
+		offset_list					=> 'string',
+		image_list					=> 'string',
+		real_number					=> 'string'
 	);
 
-	push @$bnf, '# L0 lexemes from option parameters.', '';
+	push @$bnf, '# G1 lexemes from option parameters.', '';
 
 	for my $lexeme (sort keys %definition_2)
 	{
 		$token_length	= length($lexeme);
 		$tab_count		= ($token_length / 4) + 1;
-		$spacer			= "\t" x ($total_tabs - $tab_count);
+		$spacer			= "\t" x ($total_tabs - $tab_count - 1);
 
-		push @$bnf, "$lexeme$spacer~ $definition_2{$lexeme}\n";
+		push @$bnf, "$lexeme$spacer\t::= $definition_2{$lexeme}\n";
 	}
 
-	push @$bnf, '# L0 lexemes from ImageMagick command names.', '';
+	push @$bnf, '# L0 lexemes from option parameters.', '';
 
-	my($token);
+	my(@lexeme);
 
-	# Warning: If you change this, also change line 63. Search for 'mogrify'.
-
-	for my $lexeme (qw/convert mogrify/)
-	{
-		$token			= "${lexeme}_command";
-		$token_length	= length($token);
-		$tab_count		= ($token_length / 4) + 1;
-		$spacer			= "\t" x ($total_tabs - $tab_count);
-
-		push @$bnf, "$token$spacer~ '$lexeme'\n";
-	}
-
-	push @$bnf, '# L0 lexemes from option names.', '';
-
-	my($name);
+	push @lexeme,
+		['comma',							','],
+		['convert_command',					'convert'],
+		['integer',							'[\d]+'],
+		['minus_sign',						'-'],
+		['mogrify_command',					'mogrify'],
+		['optional_at_sign',				'@'],
+		['optional_exclamation_point',		'!'],
+		['optional_greater_than',			'>'],
+		['optional_less_or_greater_than',	'<'],
+		['optional_percent',				'%'],
+		['optional_plus_sign_y',			'+'],
+		['plus_sign',						'+'],
+		['plus_or_minus',					'[+-]'];
 
 	# Warning: If you change '_word', also change line 105. Search for '_word'.
 
-	for my $lexeme (@$option_name)
+	push @lexeme, map{["${_}_word", $_]} @$option_name;
+
+	for my $lexeme (sort{$$a[0] cmp $$b[0]} @lexeme)
 	{
-		$name			= "${lexeme}_word";
-		$token_length	= length($name);
+		$token_length	= length($$lexeme[0]);
 		$tab_count		= ($token_length / 4) + 1;
 		$spacer			= "\t" x ($total_tabs - $tab_count);
 
-		push @$bnf, "$name$spacer~ '$lexeme'\n";
+		push @$bnf, "$$lexeme[0]$spacer~ '$$lexeme[1]'\n";
 	}
 
 	$spacer = "\t" x ($total_tabs - $tab_count);
@@ -608,6 +593,9 @@ sub format_bnf
 # L0 lexemes for the boilerplate.
 
 # \\x{09} => \\t. \\x{0A} => \\n. \\x{0D} => \\r. \\x{20} => \\s.
+
+string$spacer\t~ char_set+
+char_set$spacer~ [^\\s]
 
 :discard$spacer~ whitespace
 whitespace$spacer~ [\\s]+
@@ -664,7 +652,7 @@ sub $action
 {
 	my(\$cache, \@params) = \@_;
 
-	print "$action. Params: ", join(', ', \@params), "\\n";
+	\$\$cache{logger} -> log(debug => "$action. Params: " . join(', ', \@params) );
 
 	return \$params[0];
 

@@ -88,12 +88,6 @@ sub BUILD
 		);
 	}
 
-	# 1 of 2: Initialize the action class via global variables - Yuk!
-	# The point is that we don't create an action instance.
-	# Marpa creates one but we can't get our hands on it.
-
-#	$Image::Magick::CommandParser::Actions::logger = $self -> logger;
-
 	my(@bnf) = read_lines('data/command.line.options.bnf');
 
 	$self -> grammar
@@ -142,6 +136,8 @@ sub decode_result
 		}
 	} while (@worklist);
 
+	$self -> log(debug => "Returning stack of length @{[scalar @stack]}");
+
 	return [@stack];
 
 } # End of decode_result.
@@ -164,13 +160,13 @@ sub run
 {
 	my($self)		= @_;
 	my($command)	= $self -> command;
+	my($cache)		= {logger => $self -> logger};
 
 	$self -> log(debug => "Processing '$command'");
 	$self -> recce -> read(\$command);
 
-	my($result) = $self -> recce -> value;
-
-	my($ambiguity_metric) = $self -> recce -> ambiguity_metric;
+	my($result)				= $self -> recce -> value($cache);
+	my($ambiguity_metric)	= $self -> recce -> ambiguity_metric;
 
 	if ($ambiguity_metric <= 0)
 	{
@@ -187,20 +183,20 @@ sub run
 	}
 	elsif ($ambiguity_metric == 1)
 	{
-		$self -> log(info => 'Parse is unambiguous');
+		$self -> log(debug => 'Parse is unambiguous');
 
 		for my $item (@{$self -> decode_result($$result)})
 		{
-			$self -> log("Result: '$item');
+			$self -> log(notice => "Result: '$item'");
 		}
 	}
 	else
 	{
-		$self -> log(info => 'Parse is ambiguous');
+		$self -> log(debug => 'Parse is ambiguous');
 
 		for my $item (@{$self -> decode_result($$result)})
 		{
-			$self -> log(Result: '$item'");
+			$self -> log(notice => "Result: '$item'");
 		}
 	}
 

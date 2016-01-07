@@ -73,7 +73,7 @@ blue_shift_rule							::= minus_sign blue_shift_word factor	action => blue_shift
 
 blur_rule								::= minus_sign blur_word radius	action => blur_action_1
 											| plus_sign blur_word radius x sigma	action => blur_action_2
-											| minus_sign blur_word width optional_x_height_optional_plus_angle	action => blur_action_3
+											| minus_sign blur_word width optional_x_height_optional_plus_sign_angle	action => blur_action_3
 
 border_rule								::= minus_sign border_word geometry	action => border_action_1
 
@@ -342,7 +342,7 @@ mattecolor_rule							::= minus_sign mattecolor_word color	action => mattecolor_
 
 maximum_rule							::= minus_sign maximum_word 	action => maximum_action_1
 
-mean_shift_rule							::= minus_sign mean_shift_word width x height optional_plus_distance optional_percent	action => mean_shift_action_1
+mean_shift_rule							::= minus_sign mean_shift_word width x height optional_plus_sign_distance optional_percent	action => mean_shift_action_1
 
 median_rule								::= minus_sign median_word geometry	action => median_action_1
 
@@ -366,7 +366,7 @@ morph_rule								::= minus_sign morph_word frames	action => morph_action_1
 mosaic_rule								::= minus_sign mosaic_word 	action => mosaic_action_1
 
 motion_blur_rule						::= minus_sign motion_blur_word radius	action => motion_blur_action_1
-											| plus_sign motion_blur_word radius x sigma plus angle	action => motion_blur_action_2
+											| plus_sign motion_blur_word radius x sigma plus_sign angle	action => motion_blur_action_2
 
 name_rule								::= minus_sign name_word 	action => name_action_1
 
@@ -492,10 +492,10 @@ silent_rule								::= minus_sign silent_word 	action => silent_action_1
 
 similarity_threshold_rule				::= minus_sign similarity_threshold_word value	action => similarity_threshold_action_1
 
-size_rule								::= minus_sign size_word width optional_x_height optional_plus_offset	action => size_action_1
+size_rule								::= minus_sign size_word width optional_x_height optional_plus_sign_offset	action => size_action_1
 
 sketch_rule								::= minus_sign sketch_word radius	action => sketch_action_1
-											| plus_sign sketch_word radius x sigma plus angle	action => sketch_action_2
+											| plus_sign sketch_word radius x sigma plus_sign angle	action => sketch_action_2
 
 smush_rule								::= minus_sign smush_word offset	action => smush_action_1
 
@@ -511,7 +511,7 @@ statistic_rule							::= minus_sign statistic_word type geometry	action => stati
 
 stegano_rule							::= minus_sign stegano_word offset	action => stegano_action_1
 
-stereo_rule								::= minus_sign stereo_word plus x optional_plus_y	action => stereo_action_1
+stereo_rule								::= minus_sign stereo_word plus_sign x optional_plus_sign_y	action => stereo_action_1
 
 storage_type_rule						::= minus_sign storage_type_word type	action => storage_type_action_1
 
@@ -609,830 +609,827 @@ window_group_rule						::= minus_sign window_group_word 	action => window_group_
 
 write_rule								::= minus_sign write_word filename	action => write_action_1
 
-# L0 lexemes from ImageMagick command options.
+# G1 lexemes from ImageMagick command options.
 
-amount									~ comma_separated_integers
+amount										::= comma_separated_integers
 
-amplitude								~ real_number
+amplitude									::= real_number
 
-angle									~ real_number
+angle										::= real_number
 
-azimuth									~ real_number
+azimuth										::= real_number
 
-black_color								~ [[:print:]]+
+black_color									::= string
 
-black_point								~ [[:print:]]+
+black_point									::= string
 
-brightness								~ real_number
+brightness									::= real_number
 
-brightness_optional_saturation_hue		~ real_number
+brightness_optional_saturation_hue			::= real_number
 
-cluster_threshold						~ integer
+cluster_threshold							::= integer
 
-color									~ [[:print:]]+
+color										::= string
 
-colorspace								~ color_space_list
+colorspace									::= color_space_list
 
-comma									~ ','
+command										::= string
 
-command									~ [[:print:]]+
+components									::= color_prefix_list
 
-components								~ color_prefix_list
+connectivity								::= integer
 
-connectivity							~ integer
+contrast									::= integer
 
-contrast								~ integer
+count										::= integer
 
-count									~ integer
+degrees										::= real_number
 
-degrees									~ real_number
+distance									::= string
 
-distance								~ [[:print:]]+
+elevation									::= real_number
 
-elevation								~ real_number
+epsilon										::= real_number
 
-epsilon									~ real_number
+events										::= comma_separated_events
 
-events									~ comma_separated_events
+expression									::= string
 
-expression								~ [[:print:]]+
+factor										::= real_number
 
-factor									~ real_number
+filename									::= string
 
-filename								~ [[:print:]]+
+fontFamily									::= string
 
-fontFamily								~ [[:print:]]+
+fontStretch									::= string
 
-fontStretch								~ [[:print:]]+
+fontStyle									::= string
 
-fontStyle								~ [[:print:]]+
+fontWeight									::= string
 
-fontWeight								~ [[:print:]]+
+frames										::= integer
 
-frames									~ integer
+function									::= string
 
-function								~ [[:print:]]+
+geometry									::= geometry_string
 
-geometry								~ geometry_string
+height										::= real_number
 
-height									~ real_number
+high										::= real_number
 
-high									~ real_number
+horizontal									::= integer
 
-horizontal								~ integer
+horizontal_factor							::= integer
 
-horizontal_factor						~ integer
+horizontal_scale							::= integer
 
-horizontal_scale						~ integer
+host_display_optional_dot_screen			::= string
 
-host_display_optional_dot_screen		~ [[:print:]]+
+id											::= string
 
-id										~ [[:print:]]+
+image										::= string
 
-image									~ [[:print:]]+
+index										::= image_list
 
-index									~ image_list
+indexes										::= image_list
 
-indexes									~ image_list
+iterations									::= integer
 
-iterations								~ integer
+kernel										::= comma_separated_reals
 
-kernel									~ comma_separated_reals
+key											::= string
 
-key										~ [[:print:]]+
+levels										::= comma_separated_integers
 
-levels									~ comma_separated_integers
+low											::= real_number
 
-low										~ real_number
+matrix										::= string
 
-matrix									~ [[:print:]]+
+media										::= string
 
-media									~ [[:print:]]+
+method										::= string
 
-method									~ [[:print:]]+
+mid_point									::= integer
 
-mid_point								~ integer
+name										::= string
 
-name									~ [[:print:]]+
+offset										::= offset_list
 
-offset									~ offset_list
+operator									::= string
 
-operator								~ [[:print:]]+
+optional_comma_gamma						::= string
 
-optional_at_sign						~ '@'
+optional_comma_white_point					::= string
 
-optional_comma_gamma					~ [[:print:]]+
+optional_gain								::= string
 
-optional_comma_white_point				~ [[:print:]]+
+optional_geometry_suffix					::= string
 
-optional_exclamation_point				~ '!'
+optional_lower_percent						::= string
 
-optional_gain							~ [[:print:]]+
+optional_offset								::= string
 
-optional_geometry_suffix				~ [[:print:]]+
+optional_plus_sign_distance					::= string
 
-optional_greater_than					~ '>'
+optional_plus_sign_offset					::= string
 
-optional_less_or_greater_than			~ '<'
+optional_threshold							::= string
 
-optional_lower_percent					~ [[:print:]]+
+optional_upper_percent						::= string
 
-optional_offset							~ [[:print:]]+
+optional_x_contrast							::= string
 
-optional_percent						~ '%'
+optional_x_dst_percent						::= real_number
 
-optional_plus_distance					~ [[:print:]]+
+optional_x_height							::= string
 
-optional_plus_offset					~ [[:print:]]+
+optional_x_height_optional_plus_sign_angle	::= string
 
-optional_plus_y							~ '+'
+optional_x_sigma							::= string
 
-optional_threshold						~ [[:print:]]+
+optional_x_white_point						::= string
 
-optional_upper_percent					~ [[:print:]]+
+optional_x_Ydegrees							::= real_number
 
-optional_x_contrast						~ [[:print:]]+
+orientation									::= string
 
-optional_x_dst_percent					~ real_number
+parameters									::= string
 
-optional_x_height						~ [[:print:]]+
+password									::= string
 
-optional_x_height_optional_plus_angle	~ [[:print:]]+
+path										::= string
 
-optional_x_sigma						~ [[:print:]]+
+percent_opacity								::= real_number
 
-optional_x_white_point					~ [[:print:]]+
+port										::= integer
 
-optional_x_Ydegrees						~ real_number
+profile_name								::= string
 
-orientation								~ [[:print:]]+
+radius										::= real_number
 
-parameters								~ [[:print:]]+
+saturation									::= real_number
 
-password								~ [[:print:]]+
+seconds										::= integer
 
-path									~ [[:print:]]+
+sigma										::= real_number
 
-percent_opacity							~ real_number
+smoothing_threshold							::= real_number
 
-plus									~ '+'
+src_percent									::= real_number
 
-plus_or_minus							~ [+-]
+sx_rx_ry_sy_optional_tx_ty					::= comma_separated_reals
 
-port									~ integer
+text										::= string
 
-profile_name							~ [[:print:]]+
+thickness									::= integer
 
-radius									~ real_number
+threshold									::= real_number
 
-saturation								~ real_number
+ticks										::= integer
 
-seconds									~ integer
+ticks_per_second							::= integer
 
-sigma									~ real_number
+tx											::= real_number
 
-smoothing_threshold						~ real_number
+ty											::= real_number
 
-src_percent								~ real_number
+type										::= string
 
-string									~ [[:print:]]+
+value										::= string
 
-sx_rx_ry_sy_optional_tx_ty				~ comma_separated_reals
+vertical									::= integer
 
-text									~ [[:print:]]+
+vertical_factor								::= real_number
 
-thickness								~ integer
+vertical_scale								::= integer
 
-threshold								~ real_number
+wavelength									::= real_number
 
-ticks									~ integer
+white_color									::= string
 
-ticks_per_second						~ integer
+width										::= real_number
 
-tx										~ real_number
+x											::= integer
 
-ty										~ real_number
+Xdegrees									::= real_number
 
-type									~ [[:print:]]+
+y											::= integer
 
-value									~ [[:print:]]+
+Ydegrees									::= real_number
 
-vertical								~ integer
+# G1 lexemes from option parameters.
 
-vertical_factor							~ real_number
+color_prefix_list							::= string
 
-vertical_scale							~ integer
+color_space_list							::= string
 
-wavelength								~ real_number
+comma_separated_events						::= string
 
-white_color								~ [[:print:]]+
+comma_separated_integers					::= string
 
-width									~ real_number
+comma_separated_reals						::= string
 
-x										~ integer
+geometry_string								::= string
 
-Xdegrees								~ real_number
+image_list									::= string
 
-y										~ integer
+offset_list									::= string
 
-Ydegrees								~ real_number
+real_number									::= string
 
 # L0 lexemes from option parameters.
 
-color_prefix_list						~ [[:print:]]+
+adaptive_blur_word							~ 'adaptive_blur'
 
-color_space_list						~ [[:print:]]+
+adaptive_resize_word						~ 'adaptive_resize'
 
-comma_separated_events					~ [[:print:]]+
+adaptive_sharpen_word						~ 'adaptive_sharpen'
 
-comma_separated_integers				~ [[:print:]]+
+adjoin_word									~ 'adjoin'
 
-comma_separated_reals					~ [[:print:]]+
+affine_word									~ 'affine'
 
-geometry_string							~ [[:print:]]+
+alpha_word									~ 'alpha'
 
-image_list								~ [[:print:]]+
+annotate_word								~ 'annotate'
 
-integer									~ [\d]+
+antialias_word								~ 'antialias'
 
-minus_sign								~ '-'
+append_word									~ 'append'
 
-offset_list								~ [[:print:]]+
+attenuate_word								~ 'attenuate'
 
-plus_sign								~ '+'
+authenticate_word							~ 'authenticate'
 
-real_number								~ [[:print:]]+
+auto_gamma_word								~ 'auto_gamma'
 
-# L0 lexemes from ImageMagick command names.
+auto_level_word								~ 'auto_level'
 
-convert_command							~ 'convert'
+auto_orient_word							~ 'auto_orient'
 
-mogrify_command							~ 'mogrify'
+average_word								~ 'average'
 
-# L0 lexemes from option names.
+backdrop_word								~ 'backdrop'
 
-adaptive_blur_word						~ 'adaptive_blur'
+background_word								~ 'background'
 
-adaptive_resize_word					~ 'adaptive_resize'
+bench_word									~ 'bench'
 
-adaptive_sharpen_word					~ 'adaptive_sharpen'
+bias_word									~ 'bias'
 
-adjoin_word								~ 'adjoin'
+black_point_compensation_word				~ 'black_point_compensation'
 
-affine_word								~ 'affine'
+black_threshold_word						~ 'black_threshold'
 
-alpha_word								~ 'alpha'
+blend_word									~ 'blend'
 
-annotate_word							~ 'annotate'
+blue_primary_word							~ 'blue_primary'
 
-antialias_word							~ 'antialias'
+blue_shift_word								~ 'blue_shift'
 
-append_word								~ 'append'
+blur_word									~ 'blur'
 
-attenuate_word							~ 'attenuate'
+border_word									~ 'border'
 
-authenticate_word						~ 'authenticate'
+bordercolor_word							~ 'bordercolor'
 
-auto_gamma_word							~ 'auto_gamma'
+borderwidth_word							~ 'borderwidth'
 
-auto_level_word							~ 'auto_level'
+brightness_contrast_word					~ 'brightness_contrast'
 
-auto_orient_word						~ 'auto_orient'
+cache_word									~ 'cache'
 
-average_word							~ 'average'
+canny_word									~ 'canny'
 
-backdrop_word							~ 'backdrop'
+caption_word								~ 'caption'
 
-background_word							~ 'background'
+cdl_word									~ 'cdl'
 
-bench_word								~ 'bench'
+channel_word								~ 'channel'
 
-bias_word								~ 'bias'
+charcoal_word								~ 'charcoal'
 
-black_point_compensation_word			~ 'black_point_compensation'
+chop_word									~ 'chop'
 
-black_threshold_word					~ 'black_threshold'
+clamp_word									~ 'clamp'
 
-blend_word								~ 'blend'
+clip_mask_word								~ 'clip_mask'
 
-blue_primary_word						~ 'blue_primary'
+clip_path_word								~ 'clip_path'
 
-blue_shift_word							~ 'blue_shift'
+clip_word									~ 'clip'
 
-blur_word								~ 'blur'
+clone_word									~ 'clone'
 
-border_word								~ 'border'
+clut_word									~ 'clut'
 
-bordercolor_word						~ 'bordercolor'
+coalesce_word								~ 'coalesce'
 
-borderwidth_word						~ 'borderwidth'
+color_matrix_word							~ 'color_matrix'
 
-brightness_contrast_word				~ 'brightness_contrast'
+colorize_word								~ 'colorize'
 
-cache_word								~ 'cache'
+colormap_word								~ 'colormap'
 
-canny_word								~ 'canny'
+colors_word									~ 'colors'
 
-caption_word							~ 'caption'
+colorspace_word								~ 'colorspace'
 
-cdl_word								~ 'cdl'
+combine_word								~ 'combine'
 
-channel_word							~ 'channel'
+comma										~ ','
 
-charcoal_word							~ 'charcoal'
+comment_word								~ 'comment'
 
-chop_word								~ 'chop'
+compare_word								~ 'compare'
 
-clamp_word								~ 'clamp'
+complex_word								~ 'complex'
 
-clip_word								~ 'clip'
+compose_word								~ 'compose'
 
-clip_mask_word							~ 'clip_mask'
+composite_word								~ 'composite'
 
-clip_path_word							~ 'clip_path'
+compress_word								~ 'compress'
 
-clone_word								~ 'clone'
+connected_components_word					~ 'connected_components'
 
-clut_word								~ 'clut'
+contrast_stretch_word						~ 'contrast_stretch'
 
-coalesce_word							~ 'coalesce'
+contrast_word								~ 'contrast'
 
-color_matrix_word						~ 'color_matrix'
+convert_command								~ 'convert'
 
-colorize_word							~ 'colorize'
+convolve_word								~ 'convolve'
 
-colormap_word							~ 'colormap'
+copy_word									~ 'copy'
 
-colors_word								~ 'colors'
+crop_word									~ 'crop'
 
-colorspace_word							~ 'colorspace'
+cycle_word									~ 'cycle'
 
-combine_word							~ 'combine'
+debug_word									~ 'debug'
 
-comment_word							~ 'comment'
+decipher_word								~ 'decipher'
 
-compare_word							~ 'compare'
+deconstruct_word							~ 'deconstruct'
 
-complex_word							~ 'complex'
+delay_word									~ 'delay'
 
-compose_word							~ 'compose'
+delete_word									~ 'delete'
 
-composite_word							~ 'composite'
+density_word								~ 'density'
 
-compress_word							~ 'compress'
+depth_word									~ 'depth'
 
-connected_components_word				~ 'connected_components'
+descend_word								~ 'descend'
 
-contrast_word							~ 'contrast'
+deskew_word									~ 'deskew'
 
-contrast_stretch_word					~ 'contrast_stretch'
+despeckle_word								~ 'despeckle'
 
-convolve_word							~ 'convolve'
+direction_word								~ 'direction'
 
-copy_word								~ 'copy'
+displace_word								~ 'displace'
 
-crop_word								~ 'crop'
+display_word								~ 'display'
 
-cycle_word								~ 'cycle'
+dispose_word								~ 'dispose'
 
-debug_word								~ 'debug'
+dissimilarity_threshold_word				~ 'dissimilarity_threshold'
 
-decipher_word							~ 'decipher'
+dissolve_word								~ 'dissolve'
 
-deconstruct_word						~ 'deconstruct'
+distribute_cache_word						~ 'distribute_cache'
 
-delay_word								~ 'delay'
+dither_word									~ 'dither'
 
-delete_word								~ 'delete'
+draw_word									~ 'draw'
 
-density_word							~ 'density'
+duplicate_word								~ 'duplicate'
 
-depth_word								~ 'depth'
+edge_word									~ 'edge'
 
-descend_word							~ 'descend'
+emboss_word									~ 'emboss'
 
-deskew_word								~ 'deskew'
+encipher_word								~ 'encipher'
 
-despeckle_word							~ 'despeckle'
+encoding_word								~ 'encoding'
 
-direction_word							~ 'direction'
+endian_word									~ 'endian'
 
-displace_word							~ 'displace'
+enhance_word								~ 'enhance'
 
-display_word							~ 'display'
+equalize_word								~ 'equalize'
 
-dispose_word							~ 'dispose'
+evaluate_sequence_word						~ 'evaluate_sequence'
 
-dissimilarity_threshold_word			~ 'dissimilarity_threshold'
+evaluate_word								~ 'evaluate'
 
-dissolve_word							~ 'dissolve'
+extent_word									~ 'extent'
 
-distribute_cache_word					~ 'distribute_cache'
+extract_word								~ 'extract'
 
-dither_word								~ 'dither'
+family_word									~ 'family'
 
-draw_word								~ 'draw'
+features_word								~ 'features'
 
-duplicate_word							~ 'duplicate'
+fft_word									~ 'fft'
 
-edge_word								~ 'edge'
+fill_word									~ 'fill'
 
-emboss_word								~ 'emboss'
+filter_word									~ 'filter'
 
-encipher_word							~ 'encipher'
+flatten_word								~ 'flatten'
 
-encoding_word							~ 'encoding'
+flip_word									~ 'flip'
 
-endian_word								~ 'endian'
+floodfill_word								~ 'floodfill'
 
-enhance_word							~ 'enhance'
+flop_word									~ 'flop'
 
-equalize_word							~ 'equalize'
+font_word									~ 'font'
 
-evaluate_word							~ 'evaluate'
+foreground_word								~ 'foreground'
 
-evaluate_sequence_word					~ 'evaluate_sequence'
+format_word									~ 'format'
 
-extent_word								~ 'extent'
+frame_word									~ 'frame'
 
-extract_word							~ 'extract'
+function_word								~ 'function'
 
-family_word								~ 'family'
+fuzz_word									~ 'fuzz'
 
-features_word							~ 'features'
+fx_word										~ 'fx'
 
-fft_word								~ 'fft'
+gamma_word									~ 'gamma'
 
-fill_word								~ 'fill'
+gaussian_blur_word							~ 'gaussian_blur'
 
-filter_word								~ 'filter'
+geometry_word								~ 'geometry'
 
-flatten_word							~ 'flatten'
+gravity_word								~ 'gravity'
 
-flip_word								~ 'flip'
+grayscale_word								~ 'grayscale'
 
-floodfill_word							~ 'floodfill'
+green_primary_word							~ 'green_primary'
 
-flop_word								~ 'flop'
+hald_clut_word								~ 'hald_clut'
 
-font_word								~ 'font'
+help_word									~ 'help'
 
-foreground_word							~ 'foreground'
+highlight_color_word						~ 'highlight_color'
 
-format_word								~ 'format'
+hough_lines_word							~ 'hough_lines'
 
-frame_word								~ 'frame'
+iconGeometry_word							~ 'iconGeometry'
 
-function_word							~ 'function'
+iconic_word									~ 'iconic'
 
-fuzz_word								~ 'fuzz'
+identify_word								~ 'identify'
 
-fx_word									~ 'fx'
+ift_word									~ 'ift'
 
-gamma_word								~ 'gamma'
+immutable_word								~ 'immutable'
 
-gaussian_blur_word						~ 'gaussian_blur'
+implode_word								~ 'implode'
 
-geometry_word							~ 'geometry'
+insert_word									~ 'insert'
 
-gravity_word							~ 'gravity'
+integer										~ '[\d]+'
 
-grayscale_word							~ 'grayscale'
+intensity_word								~ 'intensity'
 
-green_primary_word						~ 'green_primary'
+intent_word									~ 'intent'
 
-hald_clut_word							~ 'hald_clut'
+interlace_word								~ 'interlace'
 
-help_word								~ 'help'
+interline_spacing_word						~ 'interline_spacing'
 
-highlight_color_word					~ 'highlight_color'
+interpolate_word							~ 'interpolate'
 
-hough_lines_word						~ 'hough_lines'
+interword_spacing_word						~ 'interword_spacing'
 
-iconGeometry_word						~ 'iconGeometry'
+kerning_word								~ 'kerning'
 
-iconic_word								~ 'iconic'
+kuwahara_word								~ 'kuwahara'
 
-identify_word							~ 'identify'
+label_word									~ 'label'
 
-ift_word								~ 'ift'
+lat_word									~ 'lat'
 
-immutable_word							~ 'immutable'
+layers_word									~ 'layers'
 
-implode_word							~ 'implode'
+level_colors_word							~ 'level_colors'
 
-insert_word								~ 'insert'
+level_word									~ 'level'
 
-intensity_word							~ 'intensity'
+limit_word									~ 'limit'
 
-intent_word								~ 'intent'
+linear_stretch_word							~ 'linear_stretch'
 
-interlace_word							~ 'interlace'
+linewidth_word								~ 'linewidth'
 
-interline_spacing_word					~ 'interline_spacing'
+liquid_rescale_word							~ 'liquid_rescale'
 
-interpolate_word						~ 'interpolate'
+list_word									~ 'list'
 
-interword_spacing_word					~ 'interword_spacing'
+log_word									~ 'log'
 
-kerning_word							~ 'kerning'
+loop_word									~ 'loop'
 
-kuwahara_word							~ 'kuwahara'
+lowlight_color_word							~ 'lowlight_color'
 
-label_word								~ 'label'
+magnify_word								~ 'magnify'
 
-lat_word								~ 'lat'
+map_word									~ 'map'
 
-layers_word								~ 'layers'
+mask_word									~ 'mask'
 
-level_word								~ 'level'
+mattecolor_word								~ 'mattecolor'
 
-level_colors_word						~ 'level_colors'
+maximum_word								~ 'maximum'
 
-limit_word								~ 'limit'
+mean_shift_word								~ 'mean_shift'
 
-linear_stretch_word						~ 'linear_stretch'
+median_word									~ 'median'
 
-linewidth_word							~ 'linewidth'
+metric_word									~ 'metric'
 
-liquid_rescale_word						~ 'liquid_rescale'
+minimum_word								~ 'minimum'
 
-list_word								~ 'list'
+minus_sign									~ '-'
 
-log_word								~ 'log'
+mode_word									~ 'mode'
 
-loop_word								~ 'loop'
+modulate_word								~ 'modulate'
 
-lowlight_color_word						~ 'lowlight_color'
+mogrify_command								~ 'mogrify'
 
-magnify_word							~ 'magnify'
+moments_word								~ 'moments'
 
-map_word								~ 'map'
+monitor_word								~ 'monitor'
 
-mask_word								~ 'mask'
+monochrome_word								~ 'monochrome'
 
-mattecolor_word							~ 'mattecolor'
+morph_word									~ 'morph'
 
-maximum_word							~ 'maximum'
+mosaic_word									~ 'mosaic'
 
-mean_shift_word							~ 'mean_shift'
+motion_blur_word							~ 'motion_blur'
 
-median_word								~ 'median'
+name_word									~ 'name'
 
-metric_word								~ 'metric'
+negate_word									~ 'negate'
 
-minimum_word							~ 'minimum'
+noise_word									~ 'noise'
 
-mode_word								~ 'mode'
+normalize_word								~ 'normalize'
 
-modulate_word							~ 'modulate'
+opaque_word									~ 'opaque'
 
-moments_word							~ 'moments'
+optional_at_sign							~ '@'
 
-monitor_word							~ 'monitor'
+optional_exclamation_point					~ '!'
 
-monochrome_word							~ 'monochrome'
+optional_greater_than						~ '>'
 
-morph_word								~ 'morph'
+optional_less_or_greater_than				~ '<'
 
-mosaic_word								~ 'mosaic'
+optional_percent							~ '%'
 
-motion_blur_word						~ 'motion_blur'
+optional_plus_sign_y						~ '+'
 
-name_word								~ 'name'
+orient_word									~ 'orient'
 
-negate_word								~ 'negate'
+page_word									~ 'page'
 
-noise_word								~ 'noise'
+paint_word									~ 'paint'
 
-normalize_word							~ 'normalize'
+path_word									~ 'path'
 
-opaque_word								~ 'opaque'
+pause_word									~ 'pause'
 
-orient_word								~ 'orient'
+perceptible_word							~ 'perceptible'
 
-page_word								~ 'page'
+ping_word									~ 'ping'
 
-paint_word								~ 'paint'
+plus_or_minus								~ '[+-]'
 
-path_word								~ 'path'
+plus_sign									~ '+'
 
-pause_word								~ 'pause'
+pointsize_word								~ 'pointsize'
 
-perceptible_word						~ 'perceptible'
+polaroid_word								~ 'polaroid'
 
-ping_word								~ 'ping'
+posterize_word								~ 'posterize'
 
-pointsize_word							~ 'pointsize'
+precision_word								~ 'precision'
 
-polaroid_word							~ 'polaroid'
+preview_word								~ 'preview'
 
-posterize_word							~ 'posterize'
+print_word									~ 'print'
 
-precision_word							~ 'precision'
+process_word								~ 'process'
 
-preview_word							~ 'preview'
+profile_word								~ 'profile'
 
-print_word								~ 'print'
+quality_word								~ 'quality'
 
-process_word							~ 'process'
+quantize_word								~ 'quantize'
 
-profile_word							~ 'profile'
+quiet_word									~ 'quiet'
 
-quality_word							~ 'quality'
+radial_blur_word							~ 'radial_blur'
 
-quantize_word							~ 'quantize'
+raise_word									~ 'raise'
 
-quiet_word								~ 'quiet'
+random_threshold_word						~ 'random_threshold'
 
-radial_blur_word						~ 'radial_blur'
+red_primary_word							~ 'red_primary'
 
-raise_word								~ 'raise'
+regard_warnings_word						~ 'regard_warnings'
 
-random_threshold_word					~ 'random_threshold'
+region_word									~ 'region'
 
-red_primary_word						~ 'red_primary'
+remap_word									~ 'remap'
 
-regard_warnings_word					~ 'regard_warnings'
+remote_word									~ 'remote'
 
-region_word								~ 'region'
+render_word									~ 'render'
 
-remap_word								~ 'remap'
+repage_word									~ 'repage'
 
-remote_word								~ 'remote'
+resample_word								~ 'resample'
 
-render_word								~ 'render'
+resize_word									~ 'resize'
 
-repage_word								~ 'repage'
+respect_parentheses_word					~ 'respect_parentheses'
 
-resample_word							~ 'resample'
+reverse_word								~ 'reverse'
 
-resize_word								~ 'resize'
+roll_word									~ 'roll'
 
-respect_parentheses_word				~ 'respect_parentheses'
+rotate_word									~ 'rotate'
 
-reverse_word							~ 'reverse'
+sample_word									~ 'sample'
 
-roll_word								~ 'roll'
+sampling_factor_word						~ 'sampling_factor'
 
-rotate_word								~ 'rotate'
+scale_word									~ 'scale'
 
-sample_word								~ 'sample'
+scene_word									~ 'scene'
 
-sampling_factor_word					~ 'sampling_factor'
+screen_word									~ 'screen'
 
-scale_word								~ 'scale'
+seed_word									~ 'seed'
 
-scene_word								~ 'scene'
+segment_word								~ 'segment'
 
-screen_word								~ 'screen'
+selective_blur_word							~ 'selective_blur'
 
-seed_word								~ 'seed'
+separate_word								~ 'separate'
 
-segment_word							~ 'segment'
+sepia_tone_word								~ 'sepia_tone'
 
-selective_blur_word						~ 'selective_blur'
+set_word									~ 'set'
 
-separate_word							~ 'separate'
+shade_word									~ 'shade'
 
-sepia_tone_word							~ 'sepia_tone'
+shadow_word									~ 'shadow'
 
-set_word								~ 'set'
+shared_memory_word							~ 'shared_memory'
 
-shade_word								~ 'shade'
+sharpen_word								~ 'sharpen'
 
-shadow_word								~ 'shadow'
+shave_word									~ 'shave'
 
-shared_memory_word						~ 'shared_memory'
+shear_word									~ 'shear'
 
-sharpen_word							~ 'sharpen'
+sigmoidal_contrast_word						~ 'sigmoidal_contrast'
 
-shave_word								~ 'shave'
+silent_word									~ 'silent'
 
-shear_word								~ 'shear'
+similarity_threshold_word					~ 'similarity_threshold'
 
-sigmoidal_contrast_word					~ 'sigmoidal_contrast'
+size_word									~ 'size'
 
-silent_word								~ 'silent'
+sketch_word									~ 'sketch'
 
-similarity_threshold_word				~ 'similarity_threshold'
+smush_word									~ 'smush'
 
-size_word								~ 'size'
+snaps_word									~ 'snaps'
 
-sketch_word								~ 'sketch'
+solarize_word								~ 'solarize'
 
-smush_word								~ 'smush'
+splice_word									~ 'splice'
 
-snaps_word								~ 'snaps'
+spread_word									~ 'spread'
 
-solarize_word							~ 'solarize'
+statistic_word								~ 'statistic'
 
-splice_word								~ 'splice'
+stegano_word								~ 'stegano'
 
-spread_word								~ 'spread'
+stereo_word									~ 'stereo'
 
-statistic_word							~ 'statistic'
+storage_type_word							~ 'storage_type'
 
-stegano_word							~ 'stegano'
+stretch_word								~ 'stretch'
 
-stereo_word								~ 'stereo'
+strip_word									~ 'strip'
 
-storage_type_word						~ 'storage_type'
+stroke_word									~ 'stroke'
 
-stretch_word							~ 'stretch'
+strokewidth_word							~ 'strokewidth'
 
-strip_word								~ 'strip'
+style_word									~ 'style'
 
-stroke_word								~ 'stroke'
+subimage_search_word						~ 'subimage_search'
 
-strokewidth_word						~ 'strokewidth'
+swap_word									~ 'swap'
 
-style_word								~ 'style'
+swirl_word									~ 'swirl'
 
-subimage_search_word					~ 'subimage_search'
+synchronize_word							~ 'synchronize'
 
-swap_word								~ 'swap'
+taint_word									~ 'taint'
 
-swirl_word								~ 'swirl'
+text_font_word								~ 'text_font'
 
-synchronize_word						~ 'synchronize'
+texture_word								~ 'texture'
 
-taint_word								~ 'taint'
+threshold_word								~ 'threshold'
 
-text_font_word							~ 'text_font'
+thumbnail_word								~ 'thumbnail'
 
-texture_word							~ 'texture'
+tile_offset_word							~ 'tile_offset'
 
-threshold_word							~ 'threshold'
+tile_word									~ 'tile'
 
-thumbnail_word							~ 'thumbnail'
+tint_word									~ 'tint'
 
-tile_word								~ 'tile'
+title_word									~ 'title'
 
-tile_offset_word						~ 'tile_offset'
+transform_word								~ 'transform'
 
-tint_word								~ 'tint'
+transparent_color_word						~ 'transparent_color'
 
-title_word								~ 'title'
+transparent_word							~ 'transparent'
 
-transform_word							~ 'transform'
+transpose_word								~ 'transpose'
 
-transparent_word						~ 'transparent'
+transverse_word								~ 'transverse'
 
-transparent_color_word					~ 'transparent_color'
+treedepth_word								~ 'treedepth'
 
-transpose_word							~ 'transpose'
+trim_word									~ 'trim'
 
-transverse_word							~ 'transverse'
+type_word									~ 'type'
 
-treedepth_word							~ 'treedepth'
+undercolor_word								~ 'undercolor'
 
-trim_word								~ 'trim'
+unique_colors_word							~ 'unique_colors'
 
-type_word								~ 'type'
+units_word									~ 'units'
 
-undercolor_word							~ 'undercolor'
+unsharp_word								~ 'unsharp'
 
-unique_colors_word						~ 'unique_colors'
+update_word									~ 'update'
 
-units_word								~ 'units'
+verbose_word								~ 'verbose'
 
-unsharp_word							~ 'unsharp'
+version_word								~ 'version'
 
-update_word								~ 'update'
+view_word									~ 'view'
 
-verbose_word							~ 'verbose'
+vignette_word								~ 'vignette'
 
-version_word							~ 'version'
+virtual_pixel_word							~ 'virtual_pixel'
 
-view_word								~ 'view'
+visual_word									~ 'visual'
 
-vignette_word							~ 'vignette'
+watermark_word								~ 'watermark'
 
-virtual_pixel_word						~ 'virtual_pixel'
+wave_word									~ 'wave'
 
-visual_word								~ 'visual'
+weight_word									~ 'weight'
 
-watermark_word							~ 'watermark'
+white_point_word							~ 'white_point'
 
-wave_word								~ 'wave'
+white_threshold_word						~ 'white_threshold'
 
-weight_word								~ 'weight'
+window_group_word							~ 'window_group'
 
-white_point_word						~ 'white_point'
+window_word									~ 'window'
 
-white_threshold_word					~ 'white_threshold'
-
-window_word								~ 'window'
-
-window_group_word						~ 'window_group'
-
-write_word								~ 'write'
+write_word									~ 'write'
 
 # L0 lexemes for the boilerplate.
 
 # \x{09} => \t. \x{0A} => \n. \x{0D} => \r. \x{20} => \s.
 
-:discard								~ whitespace
-whitespace								~ [\s]+
+string										~ char_set+
+char_set									~ [^\s]
+
+:discard									~ whitespace
+whitespace									~ [\s]+
 
