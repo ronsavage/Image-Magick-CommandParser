@@ -34,18 +34,7 @@ sub build_bnf
 			};
 	}
 
-	$max_length		+= 5; # 5 = length('_rule').
-	my($total_tabs)	= ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
-
-	my($action, %actions);
 	my(@bnf);
-	my($count);
-	my($item);
-	my(%lexemes);
-	my($parameters);
-	my($rhs);
-	my($sign, $spacer, $s, %seen);
-	my($token, $token_length, $tab_count);
 
 	push @bnf, << "EOS";
 :default								::= action => ::first
@@ -58,9 +47,6 @@ lexeme default							= latm => 1		# Longest Acceptable Token Match.
 
 command_and_options						::= command_name input_file_name option_rule_set
 
-# Warning: If you change this, also change line 571 of the source. Search for 'mogrify'.
-
-
 command_name							::= 'convert'	action => command_action
 											| 'mogrify'	action => command_action
 
@@ -72,6 +58,18 @@ EOS
 
 	my(@option_name)	= sort keys %bnf;
 	my($option_name)	= join(' | ', map{"${_}_rule"} @option_name);
+	$max_length			+= 5; # 5 = length('_rule').
+	my($total_tabs)		= ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
+
+	my($action, %actions);
+	my($count);
+	my($item);
+	my(%lexemes);
+	my($parameters);
+	my($rhs);
+	my($sign, $spacer, $s, %seen);
+	my($token, $token_length, $tab_count);
+	my($word);
 
 	push @bnf, << "EOS";
 option_rule								::= $option_name
@@ -106,7 +104,8 @@ EOS
 			$action				= "${token}_action_$count";
 			$actions{$action}	= 1;
 			$parameters 		= join(' ', @{$lexemes{$parameters} });
-			$rhs				= "$sign '$token' $parameters";
+			$word				= $token =~ s/_/-/gr;
+			$rhs				= "$sign '$word' $parameters";
 
 			next if ($seen{$rhs});
 
