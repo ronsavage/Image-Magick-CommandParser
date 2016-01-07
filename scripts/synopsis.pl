@@ -9,4 +9,11 @@ use Image::Magick::CommandParser;
 
 # ----------------------------------------------
 
-Image::Magick::CommandParser -> new -> run;
+# Run with an extremely simple command.
+
+Image::Magick::CommandParser -> new
+(
+#	command		=> 'convert logo: -type Bilevel',
+	command		=> 'convert -type Bilevel',
+	maxlevel	=> 'debug',
+) -> run;

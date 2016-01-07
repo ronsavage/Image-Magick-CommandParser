@@ -9,11 +9,21 @@ use File::Slurper 'read_lines';
 
 use Image::Magick::CommandParser::Actions;
 
+use Log::Handler;
+
 use Marpa::R2;
 
 use Moo;
 
 use Types::Standard qw/Any Str/;
+
+has command =>
+(
+	default  => sub{return ''},
+	is       => 'rw',
+	isa      => Str,
+	required => 0,
+);
 
 has grammar =>
 (
@@ -23,19 +33,27 @@ has grammar =>
 	required => 0,
 );
 
-has input_file_name =>
-(
-	default  => sub{return ''},
-	is       => 'rw',
-	isa      => Str,
-	required => 0,
-);
-
 has logger =>
 (
 	default  => sub{return undef},
 	is       => 'rw',
 	isa      => Any,
+	required => 0,
+);
+
+has maxlevel =>
+(
+	default  => sub{return 'notice'},
+	is       => 'rw',
+	isa      => Str,
+	required => 0,
+);
+
+has minlevel =>
+(
+	default  => sub{return 'error'},
+	is       => 'rw',
+	isa      => Str,
 	required => 0,
 );
 
@@ -54,6 +72,21 @@ our $VERSION = '1.00';
 sub BUILD
 {
 	my($self) = @_;
+
+	if (! defined $self -> logger)
+	{
+		$self -> logger(Log::Handler -> new);
+		$self -> logger -> add
+		(
+			screen =>
+			{
+				maxlevel       => $self -> maxlevel,
+				message_layout => '%m',
+				minlevel       => $self -> minlevel,
+				utf8           => 1,
+			}
+		);
+	}
 
 	# 1 of 2: Initialize the action class via global variables - Yuk!
 	# The point is that we don't create an action instance.
@@ -129,31 +162,48 @@ sub log
 
 sub run
 {
-	my($self)	= @_;
-	my($value)	= 'convert -type test';
+	my($self)		= @_;
+	my($command)	= $self -> command;
 
-	$self -> recce -> read(\$value);
+	$self -> log(debug => "Processing '$command'");
+	$self -> recce -> read(\$command);
 
 	my($result) = $self -> recce -> value;
 
-	die "Marpa's parse failed\n" if (! defined $result);
+	my($ambiguity_metric) = $self -> recce -> ambiguity_metric;
 
-	for my $item (@{$self -> decode_result($$result)})
+	if ($ambiguity_metric <= 0)
 	{
-		if ($$item{type} eq 'command')
-		{
-			$self -> new_item($$item{type}, $$item{name}, '-');
+		my($line, $column)	= $self -> recce -> line_column();
+		my($whole_length)	= length $command;
+		my($suffix)			= substr($command, ($whole_length - 100) );
+		my($suffix_length)	= length $suffix;
+		my($s)				= $suffix_length == 1 ? 'char' : "$suffix_length chars";
+		my($message)		= "Call to ambiguity_metric() returned $ambiguity_metric (i.e. an error). \n"
+			. "Marpa exited at (line, column) = ($line, $column) within the input string. \n"
+			. "Input length: $whole_length. Last $s of input: '$suffix'";
 
-			for my $param (@{$self -> decode_result($$item{value})})
-			{
-				$self -> new_item($$param{type}, $$param{name}, $$param{value});
-			}
-		}
-		else
+		$self -> log(error => "Parse failed. $message");
+	}
+	elsif ($ambiguity_metric == 1)
+	{
+		$self -> log(info => 'Parse is unambiguous');
+
+		for my $item (@{$self -> decode_result($$result)})
 		{
-			$self -> new_item($$item{type}, $$item{name}, $$item{value});
+			$self -> log("Result: '$item');
 		}
 	}
+	else
+	{
+		$self -> log(info => 'Parse is ambiguous');
+
+		for my $item (@{$self -> decode_result($$result)})
+		{
+			$self -> log(Result: '$item'");
+		}
+	}
+
 
 	# Return 0 for success and 1 for failure.
 
