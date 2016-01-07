@@ -1,4 +1,4 @@
-:default								::= action => [values]
+:default								::= action => ::first
 
 lexeme default							= latm => 1		# Longest Acceptable Token Match.
 
@@ -6,8 +6,7 @@ lexeme default							= latm => 1		# Longest Acceptable Token Match.
 
 :start									::= command_and_options
 
-#command_and_options						::= command_name input_file_name option_set
-command_and_options						::= command_name option_set
+command_and_options						::= command_name input_file_name option_set
 
 # Warning: If you change this, also change line 571 of the source. Search for 'mogrify'.
 
@@ -15,16 +14,17 @@ command_and_options						::= command_name option_set
 command_name							::= convert_command
 											| mogrify_command
 
-#input_file_name							::= string
+input_file_name							::= path_string	action => input_file_action
+input_file_name							::=				action => input_file_action
 
 
 option_set								::= adaptive_blur_rule | adaptive_resize_rule | adaptive_sharpen_rule | adjoin_rule | affine_rule | alpha_rule | annotate_rule | antialias_rule | append_rule | attenuate_rule | authenticate_rule | auto_gamma_rule | auto_level_rule | auto_orient_rule | average_rule | backdrop_rule | background_rule | bench_rule | bias_rule | black_point_compensation_rule | black_threshold_rule | blend_rule | blue_primary_rule | blue_shift_rule | blur_rule | border_rule | bordercolor_rule | borderwidth_rule | brightness_contrast_rule | cache_rule | canny_rule | caption_rule | cdl_rule | channel_rule | charcoal_rule | chop_rule | clamp_rule | clip_rule | clip_mask_rule | clip_path_rule | clone_rule | clut_rule | coalesce_rule | color_matrix_rule | colorize_rule | colormap_rule | colors_rule | colorspace_rule | combine_rule | comment_rule | compare_rule | complex_rule | compose_rule | composite_rule | compress_rule | connected_components_rule | contrast_rule | contrast_stretch_rule | convolve_rule | copy_rule | crop_rule | cycle_rule | debug_rule | decipher_rule | deconstruct_rule | delay_rule | delete_rule | density_rule | depth_rule | descend_rule | deskew_rule | despeckle_rule | direction_rule | displace_rule | display_rule | dispose_rule | dissimilarity_threshold_rule | dissolve_rule | distribute_cache_rule | dither_rule | draw_rule | duplicate_rule | edge_rule | emboss_rule | encipher_rule | encoding_rule | endian_rule | enhance_rule | equalize_rule | evaluate_rule | evaluate_sequence_rule | extent_rule | extract_rule | family_rule | features_rule | fft_rule | fill_rule | filter_rule | flatten_rule | flip_rule | floodfill_rule | flop_rule | font_rule | foreground_rule | format_rule | frame_rule | function_rule | fuzz_rule | fx_rule | gamma_rule | gaussian_blur_rule | geometry_rule | gravity_rule | grayscale_rule | green_primary_rule | hald_clut_rule | help_rule | highlight_color_rule | hough_lines_rule | iconGeometry_rule | iconic_rule | identify_rule | ift_rule | immutable_rule | implode_rule | insert_rule | intensity_rule | intent_rule | interlace_rule | interline_spacing_rule | interpolate_rule | interword_spacing_rule | kerning_rule | kuwahara_rule | label_rule | lat_rule | layers_rule | level_rule | level_colors_rule | limit_rule | linear_stretch_rule | linewidth_rule | liquid_rescale_rule | list_rule | log_rule | loop_rule | lowlight_color_rule | magnify_rule | map_rule | mask_rule | mattecolor_rule | maximum_rule | mean_shift_rule | median_rule | metric_rule | minimum_rule | mode_rule | modulate_rule | moments_rule | monitor_rule | monochrome_rule | morph_rule | mosaic_rule | motion_blur_rule | name_rule | negate_rule | noise_rule | normalize_rule | opaque_rule | orient_rule | page_rule | paint_rule | path_rule | pause_rule | perceptible_rule | ping_rule | pointsize_rule | polaroid_rule | posterize_rule | precision_rule | preview_rule | print_rule | process_rule | profile_rule | quality_rule | quantize_rule | quiet_rule | radial_blur_rule | raise_rule | random_threshold_rule | red_primary_rule | regard_warnings_rule | region_rule | remap_rule | remote_rule | render_rule | repage_rule | resample_rule | resize_rule | respect_parentheses_rule | reverse_rule | roll_rule | rotate_rule | sample_rule | sampling_factor_rule | scale_rule | scene_rule | screen_rule | seed_rule | segment_rule | selective_blur_rule | separate_rule | sepia_tone_rule | set_rule | shade_rule | shadow_rule | shared_memory_rule | sharpen_rule | shave_rule | shear_rule | sigmoidal_contrast_rule | silent_rule | similarity_threshold_rule | size_rule | sketch_rule | smush_rule | snaps_rule | solarize_rule | splice_rule | spread_rule | statistic_rule | stegano_rule | stereo_rule | storage_type_rule | stretch_rule | strip_rule | stroke_rule | strokewidth_rule | style_rule | subimage_search_rule | swap_rule | swirl_rule | synchronize_rule | taint_rule | text_font_rule | texture_rule | threshold_rule | thumbnail_rule | tile_rule | tile_offset_rule | tint_rule | title_rule | transform_rule | transparent_rule | transparent_color_rule | transpose_rule | transverse_rule | treedepth_rule | trim_rule | type_rule | undercolor_rule | unique_colors_rule | units_rule | unsharp_rule | update_rule | verbose_rule | version_rule | view_rule | vignette_rule | virtual_pixel_rule | visual_rule | watermark_rule | wave_rule | weight_rule | white_point_rule | white_threshold_rule | window_rule | window_group_rule | write_rule
 
-adaptive_blur_rule						::= minus_sign adaptive_blur_word radius optional_x_sigma	action => adaptive_blur_action_1
+adaptive_blur_rule						::= minus_sign adaptive_blur_word radius	action => adaptive_blur_action_1
 
 adaptive_resize_rule					::= minus_sign adaptive_resize_word geometry	action => adaptive_resize_action_1
 
-adaptive_sharpen_rule					::= minus_sign adaptive_sharpen_word radius optional_x_sigma	action => adaptive_sharpen_action_1
+adaptive_sharpen_rule					::= minus_sign adaptive_sharpen_word radius	action => adaptive_sharpen_action_1
 
 adjoin_rule								::= minus_sign adjoin_word 	action => adjoin_action_1
 
@@ -73,7 +73,7 @@ blue_shift_rule							::= minus_sign blue_shift_word factor	action => blue_shift
 
 blur_rule								::= minus_sign blur_word radius	action => blur_action_1
 											| plus_sign blur_word radius x sigma	action => blur_action_2
-											| minus_sign blur_word width optional_x_height_optional_plus_sign_angle	action => blur_action_3
+											| minus_sign blur_word width	action => blur_action_3
 
 border_rule								::= minus_sign border_word geometry	action => border_action_1
 
@@ -82,7 +82,7 @@ bordercolor_rule						::= minus_sign bordercolor_word color	action => bordercolo
 borderwidth_rule						::= minus_sign borderwidth_word geometry	action => borderwidth_action_1
 
 brightness_contrast_rule				::= minus_sign brightness_contrast_word brightness	action => brightness_contrast_action_1
-											| plus_sign brightness_contrast_word brightness optional_percent optional_x_contrast optional_percent	action => brightness_contrast_action_2
+											| plus_sign brightness_contrast_word brightness optional_percent	action => brightness_contrast_action_2
 
 cache_rule								::= minus_sign cache_word threshold	action => cache_action_1
 
@@ -142,7 +142,7 @@ connected_components_rule				::= minus_sign connected_components_word connectivi
 contrast_rule							::= minus_sign contrast_word 	action => contrast_action_1
 
 contrast_stretch_rule					::= minus_sign contrast_stretch_word black_point	action => contrast_stretch_action_1
-											| plus_sign contrast_stretch_word black_point optional_percent optional_x_white_point optional_percent	action => contrast_stretch_action_2
+											| plus_sign contrast_stretch_word black_point optional_percent	action => contrast_stretch_action_2
 
 convolve_rule							::= minus_sign convolve_word kernel	action => convolve_action_1
 
@@ -185,7 +185,7 @@ dispose_rule							::= minus_sign dispose_word method	action => dispose_action_1
 
 dissimilarity_threshold_rule			::= minus_sign dissimilarity_threshold_word value	action => dissimilarity_threshold_action_1
 
-dissolve_rule							::= minus_sign dissolve_word src_percent optional_x_dst_percent	action => dissolve_action_1
+dissolve_rule							::= minus_sign dissolve_word src_percent	action => dissolve_action_1
 
 distribute_cache_rule					::= minus_sign distribute_cache_word port	action => distribute_cache_action_1
 
@@ -317,7 +317,7 @@ level_colors_rule						::= minus_sign level_colors_word black_color comma white_
 limit_rule								::= minus_sign limit_word type value	action => limit_action_1
 
 linear_stretch_rule						::= minus_sign linear_stretch_word black_point	action => linear_stretch_action_1
-											| plus_sign linear_stretch_word black_point optional_percent optional_x_white_point optional_percent	action => linear_stretch_action_2
+											| plus_sign linear_stretch_word black_point optional_percent	action => linear_stretch_action_2
 
 linewidth_rule							::= minus_sign linewidth_word 	action => linewidth_action_1
 
@@ -475,7 +475,7 @@ set_rule								::= minus_sign set_word key value	action => set_action_1
 
 shade_rule								::= minus_sign shade_word azimuth x elevation	action => shade_action_1
 
-shadow_rule								::= minus_sign shadow_word percent_opacity optional_x_sigma plus_or_minus x plus_or_minus y optional_percent	action => shadow_action_1
+shadow_rule								::= minus_sign shadow_word percent_opacity plus_or_minus x plus_or_minus y optional_percent	action => shadow_action_1
 
 shared_memory_rule						::= minus_sign shared_memory_word 	action => shared_memory_action_1
 
@@ -484,7 +484,7 @@ sharpen_rule							::= minus_sign sharpen_word radius	action => sharpen_action_1
 
 shave_rule								::= minus_sign shave_word geometry	action => shave_action_1
 
-shear_rule								::= minus_sign shear_word Xdegrees optional_x_Ydegrees	action => shear_action_1
+shear_rule								::= minus_sign shear_word Xdegrees	action => shear_action_1
 
 sigmoidal_contrast_rule					::= minus_sign sigmoidal_contrast_word contrast x mid_point	action => sigmoidal_contrast_action_1
 
@@ -492,7 +492,7 @@ silent_rule								::= minus_sign silent_word 	action => silent_action_1
 
 similarity_threshold_rule				::= minus_sign similarity_threshold_word value	action => similarity_threshold_action_1
 
-size_rule								::= minus_sign size_word width optional_x_height optional_plus_sign_offset	action => size_action_1
+size_rule								::= minus_sign size_word width optional_canvas_palette	action => size_action_1
 
 sketch_rule								::= minus_sign sketch_word radius	action => sketch_action_1
 											| plus_sign sketch_word radius x sigma plus_sign angle	action => sketch_action_2
@@ -586,7 +586,7 @@ version_rule							::= minus_sign version_word 	action => version_action_1
 
 view_rule								::= minus_sign view_word string	action => view_action_1
 
-vignette_rule							::= minus_sign vignette_word radius optional_x_sigma plus_or_minus x plus_or_minus y optional_percent	action => vignette_action_1
+vignette_rule							::= minus_sign vignette_word radius plus_or_minus x plus_or_minus y optional_percent	action => vignette_action_1
 
 virtual_pixel_rule						::= minus_sign virtual_pixel_word method	action => virtual_pixel_action_1
 
@@ -611,825 +611,812 @@ write_rule								::= minus_sign write_word filename	action => write_action_1
 
 # G1 lexemes from ImageMagick command options.
 
-amount										::= comma_separated_integers
+amount									::= comma_separated_integers
 
-amplitude									::= real_number
+amplitude								::= real_number
 
-angle										::= real_number
+angle									::= real_number
 
-azimuth										::= real_number
+azimuth									::= real_number
 
-black_color									::= string
+black_color								::= string
 
-black_point									::= string
+black_point								::= string
 
-brightness									::= real_number
+brightness								::= real_number
 
-brightness_optional_saturation_hue			::= real_number
+brightness_optional_saturation_hue		::= real_number
 
-cluster_threshold							::= integer
+cluster_threshold						::= integer
 
-color										::= string
+color									::= string
 
-colorspace									::= color_space_list
+colorspace								::= color_space_list
 
-command										::= string
+command									::= string
 
-components									::= color_prefix_list
+components								::= color_prefix_list
 
-connectivity								::= integer
+connectivity							::= integer
 
-contrast									::= integer
+contrast								::= integer
 
-count										::= integer
+count									::= integer
 
-degrees										::= real_number
+degrees									::= real_number
 
-distance									::= string
+distance								::= string
 
-elevation									::= real_number
+elevation								::= real_number
 
-epsilon										::= real_number
+epsilon									::= real_number
 
-events										::= comma_separated_events
+events									::= comma_separated_events
 
-expression									::= string
+expression								::= string
 
-factor										::= real_number
+factor									::= real_number
 
-filename									::= string
+filename								::= string
 
-fontFamily									::= string
+fontFamily								::= string
 
-fontStretch									::= string
+fontStretch								::= string
 
-fontStyle									::= string
+fontStyle								::= string
 
-fontWeight									::= string
+fontWeight								::= string
 
-frames										::= integer
+frames									::= integer
 
-function									::= string
+function								::= string
 
-geometry									::= geometry_string
+geometry								::= geometry_string
 
-height										::= real_number
+height									::= real_number
 
-high										::= real_number
+high									::= real_number
 
-horizontal									::= integer
+horizontal								::= integer
 
-horizontal_factor							::= integer
+horizontal_factor						::= integer
 
-horizontal_scale							::= integer
+horizontal_scale						::= integer
 
-host_display_optional_dot_screen			::= string
+host_display_optional_dot_screen		::= string
 
-id											::= string
+id										::= string
 
-image										::= string
+image									::= string
 
-index										::= image_list
+index									::= image_list
 
-indexes										::= image_list
+indexes									::= image_list
 
-iterations									::= integer
+iterations								::= integer
 
-kernel										::= comma_separated_reals
+kernel									::= comma_separated_reals
 
-key											::= string
+key										::= string
 
-levels										::= comma_separated_integers
+levels									::= comma_separated_integers
 
-low											::= real_number
+low										::= real_number
 
-matrix										::= string
+matrix									::= string
 
-media										::= string
+media									::= string
 
-method										::= string
+method									::= string
 
-mid_point									::= integer
+mid_point								::= integer
 
-name										::= string
+name									::= string
 
-offset										::= offset_list
+offset									::= offset_list
 
-operator									::= string
+operator								::= string
 
-optional_comma_gamma						::= string
+optional_comma_gamma					::= string
 
-optional_comma_white_point					::= string
+optional_comma_white_point				::= string
 
-optional_gain								::= string
+optional_gain							::= string
 
-optional_geometry_suffix					::= string
+optional_geometry_suffix				::= string
 
-optional_lower_percent						::= string
+optional_lower_percent					::= string
 
-optional_offset								::= string
+optional_offset							::= string
 
-optional_plus_sign_distance					::= string
+optional_canvas_palette					::= path_string*
 
-optional_plus_sign_offset					::= string
+optional_plus_sign_distance				::= string
 
-optional_threshold							::= string
+optional_threshold						::= string
 
-optional_upper_percent						::= string
+optional_upper_percent					::= string
 
-optional_x_contrast							::= string
+orientation								::= string
 
-optional_x_dst_percent						::= real_number
+parameters								::= string
 
-optional_x_height							::= string
+password								::= string
 
-optional_x_height_optional_plus_sign_angle	::= string
+path									::= string
 
-optional_x_sigma							::= string
+percent_opacity							::= real_number
 
-optional_x_white_point						::= string
+port									::= integer
 
-optional_x_Ydegrees							::= real_number
+profile_name							::= string
 
-orientation									::= string
+radius									::= string
 
-parameters									::= string
+saturation								::= real_number
 
-password									::= string
+seconds									::= integer
 
-path										::= string
+sigma									::= real_number
 
-percent_opacity								::= real_number
+smoothing_threshold						::= real_number
 
-port										::= integer
+src_percent								::= real_number
 
-profile_name								::= string
+sx_rx_ry_sy_optional_tx_ty				::= comma_separated_reals
 
-radius										::= real_number
+text									::= string
 
-saturation									::= real_number
+thickness								::= integer
 
-seconds										::= integer
+threshold								::= real_number
 
-sigma										::= real_number
+ticks									::= integer
 
-smoothing_threshold							::= real_number
+ticks_per_second						::= integer
 
-src_percent									::= real_number
+tx										::= real_number
 
-sx_rx_ry_sy_optional_tx_ty					::= comma_separated_reals
+ty										::= real_number
 
-text										::= string
+type									::= string
 
-thickness									::= integer
+value									::= string
 
-threshold									::= real_number
+vertical								::= integer
 
-ticks										::= integer
+vertical_factor							::= real_number
 
-ticks_per_second							::= integer
+vertical_scale							::= integer
 
-tx											::= real_number
+wavelength								::= real_number
 
-ty											::= real_number
+white_color								::= string
 
-type										::= string
+width									::= string
 
-value										::= string
+x										::= integer
 
-vertical									::= integer
+Xdegrees								::= real_number
 
-vertical_factor								::= real_number
+y										::= integer
 
-vertical_scale								::= integer
-
-wavelength									::= real_number
-
-white_color									::= string
-
-width										::= real_number
-
-x											::= integer
-
-Xdegrees									::= real_number
-
-y											::= integer
-
-Ydegrees									::= real_number
+Ydegrees								::= real_number
 
 # G1 lexemes from option parameters.
 
-color_prefix_list							::= string
+color_prefix_list						::= string
 
-color_space_list							::= string
+color_space_list						::= string
 
-comma_separated_events						::= string
+comma_separated_events					::= string
 
-comma_separated_integers					::= string
+comma_separated_integers				::= string
 
-comma_separated_reals						::= string
+comma_separated_reals					::= string
 
-geometry_string								::= string
+geometry_string							::= string
 
-image_list									::= string
+image_list								::= string
 
-offset_list									::= string
+offset_list								::= string
 
-real_number									::= string
+real_number								::= string
 
 # L0 lexemes from option parameters.
 
-adaptive_blur_word							~ 'adaptive_blur'
+adaptive_blur_word					~ 'adaptive_blur'
 
-adaptive_resize_word						~ 'adaptive_resize'
+adaptive_resize_word				~ 'adaptive_resize'
 
-adaptive_sharpen_word						~ 'adaptive_sharpen'
+adaptive_sharpen_word				~ 'adaptive_sharpen'
 
-adjoin_word									~ 'adjoin'
+adjoin_word							~ 'adjoin'
 
-affine_word									~ 'affine'
+affine_word							~ 'affine'
 
-alpha_word									~ 'alpha'
+alpha_word							~ 'alpha'
 
-annotate_word								~ 'annotate'
+annotate_word						~ 'annotate'
 
-antialias_word								~ 'antialias'
+antialias_word						~ 'antialias'
 
-append_word									~ 'append'
+append_word							~ 'append'
 
-attenuate_word								~ 'attenuate'
+attenuate_word						~ 'attenuate'
 
-authenticate_word							~ 'authenticate'
+authenticate_word					~ 'authenticate'
 
-auto_gamma_word								~ 'auto_gamma'
+auto_gamma_word						~ 'auto_gamma'
 
-auto_level_word								~ 'auto_level'
+auto_level_word						~ 'auto_level'
 
-auto_orient_word							~ 'auto_orient'
+auto_orient_word					~ 'auto_orient'
 
-average_word								~ 'average'
+average_word						~ 'average'
 
-backdrop_word								~ 'backdrop'
+backdrop_word						~ 'backdrop'
 
-background_word								~ 'background'
+background_word						~ 'background'
 
-bench_word									~ 'bench'
+bench_word							~ 'bench'
 
-bias_word									~ 'bias'
+bias_word							~ 'bias'
 
-black_point_compensation_word				~ 'black_point_compensation'
+black_point_compensation_word		~ 'black_point_compensation'
 
-black_threshold_word						~ 'black_threshold'
+black_threshold_word				~ 'black_threshold'
 
-blend_word									~ 'blend'
+blend_word							~ 'blend'
 
-blue_primary_word							~ 'blue_primary'
+blue_primary_word					~ 'blue_primary'
 
-blue_shift_word								~ 'blue_shift'
+blue_shift_word						~ 'blue_shift'
 
-blur_word									~ 'blur'
+blur_word							~ 'blur'
 
-border_word									~ 'border'
+border_word							~ 'border'
 
-bordercolor_word							~ 'bordercolor'
+bordercolor_word					~ 'bordercolor'
 
-borderwidth_word							~ 'borderwidth'
+borderwidth_word					~ 'borderwidth'
 
-brightness_contrast_word					~ 'brightness_contrast'
+brightness_contrast_word			~ 'brightness_contrast'
 
-cache_word									~ 'cache'
+cache_word							~ 'cache'
 
-canny_word									~ 'canny'
+canny_word							~ 'canny'
 
-caption_word								~ 'caption'
+caption_word						~ 'caption'
 
-cdl_word									~ 'cdl'
+cdl_word							~ 'cdl'
 
-channel_word								~ 'channel'
+channel_word						~ 'channel'
 
-charcoal_word								~ 'charcoal'
+charcoal_word						~ 'charcoal'
 
-chop_word									~ 'chop'
+chop_word							~ 'chop'
 
-clamp_word									~ 'clamp'
+clamp_word							~ 'clamp'
 
-clip_mask_word								~ 'clip_mask'
+clip_mask_word						~ 'clip_mask'
 
-clip_path_word								~ 'clip_path'
+clip_path_word						~ 'clip_path'
 
-clip_word									~ 'clip'
+clip_word							~ 'clip'
 
-clone_word									~ 'clone'
+clone_word							~ 'clone'
 
-clut_word									~ 'clut'
+clut_word							~ 'clut'
 
-coalesce_word								~ 'coalesce'
+coalesce_word						~ 'coalesce'
 
-color_matrix_word							~ 'color_matrix'
+color_matrix_word					~ 'color_matrix'
 
-colorize_word								~ 'colorize'
+colorize_word						~ 'colorize'
 
-colormap_word								~ 'colormap'
+colormap_word						~ 'colormap'
 
-colors_word									~ 'colors'
+colors_word							~ 'colors'
 
-colorspace_word								~ 'colorspace'
+colorspace_word						~ 'colorspace'
 
-combine_word								~ 'combine'
+combine_word						~ 'combine'
 
-comma										~ ','
+comma								~ ','
 
-comment_word								~ 'comment'
+comment_word						~ 'comment'
 
-compare_word								~ 'compare'
+compare_word						~ 'compare'
 
-complex_word								~ 'complex'
+complex_word						~ 'complex'
 
-compose_word								~ 'compose'
+compose_word						~ 'compose'
 
-composite_word								~ 'composite'
+composite_word						~ 'composite'
 
-compress_word								~ 'compress'
+compress_word						~ 'compress'
 
-connected_components_word					~ 'connected_components'
+connected_components_word			~ 'connected_components'
 
-contrast_stretch_word						~ 'contrast_stretch'
+contrast_stretch_word				~ 'contrast_stretch'
 
-contrast_word								~ 'contrast'
+contrast_word						~ 'contrast'
 
-convert_command								~ 'convert'
+convert_command						~ 'convert'
 
-convolve_word								~ 'convolve'
+convolve_word						~ 'convolve'
 
-copy_word									~ 'copy'
+copy_word							~ 'copy'
 
-crop_word									~ 'crop'
+crop_word							~ 'crop'
 
-cycle_word									~ 'cycle'
+cycle_word							~ 'cycle'
 
-debug_word									~ 'debug'
+debug_word							~ 'debug'
 
-decipher_word								~ 'decipher'
+decipher_word						~ 'decipher'
 
-deconstruct_word							~ 'deconstruct'
+deconstruct_word					~ 'deconstruct'
 
-delay_word									~ 'delay'
+delay_word							~ 'delay'
 
-delete_word									~ 'delete'
+delete_word							~ 'delete'
 
-density_word								~ 'density'
+density_word						~ 'density'
 
-depth_word									~ 'depth'
+depth_word							~ 'depth'
 
-descend_word								~ 'descend'
+descend_word						~ 'descend'
 
-deskew_word									~ 'deskew'
+deskew_word							~ 'deskew'
 
-despeckle_word								~ 'despeckle'
+despeckle_word						~ 'despeckle'
 
-direction_word								~ 'direction'
+direction_word						~ 'direction'
 
-displace_word								~ 'displace'
+displace_word						~ 'displace'
 
-display_word								~ 'display'
+display_word						~ 'display'
 
-dispose_word								~ 'dispose'
+dispose_word						~ 'dispose'
 
-dissimilarity_threshold_word				~ 'dissimilarity_threshold'
+dissimilarity_threshold_word		~ 'dissimilarity_threshold'
 
-dissolve_word								~ 'dissolve'
+dissolve_word						~ 'dissolve'
 
-distribute_cache_word						~ 'distribute_cache'
+distribute_cache_word				~ 'distribute_cache'
 
-dither_word									~ 'dither'
+dither_word							~ 'dither'
 
-draw_word									~ 'draw'
+draw_word							~ 'draw'
 
-duplicate_word								~ 'duplicate'
+duplicate_word						~ 'duplicate'
 
-edge_word									~ 'edge'
+edge_word							~ 'edge'
 
-emboss_word									~ 'emboss'
+emboss_word							~ 'emboss'
 
-encipher_word								~ 'encipher'
+encipher_word						~ 'encipher'
 
-encoding_word								~ 'encoding'
+encoding_word						~ 'encoding'
 
-endian_word									~ 'endian'
+endian_word							~ 'endian'
 
-enhance_word								~ 'enhance'
+enhance_word						~ 'enhance'
 
-equalize_word								~ 'equalize'
+equalize_word						~ 'equalize'
 
-evaluate_sequence_word						~ 'evaluate_sequence'
+evaluate_sequence_word				~ 'evaluate_sequence'
 
-evaluate_word								~ 'evaluate'
+evaluate_word						~ 'evaluate'
 
-extent_word									~ 'extent'
+extent_word							~ 'extent'
 
-extract_word								~ 'extract'
+extract_word						~ 'extract'
 
-family_word									~ 'family'
+family_word							~ 'family'
 
-features_word								~ 'features'
+features_word						~ 'features'
 
-fft_word									~ 'fft'
+fft_word							~ 'fft'
 
-fill_word									~ 'fill'
+fill_word							~ 'fill'
 
-filter_word									~ 'filter'
+filter_word							~ 'filter'
 
-flatten_word								~ 'flatten'
+flatten_word						~ 'flatten'
 
-flip_word									~ 'flip'
+flip_word							~ 'flip'
 
-floodfill_word								~ 'floodfill'
+floodfill_word						~ 'floodfill'
 
-flop_word									~ 'flop'
+flop_word							~ 'flop'
 
-font_word									~ 'font'
+font_word							~ 'font'
 
-foreground_word								~ 'foreground'
+foreground_word						~ 'foreground'
 
-format_word									~ 'format'
+format_word							~ 'format'
 
-frame_word									~ 'frame'
+frame_word							~ 'frame'
 
-function_word								~ 'function'
+function_word						~ 'function'
 
-fuzz_word									~ 'fuzz'
+fuzz_word							~ 'fuzz'
 
-fx_word										~ 'fx'
+fx_word								~ 'fx'
 
-gamma_word									~ 'gamma'
+gamma_word							~ 'gamma'
 
-gaussian_blur_word							~ 'gaussian_blur'
+gaussian_blur_word					~ 'gaussian_blur'
 
-geometry_word								~ 'geometry'
+geometry_word						~ 'geometry'
 
-gravity_word								~ 'gravity'
+gravity_word						~ 'gravity'
 
-grayscale_word								~ 'grayscale'
+grayscale_word						~ 'grayscale'
 
-green_primary_word							~ 'green_primary'
+green_primary_word					~ 'green_primary'
 
-hald_clut_word								~ 'hald_clut'
+hald_clut_word						~ 'hald_clut'
 
-help_word									~ 'help'
+help_word							~ 'help'
 
-highlight_color_word						~ 'highlight_color'
+highlight_color_word				~ 'highlight_color'
 
-hough_lines_word							~ 'hough_lines'
+hough_lines_word					~ 'hough_lines'
 
-iconGeometry_word							~ 'iconGeometry'
+iconGeometry_word					~ 'iconGeometry'
 
-iconic_word									~ 'iconic'
+iconic_word							~ 'iconic'
 
-identify_word								~ 'identify'
+identify_word						~ 'identify'
 
-ift_word									~ 'ift'
+ift_word							~ 'ift'
 
-immutable_word								~ 'immutable'
+immutable_word						~ 'immutable'
 
-implode_word								~ 'implode'
+implode_word						~ 'implode'
 
-insert_word									~ 'insert'
+insert_word							~ 'insert'
 
-integer										~ '[\d]+'
+integer								~ '[\d]+'
 
-intensity_word								~ 'intensity'
+intensity_word						~ 'intensity'
 
-intent_word									~ 'intent'
+intent_word							~ 'intent'
 
-interlace_word								~ 'interlace'
+interlace_word						~ 'interlace'
 
-interline_spacing_word						~ 'interline_spacing'
+interline_spacing_word				~ 'interline_spacing'
 
-interpolate_word							~ 'interpolate'
+interpolate_word					~ 'interpolate'
 
-interword_spacing_word						~ 'interword_spacing'
+interword_spacing_word				~ 'interword_spacing'
 
-kerning_word								~ 'kerning'
+kerning_word						~ 'kerning'
 
-kuwahara_word								~ 'kuwahara'
+kuwahara_word						~ 'kuwahara'
 
-label_word									~ 'label'
+label_word							~ 'label'
 
-lat_word									~ 'lat'
+lat_word							~ 'lat'
 
-layers_word									~ 'layers'
+layers_word							~ 'layers'
 
-level_colors_word							~ 'level_colors'
+level_colors_word					~ 'level_colors'
 
-level_word									~ 'level'
+level_word							~ 'level'
 
-limit_word									~ 'limit'
+limit_word							~ 'limit'
 
-linear_stretch_word							~ 'linear_stretch'
+linear_stretch_word					~ 'linear_stretch'
 
-linewidth_word								~ 'linewidth'
+linewidth_word						~ 'linewidth'
 
-liquid_rescale_word							~ 'liquid_rescale'
+liquid_rescale_word					~ 'liquid_rescale'
 
-list_word									~ 'list'
+list_word							~ 'list'
 
-log_word									~ 'log'
+log_word							~ 'log'
 
-loop_word									~ 'loop'
+loop_word							~ 'loop'
 
-lowlight_color_word							~ 'lowlight_color'
+lowlight_color_word					~ 'lowlight_color'
 
-magnify_word								~ 'magnify'
+magnify_word						~ 'magnify'
 
-map_word									~ 'map'
+map_word							~ 'map'
 
-mask_word									~ 'mask'
+mask_word							~ 'mask'
 
-mattecolor_word								~ 'mattecolor'
+mattecolor_word						~ 'mattecolor'
 
-maximum_word								~ 'maximum'
+maximum_word						~ 'maximum'
 
-mean_shift_word								~ 'mean_shift'
+mean_shift_word						~ 'mean_shift'
 
-median_word									~ 'median'
+median_word							~ 'median'
 
-metric_word									~ 'metric'
+metric_word							~ 'metric'
 
-minimum_word								~ 'minimum'
+minimum_word						~ 'minimum'
 
-minus_sign									~ '-'
+minus_sign							~ '-'
 
-mode_word									~ 'mode'
+mode_word							~ 'mode'
 
-modulate_word								~ 'modulate'
+modulate_word						~ 'modulate'
 
-mogrify_command								~ 'mogrify'
+mogrify_command						~ 'mogrify'
 
-moments_word								~ 'moments'
+moments_word						~ 'moments'
 
-monitor_word								~ 'monitor'
+monitor_word						~ 'monitor'
 
-monochrome_word								~ 'monochrome'
+monochrome_word						~ 'monochrome'
 
-morph_word									~ 'morph'
+morph_word							~ 'morph'
 
-mosaic_word									~ 'mosaic'
+mosaic_word							~ 'mosaic'
 
-motion_blur_word							~ 'motion_blur'
+motion_blur_word					~ 'motion_blur'
 
-name_word									~ 'name'
+name_word							~ 'name'
 
-negate_word									~ 'negate'
+negate_word							~ 'negate'
 
-noise_word									~ 'noise'
+noise_word							~ 'noise'
 
-normalize_word								~ 'normalize'
+normalize_word						~ 'normalize'
 
-opaque_word									~ 'opaque'
+opaque_word							~ 'opaque'
 
-optional_at_sign							~ '@'
+optional_at_sign					~ '@'
 
-optional_exclamation_point					~ '!'
+optional_exclamation_point			~ '!'
 
-optional_greater_than						~ '>'
+optional_greater_than				~ '>'
 
-optional_less_or_greater_than				~ '<'
+optional_less_or_greater_than		~ '<'
 
-optional_percent							~ '%'
+optional_percent					~ '%'
 
-optional_plus_sign_y						~ '+'
+optional_plus_sign_y				~ '+'
 
-orient_word									~ 'orient'
+orient_word							~ 'orient'
 
-page_word									~ 'page'
+page_word							~ 'page'
 
-paint_word									~ 'paint'
+paint_word							~ 'paint'
 
-path_word									~ 'path'
+path_word							~ 'path'
 
-pause_word									~ 'pause'
+pause_word							~ 'pause'
 
-perceptible_word							~ 'perceptible'
+perceptible_word					~ 'perceptible'
 
-ping_word									~ 'ping'
+ping_word							~ 'ping'
 
-plus_or_minus								~ '[+-]'
+plus_or_minus						~ '[+-]'
 
-plus_sign									~ '+'
+plus_sign							~ '+'
 
-pointsize_word								~ 'pointsize'
+pointsize_word						~ 'pointsize'
 
-polaroid_word								~ 'polaroid'
+polaroid_word						~ 'polaroid'
 
-posterize_word								~ 'posterize'
+posterize_word						~ 'posterize'
 
-precision_word								~ 'precision'
+precision_word						~ 'precision'
 
-preview_word								~ 'preview'
+preview_word						~ 'preview'
 
-print_word									~ 'print'
+print_word							~ 'print'
 
-process_word								~ 'process'
+process_word						~ 'process'
 
-profile_word								~ 'profile'
+profile_word						~ 'profile'
 
-quality_word								~ 'quality'
+quality_word						~ 'quality'
 
-quantize_word								~ 'quantize'
+quantize_word						~ 'quantize'
 
-quiet_word									~ 'quiet'
+quiet_word							~ 'quiet'
 
-radial_blur_word							~ 'radial_blur'
+radial_blur_word					~ 'radial_blur'
 
-raise_word									~ 'raise'
+raise_word							~ 'raise'
 
-random_threshold_word						~ 'random_threshold'
+random_threshold_word				~ 'random_threshold'
 
-red_primary_word							~ 'red_primary'
+red_primary_word					~ 'red_primary'
 
-regard_warnings_word						~ 'regard_warnings'
+regard_warnings_word				~ 'regard_warnings'
 
-region_word									~ 'region'
+region_word							~ 'region'
 
-remap_word									~ 'remap'
+remap_word							~ 'remap'
 
-remote_word									~ 'remote'
+remote_word							~ 'remote'
 
-render_word									~ 'render'
+render_word							~ 'render'
 
-repage_word									~ 'repage'
+repage_word							~ 'repage'
 
-resample_word								~ 'resample'
+resample_word						~ 'resample'
 
-resize_word									~ 'resize'
+resize_word							~ 'resize'
 
-respect_parentheses_word					~ 'respect_parentheses'
+respect_parentheses_word			~ 'respect_parentheses'
 
-reverse_word								~ 'reverse'
+reverse_word						~ 'reverse'
 
-roll_word									~ 'roll'
+roll_word							~ 'roll'
 
-rotate_word									~ 'rotate'
+rotate_word							~ 'rotate'
 
-sample_word									~ 'sample'
+sample_word							~ 'sample'
 
-sampling_factor_word						~ 'sampling_factor'
+sampling_factor_word				~ 'sampling_factor'
 
-scale_word									~ 'scale'
+scale_word							~ 'scale'
 
-scene_word									~ 'scene'
+scene_word							~ 'scene'
 
-screen_word									~ 'screen'
+screen_word							~ 'screen'
 
-seed_word									~ 'seed'
+seed_word							~ 'seed'
 
-segment_word								~ 'segment'
+segment_word						~ 'segment'
 
-selective_blur_word							~ 'selective_blur'
+selective_blur_word					~ 'selective_blur'
 
-separate_word								~ 'separate'
+separate_word						~ 'separate'
 
-sepia_tone_word								~ 'sepia_tone'
+sepia_tone_word						~ 'sepia_tone'
 
-set_word									~ 'set'
+set_word							~ 'set'
 
-shade_word									~ 'shade'
+shade_word							~ 'shade'
 
-shadow_word									~ 'shadow'
+shadow_word							~ 'shadow'
 
-shared_memory_word							~ 'shared_memory'
+shared_memory_word					~ 'shared_memory'
 
-sharpen_word								~ 'sharpen'
+sharpen_word						~ 'sharpen'
 
-shave_word									~ 'shave'
+shave_word							~ 'shave'
 
-shear_word									~ 'shear'
+shear_word							~ 'shear'
 
-sigmoidal_contrast_word						~ 'sigmoidal_contrast'
+sigmoidal_contrast_word				~ 'sigmoidal_contrast'
 
-silent_word									~ 'silent'
+silent_word							~ 'silent'
 
-similarity_threshold_word					~ 'similarity_threshold'
+similarity_threshold_word			~ 'similarity_threshold'
 
-size_word									~ 'size'
+size_word							~ 'size'
 
-sketch_word									~ 'sketch'
+sketch_word							~ 'sketch'
 
-smush_word									~ 'smush'
+smush_word							~ 'smush'
 
-snaps_word									~ 'snaps'
+snaps_word							~ 'snaps'
 
-solarize_word								~ 'solarize'
+solarize_word						~ 'solarize'
 
-splice_word									~ 'splice'
+splice_word							~ 'splice'
 
-spread_word									~ 'spread'
+spread_word							~ 'spread'
 
-statistic_word								~ 'statistic'
+statistic_word						~ 'statistic'
 
-stegano_word								~ 'stegano'
+stegano_word						~ 'stegano'
 
-stereo_word									~ 'stereo'
+stereo_word							~ 'stereo'
 
-storage_type_word							~ 'storage_type'
+storage_type_word					~ 'storage_type'
 
-stretch_word								~ 'stretch'
+stretch_word						~ 'stretch'
 
-strip_word									~ 'strip'
+strip_word							~ 'strip'
 
-stroke_word									~ 'stroke'
+stroke_word							~ 'stroke'
 
-strokewidth_word							~ 'strokewidth'
+strokewidth_word					~ 'strokewidth'
 
-style_word									~ 'style'
+style_word							~ 'style'
 
-subimage_search_word						~ 'subimage_search'
+subimage_search_word				~ 'subimage_search'
 
-swap_word									~ 'swap'
+swap_word							~ 'swap'
 
-swirl_word									~ 'swirl'
+swirl_word							~ 'swirl'
 
-synchronize_word							~ 'synchronize'
+synchronize_word					~ 'synchronize'
 
-taint_word									~ 'taint'
+taint_word							~ 'taint'
 
-text_font_word								~ 'text_font'
+text_font_word						~ 'text_font'
 
-texture_word								~ 'texture'
+texture_word						~ 'texture'
 
-threshold_word								~ 'threshold'
+threshold_word						~ 'threshold'
 
-thumbnail_word								~ 'thumbnail'
+thumbnail_word						~ 'thumbnail'
 
-tile_offset_word							~ 'tile_offset'
+tile_offset_word					~ 'tile_offset'
 
-tile_word									~ 'tile'
+tile_word							~ 'tile'
 
-tint_word									~ 'tint'
+tint_word							~ 'tint'
 
-title_word									~ 'title'
+title_word							~ 'title'
 
-transform_word								~ 'transform'
+transform_word						~ 'transform'
 
-transparent_color_word						~ 'transparent_color'
+transparent_color_word				~ 'transparent_color'
 
-transparent_word							~ 'transparent'
+transparent_word					~ 'transparent'
 
-transpose_word								~ 'transpose'
+transpose_word						~ 'transpose'
 
-transverse_word								~ 'transverse'
+transverse_word						~ 'transverse'
 
-treedepth_word								~ 'treedepth'
+treedepth_word						~ 'treedepth'
 
-trim_word									~ 'trim'
+trim_word							~ 'trim'
 
-type_word									~ 'type'
+type_word							~ 'type'
 
-undercolor_word								~ 'undercolor'
+undercolor_word						~ 'undercolor'
 
-unique_colors_word							~ 'unique_colors'
+unique_colors_word					~ 'unique_colors'
 
-units_word									~ 'units'
+units_word							~ 'units'
 
-unsharp_word								~ 'unsharp'
+unsharp_word						~ 'unsharp'
 
-update_word									~ 'update'
+update_word							~ 'update'
 
-verbose_word								~ 'verbose'
+verbose_word						~ 'verbose'
 
-version_word								~ 'version'
+version_word						~ 'version'
 
-view_word									~ 'view'
+view_word							~ 'view'
 
-vignette_word								~ 'vignette'
+vignette_word						~ 'vignette'
 
-virtual_pixel_word							~ 'virtual_pixel'
+virtual_pixel_word					~ 'virtual_pixel'
 
-visual_word									~ 'visual'
+visual_word							~ 'visual'
 
-watermark_word								~ 'watermark'
+watermark_word						~ 'watermark'
 
-wave_word									~ 'wave'
+wave_word							~ 'wave'
 
-weight_word									~ 'weight'
+weight_word							~ 'weight'
 
-white_point_word							~ 'white_point'
+white_point_word					~ 'white_point'
 
-white_threshold_word						~ 'white_threshold'
+white_threshold_word				~ 'white_threshold'
 
-window_group_word							~ 'window_group'
+window_group_word					~ 'window_group'
 
-window_word									~ 'window'
+window_word							~ 'window'
 
-write_word									~ 'write'
+write_word							~ 'write'
 
 # L0 lexemes for the boilerplate.
 
-# \x{09} => \t. \x{0A} => \n. \x{0D} => \r. \x{20} => \s.
+path_string								~ path_set+
+path_set								~ [^-\s]
 
-string										~ char_set+
-char_set									~ [^\s]
+string									~ char_set+
+char_set								~ [^\s]
 
-:discard									~ whitespace
-whitespace									~ [\s]+
+:discard								~ whitespace
+whitespace								~ [\s]+
 

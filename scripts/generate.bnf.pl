@@ -48,7 +48,7 @@ sub build_bnf
 	my($token, $token_length, $tab_count);
 
 	push @bnf, << "EOS";
-:default								::= action => [values]
+:default								::= action => ::first
 
 lexeme default							= latm => 1		# Longest Acceptable Token Match.
 
@@ -56,8 +56,7 @@ lexeme default							= latm => 1		# Longest Acceptable Token Match.
 
 :start									::= command_and_options
 
-#command_and_options						::= command_name input_file_name option_set
-command_and_options						::= command_name option_set
+command_and_options						::= command_name input_file_name option_set
 
 # Warning: If you change this, also change line 571 of the source. Search for 'mogrify'.
 
@@ -65,7 +64,8 @@ command_and_options						::= command_name option_set
 command_name							::= convert_command
 											| mogrify_command
 
-#input_file_name							::= string
+input_file_name							::= path_string	action => input_file_action
+input_file_name							::=				action => input_file_action
 
 EOS
 
@@ -225,7 +225,7 @@ sub build_parameters
 			if ($field[1] =~ /^x(.+)/)
 			{
 				$field[1]	= $1;
-				$result		= "$field[0] optional_x_$field[1]";
+				$result		= $field[0];
 			}
 			else
 			{
@@ -243,7 +243,7 @@ sub build_parameters
 			# Expect:
 			# o 'width[xheight][+offset]' for 'size'.
 
-			$result = "$1 optional_x_$2 optional_plus_sign_$3";
+			$result = "$1 optional_canvas_palette";
 		}
 		elsif ($token =~ /^([a-zA-Z]+)\[([a-zA-Z]+)\]\[(.+)\]$/)
 		{
@@ -261,7 +261,7 @@ sub build_parameters
 			$field[1]	= lc $2;
 			$field[2]	= lc $3;
 
-			$result = "$field[0] optional_x_$field[1]_optional_plus_sign_$field[2]";
+			$result = $field[0];
 		}
 		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)\+([a-zA-Z]+)$/)
 		{
@@ -339,7 +339,7 @@ sub build_parameters
 			# o 'brightness{xcontrast}{%}' for 'brightness_contrast'.
 			# o 'black_point{xwhite_point}{%}' for 'contrast_stretch'.
 
-			$result = "$1 optional_percent optional_x_$2 optional_percent";
+			$result = "$1 optional_percent";
 		}
 		elsif ($token =~ /^([_a-zA-Z]+)\{x([a-zA-Z]+)}(?:\{\+_})([a-zA-Z]+)(?:\{\+_})([a-zA-Z]+)\{%}$/)
 		{
@@ -348,7 +348,7 @@ sub build_parameters
 			# o 'percent_opacity{xsigma}{+_}x{+_}y{%}' for 'shadow'.
 			# o 'radius{xsigma}{+_}x{+_}y{%}' for 'vignette'.
 
-			$result = "$1 optional_x_$2 plus_or_minus $3 plus_or_minus $4 optional_percent";
+			$result = "$1 plus_or_minus $3 plus_or_minus $4 optional_percent";
 		}
 		elsif ($token =~ /^([a-zA-Z]+)\{@}\{!}$/)
 		{
@@ -397,137 +397,132 @@ sub format_bnf
 		}
 	}
 
-	my(%definition_1) =
+	my(@definition_1) =
 	(
-		amount									=> 'comma_separated_integers',
-		amplitude								=> 'real_number',
-		angle									=> 'real_number',
-		azimuth									=> 'real_number',
-		black_color								=> 'string',
-		black_point								=> 'string',
-		brightness								=> 'real_number',
-		brightness_optional_saturation_hue		=> 'real_number',
-		cluster_threshold						=> 'integer',
-		color									=> 'string',
-		colorspace								=> 'color_space_list',
-		command									=> 'string',
-		components								=> 'color_prefix_list',
-		connectivity							=> 'integer',
-		contrast								=> 'integer',
-		count									=> 'integer',
-		degrees									=> 'real_number',
-		distance								=> 'string',
-		elevation								=> 'real_number',
-		epsilon									=> 'real_number',
-		events									=> 'comma_separated_events',
-		expression								=> 'string',
-		factor									=> 'real_number',
-		filename								=> 'string',
-		fontFamily								=> 'string',
-		fontStretch								=> 'string',
-		fontStyle								=> 'string',
-		fontWeight								=> 'string',
-		frames									=> 'integer',
-		function								=> 'string',
-		geometry								=> 'geometry_string',
-		height									=> 'real_number',
-		high									=> 'real_number',
-		horizontal								=> 'integer',
-		horizontal_factor						=> 'integer',
-		horizontal_scale						=> 'integer',
-		host_display_optional_dot_screen		=> 'string',
-		id										=> 'string',
-		image									=> 'string',
-		index									=> 'image_list',
-		indexes									=> 'image_list',
-		iterations								=> 'integer',
-		kernel									=> 'comma_separated_reals',
-		key										=> 'string',
-		levels									=> 'comma_separated_integers',
-		low										=> 'real_number',
-		matrix									=> 'string',
-		media									=> 'string',
-		method									=> 'string',
-		mid_point								=> 'integer',
-		name									=> 'string',
-		offset									=> 'offset_list',
-		operator								=> 'string',
-		optional_comma_gamma					=> 'string',
-		optional_comma_white_point				=> 'string',
-		optional_x_dst_percent					=> 'real_number',
-		optional_gain							=> 'string',
-		optional_geometry_suffix				=> 'string',
-		optional_lower_percent					=> 'string',
-		optional_offset							=> 'string',
-		optional_plus_sign_distance				=> 'string',
-		optional_plus_sign_offset				=> 'string',
-		optional_threshold						=> 'string',
-		optional_upper_percent					=> 'string',
-		optional_x_contrast						=> 'string',
-		optional_x_height						=> 'string',
-		optional_x_height_optional_plus_sign_angle	=> 'string',
-		optional_x_sigma						=> 'string',
-		optional_x_white_point					=> 'string',
-		optional_x_Ydegrees						=> 'real_number',
-		orientation								=> 'string',
-		parameters								=> 'string',
-		password								=> 'string',
-		path									=> 'string',
-		percent_opacity							=> 'real_number',
-		port									=> 'integer',
-		profile_name							=> 'string',
-		radius									=> 'real_number',
-		saturation								=> 'real_number',
-		seconds									=> 'integer',
-		sigma									=> 'real_number',
-		smoothing_threshold						=> 'real_number',
-		src_percent								=> 'real_number',
-		sx_rx_ry_sy_optional_tx_ty				=> 'comma_separated_reals',
-		text									=> 'string',
-		thickness								=> 'integer',
-		threshold								=> 'real_number',
-		ticks									=> 'integer',
-		ticks_per_second						=> 'integer',
-		tx										=> 'real_number',
-		ty										=> 'real_number',
-		type									=> 'string',
-		value									=> 'string',
-		vertical								=> 'integer',
-		vertical_factor							=> 'real_number',
-		vertical_scale							=> 'integer',
-		wavelength								=> 'real_number',
-		white_color								=> 'string',
-		width									=> 'real_number',
-		x										=> 'integer',
-		Xdegrees								=> 'real_number',
-		y										=> 'integer',
-		Ydegrees								=> 'real_number',
+		['amount',								'comma_separated_integers'],
+		['amplitude',							'real_number'],
+		['angle',								'real_number'],
+		['azimuth',								'real_number'],
+		['black_color',							'string'],
+		['black_point',							'string'],
+		['brightness',							'real_number'],
+		['brightness_optional_saturation_hue',	'real_number'],
+		['cluster_threshold',					'integer'],
+		['color',								'string'],
+		['colorspace',							'color_space_list'],
+		['command',								'string'],
+		['components',							'color_prefix_list'],
+		['connectivity',						'integer'],
+		['contrast',							'integer'],
+		['count',								'integer'],
+		['degrees',								'real_number'],
+		['distance',							'string'],
+		['elevation',							'real_number'],
+		['epsilon',								'real_number'],
+		['events',								'comma_separated_events'],
+		['expression',							'string'],
+		['factor',								'real_number'],
+		['filename',							'string'],
+		['fontFamily',							'string'],
+		['fontStretch',							'string'],
+		['fontStyle',							'string'],
+		['fontWeight',							'string'],
+		['frames',								'integer'],
+		['function',							'string'],
+		['geometry',							'geometry_string'],
+		['height',								'real_number'],
+		['high',								'real_number'],
+		['horizontal',							'integer'],
+		['horizontal_factor',					'integer'],
+		['horizontal_scale',					'integer'],
+		['host_display_optional_dot_screen',	'string'],
+		['id',									'string'],
+		['image',								'string'],
+		['index',								'image_list'],
+		['indexes',								'image_list'],
+		['iterations',							'integer'],
+		['kernel',								'comma_separated_reals'],
+		['key',									'string'],
+		['levels',								'comma_separated_integers'],
+		['low',									'real_number'],
+		['matrix',								'string'],
+		['media',								'string'],
+		['method',								'string'],
+		['mid_point',							'integer'],
+		['name',								'string'],
+		['offset',								'offset_list'],
+		['operator',							'string'],
+		['optional_comma_gamma',				'string'],
+		['optional_comma_white_point',			'string'],
+		['optional_gain',						'string'],
+		['optional_geometry_suffix',			'string'],
+		['optional_lower_percent',				'string'],
+		['optional_offset',						'string'],
+		['optional_canvas_palette',				'path_string*'],
+		['optional_plus_sign_distance',			'string'],
+		['optional_threshold',					'string'],
+		['optional_upper_percent',				'string'],
+		['orientation',							'string'],
+		['parameters',							'string'],
+		['password',							'string'],
+		['path',								'string'],
+		['percent_opacity',						'real_number'],
+		['port',								'integer'],
+		['profile_name',						'string'],
+		['radius',								'string'],
+		['saturation',							'real_number'],
+		['seconds',								'integer'],
+		['sigma',								'real_number'],
+		['smoothing_threshold',					'real_number'],
+		['src_percent',							'real_number'],
+		['sx_rx_ry_sy_optional_tx_ty',			'comma_separated_reals'],
+		['text',								'string'],
+		['thickness',							'integer'],
+		['threshold',							'real_number'],
+		['ticks',								'integer'],
+		['ticks_per_second',					'integer'],
+		['tx',									'real_number'],
+		['ty',									'real_number'],
+		['type',								'string'],
+		['value',								'string'],
+		['vertical',							'integer'],
+		['vertical_factor',						'real_number'],
+		['vertical_scale',						'integer'],
+		['wavelength',							'real_number'],
+		['white_color',							'string'],
+		['width',								'string'],
+		['x',									'integer'],
+		['Xdegrees',							'real_number'],
+		['y',									'integer'],
+		['Ydegrees',							'real_number'],
 	);
 	my($total_tabs) = ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
 
 	push @$bnf, '# G1 lexemes from ImageMagick command options.', '';
 
 	my(%check);
+	my($lexeme);
 	my($spacer);
 	my($token_length, $tab_count);
 
-	for my $lexeme (sort{lc $a cmp lc $b} keys %seen)
+	for my $item (@definition_1)
 	{
-		$check{$lexeme}	= $definition_1{$lexeme};
+		$lexeme			= $$item[0];
+		$check{$lexeme}	= $$item[1];
 		$token_length	= length($lexeme);
 		$tab_count		= ($token_length / 4) + 1;
-		$spacer			= "\t" x ($total_tabs - $tab_count - 1); # Perl needs \t before ::=.
+		$spacer			= "\t" x ($total_tabs - $tab_count); # Perl needs \t before ::=.
 
 		# The 'if' is because some lexemes are defined a next.
 
-		push @$bnf, "$lexeme$spacer\t::= $definition_1{$lexeme}\n" if ($definition_1{$lexeme});
+		push @$bnf, "$lexeme$spacer\t::= $$item[1]\n" if (defined $$item[1]);
 	}
 
-	# Cross-check, looking for junk left over in %definition_1;
+	# Cross-check, looking for junk left over in @definition_1;
 
-	for my $lexeme (sort keys %definition_1)
+	for my $item (@definition_1)
 	{
-		die "Delete $lexeme from %definition_1\n" if (! $check{$lexeme});
+		die "Delete $$item[0] from \@definition_1\n" if (! $check{$$item[0]});
 	}
 
 	my(%definition_2)	=
@@ -546,11 +541,11 @@ sub format_bnf
 
 	push @$bnf, '# G1 lexemes from option parameters.', '';
 
-	for my $lexeme (sort keys %definition_2)
+	for $lexeme (sort keys %definition_2)
 	{
 		$token_length	= length($lexeme);
 		$tab_count		= ($token_length / 4) + 1;
-		$spacer			= "\t" x ($total_tabs - $tab_count - 1);
+		$spacer			= "\t" x ($total_tabs - $tab_count);
 
 		push @$bnf, "$lexeme$spacer\t::= $definition_2{$lexeme}\n";
 	}
@@ -578,27 +573,30 @@ sub format_bnf
 
 	push @lexeme, map{["${_}_word", $_]} @$option_name;
 
-	for my $lexeme (sort{$$a[0] cmp $$b[0]} @lexeme)
+	my($value);
+
+	for $lexeme (sort{$$a[0] cmp $$b[0]} @lexeme)
 	{
 		$token_length	= length($$lexeme[0]);
+		$value			= $$lexeme[1];
+		$value			= "'$value'" if (length($value) );
 		$tab_count		= ($token_length / 4) + 1;
 		$spacer			= "\t" x ($total_tabs - $tab_count);
 
-		push @$bnf, "$$lexeme[0]$spacer~ '$$lexeme[1]'\n";
+		push @$bnf, "$$lexeme[0]$spacer~ $value\n";
 	}
-
-	$spacer = "\t" x ($total_tabs - $tab_count);
 
 	push @$bnf, <<"EOS";
 # L0 lexemes for the boilerplate.
 
-# \\x{09} => \\t. \\x{0A} => \\n. \\x{0D} => \\r. \\x{20} => \\s.
+path_string								~ path_set+
+path_set								~ [^-\\s]
 
-string$spacer\t~ char_set+
-char_set$spacer~ [^\\s]
+string									~ char_set+
+char_set								~ [^\\s]
 
-:discard$spacer~ whitespace
-whitespace$spacer~ [\\s]+
+:discard								~ whitespace
+whitespace								~ [\\s]+
 EOS
 
 	save_bnf($bnf);
@@ -622,18 +620,94 @@ use warnings;
 
 our $VERSION = '1.00';
 
+# ------------------------------------------------
+
 EOS
 
-	my($done_new);
+	my(%done) =
+	(
+		decode		=> 0,
+		input_file	=> 0,
+		new			=> 0,
+	);
+
+	my($name);
 
 	for my $action (sort keys %$actions)
 	{
-		if (! $done_new && ($action gt 'new') )
+		$name = $action =~ s/_action_.+//r;
+
+		if (! $done{decode} && ($action gt 'decode') )
 		{
-			$done_new	= 1;
-			$code		.= <<"EOS";
+			$done{decode}	= 1;
+			$code			.= <<"EOS";
+sub decode_result
+{
+	my(\$cache, \$result)	= \@_;
+	my(\@worklist)			= \$result;
+
+	my(\$obj);
+	my(\$ref_type);
+	my(\@stack);
+
+	do
+	{
+		\$obj		= shift \@worklist;
+		\$ref_type	= ref \$obj;
+
+		if (\$ref_type eq 'ARRAY')
+		{
+			unshift \@worklist, \@\$obj;
+		}
+		elsif (\$ref_type eq 'HASH')
+		{
+			push \@stack, {\%\$obj};
+		}
+		else
+		{
+			die "Unsupported object type \$ref_type\\n" if (\$ref_type);
+		}
+	} while (\@worklist);
+
+	\$\$cache{self} -> log(debug => "Returning stack of length \@{[scalar \@stack]}");
+
+	return [\@stack];
+
+} # End of decode_result.
+
 # ------------------------------------------------
 
+EOS
+		}
+		elsif (! $done{input_file} && ($action gt 'input_file') )
+		{
+			$done{input_file}	= 1;
+			$code				.= <<"EOS";
+sub input_file_action
+{
+	my(\$cache, \@params) = \@_;
+
+	\$\$cache{logger} -> log(debug => 'input_file_action');
+	\$\$cache{items} -> push
+	({
+		params	=> [map{defined(\$_) ? \$_ : ''} \@params],
+		sign	=> '',
+		rule	=> 'input_file',
+	});
+
+	return \$params[0];
+
+} # End of input_file_action.
+
+# ------------------------------------------------
+
+EOS
+
+		}
+		elsif (! $done{new} && ($action gt 'new') )
+		{
+			$done{new}	= 1;
+			$code		.= <<"EOS";
 sub new
 {
 	my(\$class) = \@_;
@@ -643,20 +717,30 @@ sub new
 } # End of new.
 
 EOS
+# ------------------------------------------------
+
 		}
 
 		$code .= <<"EOS";
-# ------------------------------------------------
-
 sub $action
 {
 	my(\$cache, \@params) = \@_;
 
-	\$\$cache{logger} -> log(debug => "$action. Params: " . join(', ', \@params) );
+	# We ignore \$params[1] since it is just the name of the action.
+
+	\$\$cache{logger} -> log(debug => '$action');
+	\$\$cache{items} -> push
+	({
+		params	=> [map{defined(\$_) ? \$_ : ''} \@params[2 .. \$#params] ],
+		sign	=> \$params[0],
+		rule	=> '$name',
+	});
 
 	return \$params[0];
 
 } # End of $action.
+
+# ------------------------------------------------
 
 EOS
 	}

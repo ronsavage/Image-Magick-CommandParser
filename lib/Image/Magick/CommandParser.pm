@@ -15,7 +15,9 @@ use Marpa::R2;
 
 use Moo;
 
-use Types::Standard qw/Any Str/;
+use Set::Array;
+
+use Types::Standard qw/Any Object Str/;
 
 has command =>
 (
@@ -30,6 +32,14 @@ has grammar =>
 	default  => sub{return ''},
 	is       => 'rw',
 	isa      => Any, # 'Marpa::R2::Scanless::G'.
+	required => 0,
+);
+
+has items =>
+(
+	default  => sub{return Set::Array -> new},
+	is       => 'rw',
+	isa      => Object,
 	required => 0,
 );
 
@@ -106,42 +116,6 @@ sub BUILD
 
 } # End of BUILD.
 
-# ------------------------------------------------
-
-sub decode_result
-{
-	my($self, $result) = @_;
-	my(@worklist) = $result;
-
-	my($obj);
-	my($ref_type);
-	my(@stack);
-
-	do
-	{
-		$obj      = shift @worklist;
-		$ref_type = ref $obj;
-
-		if ($ref_type eq 'ARRAY')
-		{
-			unshift @worklist, @$obj;
-		}
-		elsif ($ref_type eq 'HASH')
-		{
-			push @stack, {%$obj};
-		}
-		else
-		{
-			die "Unsupported object type $ref_type\n" if ($ref_type);
-		}
-	} while (@worklist);
-
-	$self -> log(debug => "Returning stack of length @{[scalar @stack]}");
-
-	return [@stack];
-
-} # End of decode_result.
-
 # --------------------------------------------------
 
 sub log
@@ -160,9 +134,16 @@ sub run
 {
 	my($self)		= @_;
 	my($command)	= $self -> command;
-	my($cache)		= {logger => $self -> logger};
 
-	$self -> log(debug => "Processing '$command'");
+	$self -> log(debug => "Command: '$command'");
+
+	my($cache)	=
+	{
+		logger	=> $self -> logger,
+		items	=> $self -> items,
+		self	=> $self, # For access to logger within decode_result().
+	};
+
 	$self -> recce -> read(\$command);
 
 	my($result)				= $self -> recce -> value($cache);
@@ -185,19 +166,18 @@ sub run
 	{
 		$self -> log(debug => 'Parse is unambiguous');
 
-		for my $item (@{$self -> decode_result($$result)})
+		my($format) = '%4s  %-20s  %-s';
+
+		$self -> log(info => sprintf($format, 'Sign', 'Rule', 'Params') );
+
+		for my $item ($self -> items -> print)
 		{
-			$self -> log(notice => "Result: '$item'");
+			$self -> log(info => sprintf($format, $$item{sign}, $$item{rule}, join(', ', @{$$item{params} }) ) );
 		}
 	}
 	else
 	{
-		$self -> log(debug => 'Parse is ambiguous');
-
-		for my $item (@{$self -> decode_result($$result)})
-		{
-			$self -> log(notice => "Result: '$item'");
-		}
+		$self -> log(error => 'Parse is ambiguous');
 	}
 
 

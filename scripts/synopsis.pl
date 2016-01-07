@@ -5,15 +5,21 @@ use strict;
 use warnings;
 use warnings qw(FATAL utf8);
 
+use File::Slurper 'read_lines';
+
 use Image::Magick::CommandParser;
 
 # ----------------------------------------------
 
-# Run with an extremely simple command.
+my($input_file)	= 't/commands.txt';
 
-Image::Magick::CommandParser -> new
-(
-#	command		=> 'convert logo: -type Bilevel',
-	command		=> 'convert -type Bilevel',
-	maxlevel	=> 'debug',
-) -> run;
+for my $command (read_lines($input_file) )
+{
+	Image::Magick::CommandParser -> new
+	(
+		command		=> $command,
+		maxlevel	=> 'debug',
+	) -> run;
+
+	print "\n";
+}

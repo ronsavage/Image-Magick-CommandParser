@@ -1,0 +1,10 @@
+convert -adaptive_blur 7x9
+convert logo: -adaptive_blur 7x9
+convert -size 320x85
+convert -adaptive_blur 7x9 -size 320x85
+convert logo: -adaptive_blur 7x9 -size 320x85
+convert logo: -size 320x85
+convert -size 320x85 canvas:none
+convert logo: -size 320x85 canvas:none
+convert -font Bookman-DemiItalic
+convert -size 320x85 canvas::none -font Bookman-DemiItalic

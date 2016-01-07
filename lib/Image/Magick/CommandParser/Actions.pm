@@ -15,7 +15,15 @@ sub adaptive_blur_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "adaptive_blur_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'adaptive_blur_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'adaptive_blur',
+	});
 
 	return $params[0];
 
@@ -27,7 +35,15 @@ sub adaptive_resize_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "adaptive_resize_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'adaptive_resize_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'adaptive_resize',
+	});
 
 	return $params[0];
 
@@ -39,7 +55,15 @@ sub adaptive_sharpen_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "adaptive_sharpen_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'adaptive_sharpen_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'adaptive_sharpen',
+	});
 
 	return $params[0];
 
@@ -51,7 +75,15 @@ sub adjoin_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "adjoin_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'adjoin_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'adjoin',
+	});
 
 	return $params[0];
 
@@ -63,7 +95,15 @@ sub affine_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "affine_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'affine_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'affine',
+	});
 
 	return $params[0];
 
@@ -75,7 +115,15 @@ sub alpha_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "alpha_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'alpha_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'alpha',
+	});
 
 	return $params[0];
 
@@ -87,7 +135,15 @@ sub annotate_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "annotate_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'annotate_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'annotate',
+	});
 
 	return $params[0];
 
@@ -99,7 +155,15 @@ sub annotate_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "annotate_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'annotate_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'annotate',
+	});
 
 	return $params[0];
 
@@ -111,7 +175,15 @@ sub annotate_action_3
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "annotate_action_3. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'annotate_action_3');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'annotate',
+	});
 
 	return $params[0];
 
@@ -123,7 +195,15 @@ sub annotate_action_4
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "annotate_action_4. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'annotate_action_4');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'annotate',
+	});
 
 	return $params[0];
 
@@ -135,7 +215,15 @@ sub antialias_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "antialias_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'antialias_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'antialias',
+	});
 
 	return $params[0];
 
@@ -147,7 +235,15 @@ sub append_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "append_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'append_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'append',
+	});
 
 	return $params[0];
 
@@ -159,7 +255,15 @@ sub attenuate_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "attenuate_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'attenuate_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'attenuate',
+	});
 
 	return $params[0];
 
@@ -171,7 +275,15 @@ sub authenticate_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "authenticate_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'authenticate_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'authenticate',
+	});
 
 	return $params[0];
 
@@ -183,7 +295,15 @@ sub auto_gamma_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "auto_gamma_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'auto_gamma_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'auto_gamma',
+	});
 
 	return $params[0];
 
@@ -195,7 +315,15 @@ sub auto_level_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "auto_level_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'auto_level_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'auto_level',
+	});
 
 	return $params[0];
 
@@ -207,7 +335,15 @@ sub auto_orient_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "auto_orient_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'auto_orient_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'auto_orient',
+	});
 
 	return $params[0];
 
@@ -219,7 +355,15 @@ sub average_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "average_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'average_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'average',
+	});
 
 	return $params[0];
 
@@ -231,7 +375,15 @@ sub backdrop_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "backdrop_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'backdrop_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'backdrop',
+	});
 
 	return $params[0];
 
@@ -243,7 +395,15 @@ sub background_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "background_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'background_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'background',
+	});
 
 	return $params[0];
 
@@ -255,7 +415,15 @@ sub bench_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "bench_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'bench_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'bench',
+	});
 
 	return $params[0];
 
@@ -267,7 +435,15 @@ sub bias_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "bias_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'bias_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'bias',
+	});
 
 	return $params[0];
 
@@ -279,7 +455,15 @@ sub black_point_compensation_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "black_point_compensation_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'black_point_compensation_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'black_point_compensation',
+	});
 
 	return $params[0];
 
@@ -291,7 +475,15 @@ sub black_threshold_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "black_threshold_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'black_threshold_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'black_threshold',
+	});
 
 	return $params[0];
 
@@ -303,7 +495,15 @@ sub blend_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "blend_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'blend_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'blend',
+	});
 
 	return $params[0];
 
@@ -315,7 +515,15 @@ sub blue_primary_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "blue_primary_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'blue_primary_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'blue_primary',
+	});
 
 	return $params[0];
 
@@ -327,7 +535,15 @@ sub blue_shift_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "blue_shift_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'blue_shift_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'blue_shift',
+	});
 
 	return $params[0];
 
@@ -339,7 +555,15 @@ sub blur_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "blur_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'blur_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'blur',
+	});
 
 	return $params[0];
 
@@ -351,7 +575,15 @@ sub blur_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "blur_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'blur_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'blur',
+	});
 
 	return $params[0];
 
@@ -363,7 +595,15 @@ sub blur_action_3
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "blur_action_3. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'blur_action_3');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'blur',
+	});
 
 	return $params[0];
 
@@ -375,7 +615,15 @@ sub border_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "border_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'border_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'border',
+	});
 
 	return $params[0];
 
@@ -387,7 +635,15 @@ sub bordercolor_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "bordercolor_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'bordercolor_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'bordercolor',
+	});
 
 	return $params[0];
 
@@ -399,7 +655,15 @@ sub borderwidth_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "borderwidth_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'borderwidth_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'borderwidth',
+	});
 
 	return $params[0];
 
@@ -411,7 +675,15 @@ sub brightness_contrast_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "brightness_contrast_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'brightness_contrast_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'brightness_contrast',
+	});
 
 	return $params[0];
 
@@ -423,7 +695,15 @@ sub brightness_contrast_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "brightness_contrast_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'brightness_contrast_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'brightness_contrast',
+	});
 
 	return $params[0];
 
@@ -435,7 +715,15 @@ sub cache_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "cache_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'cache_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'cache',
+	});
 
 	return $params[0];
 
@@ -447,7 +735,15 @@ sub canny_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "canny_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'canny_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'canny',
+	});
 
 	return $params[0];
 
@@ -459,7 +755,15 @@ sub canny_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "canny_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'canny_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'canny',
+	});
 
 	return $params[0];
 
@@ -471,7 +775,15 @@ sub caption_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "caption_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'caption_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'caption',
+	});
 
 	return $params[0];
 
@@ -483,7 +795,15 @@ sub cdl_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "cdl_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'cdl_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'cdl',
+	});
 
 	return $params[0];
 
@@ -495,7 +815,15 @@ sub channel_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "channel_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'channel_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'channel',
+	});
 
 	return $params[0];
 
@@ -507,7 +835,15 @@ sub charcoal_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "charcoal_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'charcoal_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'charcoal',
+	});
 
 	return $params[0];
 
@@ -519,7 +855,15 @@ sub chop_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "chop_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'chop_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'chop',
+	});
 
 	return $params[0];
 
@@ -531,7 +875,15 @@ sub clamp_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "clamp_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'clamp_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'clamp',
+	});
 
 	return $params[0];
 
@@ -543,7 +895,15 @@ sub clip_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "clip_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'clip_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'clip',
+	});
 
 	return $params[0];
 
@@ -555,7 +915,15 @@ sub clip_mask_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "clip_mask_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'clip_mask_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'clip_mask',
+	});
 
 	return $params[0];
 
@@ -567,7 +935,15 @@ sub clip_path_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "clip_path_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'clip_path_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'clip_path',
+	});
 
 	return $params[0];
 
@@ -579,7 +955,15 @@ sub clone_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "clone_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'clone_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'clone',
+	});
 
 	return $params[0];
 
@@ -591,7 +975,15 @@ sub clut_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "clut_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'clut_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'clut',
+	});
 
 	return $params[0];
 
@@ -603,7 +995,15 @@ sub coalesce_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "coalesce_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'coalesce_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'coalesce',
+	});
 
 	return $params[0];
 
@@ -615,7 +1015,15 @@ sub color_matrix_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "color_matrix_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'color_matrix_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'color_matrix',
+	});
 
 	return $params[0];
 
@@ -627,7 +1035,15 @@ sub colorize_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "colorize_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'colorize_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'colorize',
+	});
 
 	return $params[0];
 
@@ -639,7 +1055,15 @@ sub colormap_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "colormap_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'colormap_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'colormap',
+	});
 
 	return $params[0];
 
@@ -651,7 +1075,15 @@ sub colors_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "colors_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'colors_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'colors',
+	});
 
 	return $params[0];
 
@@ -663,7 +1095,15 @@ sub colorspace_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "colorspace_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'colorspace_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'colorspace',
+	});
 
 	return $params[0];
 
@@ -675,7 +1115,15 @@ sub combine_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "combine_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'combine_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'combine',
+	});
 
 	return $params[0];
 
@@ -687,7 +1135,15 @@ sub comment_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "comment_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'comment_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'comment',
+	});
 
 	return $params[0];
 
@@ -699,7 +1155,15 @@ sub compare_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "compare_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'compare_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'compare',
+	});
 
 	return $params[0];
 
@@ -711,7 +1175,15 @@ sub complex_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "complex_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'complex_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'complex',
+	});
 
 	return $params[0];
 
@@ -723,7 +1195,15 @@ sub compose_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "compose_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'compose_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'compose',
+	});
 
 	return $params[0];
 
@@ -735,7 +1215,15 @@ sub composite_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "composite_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'composite_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'composite',
+	});
 
 	return $params[0];
 
@@ -747,7 +1235,15 @@ sub compress_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "compress_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'compress_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'compress',
+	});
 
 	return $params[0];
 
@@ -759,7 +1255,15 @@ sub connected_components_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "connected_components_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'connected_components_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'connected_components',
+	});
 
 	return $params[0];
 
@@ -771,7 +1275,15 @@ sub contrast_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "contrast_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'contrast_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'contrast',
+	});
 
 	return $params[0];
 
@@ -783,7 +1295,15 @@ sub contrast_stretch_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "contrast_stretch_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'contrast_stretch_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'contrast_stretch',
+	});
 
 	return $params[0];
 
@@ -795,7 +1315,15 @@ sub contrast_stretch_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "contrast_stretch_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'contrast_stretch_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'contrast_stretch',
+	});
 
 	return $params[0];
 
@@ -807,7 +1335,15 @@ sub convolve_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "convolve_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'convolve_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'convolve',
+	});
 
 	return $params[0];
 
@@ -819,7 +1355,15 @@ sub copy_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "copy_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'copy_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'copy',
+	});
 
 	return $params[0];
 
@@ -831,7 +1375,15 @@ sub crop_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "crop_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'crop_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'crop',
+	});
 
 	return $params[0];
 
@@ -843,7 +1395,15 @@ sub cycle_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "cycle_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'cycle_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'cycle',
+	});
 
 	return $params[0];
 
@@ -855,7 +1415,15 @@ sub debug_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "debug_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'debug_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'debug',
+	});
 
 	return $params[0];
 
@@ -867,7 +1435,15 @@ sub decipher_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "decipher_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'decipher_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'decipher',
+	});
 
 	return $params[0];
 
@@ -875,11 +1451,55 @@ sub decipher_action_1
 
 # ------------------------------------------------
 
+sub decode_result
+{
+	my($cache, $result)	= @_;
+	my(@worklist)			= $result;
+
+	my($obj);
+	my($ref_type);
+	my(@stack);
+
+	do
+	{
+		$obj		= shift @worklist;
+		$ref_type	= ref $obj;
+
+		if ($ref_type eq 'ARRAY')
+		{
+			unshift @worklist, @$obj;
+		}
+		elsif ($ref_type eq 'HASH')
+		{
+			push @stack, {%$obj};
+		}
+		else
+		{
+			die "Unsupported object type $ref_type\n" if ($ref_type);
+		}
+	} while (@worklist);
+
+	$$cache{self} -> log(debug => "Returning stack of length @{[scalar @stack]}");
+
+	return [@stack];
+
+} # End of decode_result.
+
+# ------------------------------------------------
+
 sub deconstruct_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "deconstruct_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'deconstruct_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'deconstruct',
+	});
 
 	return $params[0];
 
@@ -891,7 +1511,15 @@ sub delay_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "delay_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'delay_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'delay',
+	});
 
 	return $params[0];
 
@@ -903,7 +1531,15 @@ sub delay_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "delay_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'delay_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'delay',
+	});
 
 	return $params[0];
 
@@ -915,7 +1551,15 @@ sub delete_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "delete_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'delete_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'delete',
+	});
 
 	return $params[0];
 
@@ -927,7 +1571,15 @@ sub density_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "density_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'density_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'density',
+	});
 
 	return $params[0];
 
@@ -939,7 +1591,15 @@ sub density_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "density_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'density_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'density',
+	});
 
 	return $params[0];
 
@@ -951,7 +1611,15 @@ sub depth_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "depth_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'depth_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'depth',
+	});
 
 	return $params[0];
 
@@ -963,7 +1631,15 @@ sub descend_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "descend_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'descend_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'descend',
+	});
 
 	return $params[0];
 
@@ -975,7 +1651,15 @@ sub deskew_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "deskew_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'deskew_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'deskew',
+	});
 
 	return $params[0];
 
@@ -987,7 +1671,15 @@ sub despeckle_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "despeckle_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'despeckle_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'despeckle',
+	});
 
 	return $params[0];
 
@@ -999,7 +1691,15 @@ sub direction_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "direction_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'direction_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'direction',
+	});
 
 	return $params[0];
 
@@ -1011,7 +1711,15 @@ sub displace_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "displace_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'displace_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'displace',
+	});
 
 	return $params[0];
 
@@ -1023,7 +1731,15 @@ sub displace_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "displace_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'displace_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'displace',
+	});
 
 	return $params[0];
 
@@ -1035,7 +1751,15 @@ sub display_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "display_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'display_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'display',
+	});
 
 	return $params[0];
 
@@ -1047,7 +1771,15 @@ sub dispose_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "dispose_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'dispose_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'dispose',
+	});
 
 	return $params[0];
 
@@ -1059,7 +1791,15 @@ sub dissimilarity_threshold_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "dissimilarity_threshold_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'dissimilarity_threshold_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'dissimilarity_threshold',
+	});
 
 	return $params[0];
 
@@ -1071,7 +1811,15 @@ sub dissolve_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "dissolve_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'dissolve_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'dissolve',
+	});
 
 	return $params[0];
 
@@ -1083,7 +1831,15 @@ sub distribute_cache_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "distribute_cache_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'distribute_cache_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'distribute_cache',
+	});
 
 	return $params[0];
 
@@ -1095,7 +1851,15 @@ sub dither_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "dither_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'dither_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'dither',
+	});
 
 	return $params[0];
 
@@ -1107,7 +1871,15 @@ sub draw_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "draw_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'draw_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'draw',
+	});
 
 	return $params[0];
 
@@ -1119,7 +1891,15 @@ sub duplicate_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "duplicate_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'duplicate_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'duplicate',
+	});
 
 	return $params[0];
 
@@ -1131,7 +1911,15 @@ sub edge_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "edge_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'edge_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'edge',
+	});
 
 	return $params[0];
 
@@ -1143,7 +1931,15 @@ sub emboss_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "emboss_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'emboss_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'emboss',
+	});
 
 	return $params[0];
 
@@ -1155,7 +1951,15 @@ sub encipher_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "encipher_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'encipher_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'encipher',
+	});
 
 	return $params[0];
 
@@ -1167,7 +1971,15 @@ sub encoding_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "encoding_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'encoding_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'encoding',
+	});
 
 	return $params[0];
 
@@ -1179,7 +1991,15 @@ sub endian_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "endian_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'endian_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'endian',
+	});
 
 	return $params[0];
 
@@ -1191,7 +2011,15 @@ sub enhance_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "enhance_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'enhance_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'enhance',
+	});
 
 	return $params[0];
 
@@ -1203,7 +2031,15 @@ sub equalize_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "equalize_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'equalize_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'equalize',
+	});
 
 	return $params[0];
 
@@ -1215,7 +2051,15 @@ sub evaluate_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "evaluate_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'evaluate_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'evaluate',
+	});
 
 	return $params[0];
 
@@ -1227,7 +2071,15 @@ sub evaluate_sequence_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "evaluate_sequence_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'evaluate_sequence_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'evaluate_sequence',
+	});
 
 	return $params[0];
 
@@ -1239,7 +2091,15 @@ sub extent_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "extent_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'extent_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'extent',
+	});
 
 	return $params[0];
 
@@ -1251,7 +2111,15 @@ sub extract_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "extract_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'extract_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'extract',
+	});
 
 	return $params[0];
 
@@ -1263,7 +2131,15 @@ sub family_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "family_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'family_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'family',
+	});
 
 	return $params[0];
 
@@ -1275,7 +2151,15 @@ sub features_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "features_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'features_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'features',
+	});
 
 	return $params[0];
 
@@ -1287,7 +2171,15 @@ sub fft_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "fft_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'fft_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'fft',
+	});
 
 	return $params[0];
 
@@ -1299,7 +2191,15 @@ sub fill_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "fill_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'fill_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'fill',
+	});
 
 	return $params[0];
 
@@ -1311,7 +2211,15 @@ sub filter_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "filter_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'filter_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'filter',
+	});
 
 	return $params[0];
 
@@ -1323,7 +2231,15 @@ sub flatten_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "flatten_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'flatten_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'flatten',
+	});
 
 	return $params[0];
 
@@ -1335,7 +2251,15 @@ sub flip_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "flip_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'flip_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'flip',
+	});
 
 	return $params[0];
 
@@ -1347,7 +2271,15 @@ sub floodfill_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "floodfill_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'floodfill_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'floodfill',
+	});
 
 	return $params[0];
 
@@ -1359,7 +2291,15 @@ sub flop_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "flop_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'flop_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'flop',
+	});
 
 	return $params[0];
 
@@ -1371,7 +2311,15 @@ sub font_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "font_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'font_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'font',
+	});
 
 	return $params[0];
 
@@ -1383,7 +2331,15 @@ sub foreground_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "foreground_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'foreground_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'foreground',
+	});
 
 	return $params[0];
 
@@ -1395,7 +2351,15 @@ sub format_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "format_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'format_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'format',
+	});
 
 	return $params[0];
 
@@ -1407,7 +2371,15 @@ sub format_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "format_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'format_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'format',
+	});
 
 	return $params[0];
 
@@ -1419,7 +2391,15 @@ sub frame_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "frame_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'frame_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'frame',
+	});
 
 	return $params[0];
 
@@ -1431,7 +2411,15 @@ sub frame_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "frame_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'frame_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'frame',
+	});
 
 	return $params[0];
 
@@ -1443,7 +2431,15 @@ sub function_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "function_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'function_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'function',
+	});
 
 	return $params[0];
 
@@ -1455,7 +2451,15 @@ sub fuzz_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "fuzz_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'fuzz_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'fuzz',
+	});
 
 	return $params[0];
 
@@ -1467,7 +2471,15 @@ sub fx_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "fx_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'fx_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'fx',
+	});
 
 	return $params[0];
 
@@ -1479,7 +2491,15 @@ sub gamma_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "gamma_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'gamma_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'gamma',
+	});
 
 	return $params[0];
 
@@ -1491,7 +2511,15 @@ sub gaussian_blur_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "gaussian_blur_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'gaussian_blur_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'gaussian_blur',
+	});
 
 	return $params[0];
 
@@ -1503,7 +2531,15 @@ sub gaussian_blur_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "gaussian_blur_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'gaussian_blur_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'gaussian_blur',
+	});
 
 	return $params[0];
 
@@ -1515,7 +2551,15 @@ sub geometry_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "geometry_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'geometry_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'geometry',
+	});
 
 	return $params[0];
 
@@ -1527,7 +2571,15 @@ sub gravity_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "gravity_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'gravity_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'gravity',
+	});
 
 	return $params[0];
 
@@ -1539,7 +2591,15 @@ sub grayscale_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "grayscale_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'grayscale_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'grayscale',
+	});
 
 	return $params[0];
 
@@ -1551,7 +2611,15 @@ sub green_primary_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "green_primary_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'green_primary_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'green_primary',
+	});
 
 	return $params[0];
 
@@ -1563,7 +2631,15 @@ sub hald_clut_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "hald_clut_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'hald_clut_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'hald_clut',
+	});
 
 	return $params[0];
 
@@ -1575,7 +2651,15 @@ sub help_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "help_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'help_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'help',
+	});
 
 	return $params[0];
 
@@ -1587,7 +2671,15 @@ sub highlight_color_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "highlight_color_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'highlight_color_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'highlight_color',
+	});
 
 	return $params[0];
 
@@ -1599,7 +2691,15 @@ sub hough_lines_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "hough_lines_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'hough_lines_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'hough_lines',
+	});
 
 	return $params[0];
 
@@ -1611,7 +2711,15 @@ sub iconGeometry_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "iconGeometry_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'iconGeometry_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'iconGeometry',
+	});
 
 	return $params[0];
 
@@ -1623,7 +2731,15 @@ sub iconic_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "iconic_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'iconic_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'iconic',
+	});
 
 	return $params[0];
 
@@ -1635,7 +2751,15 @@ sub identify_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "identify_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'identify_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'identify',
+	});
 
 	return $params[0];
 
@@ -1647,7 +2771,15 @@ sub ift_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "ift_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'ift_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'ift',
+	});
 
 	return $params[0];
 
@@ -1659,7 +2791,15 @@ sub immutable_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "immutable_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'immutable_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'immutable',
+	});
 
 	return $params[0];
 
@@ -1671,7 +2811,15 @@ sub implode_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "implode_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'implode_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'implode',
+	});
 
 	return $params[0];
 
@@ -1679,11 +2827,37 @@ sub implode_action_1
 
 # ------------------------------------------------
 
+sub input_file_action
+{
+	my($cache, @params) = @_;
+
+	$$cache{logger} -> log(debug => 'input_file_action');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params],
+		sign	=> '',
+		rule	=> 'input_file',
+	});
+
+	return $params[0];
+
+} # End of input_file_action.
+
+# ------------------------------------------------
+
 sub insert_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "insert_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'insert_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'insert',
+	});
 
 	return $params[0];
 
@@ -1695,7 +2869,15 @@ sub intensity_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "intensity_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'intensity_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'intensity',
+	});
 
 	return $params[0];
 
@@ -1707,7 +2889,15 @@ sub intent_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "intent_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'intent_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'intent',
+	});
 
 	return $params[0];
 
@@ -1719,7 +2909,15 @@ sub interlace_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "interlace_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'interlace_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'interlace',
+	});
 
 	return $params[0];
 
@@ -1731,7 +2929,15 @@ sub interline_spacing_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "interline_spacing_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'interline_spacing_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'interline_spacing',
+	});
 
 	return $params[0];
 
@@ -1743,7 +2949,15 @@ sub interpolate_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "interpolate_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'interpolate_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'interpolate',
+	});
 
 	return $params[0];
 
@@ -1755,7 +2969,15 @@ sub interword_spacing_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "interword_spacing_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'interword_spacing_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'interword_spacing',
+	});
 
 	return $params[0];
 
@@ -1767,7 +2989,15 @@ sub kerning_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "kerning_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'kerning_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'kerning',
+	});
 
 	return $params[0];
 
@@ -1779,7 +3009,15 @@ sub kuwahara_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "kuwahara_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'kuwahara_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'kuwahara',
+	});
 
 	return $params[0];
 
@@ -1791,7 +3029,15 @@ sub kuwahara_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "kuwahara_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'kuwahara_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'kuwahara',
+	});
 
 	return $params[0];
 
@@ -1803,7 +3049,15 @@ sub label_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "label_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'label_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'label',
+	});
 
 	return $params[0];
 
@@ -1815,7 +3069,15 @@ sub lat_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "lat_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'lat_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'lat',
+	});
 
 	return $params[0];
 
@@ -1827,7 +3089,15 @@ sub lat_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "lat_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'lat_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'lat',
+	});
 
 	return $params[0];
 
@@ -1839,7 +3109,15 @@ sub layers_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "layers_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'layers_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'layers',
+	});
 
 	return $params[0];
 
@@ -1851,7 +3129,15 @@ sub level_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "level_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'level_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'level',
+	});
 
 	return $params[0];
 
@@ -1863,7 +3149,15 @@ sub level_colors_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "level_colors_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'level_colors_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'level_colors',
+	});
 
 	return $params[0];
 
@@ -1875,7 +3169,15 @@ sub limit_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "limit_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'limit_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'limit',
+	});
 
 	return $params[0];
 
@@ -1887,7 +3189,15 @@ sub linear_stretch_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "linear_stretch_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'linear_stretch_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'linear_stretch',
+	});
 
 	return $params[0];
 
@@ -1899,7 +3209,15 @@ sub linear_stretch_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "linear_stretch_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'linear_stretch_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'linear_stretch',
+	});
 
 	return $params[0];
 
@@ -1911,7 +3229,15 @@ sub linewidth_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "linewidth_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'linewidth_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'linewidth',
+	});
 
 	return $params[0];
 
@@ -1923,7 +3249,15 @@ sub liquid_rescale_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "liquid_rescale_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'liquid_rescale_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'liquid_rescale',
+	});
 
 	return $params[0];
 
@@ -1935,7 +3269,15 @@ sub list_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "list_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'list_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'list',
+	});
 
 	return $params[0];
 
@@ -1947,7 +3289,15 @@ sub log_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "log_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'log_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'log',
+	});
 
 	return $params[0];
 
@@ -1959,7 +3309,15 @@ sub loop_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "loop_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'loop_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'loop',
+	});
 
 	return $params[0];
 
@@ -1971,7 +3329,15 @@ sub lowlight_color_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "lowlight_color_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'lowlight_color_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'lowlight_color',
+	});
 
 	return $params[0];
 
@@ -1983,7 +3349,15 @@ sub magnify_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "magnify_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'magnify_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'magnify',
+	});
 
 	return $params[0];
 
@@ -1995,7 +3369,15 @@ sub map_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "map_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'map_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'map',
+	});
 
 	return $params[0];
 
@@ -2007,7 +3389,15 @@ sub map_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "map_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'map_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'map',
+	});
 
 	return $params[0];
 
@@ -2019,7 +3409,15 @@ sub mask_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "mask_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'mask_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'mask',
+	});
 
 	return $params[0];
 
@@ -2031,7 +3429,15 @@ sub mattecolor_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "mattecolor_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'mattecolor_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'mattecolor',
+	});
 
 	return $params[0];
 
@@ -2043,7 +3449,15 @@ sub maximum_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "maximum_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'maximum_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'maximum',
+	});
 
 	return $params[0];
 
@@ -2055,7 +3469,15 @@ sub mean_shift_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "mean_shift_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'mean_shift_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'mean_shift',
+	});
 
 	return $params[0];
 
@@ -2067,7 +3489,15 @@ sub median_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "median_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'median_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'median',
+	});
 
 	return $params[0];
 
@@ -2079,7 +3509,15 @@ sub metric_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "metric_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'metric_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'metric',
+	});
 
 	return $params[0];
 
@@ -2091,7 +3529,15 @@ sub minimum_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "minimum_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'minimum_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'minimum',
+	});
 
 	return $params[0];
 
@@ -2103,7 +3549,15 @@ sub mode_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "mode_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'mode_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'mode',
+	});
 
 	return $params[0];
 
@@ -2115,7 +3569,15 @@ sub mode_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "mode_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'mode_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'mode',
+	});
 
 	return $params[0];
 
@@ -2127,7 +3589,15 @@ sub modulate_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "modulate_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'modulate_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'modulate',
+	});
 
 	return $params[0];
 
@@ -2139,7 +3609,15 @@ sub moments_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "moments_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'moments_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'moments',
+	});
 
 	return $params[0];
 
@@ -2151,7 +3629,15 @@ sub monitor_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "monitor_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'monitor_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'monitor',
+	});
 
 	return $params[0];
 
@@ -2163,7 +3649,15 @@ sub monochrome_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "monochrome_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'monochrome_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'monochrome',
+	});
 
 	return $params[0];
 
@@ -2175,7 +3669,15 @@ sub morph_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "morph_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'morph_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'morph',
+	});
 
 	return $params[0];
 
@@ -2187,7 +3689,15 @@ sub mosaic_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "mosaic_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'mosaic_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'mosaic',
+	});
 
 	return $params[0];
 
@@ -2199,7 +3709,15 @@ sub motion_blur_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "motion_blur_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'motion_blur_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'motion_blur',
+	});
 
 	return $params[0];
 
@@ -2211,7 +3729,15 @@ sub motion_blur_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "motion_blur_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'motion_blur_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'motion_blur',
+	});
 
 	return $params[0];
 
@@ -2223,7 +3749,15 @@ sub name_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "name_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'name_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'name',
+	});
 
 	return $params[0];
 
@@ -2235,7 +3769,15 @@ sub negate_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "negate_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'negate_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'negate',
+	});
 
 	return $params[0];
 
@@ -2251,13 +3793,19 @@ sub new
 
 } # End of new.
 
-# ------------------------------------------------
-
 sub noise_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "noise_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'noise_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'noise',
+	});
 
 	return $params[0];
 
@@ -2269,7 +3817,15 @@ sub noise_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "noise_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'noise_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'noise',
+	});
 
 	return $params[0];
 
@@ -2281,7 +3837,15 @@ sub normalize_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "normalize_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'normalize_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'normalize',
+	});
 
 	return $params[0];
 
@@ -2293,7 +3857,15 @@ sub opaque_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "opaque_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'opaque_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'opaque',
+	});
 
 	return $params[0];
 
@@ -2305,7 +3877,15 @@ sub orient_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "orient_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'orient_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'orient',
+	});
 
 	return $params[0];
 
@@ -2317,7 +3897,15 @@ sub page_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "page_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'page_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'page',
+	});
 
 	return $params[0];
 
@@ -2329,7 +3917,15 @@ sub page_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "page_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'page_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'page',
+	});
 
 	return $params[0];
 
@@ -2341,7 +3937,15 @@ sub page_action_3
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "page_action_3. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'page_action_3');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'page',
+	});
 
 	return $params[0];
 
@@ -2353,7 +3957,15 @@ sub paint_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "paint_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'paint_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'paint',
+	});
 
 	return $params[0];
 
@@ -2365,7 +3977,15 @@ sub path_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "path_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'path_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'path',
+	});
 
 	return $params[0];
 
@@ -2377,7 +3997,15 @@ sub pause_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "pause_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'pause_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'pause',
+	});
 
 	return $params[0];
 
@@ -2389,7 +4017,15 @@ sub pause_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "pause_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'pause_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'pause',
+	});
 
 	return $params[0];
 
@@ -2401,7 +4037,15 @@ sub perceptible_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "perceptible_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'perceptible_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'perceptible',
+	});
 
 	return $params[0];
 
@@ -2413,7 +4057,15 @@ sub ping_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "ping_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'ping_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'ping',
+	});
 
 	return $params[0];
 
@@ -2425,7 +4077,15 @@ sub pointsize_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "pointsize_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'pointsize_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'pointsize',
+	});
 
 	return $params[0];
 
@@ -2437,7 +4097,15 @@ sub polaroid_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "polaroid_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'polaroid_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'polaroid',
+	});
 
 	return $params[0];
 
@@ -2449,7 +4117,15 @@ sub posterize_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "posterize_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'posterize_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'posterize',
+	});
 
 	return $params[0];
 
@@ -2461,7 +4137,15 @@ sub precision_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "precision_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'precision_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'precision',
+	});
 
 	return $params[0];
 
@@ -2473,7 +4157,15 @@ sub preview_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "preview_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'preview_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'preview',
+	});
 
 	return $params[0];
 
@@ -2485,7 +4177,15 @@ sub print_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "print_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'print_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'print',
+	});
 
 	return $params[0];
 
@@ -2497,7 +4197,15 @@ sub process_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "process_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'process_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'process',
+	});
 
 	return $params[0];
 
@@ -2509,7 +4217,15 @@ sub profile_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "profile_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'profile_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'profile',
+	});
 
 	return $params[0];
 
@@ -2521,7 +4237,15 @@ sub profile_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "profile_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'profile_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'profile',
+	});
 
 	return $params[0];
 
@@ -2533,7 +4257,15 @@ sub quality_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "quality_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'quality_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'quality',
+	});
 
 	return $params[0];
 
@@ -2545,7 +4277,15 @@ sub quantize_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "quantize_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'quantize_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'quantize',
+	});
 
 	return $params[0];
 
@@ -2557,7 +4297,15 @@ sub quiet_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "quiet_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'quiet_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'quiet',
+	});
 
 	return $params[0];
 
@@ -2569,7 +4317,15 @@ sub radial_blur_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "radial_blur_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'radial_blur_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'radial_blur',
+	});
 
 	return $params[0];
 
@@ -2581,7 +4337,15 @@ sub raise_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "raise_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'raise_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'raise',
+	});
 
 	return $params[0];
 
@@ -2593,7 +4357,15 @@ sub random_threshold_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "random_threshold_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'random_threshold_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'random_threshold',
+	});
 
 	return $params[0];
 
@@ -2605,7 +4377,15 @@ sub red_primary_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "red_primary_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'red_primary_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'red_primary',
+	});
 
 	return $params[0];
 
@@ -2617,7 +4397,15 @@ sub regard_warnings_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "regard_warnings_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'regard_warnings_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'regard_warnings',
+	});
 
 	return $params[0];
 
@@ -2629,7 +4417,15 @@ sub region_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "region_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'region_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'region',
+	});
 
 	return $params[0];
 
@@ -2641,7 +4437,15 @@ sub remap_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "remap_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'remap_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'remap',
+	});
 
 	return $params[0];
 
@@ -2653,7 +4457,15 @@ sub remote_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "remote_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'remote_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'remote',
+	});
 
 	return $params[0];
 
@@ -2665,7 +4477,15 @@ sub render_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "render_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'render_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'render',
+	});
 
 	return $params[0];
 
@@ -2677,7 +4497,15 @@ sub repage_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "repage_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'repage_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'repage',
+	});
 
 	return $params[0];
 
@@ -2689,7 +4517,15 @@ sub resample_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "resample_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'resample_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'resample',
+	});
 
 	return $params[0];
 
@@ -2701,7 +4537,15 @@ sub resize_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "resize_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'resize_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'resize',
+	});
 
 	return $params[0];
 
@@ -2713,7 +4557,15 @@ sub respect_parentheses_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "respect_parentheses_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'respect_parentheses_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'respect_parentheses',
+	});
 
 	return $params[0];
 
@@ -2725,7 +4577,15 @@ sub reverse_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "reverse_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'reverse_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'reverse',
+	});
 
 	return $params[0];
 
@@ -2737,7 +4597,15 @@ sub roll_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "roll_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'roll_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'roll',
+	});
 
 	return $params[0];
 
@@ -2749,7 +4617,15 @@ sub rotate_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "rotate_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'rotate_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'rotate',
+	});
 
 	return $params[0];
 
@@ -2761,7 +4637,15 @@ sub sample_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "sample_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'sample_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'sample',
+	});
 
 	return $params[0];
 
@@ -2773,7 +4657,15 @@ sub sampling_factor_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "sampling_factor_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'sampling_factor_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'sampling_factor',
+	});
 
 	return $params[0];
 
@@ -2785,7 +4677,15 @@ sub scale_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "scale_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'scale_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'scale',
+	});
 
 	return $params[0];
 
@@ -2797,7 +4697,15 @@ sub scene_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "scene_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'scene_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'scene',
+	});
 
 	return $params[0];
 
@@ -2809,7 +4717,15 @@ sub screen_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "screen_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'screen_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'screen',
+	});
 
 	return $params[0];
 
@@ -2821,7 +4737,15 @@ sub seed_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "seed_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'seed_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'seed',
+	});
 
 	return $params[0];
 
@@ -2833,7 +4757,15 @@ sub segment_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "segment_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'segment_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'segment',
+	});
 
 	return $params[0];
 
@@ -2845,7 +4777,15 @@ sub selective_blur_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "selective_blur_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'selective_blur_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'selective_blur',
+	});
 
 	return $params[0];
 
@@ -2857,7 +4797,15 @@ sub selective_blur_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "selective_blur_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'selective_blur_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'selective_blur',
+	});
 
 	return $params[0];
 
@@ -2869,7 +4817,15 @@ sub separate_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "separate_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'separate_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'separate',
+	});
 
 	return $params[0];
 
@@ -2881,7 +4837,15 @@ sub sepia_tone_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "sepia_tone_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'sepia_tone_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'sepia_tone',
+	});
 
 	return $params[0];
 
@@ -2893,7 +4857,15 @@ sub set_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "set_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'set_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'set',
+	});
 
 	return $params[0];
 
@@ -2905,7 +4877,15 @@ sub set_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "set_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'set_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'set',
+	});
 
 	return $params[0];
 
@@ -2917,7 +4897,15 @@ sub shade_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "shade_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'shade_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'shade',
+	});
 
 	return $params[0];
 
@@ -2929,7 +4917,15 @@ sub shadow_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "shadow_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'shadow_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'shadow',
+	});
 
 	return $params[0];
 
@@ -2941,7 +4937,15 @@ sub shared_memory_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "shared_memory_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'shared_memory_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'shared_memory',
+	});
 
 	return $params[0];
 
@@ -2953,7 +4957,15 @@ sub sharpen_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "sharpen_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'sharpen_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'sharpen',
+	});
 
 	return $params[0];
 
@@ -2965,7 +4977,15 @@ sub sharpen_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "sharpen_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'sharpen_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'sharpen',
+	});
 
 	return $params[0];
 
@@ -2977,7 +4997,15 @@ sub shave_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "shave_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'shave_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'shave',
+	});
 
 	return $params[0];
 
@@ -2989,7 +5017,15 @@ sub shear_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "shear_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'shear_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'shear',
+	});
 
 	return $params[0];
 
@@ -3001,7 +5037,15 @@ sub sigmoidal_contrast_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "sigmoidal_contrast_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'sigmoidal_contrast_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'sigmoidal_contrast',
+	});
 
 	return $params[0];
 
@@ -3013,7 +5057,15 @@ sub silent_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "silent_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'silent_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'silent',
+	});
 
 	return $params[0];
 
@@ -3025,7 +5077,15 @@ sub similarity_threshold_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "similarity_threshold_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'similarity_threshold_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'similarity_threshold',
+	});
 
 	return $params[0];
 
@@ -3037,7 +5097,15 @@ sub size_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "size_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'size_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'size',
+	});
 
 	return $params[0];
 
@@ -3049,7 +5117,15 @@ sub sketch_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "sketch_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'sketch_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'sketch',
+	});
 
 	return $params[0];
 
@@ -3061,7 +5137,15 @@ sub sketch_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "sketch_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'sketch_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'sketch',
+	});
 
 	return $params[0];
 
@@ -3073,7 +5157,15 @@ sub smush_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "smush_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'smush_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'smush',
+	});
 
 	return $params[0];
 
@@ -3085,7 +5177,15 @@ sub snaps_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "snaps_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'snaps_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'snaps',
+	});
 
 	return $params[0];
 
@@ -3097,7 +5197,15 @@ sub solarize_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "solarize_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'solarize_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'solarize',
+	});
 
 	return $params[0];
 
@@ -3109,7 +5217,15 @@ sub splice_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "splice_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'splice_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'splice',
+	});
 
 	return $params[0];
 
@@ -3121,7 +5237,15 @@ sub spread_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "spread_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'spread_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'spread',
+	});
 
 	return $params[0];
 
@@ -3133,7 +5257,15 @@ sub statistic_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "statistic_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'statistic_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'statistic',
+	});
 
 	return $params[0];
 
@@ -3145,7 +5277,15 @@ sub stegano_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "stegano_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'stegano_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'stegano',
+	});
 
 	return $params[0];
 
@@ -3157,7 +5297,15 @@ sub stereo_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "stereo_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'stereo_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'stereo',
+	});
 
 	return $params[0];
 
@@ -3169,7 +5317,15 @@ sub storage_type_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "storage_type_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'storage_type_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'storage_type',
+	});
 
 	return $params[0];
 
@@ -3181,7 +5337,15 @@ sub stretch_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "stretch_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'stretch_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'stretch',
+	});
 
 	return $params[0];
 
@@ -3193,7 +5357,15 @@ sub strip_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "strip_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'strip_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'strip',
+	});
 
 	return $params[0];
 
@@ -3205,7 +5377,15 @@ sub stroke_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "stroke_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'stroke_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'stroke',
+	});
 
 	return $params[0];
 
@@ -3217,7 +5397,15 @@ sub strokewidth_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "strokewidth_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'strokewidth_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'strokewidth',
+	});
 
 	return $params[0];
 
@@ -3229,7 +5417,15 @@ sub style_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "style_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'style_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'style',
+	});
 
 	return $params[0];
 
@@ -3241,7 +5437,15 @@ sub subimage_search_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "subimage_search_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'subimage_search_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'subimage_search',
+	});
 
 	return $params[0];
 
@@ -3253,7 +5457,15 @@ sub swap_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "swap_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'swap_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'swap',
+	});
 
 	return $params[0];
 
@@ -3265,7 +5477,15 @@ sub swirl_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "swirl_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'swirl_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'swirl',
+	});
 
 	return $params[0];
 
@@ -3277,7 +5497,15 @@ sub synchronize_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "synchronize_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'synchronize_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'synchronize',
+	});
 
 	return $params[0];
 
@@ -3289,7 +5517,15 @@ sub taint_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "taint_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'taint_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'taint',
+	});
 
 	return $params[0];
 
@@ -3301,7 +5537,15 @@ sub text_font_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "text_font_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'text_font_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'text_font',
+	});
 
 	return $params[0];
 
@@ -3313,7 +5557,15 @@ sub texture_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "texture_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'texture_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'texture',
+	});
 
 	return $params[0];
 
@@ -3325,7 +5577,15 @@ sub threshold_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "threshold_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'threshold_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'threshold',
+	});
 
 	return $params[0];
 
@@ -3337,7 +5597,15 @@ sub thumbnail_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "thumbnail_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'thumbnail_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'thumbnail',
+	});
 
 	return $params[0];
 
@@ -3349,7 +5617,15 @@ sub tile_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "tile_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'tile_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'tile',
+	});
 
 	return $params[0];
 
@@ -3361,7 +5637,15 @@ sub tile_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "tile_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'tile_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'tile',
+	});
 
 	return $params[0];
 
@@ -3373,7 +5657,15 @@ sub tile_action_3
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "tile_action_3. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'tile_action_3');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'tile',
+	});
 
 	return $params[0];
 
@@ -3385,7 +5677,15 @@ sub tile_offset_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "tile_offset_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'tile_offset_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'tile_offset',
+	});
 
 	return $params[0];
 
@@ -3397,7 +5697,15 @@ sub tint_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "tint_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'tint_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'tint',
+	});
 
 	return $params[0];
 
@@ -3409,7 +5717,15 @@ sub title_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "title_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'title_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'title',
+	});
 
 	return $params[0];
 
@@ -3421,7 +5737,15 @@ sub transform_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "transform_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'transform_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'transform',
+	});
 
 	return $params[0];
 
@@ -3433,7 +5757,15 @@ sub transparent_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "transparent_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'transparent_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'transparent',
+	});
 
 	return $params[0];
 
@@ -3445,7 +5777,15 @@ sub transparent_color_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "transparent_color_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'transparent_color_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'transparent_color',
+	});
 
 	return $params[0];
 
@@ -3457,7 +5797,15 @@ sub transpose_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "transpose_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'transpose_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'transpose',
+	});
 
 	return $params[0];
 
@@ -3469,7 +5817,15 @@ sub transverse_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "transverse_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'transverse_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'transverse',
+	});
 
 	return $params[0];
 
@@ -3481,7 +5837,15 @@ sub treedepth_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "treedepth_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'treedepth_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'treedepth',
+	});
 
 	return $params[0];
 
@@ -3493,7 +5857,15 @@ sub trim_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "trim_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'trim_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'trim',
+	});
 
 	return $params[0];
 
@@ -3505,7 +5877,15 @@ sub type_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "type_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'type_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'type',
+	});
 
 	return $params[0];
 
@@ -3517,7 +5897,15 @@ sub undercolor_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "undercolor_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'undercolor_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'undercolor',
+	});
 
 	return $params[0];
 
@@ -3529,7 +5917,15 @@ sub unique_colors_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "unique_colors_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'unique_colors_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'unique_colors',
+	});
 
 	return $params[0];
 
@@ -3541,7 +5937,15 @@ sub units_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "units_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'units_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'units',
+	});
 
 	return $params[0];
 
@@ -3553,7 +5957,15 @@ sub unsharp_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "unsharp_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'unsharp_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'unsharp',
+	});
 
 	return $params[0];
 
@@ -3565,7 +5977,15 @@ sub unsharp_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "unsharp_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'unsharp_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'unsharp',
+	});
 
 	return $params[0];
 
@@ -3577,7 +5997,15 @@ sub update_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "update_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'update_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'update',
+	});
 
 	return $params[0];
 
@@ -3589,7 +6017,15 @@ sub verbose_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "verbose_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'verbose_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'verbose',
+	});
 
 	return $params[0];
 
@@ -3601,7 +6037,15 @@ sub version_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "version_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'version_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'version',
+	});
 
 	return $params[0];
 
@@ -3613,7 +6057,15 @@ sub view_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "view_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'view_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'view',
+	});
 
 	return $params[0];
 
@@ -3625,7 +6077,15 @@ sub vignette_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "vignette_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'vignette_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'vignette',
+	});
 
 	return $params[0];
 
@@ -3637,7 +6097,15 @@ sub virtual_pixel_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "virtual_pixel_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'virtual_pixel_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'virtual_pixel',
+	});
 
 	return $params[0];
 
@@ -3649,7 +6117,15 @@ sub visual_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "visual_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'visual_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'visual',
+	});
 
 	return $params[0];
 
@@ -3661,7 +6137,15 @@ sub watermark_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "watermark_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'watermark_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'watermark',
+	});
 
 	return $params[0];
 
@@ -3673,7 +6157,15 @@ sub wave_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "wave_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'wave_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'wave',
+	});
 
 	return $params[0];
 
@@ -3685,7 +6177,15 @@ sub wave_action_2
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "wave_action_2. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'wave_action_2');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'wave',
+	});
 
 	return $params[0];
 
@@ -3697,7 +6197,15 @@ sub weight_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "weight_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'weight_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'weight',
+	});
 
 	return $params[0];
 
@@ -3709,7 +6217,15 @@ sub white_point_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "white_point_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'white_point_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'white_point',
+	});
 
 	return $params[0];
 
@@ -3721,7 +6237,15 @@ sub white_threshold_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "white_threshold_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'white_threshold_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'white_threshold',
+	});
 
 	return $params[0];
 
@@ -3733,7 +6257,15 @@ sub window_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "window_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'window_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'window',
+	});
 
 	return $params[0];
 
@@ -3745,7 +6277,15 @@ sub window_group_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "window_group_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'window_group_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'window_group',
+	});
 
 	return $params[0];
 
@@ -3757,11 +6297,21 @@ sub write_action_1
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => "write_action_1. Params: " . join(', ', @params) );
+	# We ignore $params[1] since it is just the name of the action.
+
+	$$cache{logger} -> log(debug => 'write_action_1');
+	$$cache{items} -> push
+	({
+		params	=> [map{defined($_) ? $_ : ''} @params[2 .. $#params] ],
+		sign	=> $params[0],
+		rule	=> 'write',
+	});
 
 	return $params[0];
 
 } # End of write_action_1.
+
+# ------------------------------------------------
 
 # ------------------------------------------------
 
