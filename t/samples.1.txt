@@ -1,0 +1,2 @@
+convert rose.jpg rose.png
+convert rose.jpg -resize 50% rose.png

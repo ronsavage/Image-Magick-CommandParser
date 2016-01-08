@@ -36,7 +36,7 @@ command_name							::= 'convert'	action => command_action
 input_file_name							::= path_string	action => input_file_action
 input_file_name							::=				action => input_file_action
 
-option_rule_set							::= option_rule+
+option_rule_set							::= option_rule*
 EOS
 
 	my($max_length) = 0;

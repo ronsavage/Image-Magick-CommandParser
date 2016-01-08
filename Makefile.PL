@@ -31,7 +31,6 @@ my(%params) =
 	PREREQ_PM =>
 	{
 		'Data::Section::Simple'	=> 0.07,
-		'File::Slurper'			=> 0.008,
 		'Getopt::Long'			=> 0,
 		'Moo'					=> 2.000002,
 		'Pod::Usage'			=> 1.67,
