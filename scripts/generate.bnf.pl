@@ -60,7 +60,7 @@ EOS
 	$max_length			+= 5; # 5 = length('_rule').
 	my($total_tabs)		= ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
 	my(@option_name)	= sort keys %bnf;
-	my($option_name)	= join(' | ', 'open_parenthesis', 'close_parenthesis', map{"${_}_rule"} @option_name);
+	my($option_name)	= join(' | ', 'open_parenthesis', map{"${_}_rule"} @option_name);
 
 	push @bnf, << "EOS";
 option_rule								::= $option_name
@@ -398,205 +398,38 @@ sub format_bnf
 		}
 	}
 
-	my(@definition_1) =
-	(
-		['amount',								'comma_separated_integers'],
-		['amplitude',							'real_number'],
-		['angle',								'real_number'],
-		['azimuthxelevation',					'string'],
-		['black_color',							'string'],
-		['black_point',							'string'],
-		['brightness',							'real_number'],
-		['brightness_optional_saturation_hue',	'real_number'],
-		['cluster_threshold',					'integer'],
-		['color',								'string'],
-		['colorspace',							'color_space_list'],
-		['command',								'string'],
-		['components',							'color_prefix_list'],
-		['connectivity',						'integer'],
-		['contrast',							'integer'],
-		['count',								'integer'],
-		['degrees',								'real_number'],
-		['distance',							'string'],
-		['epsilon',								'real_number'],
-		['events',								'comma_separated_events'],
-		['expression',							'string'],
-		['factor',								'real_number'],
-		['filename',							'string'],
-		['fontFamily',							'string'],
-		['fontStretch',							'string'],
-		['fontStyle',							'string'],
-		['fontWeight',							'string'],
-		['frames',								'integer'],
-		['function',							'string'],
-		['geometry',							'geometry_string'],
-		['height',								'real_number'],
-		['high',								'real_number'],
-		['horizontal',							'integer'],
-		['horizontal_factor',					'integer'],
-		['horizontal_scale',					'integer'],
-		['host_display_optional_dot_screen',	'string'],
-		['id',									'string'],
-		['image',								'string'],
-		['index',								'image_list'],
-		['indexes',								'image_list'],
-		['iterations',							'integer'],
-		['kernel',								'comma_separated_reals'],
-		['key',									'string'],
-		['levels',								'comma_separated_integers'],
-		['low',									'real_number'],
-		['matrix',								'string'],
-		['media',								'string'],
-		['method',								'string'],
-		['mid_point',							'integer'],
-		['name',								'string'],
-		['offset',								'offset_list'],
-		['operator',							'string'],
-		['optional_comma_gamma',				'string'],
-		['optional_comma_white_point',			'string'],
-		['optional_gain',						'string'],
-		['optional_geometry_suffix',			'string'],
-		['optional_lower_percent',				'string'],
-		['optional_offset',						'string'],
-		['optional_canvas_palette',				'option_string*'],
-		['optional_plus_sign_distance',			'string'],
-		['optional_threshold',					'string'],
-		['optional_upper_percent',				'string'],
-		['orientation',							'string'],
-		['parameters',							'string'],
-		['password',							'string'],
-		['path',								'string'],
-		['percent_opacity',						'real_number'],
-		['port',								'integer'],
-		['profile_name',						'string'],
-		['radius',								'string'],
-		['saturation',							'real_number'],
-		['seconds',								'integer'],
-		['sigma',								'real_number'],
-		['smoothing_threshold',					'real_number'],
-		['src_percent',							'real_number'],
-		['sx_rx_ry_sy_optional_tx_ty',			'comma_separated_reals'],
-		['text',								'string'],
-		['thickness',							'integer'],
-		['threshold',							'real_number'],
-		['ticks',								'integer'],
-		['ticks_per_second',					'integer'],
-		['tx',									'real_number'],
-		['ty',									'real_number'],
-		['type',								'string'],
-		['value',								'string'],
-		['vertical',							'integer'],
-		['vertical_factor',						'real_number'],
-		['vertical_scale',						'integer'],
-		['wavelength',							'real_number'],
-		['white_color',							'string'],
-		['width',								'string'],
-		['x',									'integer'],
-		['Xdegrees',							'real_number'],
-		['y',									'integer'],
-		['Ydegrees',							'real_number'],
-	);
 	my($total_tabs) = ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
 
 	push @$bnf,
-		"close_parenthesis						::= ')'	action => close_parenthesis",
-		'',
 		"open_parenthesis						::= '('	action => open_parenthesis",
+		'',
+		'# L0 lexemes from option parameters.',
+		'',
+		"minus_sign								~ '-'",
+		'',
+		"plus_sign								~ '+'",
 		'';
 
-	push @$bnf, '# G1 lexemes from ImageMagick command options.', '';
-
-	my(%check);
-	my($lexeme);
 	my($spacer);
 	my($token_length, $tab_count);
 
-	for my $item (@definition_1)
-	{
-		$lexeme			= $$item[0];
-		$check{$lexeme}	= $$item[1];
-		$token_length	= length($lexeme);
-		$tab_count		= ($token_length / 4) + 1;
-		$spacer			= "\t" x ($total_tabs - $tab_count); # Perl needs \t before ::=.
-
-		# The 'if' is because some lexemes are defined a next.
-
-		push @$bnf, "$lexeme$spacer\t::= $$item[1]\n" if (defined $$item[1]);
-	}
-
-	# Cross-check, looking for junk left over in @definition_1;
-
-	for my $item (@definition_1)
-	{
-		die "Delete $$item[0] from \@definition_1\n" if (! $check{$$item[0]});
-	}
-
-	my(%definition_2)	=
-	(
-		color_prefix_list			=> 'string',
-		color_space_list			=> 'string',
-		comma_separated_events		=> 'string',
-		comma_separated_integers	=> 'string',
-		comma_separated_reals		=> 'string',
-		geometry_string				=> 'string',
-		image_list					=> 'string',
-		offset_list					=> 'string',
-		image_list					=> 'string',
-		real_number					=> 'string'
-	);
-
-	push @$bnf, '# G1 lexemes from option parameters.', '';
-
-	for $lexeme (sort keys %definition_2)
+	for my $lexeme (sort keys %seen)
 	{
 		$token_length	= length($lexeme);
-		$tab_count		= ($token_length / 4) + 1;
-		$spacer			= "\t" x ($total_tabs - $tab_count);
-
-		push @$bnf, "$lexeme$spacer\t::= $definition_2{$lexeme}\n";
-	}
-
-	push @$bnf, '# L0 lexemes from option parameters.', '';
-
-	my(@lexeme);
-
-	push @lexeme,
-		['comma',							','],
-		['integer',							'[\d]+'],
-		['minus_sign',						'-'],
-		['optional_at_sign',				'@'],
-		['optional_exclamation_point',		'!'],
-		['optional_greater_than',			'>'],
-		['optional_less_or_greater_than',	'<'],
-		['optional_percent',				'%'],
-		['optional_plus_sign_y',			'+'],
-		['plus_sign',						'+'],
-		['plus_or_minus',					'[+-]'];
-
-	my($value);
-
-	for $lexeme (sort{$$a[0] cmp $$b[0]} @lexeme)
-	{
-		$token_length	= length($$lexeme[0]);
-		$value			= $$lexeme[1];
-		$value			= "'$value'" if (length($value) );
 		$tab_count		= ($token_length / 4);
-		$spacer			= "\t" x ($total_tabs - $tab_count);
+		$spacer			= "\t" x ($total_tabs - $tab_count - 1);
 
-		push @$bnf, "$$lexeme[0]$spacer~ $value\n";
+		push @$bnf, "$lexeme$spacer~ '[^\\s]+'\n";
 	}
 
-	push @$bnf, <<"EOS";
+	push @$bnf, <<'EOS';
 # L0 lexemes for the boilerplate.
 
-option_string								~ option_set+
-option_set									~ [^-+\\s]
+option_string							~ option_set+
+option_set								~ [^-+\s]
 
-string										~ char_set+
-char_set									~ [^\\s]
-
-:discard									~ whitespace
-whitespace									~ [\\s]+
+:discard								~ whitespace
+whitespace								~ [\s]+
 EOS
 
 	save_bnf($bnf);

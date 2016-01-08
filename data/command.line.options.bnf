@@ -12,11 +12,11 @@ command_name							::= 'convert'	action => command
 											| 'mogrify'	action => command
 
 input_file_name							::= option_string	action => input_file
-input_file_name							::=				action => input_file
+input_file_name							::=					action => input_file
 
 option_rule_set							::= option_rule*
 
-option_rule								::= open_parenthesis | close_parenthesis | adaptive_blur_rule | adaptive_resize_rule | adaptive_sharpen_rule | adjoin_rule | affine_rule | alpha_rule | annotate_rule | antialias_rule | append_rule | attenuate_rule | authenticate_rule | auto_gamma_rule | auto_level_rule | auto_orient_rule | average_rule | backdrop_rule | background_rule | bench_rule | bias_rule | black_point_compensation_rule | black_threshold_rule | blend_rule | blue_primary_rule | blue_shift_rule | blur_rule | border_rule | bordercolor_rule | borderwidth_rule | brightness_contrast_rule | cache_rule | canny_rule | caption_rule | cdl_rule | channel_rule | charcoal_rule | chop_rule | clamp_rule | clip_rule | clip_mask_rule | clip_path_rule | clone_rule | clut_rule | coalesce_rule | color_matrix_rule | colorize_rule | colormap_rule | colors_rule | colorspace_rule | combine_rule | comment_rule | compare_rule | complex_rule | compose_rule | composite_rule | compress_rule | connected_components_rule | contrast_rule | contrast_stretch_rule | convolve_rule | copy_rule | crop_rule | cycle_rule | debug_rule | decipher_rule | deconstruct_rule | delay_rule | delete_rule | density_rule | depth_rule | descend_rule | deskew_rule | despeckle_rule | direction_rule | displace_rule | display_rule | dispose_rule | dissimilarity_threshold_rule | dissolve_rule | distribute_cache_rule | dither_rule | draw_rule | duplicate_rule | edge_rule | emboss_rule | encipher_rule | encoding_rule | endian_rule | enhance_rule | equalize_rule | evaluate_rule | evaluate_sequence_rule | extent_rule | extract_rule | family_rule | features_rule | fft_rule | fill_rule | filter_rule | flatten_rule | flip_rule | floodfill_rule | flop_rule | font_rule | foreground_rule | format_rule | frame_rule | function_rule | fuzz_rule | fx_rule | gamma_rule | gaussian_blur_rule | geometry_rule | gravity_rule | grayscale_rule | green_primary_rule | hald_clut_rule | help_rule | highlight_color_rule | hough_lines_rule | iconGeometry_rule | iconic_rule | identify_rule | ift_rule | immutable_rule | implode_rule | insert_rule | intensity_rule | intent_rule | interlace_rule | interline_spacing_rule | interpolate_rule | interword_spacing_rule | kerning_rule | kuwahara_rule | label_rule | lat_rule | layers_rule | level_rule | level_colors_rule | limit_rule | linear_stretch_rule | linewidth_rule | liquid_rescale_rule | list_rule | log_rule | loop_rule | lowlight_color_rule | magnify_rule | map_rule | mask_rule | mattecolor_rule | maximum_rule | mean_shift_rule | median_rule | metric_rule | minimum_rule | mode_rule | modulate_rule | moments_rule | monitor_rule | monochrome_rule | morph_rule | mosaic_rule | motion_blur_rule | name_rule | negate_rule | noise_rule | normalize_rule | opaque_rule | orient_rule | page_rule | paint_rule | path_rule | pause_rule | perceptible_rule | ping_rule | pointsize_rule | polaroid_rule | posterize_rule | precision_rule | preview_rule | print_rule | process_rule | profile_rule | quality_rule | quantize_rule | quiet_rule | radial_blur_rule | raise_rule | random_threshold_rule | red_primary_rule | regard_warnings_rule | region_rule | remap_rule | remote_rule | render_rule | repage_rule | resample_rule | resize_rule | respect_parentheses_rule | reverse_rule | roll_rule | rotate_rule | sample_rule | sampling_factor_rule | scale_rule | scene_rule | screen_rule | seed_rule | segment_rule | selective_blur_rule | separate_rule | sepia_tone_rule | set_rule | shade_rule | shadow_rule | shared_memory_rule | sharpen_rule | shave_rule | shear_rule | sigmoidal_contrast_rule | silent_rule | similarity_threshold_rule | size_rule | sketch_rule | smush_rule | snaps_rule | solarize_rule | splice_rule | spread_rule | statistic_rule | stegano_rule | stereo_rule | storage_type_rule | stretch_rule | strip_rule | stroke_rule | strokewidth_rule | style_rule | subimage_search_rule | swap_rule | swirl_rule | synchronize_rule | taint_rule | text_font_rule | texture_rule | threshold_rule | thumbnail_rule | tile_rule | tile_offset_rule | tint_rule | title_rule | transform_rule | transparent_rule | transparent_color_rule | transpose_rule | transverse_rule | treedepth_rule | trim_rule | type_rule | undercolor_rule | unique_colors_rule | units_rule | unsharp_rule | update_rule | verbose_rule | version_rule | view_rule | vignette_rule | virtual_pixel_rule | visual_rule | watermark_rule | wave_rule | weight_rule | white_point_rule | white_threshold_rule | window_rule | window_group_rule | write_rule
+option_rule								::= open_parenthesis | adaptive_blur_rule | adaptive_resize_rule | adaptive_sharpen_rule | adjoin_rule | affine_rule | alpha_rule | annotate_rule | antialias_rule | append_rule | attenuate_rule | authenticate_rule | auto_gamma_rule | auto_level_rule | auto_orient_rule | average_rule | backdrop_rule | background_rule | bench_rule | bias_rule | black_point_compensation_rule | black_threshold_rule | blend_rule | blue_primary_rule | blue_shift_rule | blur_rule | border_rule | bordercolor_rule | borderwidth_rule | brightness_contrast_rule | cache_rule | canny_rule | caption_rule | cdl_rule | channel_rule | charcoal_rule | chop_rule | clamp_rule | clip_rule | clip_mask_rule | clip_path_rule | clone_rule | clut_rule | coalesce_rule | color_matrix_rule | colorize_rule | colormap_rule | colors_rule | colorspace_rule | combine_rule | comment_rule | compare_rule | complex_rule | compose_rule | composite_rule | compress_rule | connected_components_rule | contrast_rule | contrast_stretch_rule | convolve_rule | copy_rule | crop_rule | cycle_rule | debug_rule | decipher_rule | deconstruct_rule | delay_rule | delete_rule | density_rule | depth_rule | descend_rule | deskew_rule | despeckle_rule | direction_rule | displace_rule | display_rule | dispose_rule | dissimilarity_threshold_rule | dissolve_rule | distribute_cache_rule | dither_rule | draw_rule | duplicate_rule | edge_rule | emboss_rule | encipher_rule | encoding_rule | endian_rule | enhance_rule | equalize_rule | evaluate_rule | evaluate_sequence_rule | extent_rule | extract_rule | family_rule | features_rule | fft_rule | fill_rule | filter_rule | flatten_rule | flip_rule | floodfill_rule | flop_rule | font_rule | foreground_rule | format_rule | frame_rule | function_rule | fuzz_rule | fx_rule | gamma_rule | gaussian_blur_rule | geometry_rule | gravity_rule | grayscale_rule | green_primary_rule | hald_clut_rule | help_rule | highlight_color_rule | hough_lines_rule | iconGeometry_rule | iconic_rule | identify_rule | ift_rule | immutable_rule | implode_rule | insert_rule | intensity_rule | intent_rule | interlace_rule | interline_spacing_rule | interpolate_rule | interword_spacing_rule | kerning_rule | kuwahara_rule | label_rule | lat_rule | layers_rule | level_rule | level_colors_rule | limit_rule | linear_stretch_rule | linewidth_rule | liquid_rescale_rule | list_rule | log_rule | loop_rule | lowlight_color_rule | magnify_rule | map_rule | mask_rule | mattecolor_rule | maximum_rule | mean_shift_rule | median_rule | metric_rule | minimum_rule | mode_rule | modulate_rule | moments_rule | monitor_rule | monochrome_rule | morph_rule | mosaic_rule | motion_blur_rule | name_rule | negate_rule | noise_rule | normalize_rule | opaque_rule | orient_rule | page_rule | paint_rule | path_rule | pause_rule | perceptible_rule | ping_rule | pointsize_rule | polaroid_rule | posterize_rule | precision_rule | preview_rule | print_rule | process_rule | profile_rule | quality_rule | quantize_rule | quiet_rule | radial_blur_rule | raise_rule | random_threshold_rule | red_primary_rule | regard_warnings_rule | region_rule | remap_rule | remote_rule | render_rule | repage_rule | resample_rule | resize_rule | respect_parentheses_rule | reverse_rule | roll_rule | rotate_rule | sample_rule | sampling_factor_rule | scale_rule | scene_rule | screen_rule | seed_rule | segment_rule | selective_blur_rule | separate_rule | sepia_tone_rule | set_rule | shade_rule | shadow_rule | shared_memory_rule | sharpen_rule | shave_rule | shear_rule | sigmoidal_contrast_rule | silent_rule | similarity_threshold_rule | size_rule | sketch_rule | smush_rule | snaps_rule | solarize_rule | splice_rule | spread_rule | statistic_rule | stegano_rule | stereo_rule | storage_type_rule | stretch_rule | strip_rule | stroke_rule | strokewidth_rule | style_rule | subimage_search_rule | swap_rule | swirl_rule | synchronize_rule | taint_rule | text_font_rule | texture_rule | threshold_rule | thumbnail_rule | tile_rule | tile_offset_rule | tint_rule | title_rule | transform_rule | transparent_rule | transparent_color_rule | transpose_rule | transverse_rule | treedepth_rule | trim_rule | type_rule | undercolor_rule | unique_colors_rule | units_rule | unsharp_rule | update_rule | verbose_rule | version_rule | view_rule | vignette_rule | virtual_pixel_rule | visual_rule | watermark_rule | wave_rule | weight_rule | white_point_rule | white_threshold_rule | window_rule | window_group_rule | write_rule
 
 adaptive_blur_rule						::= minus_sign 'adaptive-blur' radius	action => adaptive_blur_1
 
@@ -607,254 +607,221 @@ window_group_rule						::= minus_sign 'window-group' 	action => window_group_1
 
 write_rule								::= minus_sign 'write' filename	action => write_1
 
-close_parenthesis						::= ')'	action => close_parenthesis
-
 open_parenthesis						::= '('	action => open_parenthesis
-
-# G1 lexemes from ImageMagick command options.
-
-amount										::= comma_separated_integers
-
-amplitude									::= real_number
-
-angle										::= real_number
-
-azimuthxelevation							::= string
-
-black_color									::= string
-
-black_point									::= string
-
-brightness									::= real_number
-
-brightness_optional_saturation_hue			::= real_number
-
-cluster_threshold							::= integer
-
-color										::= string
-
-colorspace									::= color_space_list
-
-command										::= string
-
-components									::= color_prefix_list
-
-connectivity								::= integer
-
-contrast									::= integer
-
-count										::= integer
-
-degrees										::= real_number
-
-distance									::= string
-
-epsilon										::= real_number
-
-events										::= comma_separated_events
-
-expression									::= string
-
-factor										::= real_number
-
-filename									::= string
-
-fontFamily									::= string
-
-fontStretch									::= string
-
-fontStyle									::= string
-
-fontWeight									::= string
-
-frames										::= integer
-
-function									::= string
-
-geometry									::= geometry_string
-
-height										::= real_number
-
-high										::= real_number
-
-horizontal									::= integer
-
-horizontal_factor							::= integer
-
-horizontal_scale							::= integer
-
-host_display_optional_dot_screen			::= string
-
-id											::= string
-
-image										::= string
-
-index										::= image_list
-
-indexes										::= image_list
-
-iterations									::= integer
-
-kernel										::= comma_separated_reals
-
-key											::= string
-
-levels										::= comma_separated_integers
-
-low											::= real_number
-
-matrix										::= string
-
-media										::= string
-
-method										::= string
-
-mid_point									::= integer
-
-name										::= string
-
-offset										::= offset_list
-
-operator									::= string
-
-optional_comma_gamma						::= string
-
-optional_comma_white_point					::= string
-
-optional_gain								::= string
-
-optional_geometry_suffix					::= string
-
-optional_lower_percent						::= string
-
-optional_offset								::= string
-
-optional_canvas_palette						::= option_string*
-
-optional_plus_sign_distance					::= string
-
-optional_threshold							::= string
-
-optional_upper_percent						::= string
-
-orientation									::= string
-
-parameters									::= string
-
-password									::= string
-
-path										::= string
-
-percent_opacity								::= real_number
-
-port										::= integer
-
-profile_name								::= string
-
-radius										::= string
-
-saturation									::= real_number
-
-seconds										::= integer
-
-sigma										::= real_number
-
-smoothing_threshold							::= real_number
-
-src_percent									::= real_number
-
-sx_rx_ry_sy_optional_tx_ty					::= comma_separated_reals
-
-text										::= string
-
-thickness									::= integer
-
-threshold									::= real_number
-
-ticks										::= integer
-
-ticks_per_second							::= integer
-
-tx											::= real_number
-
-ty											::= real_number
-
-type										::= string
-
-value										::= string
-
-vertical									::= integer
-
-vertical_factor								::= real_number
-
-vertical_scale								::= integer
-
-wavelength									::= real_number
-
-white_color									::= string
-
-width										::= string
-
-x											::= integer
-
-Xdegrees									::= real_number
-
-y											::= integer
-
-Ydegrees									::= real_number
-
-# G1 lexemes from option parameters.
-
-color_prefix_list							::= string
-
-color_space_list							::= string
-
-comma_separated_events						::= string
-
-comma_separated_integers					::= string
-
-comma_separated_reals						::= string
-
-geometry_string								::= string
-
-image_list									::= string
-
-offset_list									::= string
-
-real_number									::= string
 
 # L0 lexemes from option parameters.
 
-comma										~ ','
+minus_sign								~ '-'
 
-integer										~ '[\d]+'
+plus_sign								~ '+'
 
-minus_sign									~ '-'
+Xdegrees								~ '[^\s]+'
 
-optional_at_sign							~ '@'
+XdegreesxYdegrees						~ '[^\s]+'
 
-optional_exclamation_point					~ '!'
+amount									~ '[^\s]+'
 
-optional_greater_than						~ '>'
+amplitude								~ '[^\s]+'
 
-optional_less_or_greater_than				~ '<'
+amplitudexwavelength					~ '[^\s]+'
 
-optional_percent							~ '%'
+angle									~ '[^\s]+'
 
-optional_plus_sign_y						~ '+'
+azimuthxelevation						~ '[^\s]+'
 
-plus_or_minus								~ '[+-]'
+black_color								~ '[^\s]+'
 
-plus_sign									~ '+'
+black_point								~ '[^\s]+'
+
+brightness								~ '[^\s]+'
+
+brightness_optional_saturation_hue		~ '[^\s]+'
+
+brightnessxsaturation					~ '[^\s]+'
+
+cluster_thresholdxsmoothing_threshold	~ '[^\s]+'
+
+color									~ '[^\s]+'
+
+colorspace								~ '[^\s]+'
+
+comma									~ '[^\s]+'
+
+command									~ '[^\s]+'
+
+components								~ '[^\s]+'
+
+connectivity							~ '[^\s]+'
+
+contrastxmid_point						~ '[^\s]+'
+
+count									~ '[^\s]+'
+
+degrees									~ '[^\s]+'
+
+distance								~ '[^\s]+'
+
+epsilon									~ '[^\s]+'
+
+events									~ '[^\s]+'
+
+expression								~ '[^\s]+'
+
+factor									~ '[^\s]+'
+
+filename								~ '[^\s]+'
+
+fontFamily								~ '[^\s]+'
+
+fontStretch								~ '[^\s]+'
+
+fontStyle								~ '[^\s]+'
+
+fontWeight								~ '[^\s]+'
+
+frames									~ '[^\s]+'
+
+function								~ '[^\s]+'
+
+geometry								~ '[^\s]+'
+
+horizontal_factorxvertical_factor		~ '[^\s]+'
+
+horizontal_scale						~ '[^\s]+'
+
+horizontal_scalexvertical_scale			~ '[^\s]+'
+
+horizontalxvertical						~ '[^\s]+'
+
+host_display_optional_dot_screen		~ '[^\s]+'
+
+id										~ '[^\s]+'
+
+image									~ '[^\s]+'
+
+index									~ '[^\s]+'
+
+indexes									~ '[^\s]+'
+
+iterations								~ '[^\s]+'
+
+kernel									~ '[^\s]+'
+
+key										~ '[^\s]+'
+
+levels									~ '[^\s]+'
+
+lowxhigh								~ '[^\s]+'
+
+matrix									~ '[^\s]+'
+
+media									~ '[^\s]+'
+
+method									~ '[^\s]+'
+
+name									~ '[^\s]+'
+
+offset									~ '[^\s]+'
+
+operator								~ '[^\s]+'
+
+optional_at_sign						~ '[^\s]+'
+
+optional_canvas_palette					~ '[^\s]+'
+
+optional_comma_gamma					~ '[^\s]+'
+
+optional_comma_white_point				~ '[^\s]+'
+
+optional_exclamation_point				~ '[^\s]+'
+
+optional_gain							~ '[^\s]+'
+
+optional_geometry_suffix				~ '[^\s]+'
+
+optional_greater_than					~ '[^\s]+'
+
+optional_less_or_greater_than			~ '[^\s]+'
+
+optional_lower_percent					~ '[^\s]+'
+
+optional_offset							~ '[^\s]+'
+
+optional_percent						~ '[^\s]+'
+
+optional_plus_sign_distance				~ '[^\s]+'
+
+optional_plus_sign_y					~ '[^\s]+'
+
+optional_threshold						~ '[^\s]+'
+
+optional_upper_percent					~ '[^\s]+'
+
+orientation								~ '[^\s]+'
+
+parameters								~ '[^\s]+'
+
+password								~ '[^\s]+'
+
+path									~ '[^\s]+'
+
+percent_opacity							~ '[^\s]+'
+
+plus_or_minus							~ '[^\s]+'
+
+plus_sign								~ '[^\s]+'
+
+port									~ '[^\s]+'
+
+profile_name							~ '[^\s]+'
+
+radius									~ '[^\s]+'
+
+radiusxsigma							~ '[^\s]+'
+
+seconds									~ '[^\s]+'
+
+sigma									~ '[^\s]+'
+
+src_percent								~ '[^\s]+'
+
+string									~ '[^\s]+'
+
+sx_rx_ry_sy_optional_tx_ty				~ '[^\s]+'
+
+text									~ '[^\s]+'
+
+thickness								~ '[^\s]+'
+
+threshold								~ '[^\s]+'
+
+ticks									~ '[^\s]+'
+
+ticksxticks_per_second					~ '[^\s]+'
+
+tx										~ '[^\s]+'
+
+ty										~ '[^\s]+'
+
+type									~ '[^\s]+'
+
+value									~ '[^\s]+'
+
+white_color								~ '[^\s]+'
+
+width									~ '[^\s]+'
+
+widthxheight							~ '[^\s]+'
+
+x										~ '[^\s]+'
+
+y										~ '[^\s]+'
 
 # L0 lexemes for the boilerplate.
 
-option_string								~ option_set+
-option_set									~ [^-+\s]
+option_string							~ option_set+
+option_set								~ [^-+\s]
 
-string										~ char_set+
-char_set									~ [^\s]
-
-:discard									~ whitespace
-whitespace									~ [\s]+
+:discard								~ whitespace
+whitespace								~ [\s]+
 

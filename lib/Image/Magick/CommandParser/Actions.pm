@@ -971,24 +971,6 @@ sub clone_1
 
 # ------------------------------------------------
 
-sub close_parenthesis
-{
-	my($cache, @params) = @_;
-
-	$$cache{logger} -> log(debug => 'close_parenthesis');
-	$$cache{items} -> push
-	({
-		params	=> [map{defined($_) ? $_ : ''} @params],
-		sign	=> '',
-		rule	=> 'close_parenthesis',
-	});
-
-	return $params[0];
-
-} # End of close_parenthesis.
-
-# ------------------------------------------------
-
 sub clut_1
 {
 	my($cache, @params) = @_;
@@ -3915,7 +3897,7 @@ sub open_parenthesis
 {
 	my($cache, @params) = @_;
 
-	$$cache{logger} -> log(debug => 'command');
+	$$cache{logger} -> log(debug => 'open_parenthesis');
 	$$cache{items} -> push
 	({
 		params	=> [map{defined($_) ? $_ : ''} @params],

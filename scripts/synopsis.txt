@@ -10,4 +10,5 @@ convert -font Bookman-DemiItalic +page
 mogrify -font Bookman-DemiItalic +page
 convert -size 320x85 canvas::none -font Bookman-DemiItalic
 convert -size 320x85 canvas::none -font Bookman-DemiItalic output.png
-convert label.gif ( -adaptive-blur 7x9 -size 320x85 ) button.gif
+convert label.gif ( -size 320x85 ) button.gif
+convert label.gif ( -size 320x85 -adaptive-blur 7x9 ) button.gif

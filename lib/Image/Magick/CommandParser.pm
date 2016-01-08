@@ -8,6 +8,8 @@ use warnings  qw(FATAL utf8);    # Fatalize encoding glitches.
 use Data::Dumper::Concise; # For Dumper();
 use Data::Section::Simple 'get_data_section';
 
+use File::Slurper 'read_lines';
+
 use Image::Magick::CommandParser::Actions;
 
 use Log::Handler;
@@ -17,6 +19,8 @@ use Marpa::R2;
 use Moo;
 
 use Set::Array;
+
+use Try::Tiny;
 
 use Types::Standard qw/Any HashRef Str/;
 
@@ -90,11 +94,13 @@ our $VERSION = '1.00';
 
 sub BUILD
 {
-	my($self) = @_;
+	my($self)	= @_;
+	#my($bnf)	= get_data_section('image.magick.bnf');
+	my($bnf)	= join("\n", read_lines('data/command.line.options.bnf') );
 
 	$self -> grammar
 	(
-		Marpa::R2::Scanless::G -> new({source => \get_data_section('image.magick.bnf')})
+		Marpa::R2::Scanless::G -> new({source => \$bnf})
 	);
 
 } # End of BUILD.
@@ -215,6 +221,22 @@ sub _populate_result
 
 # ------------------------------------------------
 
+sub report
+{
+	my($self)	= @_;
+	my($format)	= '%4s  %-20s  %-s';
+
+	$self -> log(debug => sprintf($format, 'Sign', 'Rule', 'Params') );
+
+	for my $item ($self -> items -> print)
+	{
+		$self -> log(debug => sprintf($format, $$item{sign}, $$item{rule}, join(', ', @{$$item{params} }) ) );
+	}
+
+} # End of report.
+
+# ------------------------------------------------
+
 sub run
 {
 	my($self, %options)	= @_;
@@ -230,55 +252,57 @@ sub run
 		self	=> $self, # For access to logger within decode_result().
 	};
 
-	$self -> recce -> read(\$command[0]);
-
-	my($result)				= $self -> recce -> value($cache);
-	my($ambiguity_metric)	= $self -> recce -> ambiguity_metric;
-
-	if ($ambiguity_metric <= 0)
+	try
 	{
-		my($line, $column)	= $self -> recce -> line_column();
-		my($whole_length)	= length $command[0];
-		my($suffix)			= substr($command[0], ($whole_length - 100) );
-		my($suffix_length)	= length $suffix;
-		my($s)				= $suffix_length == 1 ? 'char' : "$suffix_length chars";
-		my($message)		= "Call to ambiguity_metric() returned $ambiguity_metric (i.e. an error). \n"
-			. "Marpa exited at (line, column) = ($line, $column) within the input string. \n"
-			. "Input length: $whole_length. Last $s of input: '$suffix'";
-
-		$self -> log(error => "Error. Parse failed. $message");
+		$self -> recce -> read(\$command[0]);
 	}
-	elsif ($ambiguity_metric == 1)
+	catch
 	{
-		$self -> log(debug => 'Parse is unambiguous');
+		my($error) = $_;
 
-		if (length $command[1])
+		$self -> log(error => '=> ' . $error);
+	};
+
+		my($result)				= $self -> recce -> value($cache);
+		my($ambiguity_metric)	= $self -> recce -> ambiguity_metric;
+
+		if ($ambiguity_metric <= 0)
 		{
-			$self -> items -> push
-			({
-				params	=> [$command[1]],
-				sign	=> '',
-				rule	=> 'output_file',
-			});
+			my($line, $column)	= $self -> recce -> line_column();
+			my($whole_length)	= length $command[0];
+			my($suffix)			= substr($command[0], ($whole_length - 100) );
+			my($suffix_length)	= length $suffix;
+			my($s)				= $suffix_length == 1 ? 'char' : "$suffix_length chars";
+			my($message)		= "Call to ambiguity_metric() returned $ambiguity_metric (i.e. an error). \n"
+				. "Marpa exited at (line, column) = ($line, $column) within the input string. \n"
+				. "Input length: $whole_length. Last $s of input: '$suffix'";
+
+			$self -> log(error => "Error. Parse failed. $message");
 		}
-
-		$self -> _populate_result;
-
-		my($format)= '%4s  %-20s  %-s';
-
-		$self -> log(debug => sprintf($format, 'Sign', 'Rule', 'Params') );
-
-		for my $item ($self -> items -> print)
+		elsif ($ambiguity_metric == 1)
 		{
-			$self -> log(debug => sprintf($format, $$item{sign}, $$item{rule}, join(', ', @{$$item{params} }) ) );
-		}
+			$self -> log(debug => 'Parse is unambiguous');
 
-		$self -> log(info => "Result: \n" . Dumper($self -> result) );
-	}
-	else
-	{
-		$self -> log(error => 'Error. Parse is ambiguous');
-	}
+			if (length $command[1])
+			{
+				$self -> items -> push
+				({
+					params	=> [$command[1]],
+					sign	=> '',
+					rule	=> 'output_file',
+				});
+			}
+
+			$self -> _populate_result;
+			$self -> log(info => "Result: \n" . Dumper($self -> result) );
+		}
+		else
+		{
+			$self -> log(error => 'Error. Parse is ambiguous');
+			$self -> report;
+			$self -> _populate_result;
+			$self -> log(info => "Result: \n" . Dumper($self -> result) );
+		}
 
 	# Return 0 for success and 1 for failure.
 
@@ -380,7 +404,8 @@ input_file_name							::=					action => input_file
 option_rule_set							::= option_rule*
 
 option_rule								::= open_parenthesis
-											|| adaptive_blur_rule | adaptive_resize_rule | adaptive_sharpen_rule | adjoin_rule | affine_rule | alpha_rule | annotate_rule | antialias_rule | append_rule | attenuate_rule | authenticate_rule | auto_gamma_rule | auto_level_rule | auto_orient_rule | average_rule | backdrop_rule | background_rule | bench_rule | bias_rule | black_point_compensation_rule | black_threshold_rule | blend_rule | blue_primary_rule | blue_shift_rule | blur_rule | border_rule | bordercolor_rule | borderwidth_rule | brightness_contrast_rule | cache_rule | canny_rule | caption_rule | cdl_rule | channel_rule | charcoal_rule | chop_rule | clamp_rule | clip_rule | clip_mask_rule | clip_path_rule | clone_rule | clut_rule | coalesce_rule | color_matrix_rule | colorize_rule | colormap_rule | colors_rule | colorspace_rule | combine_rule | comment_rule | compare_rule | complex_rule | compose_rule | composite_rule | compress_rule | connected_components_rule | contrast_rule | contrast_stretch_rule | convolve_rule | copy_rule | crop_rule | cycle_rule | debug_rule | decipher_rule | deconstruct_rule | delay_rule | delete_rule | density_rule | depth_rule | descend_rule | deskew_rule | despeckle_rule | direction_rule | displace_rule | display_rule | dispose_rule | dissimilarity_threshold_rule | dissolve_rule | distribute_cache_rule | dither_rule | draw_rule | duplicate_rule | edge_rule | emboss_rule | encipher_rule | encoding_rule | endian_rule | enhance_rule | equalize_rule | evaluate_rule | evaluate_sequence_rule | extent_rule | extract_rule | family_rule | features_rule | fft_rule | fill_rule | filter_rule | flatten_rule | flip_rule | floodfill_rule | flop_rule | font_rule | foreground_rule | format_rule | frame_rule | function_rule | fuzz_rule | fx_rule | gamma_rule | gaussian_blur_rule | geometry_rule | gravity_rule | grayscale_rule | green_primary_rule | hald_clut_rule | help_rule | highlight_color_rule | hough_lines_rule | iconGeometry_rule | iconic_rule | identify_rule | ift_rule | immutable_rule | implode_rule | insert_rule | intensity_rule | intent_rule | interlace_rule | interline_spacing_rule | interpolate_rule | interword_spacing_rule | kerning_rule | kuwahara_rule | label_rule | lat_rule | layers_rule | level_rule | level_colors_rule | limit_rule | linear_stretch_rule | linewidth_rule | liquid_rescale_rule | list_rule | log_rule | loop_rule | lowlight_color_rule | magnify_rule | map_rule | mask_rule | mattecolor_rule | maximum_rule | mean_shift_rule | median_rule | metric_rule | minimum_rule | mode_rule | modulate_rule | moments_rule | monitor_rule | monochrome_rule | morph_rule | mosaic_rule | motion_blur_rule | name_rule | negate_rule | noise_rule | normalize_rule | opaque_rule | orient_rule | page_rule | paint_rule | path_rule | pause_rule | perceptible_rule | ping_rule | pointsize_rule | polaroid_rule | posterize_rule | precision_rule | preview_rule | print_rule | process_rule | profile_rule | quality_rule | quantize_rule | quiet_rule | radial_blur_rule | raise_rule | random_threshold_rule | red_primary_rule | regard_warnings_rule | region_rule | remap_rule | remote_rule | render_rule | repage_rule | resample_rule | resize_rule | respect_parentheses_rule | reverse_rule | roll_rule | rotate_rule | sample_rule | sampling_factor_rule | scale_rule | scene_rule | screen_rule | seed_rule | segment_rule | selective_blur_rule | separate_rule | sepia_tone_rule | set_rule | shade_rule | shadow_rule | shared_memory_rule | sharpen_rule | shave_rule | shear_rule | sigmoidal_contrast_rule | silent_rule | similarity_threshold_rule | size_rule | sketch_rule | smush_rule | snaps_rule | solarize_rule | splice_rule | spread_rule | statistic_rule | stegano_rule | stereo_rule | storage_type_rule | stretch_rule | strip_rule | stroke_rule | strokewidth_rule | style_rule | subimage_search_rule | swap_rule | swirl_rule | synchronize_rule | taint_rule | text_font_rule | texture_rule | threshold_rule | thumbnail_rule | tile_rule | tile_offset_rule | tint_rule | title_rule | transform_rule | transparent_rule | transparent_color_rule | transpose_rule | transverse_rule | treedepth_rule | trim_rule | type_rule | undercolor_rule | unique_colors_rule | units_rule | unsharp_rule | update_rule | verbose_rule | version_rule | view_rule | vignette_rule | virtual_pixel_rule | visual_rule | watermark_rule | wave_rule | weight_rule | white_point_rule | white_threshold_rule | window_rule | window_group_rule | write_rule
+											| close_parenthesis
+											| adaptive_blur_rule | adaptive_resize_rule | adaptive_sharpen_rule | adjoin_rule | affine_rule | alpha_rule | annotate_rule | antialias_rule | append_rule | attenuate_rule | authenticate_rule | auto_gamma_rule | auto_level_rule | auto_orient_rule | average_rule | backdrop_rule | background_rule | bench_rule | bias_rule | black_point_compensation_rule | black_threshold_rule | blend_rule | blue_primary_rule | blue_shift_rule | blur_rule | border_rule | bordercolor_rule | borderwidth_rule | brightness_contrast_rule | cache_rule | canny_rule | caption_rule | cdl_rule | channel_rule | charcoal_rule | chop_rule | clamp_rule | clip_rule | clip_mask_rule | clip_path_rule | clone_rule | clut_rule | coalesce_rule | color_matrix_rule | colorize_rule | colormap_rule | colors_rule | colorspace_rule | combine_rule | comment_rule | compare_rule | complex_rule | compose_rule | composite_rule | compress_rule | connected_components_rule | contrast_rule | contrast_stretch_rule | convolve_rule | copy_rule | crop_rule | cycle_rule | debug_rule | decipher_rule | deconstruct_rule | delay_rule | delete_rule | density_rule | depth_rule | descend_rule | deskew_rule | despeckle_rule | direction_rule | displace_rule | display_rule | dispose_rule | dissimilarity_threshold_rule | dissolve_rule | distribute_cache_rule | dither_rule | draw_rule | duplicate_rule | edge_rule | emboss_rule | encipher_rule | encoding_rule | endian_rule | enhance_rule | equalize_rule | evaluate_rule | evaluate_sequence_rule | extent_rule | extract_rule | family_rule | features_rule | fft_rule | fill_rule | filter_rule | flatten_rule | flip_rule | floodfill_rule | flop_rule | font_rule | foreground_rule | format_rule | frame_rule | function_rule | fuzz_rule | fx_rule | gamma_rule | gaussian_blur_rule | geometry_rule | gravity_rule | grayscale_rule | green_primary_rule | hald_clut_rule | help_rule | highlight_color_rule | hough_lines_rule | iconGeometry_rule | iconic_rule | identify_rule | ift_rule | immutable_rule | implode_rule | insert_rule | intensity_rule | intent_rule | interlace_rule | interline_spacing_rule | interpolate_rule | interword_spacing_rule | kerning_rule | kuwahara_rule | label_rule | lat_rule | layers_rule | level_rule | level_colors_rule | limit_rule | linear_stretch_rule | linewidth_rule | liquid_rescale_rule | list_rule | log_rule | loop_rule | lowlight_color_rule | magnify_rule | map_rule | mask_rule | mattecolor_rule | maximum_rule | mean_shift_rule | median_rule | metric_rule | minimum_rule | mode_rule | modulate_rule | moments_rule | monitor_rule | monochrome_rule | morph_rule | mosaic_rule | motion_blur_rule | name_rule | negate_rule | noise_rule | normalize_rule | opaque_rule | orient_rule | page_rule | paint_rule | path_rule | pause_rule | perceptible_rule | ping_rule | pointsize_rule | polaroid_rule | posterize_rule | precision_rule | preview_rule | print_rule | process_rule | profile_rule | quality_rule | quantize_rule | quiet_rule | radial_blur_rule | raise_rule | random_threshold_rule | red_primary_rule | regard_warnings_rule | region_rule | remap_rule | remote_rule | render_rule | repage_rule | resample_rule | resize_rule | respect_parentheses_rule | reverse_rule | roll_rule | rotate_rule | sample_rule | sampling_factor_rule | scale_rule | scene_rule | screen_rule | seed_rule | segment_rule | selective_blur_rule | separate_rule | sepia_tone_rule | set_rule | shade_rule | shadow_rule | shared_memory_rule | sharpen_rule | shave_rule | shear_rule | sigmoidal_contrast_rule | silent_rule | similarity_threshold_rule | size_rule | sketch_rule | smush_rule | snaps_rule | solarize_rule | splice_rule | spread_rule | statistic_rule | stegano_rule | stereo_rule | storage_type_rule | stretch_rule | strip_rule | stroke_rule | strokewidth_rule | style_rule | subimage_search_rule | swap_rule | swirl_rule | synchronize_rule | taint_rule | text_font_rule | texture_rule | threshold_rule | thumbnail_rule | tile_rule | tile_offset_rule | tint_rule | title_rule | transform_rule | transparent_rule | transparent_color_rule | transpose_rule | transverse_rule | treedepth_rule | trim_rule | type_rule | undercolor_rule | unique_colors_rule | units_rule | unsharp_rule | update_rule | verbose_rule | version_rule | view_rule | vignette_rule | virtual_pixel_rule | visual_rule | watermark_rule | wave_rule | weight_rule | white_point_rule | white_threshold_rule | window_rule | window_group_rule | write_rule
 
 adaptive_blur_rule						::= minus_sign 'adaptive-blur' radius	action => adaptive_blur_1
 
@@ -974,6 +999,8 @@ window_group_rule						::= minus_sign 'window-group' 	action => window_group_1
 write_rule								::= minus_sign 'write' filename	action => write_1
 
 # G1 lexemes from ImageMagick command options.
+
+close_parenthesis						::= ')'	action => close_parenthesis
 
 open_parenthesis						::= '('	action => open_parenthesis
 
