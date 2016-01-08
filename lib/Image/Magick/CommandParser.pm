@@ -132,19 +132,13 @@ sub _init
 	$command				=~ s/^\s+//;
 	$command				=~ s/\s+$//;
 	my($output_file_name)	= '';
-	my($image_regexp)		= 'qr/(.+)\.(' . join('|', split/\n/, get_data_section('image.formats') ) . ')/';
-	my($rindex)				= rindex($command, ' ');
-	my($suffix)				= substr($command, $rindex + 1);
+	my($image_regexp)		= '^.+\s+(.+?\.(?:' . join('|', split/\n/, get_data_section('image.formats') ) . '))$';
+	$image_regexp			= qr/$image_regexp/;
 
-	$self -> log(debug => $image_regexp);
-	$self -> log(debug => "rindex: $rindex. Suffix: $suffix");
-
-	if ($suffix =~ $image_regexp)
+	if ($command =~ $image_regexp)
 	{
-		$command			= substr($command, 0, $rindex - 1);
-		$output_file_name	= "$1.$2";
-
-		$self -> log(debug => "Command now '$command'\nOutput file '$output_file_name'");
+		$output_file_name	= $1;
+		$command			= substr($command, 0, - length($output_file_name) - 1);
 	}
 
 	$self -> command($command);
@@ -171,9 +165,9 @@ sub run
 {
 	my($self, %options)	= @_;
 	my(@command)		= $self -> _init(%options);
+	my($message)		= $command[0] . (length($command[1]) ? " $command[1]" : '');
 
-	$self -> log(debug => "Command: '$command[0]'");
-	$self -> log(debug => "Output:  '$command[1]'");
+	$self -> log(debug => "Command: '$message'");
 
 	my($cache)	=
 	{
@@ -203,6 +197,16 @@ sub run
 	elsif ($ambiguity_metric == 1)
 	{
 		$self -> log(debug => 'Parse is unambiguous');
+
+		if (length $command[1])
+		{
+			$self -> items -> push
+			({
+				params	=> [$command[1]],
+				sign	=> '',
+				rule	=> 'output_file',
+			});
+		}
 
 		my($format) = '%4s  %-20s  %-s';
 
