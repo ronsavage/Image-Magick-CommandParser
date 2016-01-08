@@ -90,11 +90,13 @@ our $VERSION = '1.00';
 
 sub BUILD
 {
-	my($self) = @_;
+	my($self)	= @_;
+	my($bnf)	= get_data_section('image.magick.bnf');
+	#my($bnf)	= join("\n", read_lines('data/command.line.options.bnf') );
 
 	$self -> grammar
 	(
-		Marpa::R2::Scanless::G -> new({source => \get_data_section('image.magick.bnf')})
+		Marpa::R2::Scanless::G -> new({source => \$bnf})
 	);
 
 } # End of BUILD.
@@ -155,9 +157,9 @@ sub _init
 
 sub log
 {
-	my($self, $s) = @_;
+	my($self, $level, $s) = @_;
 
-	$self -> logger -> log($s) if ($self -> logger);
+	$self -> logger -> log($level => $s) if ($self -> logger);
 
 } # End of log.
 
@@ -212,6 +214,69 @@ sub _populate_result
 
 # ------------------------------------------------
 
+sub _process
+{
+	my($self, $string)	= @_;
+	my($length)			= length $string;
+	my($format)			= '%-20s    %5s    %5s    %5s    %-20s    %-20s';
+	my($pos)			= 0;
+
+	$self -> log(debug => "Length of input: $length");
+	$self -> log(debug => sprintf($format, 'Event', 'Start', 'Span', 'Pos', 'Lexeme', 'Comment') );
+
+	my(@event, $event_name);
+	my($lexeme);
+	my($span, $start);
+
+	for
+	(
+		$pos = $self -> recce -> read(\$string, $pos, $length);
+		$pos < $length;
+		$pos = $self -> recce -> resume($pos)
+	)
+	{
+		($start, $span)	= $self -> recce -> pause_span;
+		$self -> log(debug => "start: $start. span: $span");
+		@event			= @{$self -> recce -> events};
+		$self -> log(debug => "event: \n" . Dumper(@event) );
+		$event_name		= $event[0][0];
+		$self -> log(debug => "event_name: $event_name");
+		$lexeme			= $self -> recce -> literal($start, $span);
+		$self -> log(debug => "lexeme: $lexeme");
+		$pos			= $self -> recce -> lexeme_read($event_name);
+
+		$self -> log(debug => sprintf($format, $event_name, $start, $span, $pos, $lexeme, '-') );
+
+		if ($event_name eq 'char')
+		{
+			$self -> log(debug => "Lexeme $lexeme");
+		}
+    }
+
+	# Return a defined value for success and undef for failure.
+
+	return $self -> recce -> value;
+
+} # End of _process.
+
+# ------------------------------------------------
+
+sub report
+{
+	my($self)	= @_;
+	my($format)	= '%4s  %-20s  %-s';
+
+	$self -> log(debug => sprintf($format, 'Sign', 'Rule', 'Params') );
+
+	for my $item ($self -> items -> print)
+	{
+		$self -> log(debug => sprintf($format, $$item{sign}, $$item{rule}, join(', ', @{$$item{params} }) ) );
+	}
+
+} # End of report.
+
+# ------------------------------------------------
+
 sub run
 {
 	my($self, %options)	= @_;
@@ -220,9 +285,8 @@ sub run
 
 	$self -> log(info => "Command: '$message'");
 
-	$self -> recce -> read(\$command[0]);
+	$self -> _process($command[0]);
 
-	my($result)				= $self -> recce -> value;
 	my($ambiguity_metric)	= $self -> recce -> ambiguity_metric;
 
 	if ($ambiguity_metric <= 0)
@@ -270,11 +334,13 @@ sub run
 		$self -> log(error => 'Error. Parse is ambiguous');
 	}
 
+	$self -> report;
+
 	# Return 0 for success and 1 for failure.
 
 	return 0;
 
-} # End of write.
+} # End of run.
 
 # ------------------------------------------------
 
@@ -363,6 +429,7 @@ command_and_options	::= char+
 
 # L0 lexemes from option parameters.
 
+:lexeme				~ char		pause => before		event => char
 char				~ [[:print:]]
 
 # L0 lexemes for the boilerplate.
