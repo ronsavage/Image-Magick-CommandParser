@@ -5,6 +5,7 @@ use utf8;
 use warnings;
 use warnings  qw(FATAL utf8);    # Fatalize encoding glitches.
 
+use Data::Dumper::Concise; # For Dumper();
 use Data::Section::Simple 'get_data_section';
 
 use File::Slurper 'read_lines';
@@ -19,7 +20,7 @@ use Moo;
 
 use Set::Array;
 
-use Types::Standard qw/Any Object Str/;
+use Types::Standard qw/Any HashRef Str/;
 
 has command =>
 (
@@ -74,6 +75,14 @@ has recce =>
 	default  => sub{return ''},
 	is       => 'rw',
 	isa      => Any, # 'Marpa::R2::Scanless::R'.
+	required => 0,
+);
+
+has result =>
+(
+	default  => sub{return {} },
+	is       => 'rw',
+	isa      => HashRef,
 	required => 0,
 );
 
@@ -159,6 +168,55 @@ sub log
 
 } # End of log.
 
+# --------------------------------------------------
+
+sub _populate_result
+{
+	my($self)	= @_;
+	my($result)	=
+	{
+		command		=> '',
+		input_file	=> '',
+		output_file	=> '',
+		options		=> [],
+	};
+
+	my(@options);
+	my($params);
+
+	for my $item ($self -> items -> print)
+	{
+		$params = defined($$item{params}[0]) ? $$item{params}[0] : '';
+
+		if ($$item{rule} eq 'command')
+		{
+			$$result{command} = $params;
+		}
+		elsif ($$item{rule} eq 'input_file')
+		{
+			$$result{input_file} = $params;
+		}
+		elsif ($$item{rule} eq 'output_file')
+		{
+			$$result{output_file} = $params;
+		}
+		else
+		{
+			push @options,
+			{
+				name	=> $$item{rule},
+				params	=> $$item{params},
+				sign	=> $$item{sign},
+			}
+		}
+	}
+
+	$$result{options} = [@options];
+
+	$self -> result($result);
+
+} # End of _populate_result.
+
 # ------------------------------------------------
 
 sub run
@@ -167,7 +225,7 @@ sub run
 	my(@command)		= $self -> _init(%options);
 	my($message)		= $command[0] . (length($command[1]) ? " $command[1]" : '');
 
-	$self -> log(debug => "Command: '$message'");
+	$self -> log(info => "Command: '$message'");
 
 	my($cache)	=
 	{
@@ -208,20 +266,23 @@ sub run
 			});
 		}
 
-		my($format) = '%4s  %-20s  %-s';
+		$self -> _populate_result;
 
-		$self -> log(info => sprintf($format, 'Sign', 'Rule', 'Params') );
+		my($format)= '%4s  %-20s  %-s';
+
+		$self -> log(debug => sprintf($format, 'Sign', 'Rule', 'Params') );
 
 		for my $item ($self -> items -> print)
 		{
-			$self -> log(info => sprintf($format, $$item{sign}, $$item{rule}, join(', ', @{$$item{params} }) ) );
+			$self -> log(debug => sprintf($format, $$item{sign}, $$item{rule}, join(', ', @{$$item{params} }) ) );
 		}
+
+		$self -> log(info => "Result: \n" . Dumper($self -> result) );
 	}
 	else
 	{
 		$self -> log(error => 'Error. Parse is ambiguous');
 	}
-
 
 	# Return 0 for success and 1 for failure.
 

@@ -12,14 +12,13 @@ use Image::Magick::CommandParser;
 # ----------------------------------------------
 
 my($input_file)	= 't/commands.txt';
+my($maxlevel)	= shift || 'notice';
 
 for my $command (read_lines($input_file) )
 {
 	Image::Magick::CommandParser -> new
 	(
 		command		=> $command,
-		maxlevel	=> 'debug',
+		maxlevel	=> $maxlevel,
 	) -> run;
-
-	print "\n";
 }
