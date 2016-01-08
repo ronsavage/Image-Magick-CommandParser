@@ -30,11 +30,11 @@ lexeme default							= latm => 1		# Longest Acceptable Token Match.
 
 command_and_options						::= command_name input_file_name option_rule_set
 
-command_name							::= 'convert'	action => command_action
-											| 'mogrify'	action => command_action
+command_name							::= 'convert'	action => command
+											| 'mogrify'	action => command
 
-input_file_name							::= path_string	action => input_file_action
-input_file_name							::=				action => input_file_action
+input_file_name							::= option_string	action => input_file
+input_file_name							::=					action => input_file
 
 option_rule_set							::= option_rule*
 EOS
@@ -60,7 +60,7 @@ EOS
 	$max_length			+= 5; # 5 = length('_rule').
 	my($total_tabs)		= ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
 	my(@option_name)	= sort keys %bnf;
-	my($option_name)	= join(' | ', map{"${_}_rule"} @option_name);
+	my($option_name)	= join(' | ', 'open_parenthesis', 'close_parenthesis', map{"${_}_rule"} @option_name);
 
 	push @bnf, << "EOS";
 option_rule								::= $option_name
@@ -102,7 +102,7 @@ EOS
 			# Also, check %seen because of rules likes 'pause'.
 			# Warning: If you change '_word', also change line 589. Search for '_word'.
 
-			$action				= "${token}_action_$count";
+			$action				= "${token}_$count";
 			$actions{$action}	= 1;
 			$parameters 		= join(' ', @{$lexemes{$parameters} });
 			$word				= $token =~ s/_/-/gr;
@@ -458,7 +458,7 @@ sub format_bnf
 		['optional_geometry_suffix',			'string'],
 		['optional_lower_percent',				'string'],
 		['optional_offset',						'string'],
-		['optional_canvas_palette',				'path_string*'],
+		['optional_canvas_palette',				'option_string*'],
 		['optional_plus_sign_distance',			'string'],
 		['optional_threshold',					'string'],
 		['optional_upper_percent',				'string'],
@@ -497,6 +497,12 @@ sub format_bnf
 		['Ydegrees',							'real_number'],
 	);
 	my($total_tabs) = ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
+
+	push @$bnf,
+		"close_parenthesis						::= ')'	action => close_parenthesis",
+		'',
+		"open_parenthesis						::= '('	action => open_parenthesis",
+		'';
 
 	push @$bnf, '# G1 lexemes from ImageMagick command options.', '';
 
@@ -574,7 +580,7 @@ sub format_bnf
 		$token_length	= length($$lexeme[0]);
 		$value			= $$lexeme[1];
 		$value			= "'$value'" if (length($value) );
-		$tab_count		= ($token_length / 4) + 1;
+		$tab_count		= ($token_length / 4);
 		$spacer			= "\t" x ($total_tabs - $tab_count);
 
 		push @$bnf, "$$lexeme[0]$spacer~ $value\n";
@@ -583,14 +589,14 @@ sub format_bnf
 	push @$bnf, <<"EOS";
 # L0 lexemes for the boilerplate.
 
-path_string								~ path_set+
-path_set								~ [^-+\\s]
+option_string								~ option_set+
+option_set									~ [^-+\\s]
 
-string									~ char_set+
-char_set								~ [^\\s]
+string										~ char_set+
+char_set									~ [^\\s]
 
-:discard								~ whitespace
-whitespace								~ [\\s]+
+:discard									~ whitespace
+whitespace									~ [\\s]+
 EOS
 
 	save_bnf($bnf);
@@ -620,29 +626,28 @@ EOS
 
 	my(%done) =
 	(
-		command		=> 0,
-		decode		=> 0,
-		input_file	=> 0,
-		new			=> 0,
+		command				=> 0,
+		decode				=> 0,
+		input_file			=> 0,
+		new					=> 0,
+		open_parenthesis	=> 0,
 	);
 
 	my($name);
 
 	for my $action (sort keys %$actions)
 	{
-		$name = $action =~ s/_action_.+//r;
+		$name = $action =~ s/_.+//r;
 
 		if (! $done{command} && ($action gt 'command') )
 		{
 			$done{command}	= 1;
 			$code			.= <<"EOS";
-sub command_action
+sub command
 {
 	my(\$cache, \@params) = \@_;
 
-	# We ignore \$params[1] since it is just the name of the action.
-
-	\$\$cache{logger} -> log(debug => 'command_action');
+	\$\$cache{logger} -> log(debug => 'command');
 	\$\$cache{items} -> push
 	({
 		params	=> [map{defined(\$_) ? \$_ : ''} \@params],
@@ -652,7 +657,7 @@ sub command_action
 
 	return \$params[0];
 
-} # End of command_action.
+} # End of command.
 
 # ------------------------------------------------
 
@@ -704,11 +709,11 @@ EOS
 		{
 			$done{input_file}	= 1;
 			$code				.= <<"EOS";
-sub input_file_action
+sub input_file
 {
 	my(\$cache, \@params) = \@_;
 
-	\$\$cache{logger} -> log(debug => 'input_file_action');
+	\$\$cache{logger} -> log(debug => 'input_file');
 	\$\$cache{items} -> push
 	({
 		params	=> [map{defined(\$_) ? \$_ : ''} \@params],
@@ -718,7 +723,7 @@ sub input_file_action
 
 	return \$params[0];
 
-} # End of input_file_action.
+} # End of input_file.
 
 # ------------------------------------------------
 
@@ -740,6 +745,30 @@ sub new
 
 EOS
 
+		}
+		elsif (! $done{open_parenthesis} && ($action gt 'open_parenthesis') )
+		{
+			$done{open_parenthesis}	= 1;
+			$code					.= <<"EOS";
+sub open_parenthesis
+{
+	my(\$cache, \@params) = \@_;
+
+	\$\$cache{logger} -> log(debug => 'open_parenthesis');
+	\$\$cache{items} -> push
+	({
+		params	=> [map{defined(\$_) ? \$_ : ''} \@params],
+		sign	=> '',
+		rule	=> 'open_parenthesis',
+	});
+
+	return \$params[0];
+
+} # End of open_parenthesis.
+
+# ------------------------------------------------
+
+EOS
 		}
 
 		$code .= <<"EOS";

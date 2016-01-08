@@ -1,4 +1,1 @@
-convert rose.jpg rose.png
-convert rose.jpg -resize 50% rose.png
-convert label.gif +matte ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) button.gif
-convert label.gif +matte ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) ( -clone 0 -shade 110x50 -normalize -channel BG -fx 0 +channel -matte ) -delete 0 +swap -compose Multiply -composite button.gif
+convert label.gif ( -adaptive-blur 7x9 -size 320x85 ) button.gif
