@@ -9,3 +9,4 @@ convert logo: -size 320x85 canvas:none
 convert -font Bookman-DemiItalic +page
 mogrify -font Bookman-DemiItalic +page
 convert -size 320x85 canvas::none -font Bookman-DemiItalic
+convert -size 320x85 canvas::none -font Bookman-DemiItalic output.jpg

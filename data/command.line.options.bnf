@@ -848,7 +848,7 @@ plus_sign							~ '+'
 # L0 lexemes for the boilerplate.
 
 path_string								~ path_set+
-path_set								~ [^-\s]
+path_set								~ [^-+\s]
 
 string									~ char_set+
 char_set								~ [^\s]

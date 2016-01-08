@@ -15,24 +15,7 @@ use HTML::TreeBuilder;
 
 sub build_bnf
 {
-	my($debug_target, $lines)	= @_;
-	my($max_length)				= 0;
-
-	my(%bnf);
-	my($option);
-
-	for my $line (@$lines)
-	{
-		$option			= $$line{name};
-		$bnf{$option}	= [] if (! $bnf{$option});
-		$max_length		= length($option) if (length($option) > $max_length);
-
-		push @{$bnf{$option} },
-			{
-				parameters	=> $$line{parameters},
-				sign		=> $$line{sign},
-			};
-	}
+	my($debug_target, $lines) = @_;
 
 	my(@bnf);
 
@@ -56,10 +39,32 @@ input_file_name							::=				action => input_file_action
 option_rule_set							::= option_rule+
 EOS
 
-	my(@option_name)	= sort keys %bnf;
-	my($option_name)	= join(' | ', map{"${_}_rule"} @option_name);
+	my($max_length) = 0;
+
+	my(%bnf);
+	my($option);
+
+	for my $line (@$lines)
+	{
+		$option			= $$line{name};
+		$bnf{$option}	= [] if (! $bnf{$option});
+		$max_length		= length($option) if (length($option) > $max_length);
+
+		push @{$bnf{$option} },
+			{
+				parameters	=> $$line{parameters},
+				sign		=> $$line{sign},
+			};
+	}
+
 	$max_length			+= 5; # 5 = length('_rule').
 	my($total_tabs)		= ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
+	my(@option_name)	= sort keys %bnf;
+	my($option_name)	= join(' | ', map{"${_}_rule"} @option_name);
+
+	push @bnf, << "EOS";
+option_rule								::= $option_name
+EOS
 
 	my($action, %actions);
 	my($count);
@@ -70,10 +75,6 @@ EOS
 	my($sign, $spacer, $s, %seen);
 	my($token, $token_length, $tab_count);
 	my($word);
-
-	push @bnf, << "EOS";
-option_rule								::= $option_name
-EOS
 
 	for $option (sort keys %bnf)
 	{
@@ -584,7 +585,7 @@ sub format_bnf
 # L0 lexemes for the boilerplate.
 
 path_string								~ path_set+
-path_set								~ [^-\\s]
+path_set								~ [^-+\\s]
 
 string									~ char_set+
 char_set								~ [^\\s]
@@ -723,7 +724,6 @@ sub input_file_action
 # ------------------------------------------------
 
 EOS
-
 		}
 		elsif (! $done{new} && ($action gt 'new') )
 		{
@@ -737,8 +737,9 @@ sub new
 
 } # End of new.
 
-EOS
 # ------------------------------------------------
+
+EOS
 
 		}
 
