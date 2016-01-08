@@ -16,6 +16,8 @@ my($maxlevel)	= shift || 'info';
 
 for my $command (read_lines($input_file) )
 {
+	next if ($command =~ /^\s*#/);
+
 	Image::Magick::CommandParser -> new
 	(
 		command		=> $command,

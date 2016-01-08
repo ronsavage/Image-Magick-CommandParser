@@ -135,6 +135,8 @@ my($work);
 
 for my $command (read_lines($input_file) )
 {
+	next if ($command =~ /^\s*#/);
+
 	$count{in}++;
 
 	$work	= ['OK', $command];
