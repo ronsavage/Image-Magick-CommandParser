@@ -470,6 +470,7 @@ clip_mask_rule							::= minus_sign 'clip-mask' 	action => clip_mask_action_1
 clip_path_rule							::= minus_sign 'clip-path' id	action => clip_path_action_1
 
 clone_rule								::= minus_sign 'clone' indexes	action => clone_action_1
+clone_rule								::= plus_sign 'clone'			action => clone_action_1
 
 clut_rule								::= minus_sign 'clut' 	action => clut_action_1
 
