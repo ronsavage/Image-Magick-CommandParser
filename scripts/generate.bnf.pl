@@ -400,33 +400,41 @@ sub format_bnf
 
 	my($total_tabs) = ($max_length / 4) + ($max_length % 4 == 0 ? 1 : 2);
 
-	push @$bnf,
-		"open_parenthesis						::= '('	action => open_parenthesis",
-		'',
-		'# L0 lexemes from option parameters.',
-		'',
-		"minus_sign								~ '-'",
-		'',
-		"plus_sign								~ '+'",
-		'';
+	push @$bnf, <<'EOS';
+open_parenthesis						::= '('	action => open_parenthesis
+
+# L0 lexemes from option parameters.
+
+minus_sign								~ '-'
+
+plus_sign								~ '+'
+
+option_string							~ option_char+
+option_char								~ [^\(\)-+\s]
+EOS
+
+	my(%done) =
+	(
+		minus_sign	=> 1,
+		plus_sign	=> 1,
+	);
 
 	my($spacer);
 	my($token_length, $tab_count);
 
 	for my $lexeme (sort keys %seen)
 	{
+		next if ($done{$lexeme});
+
 		$token_length	= length($lexeme);
 		$tab_count		= ($token_length / 4);
 		$spacer			= "\t" x ($total_tabs - $tab_count - 1);
 
-		push @$bnf, "$lexeme$spacer~ '[^\\s]+'\n";
+		push @$bnf, "$lexeme$spacer~ [^-\\(\\)\\s]+\n";
 	}
 
 	push @$bnf, <<'EOS';
 # L0 lexemes for the boilerplate.
-
-option_string							~ option_set+
-option_set								~ [^-+\s]
 
 :discard								~ whitespace
 whitespace								~ [\s]+

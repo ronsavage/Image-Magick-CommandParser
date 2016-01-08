@@ -1,6 +1,6 @@
 :default								::= action => ::first
 
-lexeme default							= latm => 1		# Longest Acceptable Token Match.
+#lexeme default							= latm => 1		# Longest Acceptable Token Match.
 
 # G1-level rules.
 
@@ -615,212 +615,210 @@ minus_sign								~ '-'
 
 plus_sign								~ '+'
 
-Xdegrees								~ '[^\s]+'
+option_string							~ option_char+
+option_char								~ [^\(\)-+\s]
 
-XdegreesxYdegrees						~ '[^\s]+'
+Xdegrees								~ [^-\(\)\s]+
 
-amount									~ '[^\s]+'
+XdegreesxYdegrees						~ [^-\(\)\s]+
 
-amplitude								~ '[^\s]+'
+amount									~ [^-\(\)\s]+
 
-amplitudexwavelength					~ '[^\s]+'
+amplitude								~ [^-\(\)\s]+
 
-angle									~ '[^\s]+'
+amplitudexwavelength					~ [^-\(\)\s]+
 
-azimuthxelevation						~ '[^\s]+'
+angle									~ [^-\(\)\s]+
 
-black_color								~ '[^\s]+'
+azimuthxelevation						~ [^-\(\)\s]+
 
-black_point								~ '[^\s]+'
+black_color								~ [^-\(\)\s]+
 
-brightness								~ '[^\s]+'
+black_point								~ [^-\(\)\s]+
 
-brightness_optional_saturation_hue		~ '[^\s]+'
+brightness								~ [^-\(\)\s]+
 
-brightnessxsaturation					~ '[^\s]+'
+brightness_optional_saturation_hue		~ [^-\(\)\s]+
 
-cluster_thresholdxsmoothing_threshold	~ '[^\s]+'
+brightnessxsaturation					~ [^-\(\)\s]+
 
-color									~ '[^\s]+'
+cluster_thresholdxsmoothing_threshold	~ [^-\(\)\s]+
 
-colorspace								~ '[^\s]+'
+color									~ [^-\(\)\s]+
 
-comma									~ '[^\s]+'
+colorspace								~ [^-\(\)\s]+
 
-command									~ '[^\s]+'
+comma									~ [^-\(\)\s]+
 
-components								~ '[^\s]+'
+command									~ [^-\(\)\s]+
 
-connectivity							~ '[^\s]+'
+components								~ [^-\(\)\s]+
 
-contrastxmid_point						~ '[^\s]+'
+connectivity							~ [^-\(\)\s]+
 
-count									~ '[^\s]+'
+contrastxmid_point						~ [^-\(\)\s]+
 
-degrees									~ '[^\s]+'
+count									~ [^-\(\)\s]+
 
-distance								~ '[^\s]+'
+degrees									~ [^-\(\)\s]+
 
-epsilon									~ '[^\s]+'
+distance								~ [^-\(\)\s]+
 
-events									~ '[^\s]+'
+epsilon									~ [^-\(\)\s]+
 
-expression								~ '[^\s]+'
+events									~ [^-\(\)\s]+
 
-factor									~ '[^\s]+'
+expression								~ [^-\(\)\s]+
 
-filename								~ '[^\s]+'
+factor									~ [^-\(\)\s]+
 
-fontFamily								~ '[^\s]+'
+filename								~ [^-\(\)\s]+
 
-fontStretch								~ '[^\s]+'
+fontFamily								~ [^-\(\)\s]+
 
-fontStyle								~ '[^\s]+'
+fontStretch								~ [^-\(\)\s]+
 
-fontWeight								~ '[^\s]+'
+fontStyle								~ [^-\(\)\s]+
 
-frames									~ '[^\s]+'
+fontWeight								~ [^-\(\)\s]+
 
-function								~ '[^\s]+'
+frames									~ [^-\(\)\s]+
 
-geometry								~ '[^\s]+'
+function								~ [^-\(\)\s]+
 
-horizontal_factorxvertical_factor		~ '[^\s]+'
+geometry								~ [^-\(\)\s]+
 
-horizontal_scale						~ '[^\s]+'
+horizontal_factorxvertical_factor		~ [^-\(\)\s]+
 
-horizontal_scalexvertical_scale			~ '[^\s]+'
+horizontal_scale						~ [^-\(\)\s]+
 
-horizontalxvertical						~ '[^\s]+'
+horizontal_scalexvertical_scale			~ [^-\(\)\s]+
 
-host_display_optional_dot_screen		~ '[^\s]+'
+horizontalxvertical						~ [^-\(\)\s]+
 
-id										~ '[^\s]+'
+host_display_optional_dot_screen		~ [^-\(\)\s]+
 
-image									~ '[^\s]+'
+id										~ [^-\(\)\s]+
 
-index									~ '[^\s]+'
+image									~ [^-\(\)\s]+
 
-indexes									~ '[^\s]+'
+index									~ [^-\(\)\s]+
 
-iterations								~ '[^\s]+'
+indexes									~ [^-\(\)\s]+
 
-kernel									~ '[^\s]+'
+iterations								~ [^-\(\)\s]+
 
-key										~ '[^\s]+'
+kernel									~ [^-\(\)\s]+
 
-levels									~ '[^\s]+'
+key										~ [^-\(\)\s]+
 
-lowxhigh								~ '[^\s]+'
+levels									~ [^-\(\)\s]+
 
-matrix									~ '[^\s]+'
+lowxhigh								~ [^-\(\)\s]+
 
-media									~ '[^\s]+'
+matrix									~ [^-\(\)\s]+
 
-method									~ '[^\s]+'
+media									~ [^-\(\)\s]+
 
-name									~ '[^\s]+'
+method									~ [^-\(\)\s]+
 
-offset									~ '[^\s]+'
+name									~ [^-\(\)\s]+
 
-operator								~ '[^\s]+'
+offset									~ [^-\(\)\s]+
 
-optional_at_sign						~ '[^\s]+'
+operator								~ [^-\(\)\s]+
 
-optional_canvas_palette					~ '[^\s]+'
+optional_at_sign						~ [^-\(\)\s]+
 
-optional_comma_gamma					~ '[^\s]+'
+optional_canvas_palette					~ [^-\(\)\s]+
 
-optional_comma_white_point				~ '[^\s]+'
+optional_comma_gamma					~ [^-\(\)\s]+
 
-optional_exclamation_point				~ '[^\s]+'
+optional_comma_white_point				~ [^-\(\)\s]+
 
-optional_gain							~ '[^\s]+'
+optional_exclamation_point				~ [^-\(\)\s]+
 
-optional_geometry_suffix				~ '[^\s]+'
+optional_gain							~ [^-\(\)\s]+
 
-optional_greater_than					~ '[^\s]+'
+optional_geometry_suffix				~ [^-\(\)\s]+
 
-optional_less_or_greater_than			~ '[^\s]+'
+optional_greater_than					~ [^-\(\)\s]+
 
-optional_lower_percent					~ '[^\s]+'
+optional_less_or_greater_than			~ [^-\(\)\s]+
 
-optional_offset							~ '[^\s]+'
+optional_lower_percent					~ [^-\(\)\s]+
 
-optional_percent						~ '[^\s]+'
+optional_offset							~ [^-\(\)\s]+
 
-optional_plus_sign_distance				~ '[^\s]+'
+optional_percent						~ [^-\(\)\s]+
 
-optional_plus_sign_y					~ '[^\s]+'
+optional_plus_sign_distance				~ [^-\(\)\s]+
 
-optional_threshold						~ '[^\s]+'
+optional_plus_sign_y					~ [^-\(\)\s]+
 
-optional_upper_percent					~ '[^\s]+'
+optional_threshold						~ [^-\(\)\s]+
 
-orientation								~ '[^\s]+'
+optional_upper_percent					~ [^-\(\)\s]+
 
-parameters								~ '[^\s]+'
+orientation								~ [^-\(\)\s]+
 
-password								~ '[^\s]+'
+parameters								~ [^-\(\)\s]+
 
-path									~ '[^\s]+'
+password								~ [^-\(\)\s]+
 
-percent_opacity							~ '[^\s]+'
+path									~ [^-\(\)\s]+
 
-plus_or_minus							~ '[^\s]+'
+percent_opacity							~ [^-\(\)\s]+
 
-plus_sign								~ '[^\s]+'
+plus_or_minus							~ [^-\(\)\s]+
 
-port									~ '[^\s]+'
+port									~ [^-\(\)\s]+
 
-profile_name							~ '[^\s]+'
+profile_name							~ [^-\(\)\s]+
 
-radius									~ '[^\s]+'
+radius									~ [^-\(\)\s]+
 
-radiusxsigma							~ '[^\s]+'
+radiusxsigma							~ [^-\(\)\s]+
 
-seconds									~ '[^\s]+'
+seconds									~ [^-\(\)\s]+
 
-sigma									~ '[^\s]+'
+sigma									~ [^-\(\)\s]+
 
-src_percent								~ '[^\s]+'
+src_percent								~ [^-\(\)\s]+
 
-string									~ '[^\s]+'
+string									~ [^-\(\)\s]+
 
-sx_rx_ry_sy_optional_tx_ty				~ '[^\s]+'
+sx_rx_ry_sy_optional_tx_ty				~ [^-\(\)\s]+
 
-text									~ '[^\s]+'
+text									~ [^-\(\)\s]+
 
-thickness								~ '[^\s]+'
+thickness								~ [^-\(\)\s]+
 
-threshold								~ '[^\s]+'
+threshold								~ [^-\(\)\s]+
 
-ticks									~ '[^\s]+'
+ticks									~ [^-\(\)\s]+
 
-ticksxticks_per_second					~ '[^\s]+'
+ticksxticks_per_second					~ [^-\(\)\s]+
 
-tx										~ '[^\s]+'
+tx										~ [^-\(\)\s]+
 
-ty										~ '[^\s]+'
+ty										~ [^-\(\)\s]+
 
-type									~ '[^\s]+'
+type									~ [^-\(\)\s]+
 
-value									~ '[^\s]+'
+value									~ [^-\(\)\s]+
 
-white_color								~ '[^\s]+'
+white_color								~ [^-\(\)\s]+
 
-width									~ '[^\s]+'
+width									~ [^-\(\)\s]+
 
-widthxheight							~ '[^\s]+'
+widthxheight							~ [^-\(\)\s]+
 
-x										~ '[^\s]+'
+x										~ [^-\(\)\s]+
 
-y										~ '[^\s]+'
+y										~ [^-\(\)\s]+
 
 # L0 lexemes for the boilerplate.
-
-option_string							~ option_set+
-option_set								~ [^-+\s]
 
 :discard								~ whitespace
 whitespace								~ [\s]+
