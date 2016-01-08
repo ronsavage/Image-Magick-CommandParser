@@ -31,8 +31,8 @@ affine_rule								::= minus_sign 'affine' sx_rx_ry_sy_optional_tx_ty	action => 
 alpha_rule								::= minus_sign 'alpha' type	action => alpha_action_1
 
 annotate_rule							::= minus_sign 'annotate' degrees text	action => annotate_action_1
-											| plus_sign 'annotate' Xdegrees x Ydegrees text	action => annotate_action_2
-											| plus_sign 'annotate' Xdegrees x Ydegrees plus_or_minus tx plus_or_minus ty text	action => annotate_action_3
+											| plus_sign 'annotate' XdegreesxYdegrees text	action => annotate_action_2
+											| plus_sign 'annotate' XdegreesxYdegrees plus_or_minus tx plus_or_minus ty text	action => annotate_action_3
 											| plus_sign 'annotate' plus_or_minus tx plus_or_minus ty text	action => annotate_action_4
 
 antialias_rule							::= minus_sign 'antialias' 	action => antialias_action_1
@@ -70,7 +70,7 @@ blue_primary_rule						::= minus_sign 'blue-primary' x comma y	action => blue_pr
 blue_shift_rule							::= minus_sign 'blue-shift' factor	action => blue_shift_action_1
 
 blur_rule								::= minus_sign 'blur' radius	action => blur_action_1
-											| plus_sign 'blur' radius x sigma	action => blur_action_2
+											| plus_sign 'blur' radiusxsigma	action => blur_action_2
 											| minus_sign 'blur' width	action => blur_action_3
 
 border_rule								::= minus_sign 'border' geometry	action => border_action_1
@@ -85,7 +85,7 @@ brightness_contrast_rule				::= minus_sign 'brightness-contrast' brightness	acti
 cache_rule								::= minus_sign 'cache' threshold	action => cache_action_1
 
 canny_rule								::= minus_sign 'canny' radius	action => canny_action_1
-											| plus_sign 'canny' radius x sigma optional_lower_percent optional_upper_percent	action => canny_action_2
+											| plus_sign 'canny' radiusxsigma optional_lower_percent optional_upper_percent	action => canny_action_2
 
 caption_rule							::= minus_sign 'caption' string	action => caption_action_1
 
@@ -157,12 +157,12 @@ decipher_rule							::= minus_sign 'decipher' filename	action => decipher_action
 deconstruct_rule						::= minus_sign 'deconstruct' 	action => deconstruct_action_1
 
 delay_rule								::= minus_sign 'delay' ticks	action => delay_action_1
-											| plus_sign 'delay' ticks x ticks_per_second optional_greater_than optional_greater_than	action => delay_action_2
+											| plus_sign 'delay' ticksxticks_per_second optional_greater_than optional_greater_than	action => delay_action_2
 
 delete_rule								::= minus_sign 'delete' indexes	action => delete_action_1
 
 density_rule							::= minus_sign 'density' width	action => density_action_1
-											| plus_sign 'density' width x height	action => density_action_2
+											| plus_sign 'density' widthxheight	action => density_action_2
 
 depth_rule								::= minus_sign 'depth' value	action => depth_action_1
 
@@ -175,7 +175,7 @@ despeckle_rule							::= minus_sign 'despeckle' 	action => despeckle_action_1
 direction_rule							::= minus_sign 'direction' type	action => direction_action_1
 
 displace_rule							::= minus_sign 'displace' horizontal_scale	action => displace_action_1
-											| plus_sign 'displace' horizontal_scale x vertical_scale	action => displace_action_2
+											| plus_sign 'displace' horizontal_scalexvertical_scale	action => displace_action_2
 
 display_rule							::= minus_sign 'display' host_display_optional_dot_screen	action => display_action_1
 
@@ -252,7 +252,7 @@ fx_rule									::= minus_sign 'fx' expression	action => fx_action_1
 gamma_rule								::= minus_sign 'gamma' value	action => gamma_action_1
 
 gaussian_blur_rule						::= minus_sign 'gaussian-blur' radius	action => gaussian_blur_action_1
-											| plus_sign 'gaussian-blur' radius x sigma	action => gaussian_blur_action_2
+											| plus_sign 'gaussian-blur' radiusxsigma	action => gaussian_blur_action_2
 
 geometry_rule							::= minus_sign 'geometry' geometry	action => geometry_action_1
 
@@ -268,7 +268,7 @@ help_rule								::= minus_sign 'help' 	action => help_action_1
 
 highlight_color_rule					::= minus_sign 'highlight-color' color	action => highlight_color_action_1
 
-hough_lines_rule						::= minus_sign 'hough-lines' width x height optional_threshold	action => hough_lines_action_1
+hough_lines_rule						::= minus_sign 'hough-lines' widthxheight optional_threshold	action => hough_lines_action_1
 
 iconGeometry_rule						::= minus_sign 'iconGeometry' geometry	action => iconGeometry_action_1
 
@@ -299,12 +299,12 @@ interword_spacing_rule					::= minus_sign 'interword-spacing' value	action => in
 kerning_rule							::= minus_sign 'kerning' value	action => kerning_action_1
 
 kuwahara_rule							::= minus_sign 'kuwahara' radius	action => kuwahara_action_1
-											| plus_sign 'kuwahara' radius x sigma	action => kuwahara_action_2
+											| plus_sign 'kuwahara' radiusxsigma	action => kuwahara_action_2
 
 label_rule								::= minus_sign 'label' name	action => label_action_1
 
 lat_rule								::= minus_sign 'lat' width	action => lat_action_1
-											| plus_sign 'lat' width x height plus_or_minus offset optional_percent	action => lat_action_2
+											| plus_sign 'lat' widthxheight plus_or_minus offset optional_percent	action => lat_action_2
 
 layers_rule								::= minus_sign 'layers' method	action => layers_action_1
 
@@ -340,7 +340,7 @@ mattecolor_rule							::= minus_sign 'mattecolor' color	action => mattecolor_act
 
 maximum_rule							::= minus_sign 'maximum' 	action => maximum_action_1
 
-mean_shift_rule							::= minus_sign 'mean-shift' width x height optional_plus_sign_distance optional_percent	action => mean_shift_action_1
+mean_shift_rule							::= minus_sign 'mean-shift' widthxheight optional_plus_sign_distance optional_percent	action => mean_shift_action_1
 
 median_rule								::= minus_sign 'median' geometry	action => median_action_1
 
@@ -364,7 +364,7 @@ morph_rule								::= minus_sign 'morph' frames	action => morph_action_1
 mosaic_rule								::= minus_sign 'mosaic' 	action => mosaic_action_1
 
 motion_blur_rule						::= minus_sign 'motion-blur' radius	action => motion_blur_action_1
-											| plus_sign 'motion-blur' radius x sigma plus_sign angle	action => motion_blur_action_2
+											| plus_sign 'motion-blur' radiusxsigma plus_sign sigma	action => motion_blur_action_2
 
 name_rule								::= minus_sign 'name' 	action => name_action_1
 
@@ -419,7 +419,7 @@ radial_blur_rule						::= minus_sign 'radial-blur' angle	action => radial_blur_a
 
 raise_rule								::= minus_sign 'raise' thickness	action => raise_action_1
 
-random_threshold_rule					::= minus_sign 'random-threshold' low x high	action => random_threshold_action_1
+random_threshold_rule					::= minus_sign 'random-threshold' lowxhigh	action => random_threshold_action_1
 
 red_primary_rule						::= minus_sign 'red-primary' x comma y	action => red_primary_action_1
 
@@ -435,7 +435,7 @@ render_rule								::= minus_sign 'render' 	action => render_action_1
 
 repage_rule								::= minus_sign 'repage' geometry	action => repage_action_1
 
-resample_rule							::= minus_sign 'resample' horizontal x vertical	action => resample_action_1
+resample_rule							::= minus_sign 'resample' horizontalxvertical	action => resample_action_1
 
 resize_rule								::= minus_sign 'resize' geometry	action => resize_action_1
 
@@ -449,7 +449,7 @@ rotate_rule								::= minus_sign 'rotate' degrees optional_less_or_greater_than
 
 sample_rule								::= minus_sign 'sample' geometry	action => sample_action_1
 
-sampling_factor_rule					::= minus_sign 'sampling-factor' horizontal_factor x vertical_factor	action => sampling_factor_action_1
+sampling_factor_rule					::= minus_sign 'sampling-factor' horizontal_factorxvertical_factor	action => sampling_factor_action_1
 
 scale_rule								::= minus_sign 'scale' geometry	action => scale_action_1
 
@@ -459,10 +459,10 @@ screen_rule								::= minus_sign 'screen' 	action => screen_action_1
 
 seed_rule								::= minus_sign 'seed' 	action => seed_action_1
 
-segment_rule							::= minus_sign 'segment' cluster_threshold x smoothing_threshold	action => segment_action_1
+segment_rule							::= minus_sign 'segment' cluster_thresholdxsmoothing_threshold	action => segment_action_1
 
 selective_blur_rule						::= minus_sign 'selective-blur' radius	action => selective_blur_action_1
-											| plus_sign 'selective-blur' radius x sigma optional_threshold	action => selective_blur_action_2
+											| plus_sign 'selective-blur' radiusxsigma optional_threshold	action => selective_blur_action_2
 
 separate_rule							::= minus_sign 'separate' 	action => separate_action_1
 
@@ -471,20 +471,20 @@ sepia_tone_rule							::= minus_sign 'sepia-tone' threshold	action => sepia_tone
 set_rule								::= minus_sign 'set' key value	action => set_action_1
 											| plus_sign 'set' key	action => set_action_2
 
-shade_rule								::= minus_sign 'shade' azimuth x elevation	action => shade_action_1
+shade_rule								::= minus_sign 'shade' azimuthxelevation	action => shade_action_1
 
 shadow_rule								::= minus_sign 'shadow' percent_opacity plus_or_minus x plus_or_minus y optional_percent	action => shadow_action_1
 
 shared_memory_rule						::= minus_sign 'shared-memory' 	action => shared_memory_action_1
 
 sharpen_rule							::= minus_sign 'sharpen' radius	action => sharpen_action_1
-											| plus_sign 'sharpen' radius x sigma	action => sharpen_action_2
+											| plus_sign 'sharpen' radiusxsigma	action => sharpen_action_2
 
 shave_rule								::= minus_sign 'shave' geometry	action => shave_action_1
 
 shear_rule								::= minus_sign 'shear' Xdegrees	action => shear_action_1
 
-sigmoidal_contrast_rule					::= minus_sign 'sigmoidal-contrast' contrast x mid_point	action => sigmoidal_contrast_action_1
+sigmoidal_contrast_rule					::= minus_sign 'sigmoidal-contrast' contrastxmid_point	action => sigmoidal_contrast_action_1
 
 silent_rule								::= minus_sign 'silent' 	action => silent_action_1
 
@@ -493,7 +493,7 @@ similarity_threshold_rule				::= minus_sign 'similarity-threshold' value	action 
 size_rule								::= minus_sign 'size' width optional_canvas_palette	action => size_action_1
 
 sketch_rule								::= minus_sign 'sketch' radius	action => sketch_action_1
-											| plus_sign 'sketch' radius x sigma plus_sign angle	action => sketch_action_2
+											| plus_sign 'sketch' radiusxsigma plus_sign sigma	action => sketch_action_2
 
 smush_rule								::= minus_sign 'smush' offset	action => smush_action_1
 
@@ -574,7 +574,7 @@ unique_colors_rule						::= minus_sign 'unique-colors' 	action => unique_colors_
 units_rule								::= minus_sign 'units' type	action => units_action_1
 
 unsharp_rule							::= minus_sign 'unsharp' radius	action => unsharp_action_1
-											| plus_sign 'unsharp' radius x sigma optional_gain optional_threshold	action => unsharp_action_2
+											| plus_sign 'unsharp' radiusxsigma optional_gain optional_threshold	action => unsharp_action_2
 
 update_rule								::= minus_sign 'update' seconds	action => update_action_1
 
@@ -590,10 +590,10 @@ virtual_pixel_rule						::= minus_sign 'virtual-pixel' method	action => virtual_
 
 visual_rule								::= minus_sign 'visual' type	action => visual_action_1
 
-watermark_rule							::= minus_sign 'watermark' brightness x saturation	action => watermark_action_1
+watermark_rule							::= minus_sign 'watermark' brightnessxsaturation	action => watermark_action_1
 
 wave_rule								::= minus_sign 'wave' amplitude	action => wave_action_1
-											| plus_sign 'wave' amplitude x wavelength	action => wave_action_2
+											| plus_sign 'wave' amplitudexwavelength	action => wave_action_2
 
 weight_rule								::= minus_sign 'weight' fontWeight	action => weight_action_1
 
@@ -609,241 +609,239 @@ write_rule								::= minus_sign 'write' filename	action => write_action_1
 
 # G1 lexemes from ImageMagick command options.
 
-amount									::= comma_separated_integers
+amount										::= comma_separated_integers
 
-amplitude								::= real_number
+amplitude									::= real_number
 
-angle									::= real_number
+angle										::= real_number
 
-azimuth									::= real_number
+azimuthxelevation							::= string
 
-black_color								::= string
+black_color									::= string
 
-black_point								::= string
+black_point									::= string
 
-brightness								::= real_number
+brightness									::= real_number
 
-brightness_optional_saturation_hue		::= real_number
+brightness_optional_saturation_hue			::= real_number
 
-cluster_threshold						::= integer
+cluster_threshold							::= integer
 
-color									::= string
+color										::= string
 
-colorspace								::= color_space_list
+colorspace									::= color_space_list
 
-command									::= string
+command										::= string
 
-components								::= color_prefix_list
+components									::= color_prefix_list
 
-connectivity							::= integer
+connectivity								::= integer
 
-contrast								::= integer
+contrast									::= integer
 
-count									::= integer
+count										::= integer
 
-degrees									::= real_number
+degrees										::= real_number
 
-distance								::= string
+distance									::= string
 
-elevation								::= real_number
+epsilon										::= real_number
 
-epsilon									::= real_number
+events										::= comma_separated_events
 
-events									::= comma_separated_events
+expression									::= string
 
-expression								::= string
+factor										::= real_number
 
-factor									::= real_number
+filename									::= string
 
-filename								::= string
+fontFamily									::= string
 
-fontFamily								::= string
+fontStretch									::= string
 
-fontStretch								::= string
+fontStyle									::= string
 
-fontStyle								::= string
+fontWeight									::= string
 
-fontWeight								::= string
+frames										::= integer
 
-frames									::= integer
+function									::= string
 
-function								::= string
+geometry									::= geometry_string
 
-geometry								::= geometry_string
+height										::= real_number
 
-height									::= real_number
+high										::= real_number
 
-high									::= real_number
+horizontal									::= integer
 
-horizontal								::= integer
+horizontal_factor							::= integer
 
-horizontal_factor						::= integer
+horizontal_scale							::= integer
 
-horizontal_scale						::= integer
+host_display_optional_dot_screen			::= string
 
-host_display_optional_dot_screen		::= string
+id											::= string
 
-id										::= string
+image										::= string
 
-image									::= string
+index										::= image_list
 
-index									::= image_list
+indexes										::= image_list
 
-indexes									::= image_list
+iterations									::= integer
 
-iterations								::= integer
+kernel										::= comma_separated_reals
 
-kernel									::= comma_separated_reals
+key											::= string
 
-key										::= string
+levels										::= comma_separated_integers
 
-levels									::= comma_separated_integers
+low											::= real_number
 
-low										::= real_number
+matrix										::= string
 
-matrix									::= string
+media										::= string
 
-media									::= string
+method										::= string
 
-method									::= string
+mid_point									::= integer
 
-mid_point								::= integer
+name										::= string
 
-name									::= string
+offset										::= offset_list
 
-offset									::= offset_list
+operator									::= string
 
-operator								::= string
+optional_comma_gamma						::= string
 
-optional_comma_gamma					::= string
+optional_comma_white_point					::= string
 
-optional_comma_white_point				::= string
+optional_gain								::= string
 
-optional_gain							::= string
+optional_geometry_suffix					::= string
 
-optional_geometry_suffix				::= string
+optional_lower_percent						::= string
 
-optional_lower_percent					::= string
+optional_offset								::= string
 
-optional_offset							::= string
+optional_canvas_palette						::= path_string*
 
-optional_canvas_palette					::= path_string*
+optional_plus_sign_distance					::= string
 
-optional_plus_sign_distance				::= string
+optional_threshold							::= string
 
-optional_threshold						::= string
+optional_upper_percent						::= string
 
-optional_upper_percent					::= string
+orientation									::= string
 
-orientation								::= string
+parameters									::= string
 
-parameters								::= string
+password									::= string
 
-password								::= string
+path										::= string
 
-path									::= string
+percent_opacity								::= real_number
 
-percent_opacity							::= real_number
+port										::= integer
 
-port									::= integer
+profile_name								::= string
 
-profile_name							::= string
+radius										::= string
 
-radius									::= string
+saturation									::= real_number
 
-saturation								::= real_number
+seconds										::= integer
 
-seconds									::= integer
+sigma										::= real_number
 
-sigma									::= real_number
+smoothing_threshold							::= real_number
 
-smoothing_threshold						::= real_number
+src_percent									::= real_number
 
-src_percent								::= real_number
+sx_rx_ry_sy_optional_tx_ty					::= comma_separated_reals
 
-sx_rx_ry_sy_optional_tx_ty				::= comma_separated_reals
+text										::= string
 
-text									::= string
+thickness									::= integer
 
-thickness								::= integer
+threshold									::= real_number
 
-threshold								::= real_number
+ticks										::= integer
 
-ticks									::= integer
+ticks_per_second							::= integer
 
-ticks_per_second						::= integer
+tx											::= real_number
 
-tx										::= real_number
+ty											::= real_number
 
-ty										::= real_number
+type										::= string
 
-type									::= string
+value										::= string
 
-value									::= string
+vertical									::= integer
 
-vertical								::= integer
+vertical_factor								::= real_number
 
-vertical_factor							::= real_number
+vertical_scale								::= integer
 
-vertical_scale							::= integer
+wavelength									::= real_number
 
-wavelength								::= real_number
+white_color									::= string
 
-white_color								::= string
+width										::= string
 
-width									::= string
+x											::= integer
 
-x										::= integer
+Xdegrees									::= real_number
 
-Xdegrees								::= real_number
+y											::= integer
 
-y										::= integer
-
-Ydegrees								::= real_number
+Ydegrees									::= real_number
 
 # G1 lexemes from option parameters.
 
-color_prefix_list						::= string
+color_prefix_list							::= string
 
-color_space_list						::= string
+color_space_list							::= string
 
-comma_separated_events					::= string
+comma_separated_events						::= string
 
-comma_separated_integers				::= string
+comma_separated_integers					::= string
 
-comma_separated_reals					::= string
+comma_separated_reals						::= string
 
-geometry_string							::= string
+geometry_string								::= string
 
-image_list								::= string
+image_list									::= string
 
-offset_list								::= string
+offset_list									::= string
 
-real_number								::= string
+real_number									::= string
 
 # L0 lexemes from option parameters.
 
-comma								~ ','
+comma									~ ','
 
-integer								~ '[\d]+'
+integer									~ '[\d]+'
 
-minus_sign							~ '-'
+minus_sign								~ '-'
 
-optional_at_sign					~ '@'
+optional_at_sign						~ '@'
 
-optional_exclamation_point			~ '!'
+optional_exclamation_point				~ '!'
 
-optional_greater_than				~ '>'
+optional_greater_than					~ '>'
 
-optional_less_or_greater_than		~ '<'
+optional_less_or_greater_than			~ '<'
 
-optional_percent					~ '%'
+optional_percent						~ '%'
 
-optional_plus_sign_y				~ '+'
+optional_plus_sign_y					~ '+'
 
-plus_or_minus						~ '[+-]'
+plus_or_minus							~ '[+-]'
 
-plus_sign							~ '+'
+plus_sign								~ '+'
 
 # L0 lexemes for the boilerplate.
 

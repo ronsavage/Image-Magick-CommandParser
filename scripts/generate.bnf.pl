@@ -160,14 +160,14 @@ sub build_parameters
 			{
 				$result = $token;
 			}
-			elsif ($token =~ /(.+)x(.+)/)
+			elsif ($token =~ /((.+)x(.+))/)
 			{
 				# Expect:
 				# o 'XdegreesxYdegrees', for 'annotate'.
 
-				$field[0]	= $1;
-				$field[1]	= $2;
-				$result		= "$field[0] x $field[1]";
+				$field[0]	= $2;
+				$field[1]	= $3;
+				$result		= $1;
 			}
 			else
 			{
@@ -264,19 +264,19 @@ sub build_parameters
 
 			$result = $field[0];
 		}
-		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)\+([a-zA-Z]+)$/)
+		elsif ($token =~ /^(([a-zA-Z]+)x([a-zA-Z]+))\+([a-zA-Z]+)$/)
 		{
 			# Expect:
 			# o 'radiusxsigma+angle' for 'motion-blur'.
 
-			$result = "$1 x $2 plus_sign $3";
+			$result = "$1 plus_sign $3";
 		}
-		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)\{\+([a-zA-Z]+)\{%}}$/)
+		elsif ($token =~ /^(([a-zA-Z]+)x([a-zA-Z]+))\{\+([a-zA-Z]+)\{%}}$/)
 		{
 			# Expect:
 			# o 'widthxheight{+distance{%}}' for 'mean_shift'.
 
-			$result = "$1 x $2 optional_plus_sign_$3 optional_percent";
+			$result = "$1 optional_plus_sign_$4 optional_percent";
 		}
 		elsif ($token =~ /^\{\+_}([a-zA-Z]+)\{\+_}([a-zA-Z]+)$/)
 		{
@@ -294,27 +294,27 @@ sub build_parameters
 
 			$result = "$1 optional_percent";
 		}
-		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)\{\+([_a-zA-Z]+)}\{\+([_a-zA-Z]+)}$/)
+		elsif ($token =~ /^(([a-zA-Z]+)x([a-zA-Z]+))\{\+([_a-zA-Z]+)}\{\+([_a-zA-Z]+)}$/)
 		{
 			# Expect:
 			# o 'radiusxsigma{+lower_percent}{+upper_percent}' for 'canny'.
 
-			$result = "$1 x $2 optional_$3 optional_$4";
+			$result = "$1 optional_$4 optional_$5";
 		}
-		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)\{\+([_a-zA-Z]+)}$/)
+		elsif ($token =~ /^(([a-zA-Z]+)x([a-zA-Z]+))\{\+([_a-zA-Z]+)}$/)
 		{
 			# Expect:
 			# o 'widthxheight{+threshold}' for 'hough_lines'.
 
-			$result = "$1 x $2 optional_$3";
+			$result = "$1 optional_$4";
 		}
-		elsif ($token =~ /^([a-zA-Z]+)x([a-zA-Z]+)\{\+_}([_a-zA-Z]+)\{%}$/)
+		elsif ($token =~ /^(([a-zA-Z]+)x([a-zA-Z]+))\{\+_}([_a-zA-Z]+)\{%}$/)
 		{
 			# Note: Code above converted '-' into '_'.
 			# Expect:
 			# o 'widthxheight{+_}offset{%}' for 'lat'.
 
-			$result = "$1 x $2 plus_or_minus $3 optional_percent";
+			$result = "$1 plus_or_minus $4 optional_percent";
 		}
 		elsif ($token =~ /^([_a-zA-Z]+)\{,([_a-zA-Z]+)}\{%}\{,([_a-zA-Z]+)}$/)
 		{
@@ -403,7 +403,7 @@ sub format_bnf
 		['amount',								'comma_separated_integers'],
 		['amplitude',							'real_number'],
 		['angle',								'real_number'],
-		['azimuth',								'real_number'],
+		['azimuthxelevation',					'string'],
 		['black_color',							'string'],
 		['black_point',							'string'],
 		['brightness',							'real_number'],
@@ -418,7 +418,6 @@ sub format_bnf
 		['count',								'integer'],
 		['degrees',								'real_number'],
 		['distance',							'string'],
-		['elevation',							'real_number'],
 		['epsilon',								'real_number'],
 		['events',								'comma_separated_events'],
 		['expression',							'string'],

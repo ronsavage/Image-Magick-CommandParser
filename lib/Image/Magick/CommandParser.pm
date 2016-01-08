@@ -463,6 +463,7 @@ chop_rule								::= minus_sign 'chop' geometry	action => chop_action_1
 clamp_rule								::= minus_sign 'clamp' 	action => clamp_action_1
 
 clip_rule								::= minus_sign 'clip' 	action => clip_action_1
+clip_rule								::= plus_sign 'clip' 	action => clip_action_1
 
 clip_mask_rule							::= minus_sign 'clip-mask' 	action => clip_mask_action_1
 
@@ -834,7 +835,7 @@ sepia_tone_rule							::= minus_sign 'sepia-tone' threshold	action => sepia_tone
 set_rule								::= minus_sign 'set' key value	action => set_action_1
 											| plus_sign 'set' key	action => set_action_2
 
-shade_rule								::= minus_sign 'shade' azimuth x elevation	action => shade_action_1
+shade_rule								::= minus_sign 'shade' azimuthxelevation	action => shade_action_1
 
 shadow_rule								::= minus_sign 'shadow' percent_opacity plus_or_minus x plus_or_minus y optional_percent	action => shadow_action_1
 
@@ -978,7 +979,7 @@ amplitude								::= real_number
 
 angle									::= real_number
 
-azimuth									::= real_number
+azimuthxelevation						::= string
 
 black_color								::= string
 
@@ -1007,8 +1008,6 @@ count									::= integer
 degrees									::= real_number
 
 distance								::= string
-
-elevation								::= real_number
 
 epsilon									::= real_number
 

@@ -3915,24 +3915,6 @@ sub orient_action_1
 
 # ------------------------------------------------
 
-sub output_file_action
-{
-	my($cache, @params) = @_;
-
-	$$cache{logger} -> log(debug => 'output_file_action');
-	$$cache{items} -> push
-	({
-		params	=> [map{defined($_) ? $_ : ''} @params],
-		sign	=> '',
-		rule	=> 'output_file',
-	});
-
-	return $params[0];
-
-} # End of output_file_action.
-
-# ------------------------------------------------
-
 sub page_action_1
 {
 	my($cache, @params) = @_;
