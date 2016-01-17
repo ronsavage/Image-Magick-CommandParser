@@ -16,9 +16,10 @@ input_file_name			::=					rank => 0		action => input_file
 
 rule_set				::= rule*
 
-rule					::= action_set
-							| open_parenthesis
-							| close_parenthesis
+rule					::= close_parenthesis	rank => 1
+							| open_parenthesis	rank => 1
+							| operator_name		rank => 1
+							| action_set		rank => 0
 
 action_set				::= sign action_name parameter_set	action => action_set
 
@@ -28,6 +29,12 @@ sign					::= minus_sign
 action_name				::= string
 
 parameter_set			::= string*
+
+operator_name			::= operator_prefix ':' operator_suffix	action => operator_name
+
+operator_prefix			::= string
+
+operator_suffix			::= string*
 
 close_parenthesis		::= close_paren						action => close_parenthesis
 

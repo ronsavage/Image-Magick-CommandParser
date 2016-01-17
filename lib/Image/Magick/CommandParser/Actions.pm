@@ -20,7 +20,7 @@ sub action_set
 	$$cache{logger} -> log(debug => 'action_set');
 	$$cache{items} -> push
 	({
-		param	=> [@param],
+		param	=> [grep{defined($_)} @param],
 		rule	=> 'action',
 	});
 
@@ -37,7 +37,7 @@ sub close_parenthesis
 	$$cache{logger} -> log(debug => 'close_parenthesis');
 	$$cache{items} -> push
 	({
-		param	=> [@param],
+		param	=> [$param[0] ],
 		rule	=> 'close_parenthesis',
 	});
 
@@ -54,7 +54,7 @@ sub command
 	$$cache{logger} -> log(debug => 'command');
 	$$cache{items} -> push
 	({
-		param	=> [@param],
+		param	=> [grep{defined($_)} @param],
 		rule	=> 'command',
 	});
 
@@ -98,13 +98,30 @@ sub open_parenthesis
 	$$cache{logger} -> log(debug => 'open_parenthesis');
 	$$cache{items} -> push
 	({
-		param	=> [@param],
+		param	=> [$param[0] ],
 		rule	=> 'open_parenthesis',
 	});
 
 	return $param[0];
 
 } # End of open_parenthesis.
+
+# ------------------------------------------------
+
+sub operator_name
+{
+	my($cache, @param) = @_;
+
+	$$cache{logger} -> log(debug => 'operator_name');
+	$$cache{items} -> push
+	({
+		param	=> [grep{defined($_)} @param],
+		rule	=> 'operator_name',
+	});
+
+	return $param[0];
+
+} # End of operator_name.
 
 # ------------------------------------------------
 

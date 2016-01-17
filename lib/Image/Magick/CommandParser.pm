@@ -175,7 +175,7 @@ sub log
 
 sub _populate_result
 {
-	my($self)	= @_;
+	my($self, $output_file_name) = @_;
 	my($cache)	=
 	{
 		items	=> $self -> items,
@@ -206,9 +206,9 @@ sub _populate_result
 		{
 			$$result{input_file} = $param;
 		}
-		elsif ($$item{rule} eq 'output_file')
+		elsif ($$item{rule} eq 'operator_name')
 		{
-			$$result{output_file} = $param;
+			$$result{operator_name} = $param;
 		}
 		else
 		{
@@ -216,12 +216,12 @@ sub _populate_result
 			{
 				name	=> $$item{rule},
 				param	=> $$item{param},
-				sign	=> $$item{sign},
 			}
 		}
 	}
 
-	$$result{options} = [@options];
+	$$result{output_file}	= $output_file_name if (length $output_file_name);
+	$$result{options}		= [@options];
 
 	$self -> result($result);
 
@@ -275,18 +275,7 @@ sub run
 	elsif ($ambiguity_metric == 1)
 	{
 		$self -> log(debug => 'Parse is unambiguous');
-		$self -> _populate_result;
-
-		if (length $command[1])
-		{
-			$self -> items -> push
-			({
-				param	=> [$command[1]],
-				sign	=> '',
-				rule	=> 'output_file',
-			});
-		}
-
+		$self -> _populate_result($command[1]);
 		$self -> report;
 	}
 	else

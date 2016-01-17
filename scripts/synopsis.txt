@@ -1,2 +1,3 @@
 #convert logo: -size 320x85 output.png
-convert logo: -size 320x85 canvas:none output.png
+#convert logo: -size 320x85 +clone -shade 110x90 output.png
+convert logo: -size 320x85 +clone -shade 110x90 canvas:none output.png
