@@ -1,2 +1,2 @@
-convert logo: -size 320x85 output.png
-#convert logo: -size 320x85 canvas::none -font Bookman-DemiItalic output.png
+#convert logo: -size 320x85 output.png
+convert logo: -size 320x85 canvas:none output.png

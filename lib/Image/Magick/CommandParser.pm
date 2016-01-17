@@ -95,8 +95,8 @@ our $VERSION = '1.00';
 sub BUILD
 {
 	my($self)	= @_;
-	my($bnf)	= get_data_section('image.magick.bnf');
-	#my($bnf)	= join("\n", read_lines('data/command.line.options.bnf') );
+	#my($bnf)	= get_data_section('image.magick.bnf');
+	my($bnf)	= join("\n", read_lines('data/command.line.options.bnf') );
 
 	$self -> grammar
 	(
@@ -118,7 +118,9 @@ sub _init
 	(
 		Marpa::R2::Scanless::R -> new
 		({
-			grammar => $self -> grammar,
+			grammar				=> $self -> grammar,
+			ranking_method		=> 'high_rule_only',
+			semantics_package	=> 'Image::Magick::CommandParser::Actions',
 		})
 	);
 
@@ -149,6 +151,8 @@ sub _init
 	{
 		$output_file_name	= $1;
 		$command			= substr($command, 0, - length($output_file_name) - 1);
+
+		$self -> log(debug => "Output file: $output_file_name");
 	}
 
 	$self -> command($command);
@@ -172,6 +176,11 @@ sub log
 sub _populate_result
 {
 	my($self)	= @_;
+	my($cache)	=
+	{
+		items	=> $self -> items,
+		logger	=> $self -> logger,
+	};
 	my($result)	=
 	{
 		command		=> '',
@@ -181,30 +190,32 @@ sub _populate_result
 	};
 
 	my(@options);
-	my($params);
+	my($param);
+
+	$self -> recce -> value($cache);
 
 	for my $item ($self -> items -> print)
 	{
-		$params = defined($$item{params}[0]) ? $$item{params}[0] : '';
+		$param = defined($$item{param}[0]) ? $$item{param}[0] : '';
 
 		if ($$item{rule} eq 'command')
 		{
-			$$result{command} = $params;
+			$$result{command} = $param;
 		}
 		elsif ($$item{rule} eq 'input_file')
 		{
-			$$result{input_file} = $params;
+			$$result{input_file} = $param;
 		}
 		elsif ($$item{rule} eq 'output_file')
 		{
-			$$result{output_file} = $params;
+			$$result{output_file} = $param;
 		}
 		else
 		{
 			push @options,
 			{
 				name	=> $$item{rule},
-				params	=> $$item{params},
+				param	=> $$item{param},
 				sign	=> $$item{sign},
 			}
 		}
@@ -218,54 +229,20 @@ sub _populate_result
 
 # ------------------------------------------------
 
-sub _process
-{
-	my($self, $string)	= @_;
-	my($length)			= length $string;
-	my($pos)			= 0;
-
-	my(@event, $event_name);
-	my($lexeme);
-	my($span, $start);
-
-	for
-	(
-		$pos = $self -> recce -> read(\$string, $pos, $length);
-		$pos < $length;
-		$pos = $self -> recce -> resume($pos)
-	)
-	{
-		($start, $span)	= $self -> recce -> pause_span;
-		@event			= @{$self -> recce -> events};
-		$event_name		= $event[0][0];
-		$lexeme			= $self -> recce -> literal($start, $span);
-		$pos			= $self -> recce -> lexeme_read($event_name);
-
-		if ($event_name eq 'char')
-		{
-			$self -> log(debug => "Lexeme $lexeme");
-		}
-    }
-
-	# Return a defined value for success and undef for failure.
-
-	return $self -> recce -> value;
-
-} # End of _process.
-
-# ------------------------------------------------
-
 sub report
 {
 	my($self)	= @_;
-	my($format)	= '%4s  %-20s  %-s';
+	my($format)	= '%-20s  %-s';
 
-	$self -> log(debug => sprintf($format, 'Sign', 'Rule', 'Params') );
+	$self -> log(debug => '-' x 50);
+	$self -> log(debug => sprintf($format, 'Rule', 'Params') );
 
 	for my $item ($self -> items -> print)
 	{
-		$self -> log(debug => sprintf($format, $$item{sign}, $$item{rule}, join(', ', @{$$item{params} }) ) );
+		$self -> log(debug => sprintf($format, $$item{rule}, join(', ', @{$$item{param} }) ) );
 	}
+
+	$self -> log(debug => '-' x 50);
 
 } # End of report.
 
@@ -277,51 +254,49 @@ sub run
 	my(@command)		= $self -> _init(%options);
 	my($message)		= $command[0] . (length($command[1]) ? " $command[1]" : '');
 
-	$self -> log(info => "Command: '$message'");
+	$self -> log(info => "Command: $message");
+	$self -> recce -> read(\$command[0]);
 
-	$self -> _process($command[0]);
+	my($ambiguity_metric) = $self -> recce -> ambiguity_metric;
 
-	my($ambiguity_metric)	= $self -> recce -> ambiguity_metric;
+	if ($ambiguity_metric <= 0)
+	{
+		my($line, $column)	= $self -> recce -> line_column();
+		my($whole_length)	= length $command[0];
+		my($suffix)			= substr($command[0], ($whole_length - 100) );
+		my($suffix_length)	= length $suffix;
+		my($s)				= $suffix_length == 1 ? 'char' : "$suffix_length chars";
+		my($message)		= "Call to ambiguity_metric() returned $ambiguity_metric (i.e. an error). \n"
+			. "Marpa exited at (line, column) = ($line, $column) within the input string. \n"
+			. "Input length: $whole_length. Last $s of input: '$suffix'";
 
-		if ($ambiguity_metric <= 0)
+		$self -> log(error => "Error. Parse failed. $message");
+	}
+	elsif ($ambiguity_metric == 1)
+	{
+		$self -> log(debug => 'Parse is unambiguous');
+		$self -> _populate_result;
+
+		if (length $command[1])
 		{
-			my($line, $column)	= $self -> recce -> line_column();
-			my($whole_length)	= length $command[0];
-			my($suffix)			= substr($command[0], ($whole_length - 100) );
-			my($suffix_length)	= length $suffix;
-			my($s)				= $suffix_length == 1 ? 'char' : "$suffix_length chars";
-			my($message)		= "Call to ambiguity_metric() returned $ambiguity_metric (i.e. an error). \n"
-				. "Marpa exited at (line, column) = ($line, $column) within the input string. \n"
-				. "Input length: $whole_length. Last $s of input: '$suffix'";
-
-			$self -> log(error => "Error. Parse failed. $message");
-		}
-		elsif ($ambiguity_metric == 1)
-		{
-			$self -> log(debug => 'Parse is unambiguous');
-
-			if (length $command[1])
-			{
-				$self -> items -> push
-				({
-					params	=> [$command[1]],
-					sign	=> '',
-					rule	=> 'output_file',
-				});
-			}
-
-			$self -> _populate_result;
-			$self -> log(info => "Result: \n" . Dumper($self -> result) );
-		}
-		else
-		{
-			$self -> log(error => 'Error. Parse is ambiguous');
-			$self -> report;
-			$self -> _populate_result;
-			$self -> log(info => "Result: \n" . Dumper($self -> result) );
+			$self -> items -> push
+			({
+				param	=> [$command[1]],
+				sign	=> '',
+				rule	=> 'output_file',
+			});
 		}
 
-		$self -> log(info => "Result: \n" . Dumper($self -> result) );
+		$self -> report;
+	}
+	else
+	{
+		$self -> log(error => 'Error. Parse is ambiguous');
+		#$self -> _populate_result;
+		$self -> report;
+	}
+
+	$self -> log(info => "Result: \n" . Dumper($self -> result) );
 
 	# Return 0 for success and 1 for failure.
 
@@ -404,25 +379,56 @@ Australian copyright (c) 2015, Ron Savage.
 
 __DATA__
 @@ image.magick.bnf
-:default			::= action => ::first
+:default				::= action => ::first
 
-lexeme default		= latm => 1		# Longest Acceptable Token Match.
+#lexeme default			= latm => 1		# Longest Acceptable Token Match.
 
 # G1-level rules.
 
-:start				::= command_and_options
+:start					::= command_and_options
 
-command_and_options	::= char+
+command_and_options		::= command_name input_file_name rule_set
 
-# L0 lexemes from option parameters.
+command_name			::= 'convert'					action => command
+							| 'mogrify'					action => command
 
-:lexeme				~ char		pause => before		event => char
-char				~ [[:print:]]
+input_file_name			::= string						action => input_file
+input_file_name			::=								action => input_file
+
+rule_set				::= rule*
+
+rule					::= action_set
+							| open_parenthesis
+							| close_parenthesis
+
+action_set				::= sign string parameter_set	action => action_set
+
+sign					::= minus_sign					action => sign
+							| plus_sign
+
+parameter_set			::= string+
+
+close_parenthesis		::= close_paren					action => close_parenthesis
+
+open_parenthesis		::= open_paren					action => open_parenthesis
+
+# L0-level rules (lexemes) in alphabetical order.
+
+close_paren				~ ')'
+
+open_paren				~ '('
+
+minus_sign				~ '-'
+
+plus_sign				~ '+'
+
+string					~ string_char+
+string_char				~ [^-+\(\)]
 
 # L0 lexemes for the boilerplate.
 
-:discard			~ whitespace
-whitespace			~ [\s]+
+:discard				~ whitespace
+whitespace				~ [\s]+
 
 @@ image.formats
 3fr
