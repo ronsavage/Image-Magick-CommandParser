@@ -286,6 +286,8 @@ sub run
 	}
 
 	$self -> log(info => "Result: \n" . Dumper($self -> result) );
+	$self -> log(debug => '-' x 50);
+	$self -> log(debug => '-' x 50);
 
 	# Return 0 for success and 1 for failure.
 

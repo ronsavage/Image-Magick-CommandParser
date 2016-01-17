@@ -13,11 +13,12 @@ our $VERSION = '1.00';
 
 # ------------------------------------------------
 
-sub action_set
+sub action
 {
 	my($cache, @param) = @_;
 
-	$$cache{logger} -> log(debug => 'action_set');
+	$$cache{logger} -> log(debug => 'action');
+	$$cache{logger} -> log(debug => "\@param: \n" . Dumper(@param) );
 	$$cache{items} -> push
 	({
 		param	=> [grep{defined($_)} @param],
@@ -26,7 +27,7 @@ sub action_set
 
 	return $param[0];
 
-} # End of action_set.
+} # End of action.
 
 # ------------------------------------------------
 
@@ -108,20 +109,20 @@ sub open_parenthesis
 
 # ------------------------------------------------
 
-sub operator_name
+sub operator
 {
 	my($cache, @param) = @_;
 
-	$$cache{logger} -> log(debug => 'operator_name');
+	$$cache{logger} -> log(debug => 'operator');
 	$$cache{items} -> push
 	({
 		param	=> [grep{defined($_)} @param],
-		rule	=> 'operator_name',
+		rule	=> 'operator',
 	});
 
 	return $param[0];
 
-} # End of operator_name.
+} # End of operator.
 
 # ------------------------------------------------
 
