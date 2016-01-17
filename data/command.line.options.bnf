@@ -16,11 +16,11 @@ input_file_name			::=					rank => 0		action => input_file
 
 rule_set				::= rule*
 
-rule					::= action							action => action
+rule					::= action_set						action => action_set
 							| close_parenthesis				action => close_parenthesis
 							| open_parenthesis				action => open_parenthesis
 
-action					::= sign action_name parameter_set
+action_set				::= sign action_name parameter_set
 
 action_name				::= string
 

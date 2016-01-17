@@ -13,21 +13,21 @@ our $VERSION = '1.00';
 
 # ------------------------------------------------
 
-sub action
+sub action_set
 {
 	my($cache, @param) = @_;
 
-	$$cache{logger} -> log(debug => 'action');
+	$$cache{logger} -> log(debug => 'action_set');
 	$$cache{logger} -> log(debug => "\@param: \n" . Dumper(@param) );
 	$$cache{items} -> push
 	({
 		param	=> [grep{defined($_)} @param],
-		rule	=> 'action',
+		rule	=> 'action_set',
 	});
 
 	return $param[0];
 
-} # End of action.
+} # End of action_set.
 
 # ------------------------------------------------
 
