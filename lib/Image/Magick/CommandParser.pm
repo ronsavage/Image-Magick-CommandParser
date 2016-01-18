@@ -206,10 +206,6 @@ sub _populate_result
 		{
 			$$result{input_file} = $param;
 		}
-		elsif ($$item{rule} eq 'operator_name')
-		{
-			$$result{operator_name} = $param;
-		}
 		else
 		{
 			push @options,

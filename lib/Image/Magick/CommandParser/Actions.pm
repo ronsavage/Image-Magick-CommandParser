@@ -3,8 +3,6 @@ package Image::Magick::CommandParser::Actions;
 use strict;
 use warnings;
 
-use Data::Dumper::Concise; # For Dumper().
-
 # Warning: Do not use Moo or anything similar.
 # This class needs a sub new() due to the way
 # Marpa calls the constructor.
@@ -17,11 +15,10 @@ sub action_set
 {
 	my($cache, @param) = @_;
 
-	$$cache{logger} -> log(debug => 'action_set');
-	$$cache{logger} -> log(debug => "\@param: \n" . Dumper(@param) );
+#	$$cache{logger} -> log(debug => 'action_set');
 	$$cache{items} -> push
 	({
-		param	=> [grep{defined($_)} @param],
+		param	=> decode_result(\@param),
 		rule	=> 'action_set',
 	});
 
@@ -35,7 +32,7 @@ sub close_parenthesis
 {
 	my($cache, @param) = @_;
 
-	$$cache{logger} -> log(debug => 'close_parenthesis');
+#	$$cache{logger} -> log(debug => 'close_parenthesis');
 	$$cache{items} -> push
 	({
 		param	=> [$param[0] ],
@@ -52,10 +49,10 @@ sub command
 {
 	my($cache, @param) = @_;
 
-	$$cache{logger} -> log(debug => 'command');
+#	$$cache{logger} -> log(debug => 'command');
 	$$cache{items} -> push
 	({
-		param	=> [grep{defined($_)} @param],
+		param	=> decode_result(\@param),
 		rule	=> 'command',
 	});
 
@@ -65,11 +62,41 @@ sub command
 
 # ------------------------------------------------
 
+sub decode_result
+{
+	my($result) = @_;
+	my(@worklist) = $result;
+
+	my($obj);
+	my($ref_type);
+	my(@stack);
+
+	do
+	{
+		$obj      = shift @worklist;
+		$ref_type = ref $obj;
+
+		if ($ref_type eq 'ARRAY')
+		{
+			unshift @worklist, @$obj;
+		}
+		else
+		{
+			push @stack, $obj;
+		}
+	} while (@worklist);
+
+	return [@stack];
+
+} # End of decode_result.
+
+# ------------------------------------------------
+
 sub input_file
 {
 	my($cache, @param) = @_;
 
-	$$cache{logger} -> log(debug => 'input_file');
+#	$$cache{logger} -> log(debug => 'input_file');
 	$$cache{items} -> push
 	({
 		param  => [$param[0] ],
@@ -96,7 +123,7 @@ sub open_parenthesis
 {
 	my($cache, @param) = @_;
 
-	$$cache{logger} -> log(debug => 'open_parenthesis');
+#	$$cache{logger} -> log(debug => 'open_parenthesis');
 	$$cache{items} -> push
 	({
 		param	=> [$param[0] ],
@@ -109,28 +136,11 @@ sub open_parenthesis
 
 # ------------------------------------------------
 
-sub operator
-{
-	my($cache, @param) = @_;
-
-	$$cache{logger} -> log(debug => 'operator');
-	$$cache{items} -> push
-	({
-		param	=> [grep{defined($_)} @param],
-		rule	=> 'operator',
-	});
-
-	return $param[0];
-
-} # End of operator.
-
-# ------------------------------------------------
-
 sub sign
 {
 	my($cache, @param) = @_;
 
-	$$cache{logger} -> log(debug => 'sign');
+#	$$cache{logger} -> log(debug => 'sign');
 	$$cache{items} -> push
 	({
 		param	=> [$param[0] ],
