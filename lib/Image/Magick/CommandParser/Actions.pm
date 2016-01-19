@@ -188,7 +188,7 @@ sub operator
 	my($cache, @param)	= @_;
 	my($name)			= 'operator';
 
-	$$cache{logger} -> log(debug => "Name: $name");
+	$$cache{logger} -> log(debug => "Action: $name");
 	$$cache{logger} -> log(debug => Dumper(@param) );
 	$$cache{items} -> push
 	({

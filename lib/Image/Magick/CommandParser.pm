@@ -184,14 +184,15 @@ sub _process_ambiguous
 
 	while (my $value = $self -> recce -> value($cache) )
 	{
-		next if ($self -> items -> length == 0);
+		#next if ($self -> items -> length == 0);
 
 		$self -> _process_unambiguous($cache, $output_file_name);
-		$self -> report;
-		$self -> log(info => "Result: \n" . Dumper($self -> result) );
-		$self -> items(Set::Array -> new);
 
 		push @result, $self -> result;
+
+		$self -> report;
+		$self -> log(info => "Result: \n" . Dumper($self -> result) );
+		#$self -> items(Set::Array -> new);
 	}
 
 	$self -> result([@result]);
