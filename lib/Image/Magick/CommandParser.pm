@@ -40,14 +40,6 @@ has grammar =>
 	required => 0,
 );
 
-has items =>
-(
-	default  => sub{return undef},
-	is       => 'rw',
-	isa      => Any,
-	required => 0,
-);
-
 has logger =>
 (
 	default  => sub{return undef},
@@ -113,7 +105,6 @@ sub _init
 
 	# Reset whatever so the object can be re-used.
 
-	$self -> items(Set::Array -> new);
 	$self -> recce
 	(
 		Marpa::R2::Scanless::R -> new
@@ -177,25 +168,38 @@ sub log
 sub _process_ambiguous
 {
 	my($self, $cache, $output_file_name) = @_;
+	my($count) = 0;
 
 	my($item);
 	my($param);
-	my(@result);
+	my(@stack);
 
 	while (my $value = $self -> recce -> value($cache) )
 	{
-		#next if ($self -> items -> length == 0);
-
 		$self -> _process_unambiguous($cache, $output_file_name);
 
-		push @result, $self -> result;
+		push @stack, ${$self -> result}[0];
 
-		$self -> report;
-		$self -> log(info => "Result: \n" . Dumper($self -> result) );
-		#$self -> items(Set::Array -> new);
+		$self -> report($cache);
+
+		$$cache{items} = Set::Array -> new;
+	}
+
+	# Eliminate duplicates from @stack.
+
+	my(@result)		= shift @stack;
+#	my($standard)	= $self -> hashref2string($result[0]);
+
+	while (my $item = shift @stack)
+	{
+#		if ($self -> hashref2string($item) ne $standard)
+#		{
+#			push @result, $item;
+#		}
 	}
 
 	$self -> result([@result]);
+	$self -> log(info => "Result count: @{[$#result + 1]}: \n" . Dumper($self -> result) );
 
 } # End of _process_ambiguous.
 
@@ -215,7 +219,7 @@ sub _process_unambiguous
 	my(@options);
 	my($param);
 
-	for my $item ($self -> items -> print)
+	for my $item ($$cache{items} -> print)
 	{
 		$param = defined($$item{param}[0]) ? $$item{param}[0] : '';
 
@@ -256,13 +260,13 @@ sub _process_unambiguous
 
 sub report
 {
-	my($self)	= @_;
-	my($format)	= '%-20s  %-s';
+	my($self, $cache)	= @_;
+	my($format)			= '%-20s  %-s';
 
 	$self -> log(debug => '-' x 50);
 	$self -> log(debug => sprintf($format, 'Rule', 'Params') );
 
-	for my $item ($self -> items -> print)
+	for my $item ($$cache{items} -> print)
 	{
 		$self -> log(debug => sprintf($format, $$item{rule}, join(', ', @{$$item{param} }) ) );
 	}
@@ -293,7 +297,7 @@ sub run
 	my($ambiguity_metric)	= $self -> recce -> ambiguity_metric;
 	my($cache)				=
 	{
-		items	=> $self -> items,
+		items	=> Set::Array -> new,
 		logger	=> $self -> logger,
 	};
 
@@ -315,7 +319,7 @@ sub run
 		$self -> log(debug => 'Parse is unambiguous');
 		$self -> recce -> value($cache);
 		$self -> _process_unambiguous($cache, $command[1]);
-		$self -> report;
+		$self -> report($cache);
 		$self -> log(info => "Result: \n" . Dumper($self -> result) );
 	}
 	else
