@@ -22,7 +22,7 @@ use Set::Array;
 
 use Try::Tiny;
 
-use Types::Standard qw/Any ArrayRef Str/;
+use Types::Standard qw/Any HashRef Str/;
 
 has command =>
 (
@@ -74,9 +74,9 @@ has recce =>
 
 has result =>
 (
-	default  => sub{return []},
+	default  => sub{return {} },
 	is       => 'rw',
-	isa      => ArrayRef,
+	isa      => HashRef,
 	required => 0,
 );
 
@@ -178,7 +178,7 @@ sub _process_ambiguous
 	{
 		$self -> _process_unambiguous($cache, $output_file_name);
 
-		push @stack, ${$self -> result}[0];
+		push @stack, $self -> result;
 
 		$self -> report($cache);
 
@@ -188,18 +188,22 @@ sub _process_ambiguous
 	# Eliminate duplicates from @stack.
 
 	my(@result)		= shift @stack;
-#	my($standard)	= $self -> hashref2string($result[0]);
+	my($standard)	= Dumper($result[0]);
 
 	while (my $item = shift @stack)
 	{
-#		if ($self -> hashref2string($item) ne $standard)
-#		{
-#			push @result, $item;
-#		}
+		if (Dumper($item) ne $standard)
+		{
+			push @result, $item;
+		}
 	}
 
-	$self -> result([@result]);
-	$self -> log(info => "Result count: @{[$#result + 1]}: \n" . Dumper($self -> result) );
+	if ($#result > 0)
+	{
+		die "Error: Cannot handle some types of ambiguity\n";
+	}
+
+	$self -> result($result[0]);
 
 } # End of _process_ambiguous.
 
@@ -216,14 +220,50 @@ sub _process_unambiguous
 		options		=> [],
 	};
 
-	my(@options);
+	my(@options, @operator);
 	my($param);
+	my(@stack);
 
 	for my $item ($$cache{items} -> print)
 	{
 		$param = defined($$item{param}[0]) ? $$item{param}[0] : '';
 
-		if ($$item{rule} eq 'command')
+		if ($$item{rule} eq 'action_set')
+		{
+			@operator	= ();
+			@stack		= ();
+
+			for $param (@{$$item{param} })
+			{
+				if ($param =~ /^[a-zA-Z][-a-zA-Z]+:/)
+				{
+					push @operator, $param;
+				}
+				else
+				{
+					push @stack, $param;
+				}
+			}
+
+			if ($#stack >= 0)
+			{
+				push @options,
+				{
+					name	=> $$item{rule},
+					param	=> [@stack],
+				};
+			}
+
+			if ($#operator >= 0)
+			{
+				push @options,
+				{
+					name	=> 'operator',
+					param	=> [@operator],
+				};
+			}
+		}
+		elsif ($$item{rule} eq 'command')
 		{
 			$$result{command} = $param;
 		}
@@ -237,7 +277,7 @@ sub _process_unambiguous
 			{
 				name	=> $$item{rule},
 				param	=> [$param],
-			}
+			};
 		}
 		else
 		{
@@ -245,14 +285,14 @@ sub _process_unambiguous
 			{
 				name	=> $$item{rule},
 				param	=> $$item{param},
-			}
+			};
 		}
 	}
 
 	$$result{output_file}	= $output_file_name if (length $output_file_name);
 	$$result{options}		= [@options];
 
-	$self -> result([$result]);
+	$self -> result($result);
 
 } # End of _process_unambiguous.
 
@@ -326,6 +366,7 @@ sub run
 	{
 		$self -> log(warning => 'Warning: Parse is ambiguous');
 		$self -> _process_ambiguous($cache, $command[1]);
+		$self -> log(info => "Result: \n" . Dumper($self -> result) );
 	}
 
 	# Return 0 for success and 1 for failure.

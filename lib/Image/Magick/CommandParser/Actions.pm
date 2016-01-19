@@ -48,7 +48,7 @@ sub action_set
 
 	$$cache{items} -> push
 	({
-		param	=> decode_result(\@stash),
+		param	=> _decode_result(\@stash),
 		rule	=> $name,
 	});
 
@@ -56,7 +56,7 @@ sub action_set
 	{
 		$$cache{items} -> push
 		({
-			param	=> decode_result(\@operator),
+			param	=> _decode_result(\@operator),
 			rule	=> 'operator',
 		});
 	}
@@ -95,7 +95,7 @@ sub command
 	$$cache{logger} -> log(debug => Dumper(@param) );
 	$$cache{items} -> push
 	({
-		param	=> decode_result(\@param),
+		param	=> _decode_result(\@param),
 		rule	=> $name,
 	});
 
@@ -105,7 +105,8 @@ sub command
 
 # ------------------------------------------------
 
-sub decode_result
+sub _decode_result
+
 {
 	my($result) = @_;
 	my(@worklist) = $result;
@@ -131,7 +132,7 @@ sub decode_result
 
 	return [@stack];
 
-} # End of decode_result.
+} # End of _decode_result
 
 # ------------------------------------------------
 
