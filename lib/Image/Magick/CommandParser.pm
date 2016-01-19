@@ -206,6 +206,14 @@ sub _populate_result
 		{
 			$$result{input_file} = $param;
 		}
+		elsif ($$item{rule} eq 'operator')
+		{
+			push @options,
+			{
+				name	=> $$item{rule},
+				param	=> [$param],
+			}
+		}
 		else
 		{
 			push @options,
@@ -251,7 +259,15 @@ sub run
 	my($message)		= $command[0] . (length($command[1]) ? " $command[1]" : '');
 
 	$self -> log(info => "Command: $message");
-	$self -> recce -> read(\$command[0]);
+
+	try
+	{
+		$self -> recce -> read(\$command[0]);
+	}
+	catch
+	{
+		die "$_\n";
+	};
 
 	my($ambiguity_metric) = $self -> recce -> ambiguity_metric;
 

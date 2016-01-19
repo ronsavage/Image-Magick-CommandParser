@@ -17,6 +17,7 @@ input_file_name			::=					rank => 0		action => input_file
 rule_set				::= rule*
 
 rule					::= action_set
+							| operator						action => operator
 							| close_parenthesis				action => close_parenthesis
 							| open_parenthesis				action => open_parenthesis
 
@@ -26,9 +27,17 @@ action_name				::= string
 
 parameter_set			::= string*
 
+operator				::= operator_prefix colon operator_suffix
+
+operator_prefix			::= string
+
+operator_suffix			::= string*
+
 # L0-level rules (lexemes) in alphabetical order.
 
 close_parenthesis		~ ')'
+
+colon					~ ':'
 
 open_parenthesis		~ '('
 

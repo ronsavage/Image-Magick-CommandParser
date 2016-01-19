@@ -3,6 +3,8 @@ package Image::Magick::CommandParser::Actions;
 use strict;
 use warnings;
 
+use Data::Dumper::Concise; # For Dumper().
+
 # Warning: Do not use Moo or anything similar.
 # This class needs a sub new() due to the way
 # Marpa calls the constructor.
@@ -13,16 +15,50 @@ our $VERSION = '1.00';
 
 sub action_set
 {
-	my($cache, @param) = @_;
+	my($cache, @param)	= @_;
+	my($name)			= 'action_set';
 
-#	$$cache{logger} -> log(debug => 'action_set');
+	$$cache{logger} -> log(debug => "Action: $name");
+	$$cache{logger} -> log(debug => Dumper(@param) );
+
+	my(@operator);
+	my(@stash);
+
+	for my $item (@param)
+	{
+		if (ref($item) eq 'ARRAY')
+		{
+			if ($$item[0] =~ /[-a-zA-Z]+:/)
+			{
+				push @operator, $item;
+			}
+			else
+			{
+				push @stash, $item;
+			}
+		}
+		else
+		{
+			push @stash, $item;
+		}
+	}
+
 	$$cache{items} -> push
 	({
-		param	=> decode_result(\@param),
-		rule	=> 'action_set',
+		param	=> decode_result(\@stash),
+		rule	=> $name,
 	});
 
-	return $param[0];
+	for my $item (@operator)
+	{
+		$$cache{items} -> push
+		({
+			param	=> decode_result(\@operator),
+			rule	=> 'operator',
+		});
+	}
+
+	return $param[0]; # We don't care what's returned!
 
 } # End of action_set.
 
@@ -30,16 +66,18 @@ sub action_set
 
 sub close_parenthesis
 {
-	my($cache, @param) = @_;
+	my($cache, @param)	= @_;
+	my($name)			= 'close_parenthesis';
 
-#	$$cache{logger} -> log(debug => 'close_parenthesis');
+	$$cache{logger} -> log(debug => "Action: $name");
+	$$cache{logger} -> log(debug => Dumper(@param) );
 	$$cache{items} -> push
 	({
 		param	=> [$param[0] ],
-		rule	=> 'close_parenthesis',
+		rule	=> $name,
 	});
 
-	return $param[0];
+	return $param[0]; # We don't care what's returned!
 
 } # End of close_parenthesis.
 
@@ -47,16 +85,18 @@ sub close_parenthesis
 
 sub command
 {
-	my($cache, @param) = @_;
+	my($cache, @param)	= @_;
+	my($name)			= 'command';
 
-#	$$cache{logger} -> log(debug => 'command');
+	$$cache{logger} -> log(debug => "Action: $name");
+	$$cache{logger} -> log(debug => Dumper(@param) );
 	$$cache{items} -> push
 	({
 		param	=> decode_result(\@param),
-		rule	=> 'command',
+		rule	=> $name,
 	});
 
-	return $param[0];
+	return $param[0]; # We don't care what's returned!
 
 } # End of command.
 
@@ -94,16 +134,18 @@ sub decode_result
 
 sub input_file
 {
-	my($cache, @param) = @_;
+	my($cache, @param)	= @_;
+	my($name)			= 'input_file';
 
-#	$$cache{logger} -> log(debug => 'input_file');
+	$$cache{logger} -> log(debug => "Action: $name");
+	$$cache{logger} -> log(debug => Dumper(@param) );
 	$$cache{items} -> push
 	({
 		param  => [$param[0] ],
-		rule    => 'input_file',
+		rule    => $name,
 	});
 
-	return $param[0];
+	return $param[0]; # We don't care what's returned!
 
 } # End of input_file.
 
@@ -121,33 +163,56 @@ sub new
 
 sub open_parenthesis
 {
-	my($cache, @param) = @_;
+	my($cache, @param)	= @_;
+	my($name)			= 'open_parenthesis';
 
-#	$$cache{logger} -> log(debug => 'open_parenthesis');
+	$$cache{logger} -> log(debug => "Action: $name");
+	$$cache{logger} -> log(debug => Dumper(@param) );
 	$$cache{items} -> push
 	({
 		param	=> [$param[0] ],
-		rule	=> 'open_parenthesis',
+		rule	=> $name,
 	});
 
-	return $param[0];
+	return $param[0]; # We don't care what's returned!
 
 } # End of open_parenthesis.
 
 # ------------------------------------------------
 
-sub sign
+sub operator
 {
-	my($cache, @param) = @_;
+	my($cache, @param)	= @_;
+	my($name)			= 'operator';
 
-#	$$cache{logger} -> log(debug => 'sign');
+	$$cache{logger} -> log(debug => "Name: $name");
+	$$cache{logger} -> log(debug => Dumper(@param) );
 	$$cache{items} -> push
 	({
 		param	=> [$param[0] ],
-		rule	=> 'sign',
+		rule	=> $name,
 	});
 
-	return $param[0];
+	return $param[0]; # We don't care what's returned!
+
+} # End of operator.
+
+# ------------------------------------------------
+
+sub sign
+{
+	my($cache, @param)	= @_;
+	my($name)			= 'sign';
+
+	$$cache{logger} -> log(debug => "Action: $name");
+	$$cache{logger} -> log(debug => Dumper(@param) );
+	$$cache{items} -> push
+	({
+		param	=> [$param[0] ],
+		rule	=> $name,
+	});
+
+	return $param[0]; # We don't care what's returned!
 
 } # End of sign.
 
