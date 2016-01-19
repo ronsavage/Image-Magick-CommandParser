@@ -22,7 +22,7 @@ use Set::Array;
 
 use Try::Tiny;
 
-use Types::Standard qw/Any HashRef Str/;
+use Types::Standard qw/Any ArrayRef Str/;
 
 has command =>
 (
@@ -82,9 +82,9 @@ has recce =>
 
 has result =>
 (
-	default  => sub{return {} },
+	default  => sub{return []},
 	is       => 'rw',
-	isa      => HashRef,
+	isa      => ArrayRef,
 	required => 0,
 );
 
@@ -121,6 +121,7 @@ sub _init
 			grammar				=> $self -> grammar,
 			ranking_method		=> 'high_rule_only',
 			semantics_package	=> 'Image::Magick::CommandParser::Actions',
+			#trace_terminals		=> 99,
 		})
 	);
 
@@ -173,14 +174,35 @@ sub log
 
 # --------------------------------------------------
 
-sub _populate_result
+sub _process_ambiguous
 {
-	my($self, $output_file_name) = @_;
-	my($cache)	=
+	my($self, $cache, $output_file_name) = @_;
+
+	my($item);
+	my($param);
+	my(@result);
+
+	while (my $value = $self -> recce -> value($cache) )
 	{
-		items	=> $self -> items,
-		logger	=> $self -> logger,
-	};
+		next if ($self -> items -> length == 0);
+
+		$self -> _process_unambiguous($cache, $output_file_name);
+		$self -> report;
+		$self -> log(info => "Result: \n" . Dumper($self -> result) );
+		$self -> items(Set::Array -> new);
+
+		push @result, $self -> result;
+	}
+
+	$self -> result([@result]);
+
+} # End of _process_ambiguous.
+
+# --------------------------------------------------
+
+sub _process_unambiguous
+{
+	my($self, $cache, $output_file_name) = @_;
 	my($result)	=
 	{
 		command		=> '',
@@ -191,8 +213,6 @@ sub _populate_result
 
 	my(@options);
 	my($param);
-
-	$self -> recce -> value($cache);
 
 	for my $item ($self -> items -> print)
 	{
@@ -227,9 +247,9 @@ sub _populate_result
 	$$result{output_file}	= $output_file_name if (length $output_file_name);
 	$$result{options}		= [@options];
 
-	$self -> result($result);
+	$self -> result([$result]);
 
-} # End of _populate_result.
+} # End of _process_unambiguous.
 
 # ------------------------------------------------
 
@@ -269,7 +289,12 @@ sub run
 		die "$_\n";
 	};
 
-	my($ambiguity_metric) = $self -> recce -> ambiguity_metric;
+	my($ambiguity_metric)	= $self -> recce -> ambiguity_metric;
+	my($cache)				=
+	{
+		items	=> $self -> items,
+		logger	=> $self -> logger,
+	};
 
 	if ($ambiguity_metric <= 0)
 	{
@@ -287,17 +312,16 @@ sub run
 	elsif ($ambiguity_metric == 1)
 	{
 		$self -> log(debug => 'Parse is unambiguous');
-		$self -> _populate_result($command[1]);
+		$self -> recce -> value($cache);
+		$self -> _process_unambiguous($cache, $command[1]);
 		$self -> report;
+		$self -> log(info => "Result: \n" . Dumper($self -> result) );
 	}
 	else
 	{
-		$self -> log(error => 'Error. Parse is ambiguous');
-		#$self -> _populate_result;
-		$self -> report;
+		$self -> log(warning => 'Warning: Parse is ambiguous');
+		$self -> _process_ambiguous($cache, $command[1]);
 	}
-
-	$self -> log(info => "Result: \n" . Dumper($self -> result) );
 
 	# Return 0 for success and 1 for failure.
 

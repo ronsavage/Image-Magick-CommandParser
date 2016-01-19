@@ -28,7 +28,10 @@ sub action_set
 	{
 		if (ref($item) eq 'ARRAY')
 		{
-			if ($$item[0] =~ /[-a-zA-Z]+:/)
+			if ($#$item < 0)
+			{
+			}
+			elsif ($$item[0] =~ /[-a-zA-Z]+:/)
 			{
 				push @operator, $item;
 			}
@@ -189,7 +192,7 @@ sub operator
 	$$cache{logger} -> log(debug => Dumper(@param) );
 	$$cache{items} -> push
 	({
-		param	=> [$param[0] ],
+		param	=> [${$param[0]}[0] ],
 		rule	=> $name,
 	});
 
