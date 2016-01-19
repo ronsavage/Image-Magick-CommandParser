@@ -10,8 +10,7 @@ use Test::Stream -Classic;
 
 # ------------------------------------------------
 
-my($parser)	= Image::Magick::CommandParser -> new;
-my(@test)	=
+my(@test) =
 (
 {
 	input	=> 'convert logo:',
@@ -215,9 +214,58 @@ my(@test)	=
 		],
 		output_file => "output.png"
 	}
-}
+},
+{
+	input	=> 'convert logo: canvas:none +clone output.png',
+	expect	=>
+	{
+		command => "convert",
+		input_file => "logo:",
+		options => [
+			{
+				name => "operator",
+				param => [
+					"canvas:none"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"+",
+					"clone"
+				]
+			}
+		],
+		output_file => "output.png"
+	}
+},
+{
+	input	=> 'convert xc: -gravity East output.png',
+	expect	=>
+	{
+		command => "convert",
+		input_file => "xc:",
+		options => [
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"gravity"
+				]
+			},
+			{
+				name => "operator",
+				param => [
+					"East"
+				]
+			}
+		],
+		output_file => "output.png"
+		}
+},
 );
-my($count) = 0;
+my($parser)	= Image::Magick::CommandParser -> new;
+my($count)	= 0;
 
 my($got);
 my($result);

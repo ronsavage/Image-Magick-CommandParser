@@ -2,7 +2,7 @@
 
 #lexeme default			= latm => 1		# Longest Acceptable Token Match.
 
-# G1-level rules in top-down order.
+# G1 rules in top-down order.
 
 :start					::= command_and_options
 
@@ -25,14 +25,14 @@ action_set				::= sign action_name parameter_set	action => action_set
 
 action_name				::= string
 
-operator				::= alpha_string
+operator				::= operator_name
 
 parameter_set			::= string*
 
-# L0-level rules (lexemes) in alphabetical order.
+# L0 rules (lexemes) in alphabetical order.
 
-alpha_string			~ alpha_string_char+
-alpha_string_char		~ [^-+\(\)\s0-9]
+operator_name			~ operator_name_char+
+operator_name_char		~ [^-+\(\)\s0-9]
 
 close_parenthesis		~ ')'
 
@@ -43,7 +43,7 @@ sign					~ [-+]
 string					~ string_char+
 string_char				~ [^-+\(\)\s]
 
-# L0 lexemes for the boilerplate.
+# L0 rules (lexemes) for the boilerplate.
 
 :discard				~ whitespace
 whitespace				~ [\s]+

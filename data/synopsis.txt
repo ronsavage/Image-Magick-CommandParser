@@ -1,8 +1,12 @@
+# Note: The code does not handle the following special statement:
+#	convert -list $type
+#
 #convert logo:
 #convert logo: output.png
 #convert logo: -size 320x85 output.png
 #convert logo: -size 320x85 -shade 110x90 output.png
 #convert logo: -size 320x85 canvas:none -shade 110x90 output.png
 #convert logo: -size 320x85 ( +clone canvas:none -shade 110x90 ) output.png
-convert logo: -size 320x85 ( canvas:none +clone -shade 110x90 ) output.png
+#convert logo: -size 320x85 ( canvas:none +clone -shade 110x90 ) output.png
 #convert logo: canvas:none +clone output.png
+convert xc: -gravity East output.png

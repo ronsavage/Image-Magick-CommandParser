@@ -40,6 +40,14 @@ has grammar =>
 	required => 0,
 );
 
+has list_option =>
+(
+	default  => sub{return {} },
+	is       => 'rw',
+	isa      => HashRef,
+	required => 0,
+);
+
 has logger =>
 (
 	default  => sub{return undef},
@@ -86,7 +94,18 @@ our $VERSION = '1.00';
 
 sub BUILD
 {
-	my($self)	= @_;
+	my($self)			= @_;
+	my($list_option)	= get_data_section('list.options');
+
+	my(%list_option);
+
+	for (split(/\n/, $list_option) )
+	{
+		$list_option{lc $_} = 1;
+	}
+
+	$self -> list_option({%list_option});
+
 	#my($bnf)	= get_data_section('image.magick.bnf');
 	my($bnf)	= join("\n", read_lines('data/command.line.options.bnf') );
 
@@ -200,6 +219,8 @@ sub _process_ambiguous
 
 	if ($#result > 0)
 	{
+		$self -> log(info => "Ambiguous results: \n" . Dumper(@result) );
+
 		die "Error: Cannot handle some types of ambiguity\n";
 	}
 
@@ -212,7 +233,8 @@ sub _process_ambiguous
 sub _process_unambiguous
 {
 	my($self, $cache, $output_file_name) = @_;
-	my($result)	=
+	my($list_option)	= $self -> list_option;
+	my($result)			=
 	{
 		command		=> '',
 		input_file	=> '',
@@ -221,8 +243,7 @@ sub _process_unambiguous
 	};
 
 	my(@options, @operator);
-	my($param);
-	my(@stack);
+	my($param, @param);
 
 	for my $item ($$cache{items} -> print)
 	{
@@ -231,7 +252,7 @@ sub _process_unambiguous
 		if ($$item{rule} eq 'action_set')
 		{
 			@operator	= ();
-			@stack		= ();
+			@param		= ();
 
 			for $param (@{$$item{param} })
 			{
@@ -239,18 +260,22 @@ sub _process_unambiguous
 				{
 					push @operator, $param;
 				}
+				elsif ( ($#param >= 0) && $$list_option{$param[$#param]})
+				{
+					push @operator, $param;
+				}
 				else
 				{
-					push @stack, $param;
+					push @param, $param;
 				}
 			}
 
-			if ($#stack >= 0)
+			if ($#param >= 0)
 			{
 				push @options,
 				{
 					name	=> $$item{rule},
-					param	=> [@stack],
+					param	=> [@param],
 				};
 			}
 
@@ -364,7 +389,7 @@ sub run
 	}
 	else
 	{
-		$self -> log(warning => 'Warning: Parse is ambiguous');
+		$self -> log(info => 'Warning: Parse is ambiguous');
 		$self -> _process_ambiguous($cache, $command[1]);
 		$self -> log(info => "Result: \n" . Dumper($self -> result) );
 	}
@@ -723,3 +748,78 @@ y
 ycbcr
 ycbcra
 yuv
+
+@@ list.options
+Align
+Alpha
+Boolean
+Cache
+Channel
+Class
+ClipPath
+Coder
+Color
+Colorspace
+Command
+Compliance
+Complex
+Compose
+Compress
+Configure
+DataType
+Debug
+Decoration
+Delegate
+Direction
+Dispose
+Distort
+Dither
+Endian
+Evaluate
+FillRule
+Filter
+Font
+Format
+Function
+Gradient
+Gravity
+Intensity
+Intent
+Interlace
+Interpolate
+Kernel
+Layers
+LineCap
+LineJoin
+List
+Locale
+LogEvent
+Log
+Magic
+Method
+Metric
+Mime
+Mode
+Morphology
+Module
+Noise
+Orientation
+PixelIntensity
+Policy
+PolicyDomain
+PolicyRights
+Preview
+Primitive
+QuantumFormat
+Resource
+SparseColor
+Statistic
+Storage
+Stretch
+Style
+Threshold
+Type
+Units
+Validate
+VirtualPixel
+Weight
