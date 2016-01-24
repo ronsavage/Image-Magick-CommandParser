@@ -139,6 +139,7 @@ sub _decode_result
 sub input_file
 {
 	my($cache, @param)	= @_;
+	$param[0]			= '' if (! defined $param[0]);
 	my($name)			= 'input_file';
 
 	$$cache{logger} -> log(debug => "Action: $name");

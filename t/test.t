@@ -579,6 +579,112 @@ my(@test) =
 		output_file => "button.gif"
 	}
 },
+{
+	input	=> 'convert magick:logo -label "%m:%f %wx%h" logo.png',
+	expect	=>
+	{
+		command => "convert",
+		input_file => "magick:logo",
+		options => [
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"label"
+				]
+			},
+			{
+				name => "operator",
+				param => [
+					"%m:%f"
+				]
+			},
+			{
+				name => "operator",
+				param => [
+					"%wx%h"
+				]
+			}
+		],
+		output_file => "logo.png"
+	}
+},
+{
+	input	=> 'convert magick:rose -label @t/info.txt -format "%l label" rose.png',
+	expect	=>
+	{
+		command => "convert",
+		input_file => "magick:rose",
+		options => [
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"label",
+					"\@t/info.txt"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"format"
+				]
+			},
+			{
+				name => "operator",
+				param => [
+					"%l"
+				]
+			},
+			{
+				name => "operator",
+				param => [
+					"label"
+				]
+			}
+		],
+		output_file => "rose.png"
+	}
+},
+{
+	input	=> 'convert -label @t/info.txt magick:rose -format "%l label" rose.png',
+	expect	=>
+	{
+		command => "convert",
+		input_file => "magick:rose",
+		options => [
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"label",
+					"\@t/info.txt"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"format"
+				]
+			},
+			{
+				name => "operator",
+				param => [
+					"%l"
+				]
+			},
+			{
+				name => "operator",
+				param => [
+					"label"
+				]
+			}
+		],
+		output_file => "rose.png"
+	}
+},
 );
 my($parser)	= Image::Magick::CommandParser -> new;
 my($count)	= 0;

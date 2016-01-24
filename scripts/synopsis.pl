@@ -20,7 +20,8 @@ for my $command (read_lines($input_file) )
 
 	Image::Magick::CommandParser -> new
 	(
-		command		=> $command,
-		maxlevel	=> $maxlevel,
+		command			=> $command,
+		maxlevel		=> $maxlevel,
+		print_report	=> ,1
 	) -> run;
 }

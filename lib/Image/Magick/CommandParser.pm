@@ -22,7 +22,7 @@ use Set::Array;
 
 use Try::Tiny;
 
-use Types::Standard qw/Any HashRef Str/;
+use Types::Standard qw/Any Bool HashRef Str/;
 
 has command =>
 (
@@ -69,6 +69,14 @@ has minlevel =>
 	default  => sub{return 'error'},
 	is       => 'rw',
 	isa      => Str,
+	required => 0,
+);
+
+has print_report =>
+(
+	default  => sub{return 0},
+	is       => 'rw',
+	isa      => Bool,
 	required => 0,
 );
 
@@ -199,7 +207,7 @@ sub _process_ambiguous
 
 		push @stack, $self -> result;
 
-		$self -> report($cache);
+		$self -> report($cache) if ($self -> print_report);
 
 		$$cache{items} = Set::Array -> new;
 	}
@@ -242,7 +250,8 @@ sub _process_unambiguous
 		options		=> [],
 	};
 
-	my(@options, @operator);
+	my($input_file);
+	my(@options, @operator, @offset);
 	my($param, @param);
 
 	for my $item ($$cache{items} -> print)
@@ -303,6 +312,11 @@ sub _process_unambiguous
 				name	=> $$item{rule},
 				param	=> [$param],
 			};
+
+			# Track the operators within the options, for post-processing just below.
+			# See comment below for details.
+
+			push @offset, $#options if ( ($param =~ /^\"%/) || ($param =~ /\"$/) );
 		}
 		else
 		{
@@ -314,6 +328,34 @@ sub _process_unambiguous
 		}
 	}
 
+	# In the case of input like -label "%m:%f %wx%h",
+	# we end up with 2 operators, '"%m:%f' and '%wx%h"'.
+	# Here we check for this special case and zap the 2 double-quotes,
+	# hoping we don't zap quotes serving some other purpose.
+
+	if ($#offset == 1)
+	{
+		if ( (substr($options[$offset[0] ]{param}[0], 0, 2) eq '"%') &&
+			(substr($options[$offset[1] ]{param}[0], -1, 1) eq '"') )
+		{
+			substr($options[$offset[0] ]{param}[0], 0, 2)	= '%';
+			substr($options[$offset[1] ]{param}[0], -1, 1)	= '';
+		}
+	}
+
+	if ( ($#options >= 1) && ($options[1]{name} eq 'operator') )
+	{
+		my($candidate) = $options[1]{param}[0];
+
+		if ( ($candidate =~ /^magick:/i) || ($candidate =~ /:$/) )
+		{
+			$input_file = $candidate;
+
+			splice(@options, 1, 1);
+		}
+	}
+
+	$$result{input_file}	= $input_file if (defined $input_file);
 	$$result{output_file}	= $output_file_name if (length $output_file_name);
 	$$result{options}		= [@options];
 
@@ -384,7 +426,7 @@ sub run
 		$self -> log(debug => 'Parse is unambiguous');
 		$self -> recce -> value($cache);
 		$self -> _process_unambiguous($cache, $command[1]);
-		$self -> report($cache);
+		$self -> report($cache) if ($self -> print_report);
 		$self -> log(info => "Result: \n" . Dumper($self -> result) );
 	}
 	else
@@ -412,31 +454,59 @@ C<Image::Magick::CommandParser> - Parse any command line used by ImageMagick
 
 =head1 Synopsis
 
-See L<Tree::Cladogram/Synopsis>.
 
 =head1 Description
 
-See L<Tree::Cladogram/Description>.
 
 =head1 Distributions
 
-See L<Tree::Cladogram/Distributions>.
 
 =head1 Constructor and Initialization
 
-See L<Tree::Cladogram/Constructor and Initialization>.
 
 =head1 Methods
 
-See L<Tree::Cladogram/Methods>.
 
 =head1 FAQ
 
-See L<Tree::Cladogram/FAQ>.
+=head1 Troubleshooting
+
+=head2 I'm having problems with single- 'v' double-quotes on the command line
+
+When using something like -label "%m:%f %wx%h", you have to use double-quotes.
+
+As an experiment, I patched the code to allow single- or double- quotes, but it did not work.
+
+=head2 I'm having problems with the '-compose' option
+
+This module returns '-compose' as 2 separate element in the C<options> arrayref:
+
+	options =>
+	[
+		{
+			name => "action_set",
+			param =>
+			[
+				"-",
+				"compose"
+			]
+		},
+		{
+			name => "operator",
+			param =>
+			[
+				"Plus"
+			]
+		}
+	]
 
 =head1 See Also
 
-See L<Tree::Cladogram/See Also>.
+L<https://metacpan.org/pod/Image::Magick::Chart>
+
+L<https://metacpan.org/pod/Image::Magick::PolyText>
+
+L<https://metacpan.org/pod/Image::Magick::Tiler>
 
 =head1 Machine-Readable Change Log
 
@@ -448,23 +518,23 @@ Version numbers < 1.00 represent development versions. From 1.00 up, they are pr
 
 =head1 Repository
 
-L<https://github.com/ronsavage/Tree-Cladogram>
+L<https://github.com/ronsavage/Image-Magick-CommandParser>
 
 =head1 Support
 
 Email the author, or log a bug on RT:
 
-L<https://rt.cpan.org/Public/Dist/Display.html?Name=Tree::Cladogram>.
+L<https://rt.cpan.org/Public/Dist/Display.html?Name=Image::Magick::CommandParser>.
 
 =head1 Author
 
-L<Tree::Cladogram> was written by Ron Savage I<E<lt>ron@savage.net.auE<gt>> in 2015.
+L<Tree::Cladogram> was written by Ron Savage I<E<lt>ron@savage.net.auE<gt>> in 2016.
 
 My homepage: L<http://savage.net.au/>
 
 =head1 Copyright
 
-Australian copyright (c) 2015, Ron Savage.
+Australian copyright (c) 2016, Ron Savage.
 
 	All Programs of mine are 'OSI Certified Open Source Software';
 	you can redistribute them and/or modify them under the terms of
