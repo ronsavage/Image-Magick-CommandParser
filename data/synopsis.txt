@@ -18,4 +18,5 @@
 #convert magick:logo -label "%m:%f %wx%h" logo.png
 #convert magick:rose -label @t/info.txt -format "%l label" rose.png
 #convert -label @t/info.txt magick:rose -format "%l label" rose.png
-convert -background lightblue -fill blue -font DejaVu-Serif-Italic -pointsize 72 label:Marpa Marpa.png
+convert -background lightblue -fill blue -font FreeSerif -pointsize 72 -label Marpa Marpa.png
+#convert -background lightblue -fill blue -font DejaVu-Serif-Italic -pointsize 72 -label Marpa Marpa.png

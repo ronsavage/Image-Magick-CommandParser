@@ -48,16 +48,16 @@ sub action_set
 
 	$$cache{items} -> push
 	({
+		action	=> $name,
 		param	=> _decode_result(\@stash),
-		rule	=> $name,
 	});
 
 	for my $item (@operator)
 	{
 		$$cache{items} -> push
 		({
+			action	=> 'operator',
 			param	=> _decode_result(\@operator),
-			rule	=> 'operator',
 		});
 	}
 
@@ -76,8 +76,8 @@ sub close_parenthesis
 	$$cache{logger} -> log(debug => Dumper(@param) );
 	$$cache{items} -> push
 	({
+		action	=> $name,
 		param	=> [$param[0] ],
-		rule	=> $name,
 	});
 
 	return $param[0]; # We don't care what's returned!
@@ -95,8 +95,8 @@ sub command
 	$$cache{logger} -> log(debug => Dumper(@param) );
 	$$cache{items} -> push
 	({
+		action	=> $name,
 		param	=> _decode_result(\@param),
-		rule	=> $name,
 	});
 
 	return $param[0]; # We don't care what's returned!
@@ -146,8 +146,8 @@ sub input_file
 	$$cache{logger} -> log(debug => Dumper(@param) );
 	$$cache{items} -> push
 	({
-		param  => [$param[0] ],
-		rule    => $name,
+		action	=> $name,
+		param	=> [$param[0] ],
 	});
 
 	return $param[0]; # We don't care what's returned!
@@ -175,8 +175,8 @@ sub open_parenthesis
 	$$cache{logger} -> log(debug => Dumper(@param) );
 	$$cache{items} -> push
 	({
+		action	=> $name,
 		param	=> [$param[0] ],
-		rule	=> $name,
 	});
 
 	return $param[0]; # We don't care what's returned!
@@ -194,8 +194,8 @@ sub operator
 	$$cache{logger} -> log(debug => Dumper(@param) );
 	$$cache{items} -> push
 	({
+		action	=> $name,
 		param	=> [${$param[0]}[0] ],
-		rule	=> $name,
 	});
 
 	return $param[0]; # We don't care what's returned!
@@ -213,8 +213,8 @@ sub sign
 	$$cache{logger} -> log(debug => Dumper(@param) );
 	$$cache{items} -> push
 	({
+		action	=> $name,
 		param	=> [$param[0] ],
-		rule	=> $name,
 	});
 
 	return $param[0]; # We don't care what's returned!

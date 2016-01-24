@@ -40,7 +40,7 @@ my(@test) =
 		input_file => "logo:",
 		options => [
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 		  		"-",
 		  		"size",
@@ -59,7 +59,7 @@ my(@test) =
 		input_file => "logo:",
 		options => [
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 				"-",
 				"size",
@@ -67,7 +67,7 @@ my(@test) =
 				]
 				},
 				{
-				name => "action_set",
+				action => "action_set",
 				param => [
 				"-",
 				"shade",
@@ -86,7 +86,7 @@ my(@test) =
 		input_file => "logo:",
 		options => [
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"size",
@@ -94,13 +94,13 @@ my(@test) =
 				]
 			},
 			{
-				name => "operator",
+				action => "operator",
 				param => [
 					"canvas:none"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"shade",
@@ -119,7 +119,7 @@ my(@test) =
 		input_file => "logo:",
 		options => [
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"size",
@@ -127,26 +127,26 @@ my(@test) =
 				]
 			},
 			{
-				name => "open_parenthesis",
+				action => "open_parenthesis",
 				param => [
 					"("
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"+",
 					"clone"
 				]
 			},
 			{
-				name => "operator",
+				action => "operator",
 				param => [
 					"canvas:none"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"shade",
@@ -154,7 +154,7 @@ my(@test) =
 				]
 			},
 			{
-				name => "close_parenthesis",
+				action => "close_parenthesis",
 				param => [
 					")"
 				]
@@ -171,7 +171,7 @@ my(@test) =
 		input_file => "logo:",
 		options => [
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"size",
@@ -179,26 +179,26 @@ my(@test) =
 				]
 			},
 			{
-				name => "open_parenthesis",
+				action => "open_parenthesis",
 				param => [
 					"("
 				]
 			},
 			{
-				name => "operator",
+				action => "operator",
 				param => [
 					"canvas:none"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"+",
 					"clone"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"shade",
@@ -206,7 +206,7 @@ my(@test) =
 				]
 			},
 			{
-				name => "close_parenthesis",
+				action => "close_parenthesis",
 				param => [
 					")"
 				]
@@ -223,13 +223,13 @@ my(@test) =
 		input_file => "logo:",
 		options => [
 			{
-				name => "operator",
+				action => "operator",
 				param => [
 					"canvas:none"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"+",
 					"clone"
@@ -247,14 +247,14 @@ my(@test) =
 		input_file => "xc:",
 		options => [
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"gravity"
 				]
 			},
 			{
-				name => "operator",
+				action => "operator",
 				param => [
 					"East"
 				]
@@ -281,7 +281,7 @@ my(@test) =
 		input_file => "rose.jpg",
 		options => [
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"resize",
@@ -300,14 +300,14 @@ my(@test) =
 		input_file => "label.gif",
 		options => [
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"compose"
 				]
 			},
 			{
-				name => "operator",
+				action => "operator",
 				param => [
 					"Plus"
 				]
@@ -324,20 +324,20 @@ my(@test) =
 		input_file => "label.gif",
 		options => [
 			{
-				name => "open_parenthesis",
+				action => "open_parenthesis",
 				param => [
 					"("
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"+",
 					"clone"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"shade",
@@ -345,48 +345,48 @@ my(@test) =
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"normalize"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"negate"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"+",
 					"clone"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"compose"
 				]
 			},
 			{
-				name => "operator",
+				action => "operator",
 				param => [
 					"Plus"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"composite"
 				]
 			},
 			{
-				name => "close_parenthesis",
+				action => "close_parenthesis",
 				param => [
 					")"
 				]
@@ -403,20 +403,20 @@ my(@test) =
 		input_file => "label.gif",
 		options => [
 			{
-				name => "open_parenthesis",
+				action => "open_parenthesis",
 				param => [
 					"("
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"+",
 					"clone"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"shade",
@@ -424,60 +424,60 @@ my(@test) =
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"normalize"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"negate"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"+",
 					"clone"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"compose"
 				]
 			},
 			{
-				name => "operator",
+				action => "operator",
 				param => [
 					"Plus"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"composite"
 				]
 			},
 			{
-				name => "close_parenthesis",
+				action => "close_parenthesis",
 				param => [
 					")"
 				]
 			},
 			{
-				name => "open_parenthesis",
+				action => "open_parenthesis",
 				param => [
 					"("
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"clone",
@@ -485,7 +485,7 @@ my(@test) =
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"shade",
@@ -493,27 +493,27 @@ my(@test) =
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"normalize"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"channel"
 				]
 			},
 			{
-				name => "operator",
+				action => "operator",
 				param => [
 					"BG"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"fx",
@@ -521,27 +521,27 @@ my(@test) =
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"+",
 					"channel"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"matte"
 				]
 			},
 			{
-				name => "close_parenthesis",
+				action => "close_parenthesis",
 				param => [
 					")"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"delete",
@@ -549,27 +549,27 @@ my(@test) =
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"+",
 					"swap"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"compose"
 				]
 			},
 			{
-				name => "operator",
+				action => "operator",
 				param => [
 					"Multiply"
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"composite"
@@ -587,20 +587,20 @@ my(@test) =
 		input_file => "magick:logo",
 		options => [
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"label"
 				]
 			},
 			{
-				name => "operator",
+				action => "operator",
 				param => [
 					"%m:%f"
 				]
 			},
 			{
-				name => "operator",
+				action => "operator",
 				param => [
 					"%wx%h"
 				]
@@ -617,7 +617,7 @@ my(@test) =
 		input_file => "magick:rose",
 		options => [
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"label",
@@ -625,20 +625,20 @@ my(@test) =
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"format"
 				]
 			},
 			{
-				name => "operator",
+				action => "operator",
 				param => [
 					"%l"
 				]
 			},
 			{
-				name => "operator",
+				action => "operator",
 				param => [
 					"label"
 				]
@@ -655,7 +655,7 @@ my(@test) =
 		input_file => "magick:rose",
 		options => [
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"label",
@@ -663,20 +663,20 @@ my(@test) =
 				]
 			},
 			{
-				name => "action_set",
+				action => "action_set",
 				param => [
 					"-",
 					"format"
 				]
 			},
 			{
-				name => "operator",
+				action => "operator",
 				param => [
 					"%l"
 				]
 			},
 			{
-				name => "operator",
+				action => "operator",
 				param => [
 					"label"
 				]

@@ -103,7 +103,7 @@ our $VERSION = '1.00';
 sub BUILD
 {
 	my($self)			= @_;
-	my($list_option)	= get_data_section('list.options');
+	my($list_option)	= get_data_section('list_options');
 
 	my(%list_option);
 
@@ -114,7 +114,7 @@ sub BUILD
 
 	$self -> list_option({%list_option});
 
-	#my($bnf)	= get_data_section('image.magick.bnf');
+	#my($bnf)	= get_data_section('image_magick_bnf');
 	my($bnf)	= join("\n", read_lines('data/command.line.options.bnf') );
 
 	$self -> grammar
@@ -163,7 +163,7 @@ sub _init
 	$command				=~ s/^\s+//;
 	$command				=~ s/\s+$//;
 	my($output_file_name)	= '';
-	my($image_regexp)		= '^.+\s+(.+?\.(?:' . join('|', split/\n/, get_data_section('image.formats') ) . '))$';
+	my($image_regexp)		= '^.+\s+(.+?\.(?:' . join('|', split/\n/, get_data_section('image_formats') ) . '))$';
 	$image_regexp			= qr/$image_regexp/;
 
 	if ($command =~ $image_regexp)
@@ -250,20 +250,22 @@ sub _process_unambiguous
 		options		=> [],
 	};
 
+	my($action);
 	my($input_file);
 	my(@options, @operator, @offset);
-	my($param, @param);
+	my($param_0, @param);
 
 	for my $item ($$cache{items} -> print)
 	{
-		$param = defined($$item{param}[0]) ? $$item{param}[0] : '';
+		$param_0	= defined($$item{param}[0]) ? $$item{param}[0] : '';
+		$action		= $$item{action};
 
-		if ($$item{rule} eq 'action_set')
+		if ($action eq 'action_set')
 		{
 			@operator	= ();
 			@param		= ();
 
-			for $param (@{$$item{param} })
+			for my $param (@{$$item{param} })
 			{
 				if ($param =~ /^[a-zA-Z][-a-zA-Z]+:/)
 				{
@@ -271,6 +273,8 @@ sub _process_unambiguous
 				}
 				elsif ( ($#param >= 0) && $$list_option{$param[$#param]})
 				{
+					$self -> log(debug => "Warning. Moving $param");
+
 					push @operator, $param;
 				}
 				else
@@ -283,7 +287,7 @@ sub _process_unambiguous
 			{
 				push @options,
 				{
-					name	=> $$item{rule},
+					action	=> $action,
 					param	=> [@param],
 				};
 			}
@@ -292,37 +296,37 @@ sub _process_unambiguous
 			{
 				push @options,
 				{
-					name	=> 'operator',
+					action	=> 'operator',
 					param	=> [@operator],
 				};
 			}
 		}
-		elsif ($$item{rule} eq 'command')
+		elsif ($action eq 'command')
 		{
-			$$result{command} = $param;
+			$$result{command} = $param_0;
 		}
-		elsif ($$item{rule} eq 'input_file')
+		elsif ($action eq 'input_file')
 		{
-			$$result{input_file} = $param;
+			$$result{input_file} = $param_0;
 		}
-		elsif ($$item{rule} eq 'operator')
+		elsif ($action eq 'operator')
 		{
 			push @options,
 			{
-				name	=> $$item{rule},
-				param	=> [$param],
+				action	=> $action,
+				param	=> [$param_0],
 			};
 
 			# Track the operators within the options, for post-processing just below.
 			# See comment below for details.
 
-			push @offset, $#options if ( ($param =~ /^\"%/) || ($param =~ /\"$/) );
+			push @offset, $#options if ( ($param_0 =~ /^\"%/) || ($param_0 =~ /\"$/) );
 		}
 		else
 		{
 			push @options,
 			{
-				name	=> $$item{rule},
+				action	=> $action,
 				param	=> $$item{param},
 			};
 		}
@@ -343,7 +347,7 @@ sub _process_unambiguous
 		}
 	}
 
-	if ( ($#options >= 1) && ($options[1]{name} eq 'operator') )
+	if ( ($#options >= 1) && ($options[1]{action} eq 'operator') )
 	{
 		my($candidate) = $options[1]{param}[0];
 
@@ -354,6 +358,12 @@ sub _process_unambiguous
 			splice(@options, 1, 1);
 		}
 	}
+
+	$self -> log(debug => 'd Reporting..................');
+
+	$$cache{options} = [@options];
+
+	$self -> report($cache);
 
 	$$result{input_file}	= $input_file if (defined $input_file);
 	$$result{output_file}	= $output_file_name if (length $output_file_name);
@@ -371,11 +381,11 @@ sub report
 	my($format)			= '%-20s  %-s';
 
 	$self -> log(debug => '-' x 50);
-	$self -> log(debug => sprintf($format, 'Rule', 'Params') );
+	$self -> log(debug => sprintf($format, 'Action', 'Params') );
 
-	for my $item ($$cache{items} -> print)
+	for my $item (@{$$cache{options} })
 	{
-		$self -> log(debug => sprintf($format, $$item{rule}, join(', ', @{$$item{param} }) ) );
+		$self -> log(debug => sprintf($format, $$item{action}, join(', ', @{$$item{param} }) ) );
 	}
 
 	$self -> log(debug => '-' x 50);
@@ -544,59 +554,7 @@ Australian copyright (c) 2016, Ron Savage.
 =cut
 
 __DATA__
-@@ image.magick.bnf
-:default				::= action => ::first
-
-#lexeme default			= latm => 1		# Longest Acceptable Token Match.
-
-# G1-level rules.
-
-:start					::= command_and_options
-
-command_and_options		::= command_name input_file_name rule_set
-
-command_name			::= 'convert'					action => command
-							| 'mogrify'					action => command
-
-input_file_name			::= string						action => input_file
-input_file_name			::=								action => input_file
-
-rule_set				::= rule*
-
-rule					::= action_set
-							| open_parenthesis
-							| close_parenthesis
-
-action_set				::= sign string parameter_set	action => action_set
-
-sign					::= minus_sign					action => sign
-							| plus_sign
-
-parameter_set			::= string+
-
-close_parenthesis		::= close_paren					action => close_parenthesis
-
-open_parenthesis		::= open_paren					action => open_parenthesis
-
-# L0-level rules (lexemes) in alphabetical order.
-
-close_paren				~ ')'
-
-open_paren				~ '('
-
-minus_sign				~ '-'
-
-plus_sign				~ '+'
-
-string					~ string_char+
-string_char				~ [^-+\(\)]
-
-# L0 lexemes for the boilerplate.
-
-:discard				~ whitespace
-whitespace				~ [\s]+
-
-@@ image.formats
+@@ image_formats
 3fr
 a
 aai
@@ -819,7 +777,59 @@ ycbcr
 ycbcra
 yuv
 
-@@ list.options
+@@ image_magick_bnf
+:default				::= action => ::first
+
+#lexeme default			= latm => 1		# Longest Acceptable Token Match.
+
+# G1-level rules.
+
+:start					::= command_and_options
+
+command_and_options		::= command_name input_file_name rule_set
+
+command_name			::= 'convert'					action => command
+							| 'mogrify'					action => command
+
+input_file_name			::= string						action => input_file
+input_file_name			::=								action => input_file
+
+rule_set				::= rule*
+
+rule					::= action_set
+							| open_parenthesis
+							| close_parenthesis
+
+action_set				::= sign string parameter_set	action => action_set
+
+sign					::= minus_sign					action => sign
+							| plus_sign
+
+parameter_set			::= string+
+
+close_parenthesis		::= close_paren					action => close_parenthesis
+
+open_parenthesis		::= open_paren					action => open_parenthesis
+
+# L0-level rules (lexemes) in alphabetical order.
+
+close_paren				~ ')'
+
+open_paren				~ '('
+
+minus_sign				~ '-'
+
+plus_sign				~ '+'
+
+string					~ string_char+
+string_char				~ [^-+\(\)]
+
+# L0 lexemes for the boilerplate.
+
+:discard				~ whitespace
+whitespace				~ [\s]+
+
+@@ list_options
 Align
 Alpha
 Boolean
