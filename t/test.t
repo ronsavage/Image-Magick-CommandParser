@@ -39,14 +39,14 @@ my(@test) =
 		command => "convert",
 		input_file => "logo:",
 		options => [
-		{
-			name => "action_set",
-			param => [
-	  		"-",
-	  		"size",
-	  		"320x85"
-	  		]
-		}
+			{
+				name => "action_set",
+				param => [
+		  		"-",
+		  		"size",
+		  		"320x85"
+		  		]
+			}
 		],
 		output_file => "output.png"
 	}
@@ -59,20 +59,20 @@ my(@test) =
 		input_file => "logo:",
 		options => [
 			{
-			name => "action_set",
-			param => [
-			"-",
-			"size",
-			"320x85"
-			]
-			},
-			{
-			name => "action_set",
-			param => [
-			"-",
-			"shade",
-			"110x90"
-			]
+				name => "action_set",
+				param => [
+				"-",
+				"size",
+				"320x85"
+				]
+				},
+				{
+				name => "action_set",
+				param => [
+				"-",
+				"shade",
+				"110x90"
+				]
 			}
 		],
 		output_file => "output.png"
@@ -262,6 +262,322 @@ my(@test) =
 		],
 		output_file => "output.png"
 		}
+},
+{
+	input	=> 'convert rose.jpg rose.png',
+	expect	=>
+	{
+		command => "convert",
+		input_file => "rose.jpg",
+		options => [],
+		output_file => "rose.png"
+	}
+},
+{
+	input	=> 'convert rose.jpg -resize 50% rose.png',
+	expect	=>
+	{
+		command => "convert",
+		input_file => "rose.jpg",
+		options => [
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"resize",
+					"50%"
+				]
+			}
+		],
+		output_file => "rose.png"
+	}
+},
+{
+	input	=> 'convert label.gif -compose Plus button.gif',
+	expect	=>
+	{
+		command => "convert",
+		input_file => "label.gif",
+		options => [
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"compose"
+				]
+			},
+			{
+				name => "operator",
+				param => [
+					"Plus"
+				]
+			}
+		],
+		output_file => "button.gif"
+	}
+},
+{
+	input	=> 'convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) button.gif',
+	expect	=>
+	{
+		command => "convert",
+		input_file => "label.gif",
+		options => [
+			{
+				name => "open_parenthesis",
+				param => [
+					"("
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"+",
+					"clone"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"shade",
+					"110x90"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"normalize"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"negate"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"+",
+					"clone"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"compose"
+				]
+			},
+			{
+				name => "operator",
+				param => [
+					"Plus"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"composite"
+				]
+			},
+			{
+				name => "close_parenthesis",
+				param => [
+					")"
+				]
+			}
+		],
+		output_file => "button.gif"
+	}
+},
+{
+	input	=> 'convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) ( -clone 0 -shade 110x50 -normalize -channel BG -fx 0 +channel -matte ) -delete 0 +swap -compose Multiply -composite button.gif',
+	expect	=>
+	{
+		command => "convert",
+		input_file => "label.gif",
+		options => [
+			{
+				name => "open_parenthesis",
+				param => [
+					"("
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"+",
+					"clone"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"shade",
+					"110x90"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"normalize"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"negate"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"+",
+					"clone"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"compose"
+				]
+			},
+			{
+				name => "operator",
+				param => [
+					"Plus"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"composite"
+				]
+			},
+			{
+				name => "close_parenthesis",
+				param => [
+					")"
+				]
+			},
+			{
+				name => "open_parenthesis",
+				param => [
+					"("
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"clone",
+					0
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"shade",
+					"110x50"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"normalize"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"channel"
+				]
+			},
+			{
+				name => "operator",
+				param => [
+					"BG"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"fx",
+					0
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"+",
+					"channel"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"matte"
+				]
+			},
+			{
+				name => "close_parenthesis",
+				param => [
+					")"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"delete",
+					0
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"+",
+					"swap"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"compose"
+				]
+			},
+			{
+				name => "operator",
+				param => [
+					"Multiply"
+				]
+			},
+			{
+				name => "action_set",
+				param => [
+					"-",
+					"composite"
+				]
+			}
+		],
+		output_file => "button.gif"
+	}
 },
 );
 my($parser)	= Image::Magick::CommandParser -> new;
