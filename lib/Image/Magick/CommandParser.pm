@@ -24,6 +24,14 @@ use Try::Tiny;
 
 use Types::Standard qw/Any Bool HashRef Str/;
 
+has action_with_parameters =>
+(
+	default  => sub{return {} },
+	is       => 'rw',
+	isa      => HashRef,
+	required => 0,
+);
+
 has command =>
 (
 	default  => sub{return ''},
@@ -102,8 +110,19 @@ our $VERSION = '1.00';
 
 sub BUILD
 {
-	my($self)			= @_;
-	my($list_option)	= get_data_section('list_options');
+	my($self)					= @_;
+	my($action_with_parameters)	= get_data_section('action_with_parameters');
+
+	my(%action_with_parameters);
+
+	for (split(/\n/, $action_with_parameters) )
+	{
+		$action_with_parameters{lc $_} = 1;
+	}
+
+	$self -> action_with_parameters({%action_with_parameters});
+
+	my($list_option) = get_data_section('list_options');
 
 	my(%list_option);
 
@@ -241,8 +260,9 @@ sub _process_ambiguous
 sub _process_unambiguous
 {
 	my($self, $cache, $output_file_name) = @_;
-	my($list_option)	= $self -> list_option;
-	my($result)			=
+	my($action_with_parameters)	= $self -> action_with_parameters;
+	my($list_option)			= $self -> list_option;
+	my($result)					=
 	{
 		command		=> '',
 		input_file	=> '',
@@ -250,12 +270,18 @@ sub _process_unambiguous
 		options		=> [],
 	};
 
+	# Firstly, we handle most cases.
+	# And the first step is to move the stack's items into an array
+	# so later we can more simply check for the end of the array.
+
+	my(@item) = $$cache{items} -> print;
+
 	my($action);
-	my($input_file);
-	my(@options, @operator, @offset);
+	my($item, $input_file);
+	my(@options, @operator);
 	my($param_0, @param);
 
-	for my $item ($$cache{items} -> print)
+	for $item (@item)
 	{
 		$param_0	= defined($$item{param}[0]) ? $$item{param}[0] : '';
 		$action		= $$item{action};
@@ -316,11 +342,6 @@ sub _process_unambiguous
 				action	=> $action,
 				param	=> [$param_0],
 			};
-
-			# Track the operators within the options, for post-processing just below.
-			# See comment below for details.
-
-			push @offset, $#options if ( ($param_0 =~ /^\"%/) || ($param_0 =~ /\"$/) );
 		}
 		else
 		{
@@ -332,42 +353,84 @@ sub _process_unambiguous
 		}
 	}
 
+	# Secondly, we look for actions which necessarily have options,
+	# such as '-gravity East'. These will have been parsed as
+	# '- gravity' and 'East'. So here we re-combine all of them,
+	# even if the above code split some of them.
+	# This is done because without it we have huge amounts of ambiguity.
+
+	my(@field);
+	my($next_action, $next_item);
+	my(@param_0, @param_1);
+
+	# Since we fiddle $i within the loop, we can't use 'for $i (0 .. $#item)',
+	# since in that case Perl will not adjust the # of times thru the loop.
+
+	for (my $i = 0; $i <= $#options; $i++)
+	{
+		$item		= $options[$i];
+		$action		= $$item{action};
+		@param_0	= @{$$item{param} };
+
+		if ( ($action ne 'action_set') || ($i == $#item) || ($#param_0 > 1) || ! $$action_with_parameters{$param_0[1]})
+		{
+			push @field, $item;
+
+			next;
+		}
+
+		$next_item		= $options[$i + 1];
+		$next_action	= $$next_item{action};
+		@param_1		= @{$$next_item{param} };
+
+		if ( ($next_action ne 'operator') || ($#param_1 != 0) )
+		{
+			push @field, $item;
+
+			next;
+		}
+
+		$$item{param} = [@param_0, $param_1[0]];
+
+		push @field, $item;
+
+		$i += 1;
+	}
+
 	# In the case of input like -label "%m:%f %wx%h",
-	# we end up with 2 operators, '"%m:%f' and '%wx%h"'.
+	# we end up with 1 parameter and 1 operator, '"%m:%f' and '%wx%h"'.
 	# Here we check for this special case and zap the 2 double-quotes,
 	# hoping we don't zap quotes serving some other purpose.
 
-	if ($#offset == 1)
+=pod
+
+	if ($#field == 1)
 	{
-		if ( (substr($options[$offset[0] ]{param}[0], 0, 2) eq '"%') &&
-			(substr($options[$offset[1] ]{param}[0], -1, 1) eq '"') )
+		if ( (substr($field[$offset[0] ]{param}[0], 0, 2) eq '"%') &&
+			(substr($field[$offset[1] ]{param}[0], -1, 1) eq '"') )
 		{
-			substr($options[$offset[0] ]{param}[0], 0, 2)	= '%';
-			substr($options[$offset[1] ]{param}[0], -1, 1)	= '';
+			substr($field[$offset[0] ]{param}[0], 0, 2)	= '%';
+			substr($field[$offset[1] ]{param}[0], -1, 1)	= '';
 		}
 	}
 
-	if ( ($#options >= 1) && ($options[1]{action} eq 'operator') )
+	if ( ($#field >= 1) && ($field[1]{action} eq 'operator') )
 	{
-		my($candidate) = $options[1]{param}[0];
+		my($candidate) = $field[1]{param}[0];
 
 		if ( ($candidate =~ /^magick:/i) || ($candidate =~ /:$/) )
 		{
 			$input_file = $candidate;
 
-			splice(@options, 1, 1);
+			splice(@field, 1, 1);
 		}
 	}
 
-	$self -> log(debug => 'd Reporting..................');
-
-	$$cache{options} = [@options];
-
-	$self -> report($cache);
+=cut
 
 	$$result{input_file}	= $input_file if (defined $input_file);
 	$$result{output_file}	= $output_file_name if (length $output_file_name);
-	$$result{options}		= [@options];
+	$$result{options}		= [@field];
 
 	$self -> result($result);
 
@@ -554,6 +617,16 @@ Australian copyright (c) 2016, Ron Savage.
 =cut
 
 __DATA__
+@@ action_with_parameters
+background
+compose
+compress
+fill
+font
+gravity
+label
+pointsize
+
 @@ image_formats
 3fr
 a

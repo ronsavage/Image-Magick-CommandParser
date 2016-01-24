@@ -250,15 +250,10 @@ my(@test) =
 				action => "action_set",
 				param => [
 					"-",
-					"gravity"
-				]
-			},
-			{
-				action => "operator",
-				param => [
+					"gravity",
 					"East"
 				]
-			}
+			},
 		],
 		output_file => "output.png"
 		}
@@ -303,15 +298,10 @@ my(@test) =
 				action => "action_set",
 				param => [
 					"-",
-					"compose"
-				]
-			},
-			{
-				action => "operator",
-				param => [
+					"compose",
 					"Plus"
 				]
-			}
+			},
 		],
 		output_file => "button.gif"
 	}
@@ -369,12 +359,7 @@ my(@test) =
 				action => "action_set",
 				param => [
 					"-",
-					"compose"
-				]
-			},
-			{
-				action => "operator",
-				param => [
+					"compose",
 					"Plus"
 				]
 			},
@@ -448,12 +433,7 @@ my(@test) =
 				action => "action_set",
 				param => [
 					"-",
-					"compose"
-				]
-			},
-			{
-				action => "operator",
-				param => [
+					"compose",
 					"Plus"
 				]
 			},
@@ -559,12 +539,7 @@ my(@test) =
 				action => "action_set",
 				param => [
 					"-",
-					"compose"
-				]
-			},
-			{
-				action => "operator",
-				param => [
+					"compose",
 					"Multiply"
 				]
 			},
@@ -590,12 +565,7 @@ my(@test) =
 				action => "action_set",
 				param => [
 					"-",
-					"label"
-				]
-			},
-			{
-				action => "operator",
-				param => [
+					"label",
 					"%m:%f"
 				]
 			},
