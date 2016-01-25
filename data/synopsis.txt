@@ -13,11 +13,11 @@
 #convert rose.jpg rose.png
 #convert rose.jpg -resize 50% rose.png
 #convert label.gif -compose Plus button.gif
-convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) button.gif
+#convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) button.gif
 #convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) ( -clone 0 -shade 110x50 -normalize -channel BG -fx 0 +channel -matte ) -delete 0 +swap -compose Multiply -composite button.gif
 #convert magick:logo -label "%m:%f %wx%h" logo.png
 #convert magick:logo -label "%m:%f %wx%h %n" logo.png
 #convert magick:rose -label @t/info.txt -format "%l label" rose.png
-#convert -label @t/info.txt magick:rose -format "%l label" rose.png
+convert -label @t/info.txt magick:rose -format "%l label" rose.png
 #convert -background lightblue -fill blue -font FreeSerif -pointsize 72 -label Marpa Marpa.png
 #convert -background lightblue -fill blue -font DejaVu-Serif-Italic -pointsize 72 -label Marpa Marpa.png

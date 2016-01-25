@@ -656,15 +656,13 @@ my(@test) =
 	}
 },
 );
-my($parser)	= Image::Magick::CommandParser -> new(maxlevel => 'debug');
+my($parser)	= Image::Magick::CommandParser -> new;
 
 my($got);
 my($result);
 
 for my $test (@test)
 {
-	next if ($$test{count} != 13);
-
 	$parser -> command($$test{input});
 
 	$result = $parser -> run;

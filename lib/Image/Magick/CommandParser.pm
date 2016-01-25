@@ -48,6 +48,14 @@ has command =>
 	required => 0,
 );
 
+has compose_parameters =>
+(
+	default  => sub{return {} },
+	is       => 'rw',
+	isa      => HashRef,
+	required => 0,
+);
+
 has grammar =>
 (
 	default  => sub{return ''},
@@ -138,6 +146,15 @@ sub BUILD
 	}
 
 	$self -> action_with_strings({%list});
+
+	$list = get_data_section('compose_parameters');
+
+	for (split(/\n/, $list) )
+	{
+		$list{lc $_} = 1;
+	}
+
+	$self -> compose_parameters({%list});
 
 	$list = get_data_section('list_options');
 
@@ -391,7 +408,7 @@ sub _process_unambiguous
 		$action		= $$item{action};
 		@param_0	= @{$$item{param} };
 
-		if ( ($action ne 'action_set') || ($i == $#item) || ($#param_0 > 1) || ! $$action_with_parameters{$param_0[1]})
+		if ( ($action ne 'action_set') || ($i == $#option) || ($#param_0 > 1) || ! $$action_with_parameters{$param_0[1]})
 		{
 			push @field, $item;
 
@@ -493,14 +510,57 @@ sub _process_unambiguous
 		} until $finished;
 	}
 
-	$$cache{options} = [@option];
+	# Lastly, we deal with options such as 'compose', which have parameters,
+	# but which also have a default, so they may appear without any parameter.
+
+	my($compose_parameters)	= $self -> compose_parameters;
+	@field					= ();
+
+	# Since we fiddle $i within the loop, we can't use 'for $i (0 .. $#item)',
+	# since in that case Perl will not adjust the # of times thru the loop.
+
+	for (my $i = 0; $i <= $#option; $i++)
+	{
+		$item		= $option[$i];
+		$action		= $$item{action};
+		@param_0	= @{$$item{param} };
+
+		if ( ($action ne 'action_set') || ($i == $#option) || ($#param_0 < 1) || ($param_0[1] ne 'compose') )
+		{
+			push @field, $item;
+
+			next;
+		}
+
+		$next_item		= $option[$i + 1];
+		$next_action	= $$next_item{action};
+		@param_1		= @{$$next_item{param} };
+		$param_0		= $param_1[0];
+
+		if ( ($next_action ne 'operator') || ($#param_1 != 0) || ! $$compose_parameters{lc $param_0})
+		{
+			push @field, $item;
+
+			next;
+		}
+
+		$$item{param} = [@param_0, $param_0];
+
+		push @field, $item;
+
+		# Having processed the next element, we fiddle $i so that the loop skips that element.
+
+		$i++;
+	}
+
+	$$cache{options} = [@field];
 
 	$self -> log(debug => '# Three');
 	$self -> report($cache);
 
 	$$result{input_file}	= $input_file if (defined $input_file);
 	$$result{output_file}	= $output_file_name if (length $output_file_name);
-	$$result{options}		= [@option];
+	$$result{options}		= [@field];
 
 	$self -> result($result);
 
@@ -699,6 +759,75 @@ pointsize
 @@ action_with_strings
 format
 label
+
+@@ compose_parameters
+Atop
+Blend
+Blur
+Bumpmap
+ChangeMask
+Clear
+ColorBurn
+ColorDodge
+Colorize
+CopyBlack
+CopyBlue
+CopyCyan
+CopyGreen
+Copy
+CopyMagenta
+CopyOpacity
+CopyRed
+CopyYellow
+Darken
+DarkenIntensity
+DivideDst
+DivideSrc
+Dst
+Difference
+Displace
+Dissolve
+Distort
+DstAtop
+DstIn
+DstOut
+DstOver
+Exclusion
+HardLight
+HardMix
+Hue
+In
+Lighten
+LightenIntensity
+LinearBurn
+LinearDodge
+LinearLight
+Luminize
+Mathematics
+MinusDst
+MinusSrc
+Modulate
+ModulusAdd
+ModulusSubtract
+Multiply
+None
+Out
+Overlay
+Over
+PegtopLight
+PinLight
+Plus
+Replace
+Saturate
+Screen
+SoftLight
+Src
+SrcAtop
+SrcIn
+SrcOut
+SrcOver
+VividLight
+Xor
 
 @@ image_formats
 3fr
