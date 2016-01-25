@@ -243,74 +243,21 @@ sub log
 
 # --------------------------------------------------
 
-sub _process_ambiguous
+sub _post_process_1
 {
-	my($self, $cache, $output_file_name) = @_;
-	my($count) = 0;
-
-	my($item);
-	my($param);
-	my(@stack);
-
-	while (my $value = $self -> recce -> value($cache) )
-	{
-		$self -> _process_unambiguous($cache, $output_file_name);
-
-		push @stack, $self -> result;
-
-		$self -> report($cache) if ($self -> print_report);
-
-		$$cache{items} = Set::Array -> new;
-	}
-
-	# Eliminate duplicates from @stack.
-
-	my(@result)		= shift @stack;
-	my($standard)	= Dumper($result[0]);
-
-	while (my $item = shift @stack)
-	{
-		if (Dumper($item) ne $standard)
-		{
-			push @result, $item;
-		}
-	}
-
-	if ($#result > 0)
-	{
-		$self -> log(info => "Ambiguous results: \n" . Dumper(@result) );
-
-		die "Error: Cannot handle some types of ambiguity\n";
-	}
-
-	$self -> result($result[0]);
-
-} # End of _process_ambiguous.
-
-# --------------------------------------------------
-
-sub _process_unambiguous
-{
-	my($self, $cache, $output_file_name) = @_;
-	my($list_option)	= $self -> list_option;
-	my($result)			=
-	{
-		command		=> '',
-		input_file	=> '',
-		output_file	=> '',
-		options		=> [],
-	};
+	my($self, $cache, $result) = @_;
 
 	# Firstly, we handle most cases.
 	# And the first step is to move the stack's items into an array
 	# so later we can more simply check for the end of the array.
 
-	my(@item) = $$cache{items} -> print;
+	my(@item)			= $$cache{items} -> print;
+	my($list_option)	= $self -> list_option;
 
 	my($action);
-	my($item, $input_file);
+	my($item);
 	my(@option, @operator);
-	my($param_0, @param);
+	my(@param_0, $param_0, @param_1, @param);
 
 	for $item (@item)
 	{
@@ -384,8 +331,16 @@ sub _process_unambiguous
 
 	$$cache{options} = [@option];
 
-	$self -> log(debug => '# One');
+	$self -> log(debug => '# _post_process_1');
 	$self -> report($cache);
+
+} # End of _post_process_1.
+
+# --------------------------------------------------
+
+sub _post_process_2
+{
+	my($self, $cache, $result) = @_;
 
 	# Secondly, we look for actions which necessarily have options,
 	# such as '-gravity East'. These will have been parsed as
@@ -394,10 +349,13 @@ sub _process_unambiguous
 	# This is done because without it we have huge amounts of ambiguity.
 
 	my($action_with_parameters)	= $self -> action_with_parameters;
+	my(@option)					= @{$$cache{options} };
 
+	my($action);
 	my(@field);
+	my($item);
 	my($next_action, $next_item);
-	my(@param_0, @param_1);
+	my(@param_0, $param_0, @param_1, @param);
 
 	# Since we fiddle $i within the loop, we can't use 'for $i (0 .. $#item)',
 	# since in that case Perl will not adjust the # of times thru the loop.
@@ -437,51 +395,55 @@ sub _process_unambiguous
 
 	$$cache{options} = [@field];
 
-	$self -> log(debug => '# Two');
+	$self -> log(debug => '# _post_process_2');
 	$self -> report($cache);
+
+} # End of _post_process_2.
+
+# --------------------------------------------------
+
+sub _post_process_3
+{
+	my($self, $cache, $result) = @_;
 
 	# There are some actions - format, label - which take strings as parameters,
 	# and these strings are split on whitespace, so now we scan the output so far looking for
 	# sequences of 'operator' actions, whose parameters are the bits and pieces of those strings.
 
 	my($action_with_strings)	= $self -> action_with_strings;
-	@option						= ();
+	my(@option)					= @{$$cache{options} };
 
-	my($finished);
+	my($action);
+	my(@field, $finished);
+	my($item);
+	my($next_action, $next_item);
+	my(@param_0, $param_0, @param_1, @param);
 	my(@string);
 
-	for (my $i = 0; $i <= $#field; $i++)
+	for (my $i = 0; $i <= $#option; $i++)
 	{
-		$item		= $field[$i];
+		$item		= $option[$i];
 		$action		= $$item{action};
 		@param_0	= @{$$item{param} };
 
-		if ( ($action ne 'action_set') || ($i == $#field) || ($#param_0 < 1) || ! $$action_with_strings{$param_0[1]})
+		if ( ($action ne 'action_set') || ($i == $#option) || ($#param_0 < 1) || ! $$action_with_strings{$param_0[1]})
 		{
-			push @option, $item;
-
-			next;
-		}
-
-		# We must beware cases like '-label @t/info.txt', which means '-label'
-		# is not followed by a string.
-
-		if ( ($#param_0 >= 2) && (substr($param_0[2], 0, 1) eq '@') )
-		{
-			push @option, $item;
+			push @field, $item;
 
 			next;
 		}
 
 		# So here we loop over all the operators which follow 'format' or 'label',
-		# concatenating the parameters util we find the one which ends with '"'.
+		# concatenating the parameters util we find the one which:
+		# o Starts with @.
+		# o Ends with '"'.
 
 		$finished	= 0;
 		@string		= defined($param_0[2]) ? $param_0[2] : (); # The first param after '-' + 'format' or 'label'.
 
 		do
 		{
-			$next_item		= $field[$i + 1];
+			$next_item		= $option[$i + 1];
 			$next_action	= $$next_item{action};
 			@param_1		= @{$$next_item{param} };
 
@@ -491,9 +453,9 @@ sub _process_unambiguous
 			}
 			else
 			{
-				push @string, $param_1[0];
+				push @string, shift @param_1;
 
-				$finished = 1 if ($param_1[0] =~ /\"$/); # The \ is for Ultraedit's syntax hiliter.
+				$finished = 1 if ($string[$#string] =~ /(@|\"$)/); # The \ is for Ultraedit's syntax hiliter.
 
 				if ($finished)
 				{
@@ -503,21 +465,40 @@ sub _process_unambiguous
 				}
 			}
 
-			push @option, $item if ($finished);
+			push @field, $item if ($finished);
 
 			$i++;
 
 		} until $finished;
 	}
 
-	# Lastly, we deal with options such as 'compose', which have parameters,
+	$$cache{options} = [@field];
+
+	$self -> log(debug => '# _post_process_3');
+	$self -> report($cache);
+
+} # End of _post_process_3.
+
+# --------------------------------------------------
+
+sub _post_process_4
+{
+	my($self, $cache, $result) = @_;
+
+	# Next, we deal with options such as 'compose', which have parameters,
 	# but which also have a default, so they may appear without any parameter.
 
 	my($compose_parameters)	= $self -> compose_parameters;
-	@field					= ();
+	my(@option)				= @{$$cache{options} };
 
 	# Since we fiddle $i within the loop, we can't use 'for $i (0 .. $#item)',
 	# since in that case Perl will not adjust the # of times thru the loop.
+
+	my($action);
+	my(@field);
+	my($item);
+	my($next_action, $next_item);
+	my(@param_0, $param_0, @param_1, @param);
 
 	for (my $i = 0; $i <= $#option; $i++)
 	{
@@ -555,12 +536,77 @@ sub _process_unambiguous
 
 	$$cache{options} = [@field];
 
-	$self -> log(debug => '# Three');
+	$self -> log(debug => '# _post_process_4');
 	$self -> report($cache);
 
-	$$result{input_file}	= $input_file if (defined $input_file);
-	$$result{output_file}	= $output_file_name if (length $output_file_name);
-	$$result{options}		= [@field];
+} # End of _post_process_4.
+
+# --------------------------------------------------
+
+sub _process_ambiguous
+{
+	my($self, $cache, $output_file_name) = @_;
+	my($count) = 0;
+
+	my($item);
+	my($param);
+	my(@stack);
+
+	while (my $value = $self -> recce -> value($cache) )
+	{
+		$self -> _process_unambiguous($cache, $output_file_name);
+
+		push @stack, $self -> result;
+
+		$self -> report($cache) if ($self -> print_report);
+
+		$$cache{items} = Set::Array -> new;
+	}
+
+	# Eliminate duplicates from @stack.
+
+	my(@result)		= shift @stack;
+	my($standard)	= Dumper($result[0]);
+
+	while (my $item = shift @stack)
+	{
+		if (Dumper($item) ne $standard)
+		{
+			push @result, $item;
+		}
+	}
+
+	if ($#result > 0)
+	{
+		$self -> log(info => "Ambiguous results: \n" . Dumper(@result) );
+
+		die "Error: Cannot handle some types of ambiguity\n";
+	}
+
+	$self -> result($result[0]);
+
+} # End of _process_ambiguous.
+
+# --------------------------------------------------
+
+sub _process_unambiguous
+{
+	my($self, $cache, $output_file_name) = @_;
+	my($result)			=
+	{
+		command		=> '',
+		input_file	=> '',
+		output_file	=> '',
+		options		=> [],
+	};
+
+	$self -> _post_process_1($cache, $result);
+	$self -> _post_process_2($cache, $result);
+	$self -> _post_process_3($cache, $result);
+	$self -> _post_process_4($cache, $result);
+
+	$$result{output_file}	= $$cache{output_file};
+	$$result{options}		= $$cache{options};
 
 	$self -> result($result);
 
@@ -591,7 +637,8 @@ sub run
 {
 	my($self, %options)	= @_;
 	my(@command)		= $self -> _init(%options);
-	my($message)		= $command[0] . (length($command[1]) ? " $command[1]" : '');
+	my($output_file)	= length($command[1]) ? $command[1] : '';
+	my($message)		= "$command[0] $output_file";
 
 	$self -> log(info => "Command: $message");
 
@@ -607,8 +654,9 @@ sub run
 	my($ambiguity_metric)	= $self -> recce -> ambiguity_metric;
 	my($cache)				=
 	{
-		items	=> Set::Array -> new,
-		logger	=> $self -> logger,
+		items		=> Set::Array -> new,
+		logger		=> $self -> logger,
+		output_file	=> $output_file,
 	};
 
 	if ($ambiguity_metric <= 0)
@@ -753,7 +801,6 @@ compress
 fill
 font
 gravity
-label
 pointsize
 
 @@ action_with_strings
