@@ -13,6 +13,7 @@ use Test::Stream -Classic;
 my(@test) =
 (
 {
+	count	=> 1,
 	input	=> 'convert logo:',
 	expect	=>
 	{
@@ -23,6 +24,7 @@ my(@test) =
 	}
 },
 {
+	count	=> 2,
 	input	=> 'convert logo: output.png',
 	expect	=>
 	{
@@ -33,6 +35,7 @@ my(@test) =
 	}
 },
 {
+	count	=> 3,
 	input	=> 'convert logo: -size 320x85 output.png',
 	expect	=>
 	{
@@ -52,6 +55,7 @@ my(@test) =
 	}
 },
 {
+	count	=> 4,
 	input	=> 'convert logo: -size 320x85 -shade 110x90 output.png',
 	expect	=>
 	{
@@ -79,6 +83,7 @@ my(@test) =
 	}
 },
 {
+	count	=> 5,
 	input	=> 'convert logo: -size 320x85 canvas:none -shade 110x90 output.png',
 	expect	=>
 	{
@@ -112,6 +117,7 @@ my(@test) =
 	}
 },
 {
+	count	=> 6,
 	input	=> 'convert logo: -size 320x85 ( +clone canvas:none -shade 110x90 ) output.png',
 	expect	=>
 	{
@@ -164,6 +170,7 @@ my(@test) =
 	}
 },
 {
+	count	=> 7,
 	input	=> 'convert logo: -size 320x85 ( canvas:none +clone -shade 110x90 ) output.png',
 	expect	=>
 	{
@@ -216,6 +223,7 @@ my(@test) =
 	}
 },
 {
+	count	=> 8,
 	input	=> 'convert logo: canvas:none +clone output.png',
 	expect	=>
 	{
@@ -240,6 +248,7 @@ my(@test) =
 	}
 },
 {
+	count	=> 9,
 	input	=> 'convert xc: -gravity East output.png',
 	expect	=>
 	{
@@ -259,6 +268,7 @@ my(@test) =
 		}
 },
 {
+	count	=> 10,
 	input	=> 'convert rose.jpg rose.png',
 	expect	=>
 	{
@@ -269,6 +279,7 @@ my(@test) =
 	}
 },
 {
+	count	=> 11,
 	input	=> 'convert rose.jpg -resize 50% rose.png',
 	expect	=>
 	{
@@ -288,6 +299,7 @@ my(@test) =
 	}
 },
 {
+	count	=> 12,
 	input	=> 'convert label.gif -compose Plus button.gif',
 	expect	=>
 	{
@@ -307,6 +319,7 @@ my(@test) =
 	}
 },
 {
+	count	=> 13,
 	input	=> 'convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) button.gif',
 	expect	=>
 	{
@@ -381,6 +394,7 @@ my(@test) =
 	}
 },
 {
+	count	=> 14,
 	input	=> 'convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) ( -clone 0 -shade 110x50 -normalize -channel BG -fx 0 +channel -matte ) -delete 0 +swap -compose Multiply -composite button.gif',
 	expect	=>
 	{
@@ -555,6 +569,7 @@ my(@test) =
 	}
 },
 {
+	count	=> 15,
 	input	=> 'convert magick:logo -label "%m:%f %wx%h" logo.png',
 	expect	=>
 	{
@@ -566,20 +581,15 @@ my(@test) =
 				param => [
 					"-",
 					"label",
-					"%m:%f"
+					"%m:%f %wx%h"
 				]
 			},
-			{
-				action => "operator",
-				param => [
-					"%wx%h"
-				]
-			}
 		],
 		output_file => "logo.png"
 	}
 },
 {
+	count	=> 16,
 	input	=> 'convert magick:rose -label @t/info.txt -format "%l label" rose.png',
 	expect	=>
 	{
@@ -598,26 +608,16 @@ my(@test) =
 				action => "action_set",
 				param => [
 					"-",
-					"format"
+					"format",
+					"%l label"
 				]
 			},
-			{
-				action => "operator",
-				param => [
-					"%l"
-				]
-			},
-			{
-				action => "operator",
-				param => [
-					"label"
-				]
-			}
 		],
 		output_file => "rose.png"
 	}
 },
 {
+	count	=> 17,
 	input	=> 'convert -label @t/info.txt magick:rose -format "%l label" rose.png',
 	expect	=>
 	{
@@ -656,15 +656,14 @@ my(@test) =
 	}
 },
 );
-my($parser)	= Image::Magick::CommandParser -> new;
-my($count)	= 0;
+my($parser)	= Image::Magick::CommandParser -> new(maxlevel => 'debug');
 
 my($got);
 my($result);
 
 for my $test (@test)
 {
-	$count++;
+	next if ($$test{count} != 13);
 
 	$parser -> command($$test{input});
 
@@ -678,7 +677,7 @@ for my $test (@test)
 	}
 	else
 	{
-		die "Test $count failed to return 0 from run()\n";
+		die "Test $$test{count} failed to return 0 from run()\n";
 	}
 }
 

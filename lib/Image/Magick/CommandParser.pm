@@ -32,6 +32,14 @@ has action_with_parameters =>
 	required => 0,
 );
 
+has action_with_strings =>
+(
+	default  => sub{return {} },
+	is       => 'rw',
+	isa      => HashRef,
+	required => 0,
+);
+
 has command =>
 (
 	default  => sub{return ''},
@@ -110,28 +118,35 @@ our $VERSION = '1.00';
 
 sub BUILD
 {
-	my($self)					= @_;
-	my($action_with_parameters)	= get_data_section('action_with_parameters');
+	my($self)	= @_;
+	my($list)	= get_data_section('action_with_parameters');
 
-	my(%action_with_parameters);
+	my(%list);
 
-	for (split(/\n/, $action_with_parameters) )
+	for (split(/\n/, $list) )
 	{
-		$action_with_parameters{lc $_} = 1;
+		$list{lc $_} = 1;
 	}
 
-	$self -> action_with_parameters({%action_with_parameters});
+	$self -> action_with_parameters({%list});
 
-	my($list_option) = get_data_section('list_options');
+	$list = get_data_section('action_with_strings');
 
-	my(%list_option);
-
-	for (split(/\n/, $list_option) )
+	for (split(/\n/, $list) )
 	{
-		$list_option{lc $_} = 1;
+		$list{lc $_} = 1;
 	}
 
-	$self -> list_option({%list_option});
+	$self -> action_with_strings({%list});
+
+	$list = get_data_section('list_options');
+
+	for (split(/\n/, $list) )
+	{
+		$list{lc $_} = 1;
+	}
+
+	$self -> list_option({%list});
 
 	#my($bnf)	= get_data_section('image_magick_bnf');
 	my($bnf)	= join("\n", read_lines('data/command.line.options.bnf') );
@@ -158,7 +173,7 @@ sub _init
 			grammar				=> $self -> grammar,
 			ranking_method		=> 'high_rule_only',
 			semantics_package	=> 'Image::Magick::CommandParser::Actions',
-			#trace_terminals		=> 99,
+			#trace_terminals	=> 99,
 		})
 	);
 
@@ -260,9 +275,8 @@ sub _process_ambiguous
 sub _process_unambiguous
 {
 	my($self, $cache, $output_file_name) = @_;
-	my($action_with_parameters)	= $self -> action_with_parameters;
-	my($list_option)			= $self -> list_option;
-	my($result)					=
+	my($list_option)	= $self -> list_option;
+	my($result)			=
 	{
 		command		=> '',
 		input_file	=> '',
@@ -278,7 +292,7 @@ sub _process_unambiguous
 
 	my($action);
 	my($item, $input_file);
-	my(@options, @operator);
+	my(@option, @operator);
 	my($param_0, @param);
 
 	for $item (@item)
@@ -299,8 +313,6 @@ sub _process_unambiguous
 				}
 				elsif ( ($#param >= 0) && $$list_option{$param[$#param]})
 				{
-					$self -> log(debug => "Warning. Moving $param");
-
 					push @operator, $param;
 				}
 				else
@@ -311,7 +323,7 @@ sub _process_unambiguous
 
 			if ($#param >= 0)
 			{
-				push @options,
+				push @option,
 				{
 					action	=> $action,
 					param	=> [@param],
@@ -320,7 +332,7 @@ sub _process_unambiguous
 
 			if ($#operator >= 0)
 			{
-				push @options,
+				push @option,
 				{
 					action	=> 'operator',
 					param	=> [@operator],
@@ -337,7 +349,7 @@ sub _process_unambiguous
 		}
 		elsif ($action eq 'operator')
 		{
-			push @options,
+			push @option,
 			{
 				action	=> $action,
 				param	=> [$param_0],
@@ -345,7 +357,7 @@ sub _process_unambiguous
 		}
 		else
 		{
-			push @options,
+			push @option,
 			{
 				action	=> $action,
 				param	=> $$item{param},
@@ -353,11 +365,18 @@ sub _process_unambiguous
 		}
 	}
 
+	$$cache{options} = [@option];
+
+	$self -> log(debug => '# One');
+	$self -> report($cache);
+
 	# Secondly, we look for actions which necessarily have options,
 	# such as '-gravity East'. These will have been parsed as
 	# '- gravity' and 'East'. So here we re-combine all of them,
 	# even if the above code split some of them.
 	# This is done because without it we have huge amounts of ambiguity.
+
+	my($action_with_parameters)	= $self -> action_with_parameters;
 
 	my(@field);
 	my($next_action, $next_item);
@@ -366,9 +385,9 @@ sub _process_unambiguous
 	# Since we fiddle $i within the loop, we can't use 'for $i (0 .. $#item)',
 	# since in that case Perl will not adjust the # of times thru the loop.
 
-	for (my $i = 0; $i <= $#options; $i++)
+	for (my $i = 0; $i <= $#option; $i++)
 	{
-		$item		= $options[$i];
+		$item		= $option[$i];
 		$action		= $$item{action};
 		@param_0	= @{$$item{param} };
 
@@ -379,7 +398,7 @@ sub _process_unambiguous
 			next;
 		}
 
-		$next_item		= $options[$i + 1];
+		$next_item		= $option[$i + 1];
 		$next_action	= $$next_item{action};
 		@param_1		= @{$$next_item{param} };
 
@@ -394,43 +413,94 @@ sub _process_unambiguous
 
 		push @field, $item;
 
-		$i += 1;
+		# Having processed the next element, we fiddle $i so that the loop skips that element.
+
+		$i++;
 	}
 
-	# In the case of input like -label "%m:%f %wx%h",
-	# we end up with 1 parameter and 1 operator, '"%m:%f' and '%wx%h"'.
-	# Here we check for this special case and zap the 2 double-quotes,
-	# hoping we don't zap quotes serving some other purpose.
+	$$cache{options} = [@field];
 
-=pod
+	$self -> log(debug => '# Two');
+	$self -> report($cache);
 
-	if ($#field == 1)
+	# There are some actions - format, label - which take strings as parameters,
+	# and these strings are split on whitespace, so now we scan the output so far looking for
+	# sequences of 'operator' actions, whose parameters are the bits and pieces of those strings.
+
+	my($action_with_strings)	= $self -> action_with_strings;
+	@option						= ();
+
+	my($finished);
+	my(@string);
+
+	for (my $i = 0; $i <= $#field; $i++)
 	{
-		if ( (substr($field[$offset[0] ]{param}[0], 0, 2) eq '"%') &&
-			(substr($field[$offset[1] ]{param}[0], -1, 1) eq '"') )
+		$item		= $field[$i];
+		$action		= $$item{action};
+		@param_0	= @{$$item{param} };
+
+		if ( ($action ne 'action_set') || ($i == $#field) || ($#param_0 < 1) || ! $$action_with_strings{$param_0[1]})
 		{
-			substr($field[$offset[0] ]{param}[0], 0, 2)	= '%';
-			substr($field[$offset[1] ]{param}[0], -1, 1)	= '';
+			push @option, $item;
+
+			next;
 		}
+
+		# We must beware cases like '-label @t/info.txt', which means '-label'
+		# is not followed by a string.
+
+		if ( ($#param_0 >= 2) && (substr($param_0[2], 0, 1) eq '@') )
+		{
+			push @option, $item;
+
+			next;
+		}
+
+		# So here we loop over all the operators which follow 'format' or 'label',
+		# concatenating the parameters util we find the one which ends with '"'.
+
+		$finished	= 0;
+		@string		= defined($param_0[2]) ? $param_0[2] : (); # The first param after '-' + 'format' or 'label'.
+
+		do
+		{
+			$next_item		= $field[$i + 1];
+			$next_action	= $$next_item{action};
+			@param_1		= @{$$next_item{param} };
+
+			if ( ($next_action ne 'operator') || ($#param_1 != 0) )
+			{
+				$finished = 1;
+			}
+			else
+			{
+				push @string, $param_1[0];
+
+				$finished = 1 if ($param_1[0] =~ /\"$/); # The \ is for Ultraedit's syntax hiliter.
+
+				if ($finished)
+				{
+					$string[0]			=~ s/^\"//; # The \ is for Ultraedit's syntax hiliter.
+					$string[$#string]	=~ s/\"$//; # The \ is for Ultraedit's syntax hiliter.
+					$$item{param}		= [@param_0[0 .. 1], join(' ', @string)];
+				}
+			}
+
+			push @option, $item if ($finished);
+
+			$i++;
+
+		} until $finished;
 	}
 
-	if ( ($#field >= 1) && ($field[1]{action} eq 'operator') )
-	{
-		my($candidate) = $field[1]{param}[0];
+	$$cache{options} = [@option];
 
-		if ( ($candidate =~ /^magick:/i) || ($candidate =~ /:$/) )
-		{
-			$input_file = $candidate;
-
-			splice(@field, 1, 1);
-		}
-	}
-
-=cut
+	$self -> log(debug => '# Three');
+	$self -> report($cache);
 
 	$$result{input_file}	= $input_file if (defined $input_file);
 	$$result{output_file}	= $output_file_name if (length $output_file_name);
-	$$result{options}		= [@field];
+	$$result{options}		= [@option];
 
 	$self -> result($result);
 
@@ -441,9 +511,9 @@ sub _process_unambiguous
 sub report
 {
 	my($self, $cache)	= @_;
-	my($format)			= '%-20s  %-s';
+	my($format)			= '# %-20s  %-s';
 
-	$self -> log(debug => '-' x 50);
+	$self -> log(debug => '# ' . ('-' x 50) );
 	$self -> log(debug => sprintf($format, 'Action', 'Params') );
 
 	for my $item (@{$$cache{options} })
@@ -451,7 +521,7 @@ sub report
 		$self -> log(debug => sprintf($format, $$item{action}, join(', ', @{$$item{param} }) ) );
 	}
 
-	$self -> log(debug => '-' x 50);
+	$self -> log(debug => '# ' . ('-' x 50) );
 
 } # End of report.
 
@@ -619,13 +689,16 @@ Australian copyright (c) 2016, Ron Savage.
 __DATA__
 @@ action_with_parameters
 background
-compose
 compress
 fill
 font
 gravity
 label
 pointsize
+
+@@ action_with_strings
+format
+label
 
 @@ image_formats
 3fr

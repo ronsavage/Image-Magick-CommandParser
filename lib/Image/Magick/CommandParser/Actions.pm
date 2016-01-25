@@ -61,7 +61,7 @@ sub action_set
 		});
 	}
 
-	return $param[0]; # We don't care what's returned!
+	return 1; # We don't care what's returned!
 
 } # End of action_set.
 
@@ -80,7 +80,7 @@ sub close_parenthesis
 		param	=> [$param[0] ],
 	});
 
-	return $param[0]; # We don't care what's returned!
+	return 1; # We don't care what's returned!
 
 } # End of close_parenthesis.
 
@@ -99,7 +99,7 @@ sub command
 		param	=> _decode_result(\@param),
 	});
 
-	return $param[0]; # We don't care what's returned!
+	return 1; # We don't care what's returned!
 
 } # End of command.
 
@@ -150,7 +150,7 @@ sub input_file
 		param	=> [$param[0] ],
 	});
 
-	return $param[0]; # We don't care what's returned!
+	return 1; # We don't care what's returned!
 
 } # End of input_file.
 
@@ -179,7 +179,7 @@ sub open_parenthesis
 		param	=> [$param[0] ],
 	});
 
-	return $param[0]; # We don't care what's returned!
+	return 1; # We don't care what's returned!
 
 } # End of open_parenthesis.
 
@@ -198,7 +198,7 @@ sub operator
 		param	=> [${$param[0]}[0] ],
 	});
 
-	return $param[0]; # We don't care what's returned!
+	return 1; # We don't care what's returned!
 
 } # End of operator.
 
@@ -217,7 +217,7 @@ sub sign
 		param	=> [$param[0] ],
 	});
 
-	return $param[0]; # We don't care what's returned!
+	return 1; # We don't care what's returned!
 
 } # End of sign.
 
