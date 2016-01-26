@@ -18,14 +18,6 @@ use Set::FA::Element;
 
 use Types::Standard qw/Any HashRef Str/;
 
-has image_formats =>
-(
-	default  => sub{return {} },
-	is       => 'rw',
-	isa      => HashRef,
-	required => 0,
-);
-
 has image_formats_regexp =>
 (
 	default  => sub{return ''},
@@ -94,20 +86,12 @@ sub BUILD
 
 	my($list) = get_data_section('image_formats');
 
-	my(%list);
-
-	for (split(/\n/, $list) )
-	{
-		$list{lc $_} = 1;
-	}
-
-	$self -> image_formats({%list});
-	$self -> image_formats_regexp(join('|', sort keys %list) );
+	$self -> image_formats_regexp(join('|', split(/\n/, $list) ) );
 
 } # End of BUILD.
 
 # ----------------------------------------------
-# Warning: action() a function, not a method.
+# Warning: this a function, not a method.
 
 sub action
 {
@@ -126,7 +110,26 @@ sub action
 } # End of action.
 
 # ----------------------------------------------
-# Warning: command() a function, not a method.
+# Warning: this a function, not a method.
+
+sub close_parenthesis
+{
+	my($dfa)	= @_;
+	my($name)	= 'close_parenthesis';
+	my($match)	= $dfa -> match;
+
+	$myself -> stack -> push
+	({
+		token	=> $match,
+		type	=> $name,
+	});
+
+	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
+
+} # End of close_parenthesis.
+
+# ----------------------------------------------
+# Warning: this a function, not a method.
 
 sub command
 {
@@ -145,7 +148,7 @@ sub command
 } # End of command.
 
 # ----------------------------------------------
-# Warning: done() a function, not a method.
+# Warning: this a function, not a method.
 
 sub done
 {
@@ -164,7 +167,7 @@ sub done
 } # End of done.
 
 # ----------------------------------------------
-# Warning: input_file() a function, not a method.
+# Warning: this a function, not a method.
 
 sub input_file
 {
@@ -193,7 +196,26 @@ sub log
 } # End of log.
 
 # ----------------------------------------------
-# Warning: output_file() a function, not a method.
+# Warning: this a function, not a method.
+
+sub open_parenthesis
+{
+	my($dfa)	= @_;
+	my($name)	= 'open_parenthesis';
+	my($match)	= $dfa -> match;
+
+	$myself -> stack -> push
+	({
+		token	=> $match,
+		type	=> $name,
+	});
+
+	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
+
+} # End of open_parenthesis.
+
+# ----------------------------------------------
+# Warning: this a function, not a method.
 
 sub output_file
 {
@@ -212,7 +234,7 @@ sub output_file
 } # End of output_file.
 
 # ----------------------------------------------
-# Warning: operator() a function, not a method.
+# Warning: this a function, not a method.
 
 sub operator
 {
@@ -231,7 +253,7 @@ sub operator
 } # End of operator.
 
 # ----------------------------------------------
-# Warning: parameter() a function, not a method.
+# Warning: this a function, not a method.
 
 sub parameter
 {
@@ -264,6 +286,10 @@ sub run
 			{
 				entry	=> \&action,
 			},
+			close_parenthesis =>
+			{
+				entry	=> \&close_parenthesis,
+			},
 			command =>
 			{
 				entry	=> \&command,
@@ -276,17 +302,25 @@ sub run
 			{
 				entry	=> \&input_file,
 			},
-			output_file =>
+			open_parenthesis =>
 			{
-				entry	=> \&output_file,
+				entry	=> \&open_parenthesis,
 			},
 			operator =>
 			{
 				entry	=> \&operator,
 			},
+			output_file =>
+			{
+				entry	=> \&output_file,
+			},
 			parameter =>
 			{
 				entry	=> \&parameter,
+			},
+			reaction =>
+			{
+				entry	=> \&action, # Sic.
 			},
 		},
 		die_on_loop	=> 1,
@@ -294,33 +328,62 @@ sub run
 		start		=> 'start',
 		transitions	=>
 		[
-			['start',		'convert|mogrify',					'command'],
+			['action',				'^$',								'done'],
+			['action',				'[-+][a-zA-Z]+',					'reaction'],
+			['action',				'\(',								'open_parenthesis'],
+			['action',				'\)',								'close_parenthesis'],
+			['action',				'\d+x\d+',							'parameter'],
+			['action',				'\d+%x\d+%',						'parameter'],
+			['action',				'\d+%',								'parameter'],
+			['action',				'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+			['action',				'[a-zA-Z][-a-zA-Z]+',				'parameter'],
 
-			['command',		'^$',								'done'],
-			['command',		'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]*',		'input_file'],
+			['command',				'^$',								'done'],
+			['command',				".+\.(?:$image_formats_regexp)",	'input_file'],
 
-			['input_file',	'^$',								'done'],
-			['input_file',	'[-+][a-zA-Z]+',					'action'],
-			['input_file',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
-			['input_file',	".+\.$image_formats_regexp",			'output_file'],
+			['done',				'^$',								'done'],
 
-			['action',		'^$',								'done'],
-			['action',		'\d+x\d+',							'parameter'],
-			['action',		'[a-zA-Z][-a-zA-Z]+',				'parameter'],
-			['action',		'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+			['input_file',			'^$',								'done'],
+			['input_file',			'[-+][a-zA-Z]+',					'action'],
+			['input_file',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+			['input_file',			".+\.(?:$image_formats_regexp)",	'output_file'],
 
-			['operator',	'^$',								'done'],
-			['operator',	'[-+][a-zA-Z]+',					'action'],
-			['operator',	".+\.$image_formats_regexp",			'output_file'],
+			['close_parenthesis',	'^$',								'done'],
+			['close_parenthesis',	'\(',								'open_parenthesis'],
+			['close_parenthesis',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+			['close_parenthesis',	'[-+][a-zA-Z]+',					'action'],
+			['close_parenthesis',	".+\.(?:$image_formats_regexp)",	'output_file'],
 
-			['parameter',	'^$',								'done'],
-			['parameter',	'[-+][a-zA-Z]+',					'action'],
-			['parameter',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
-			['parameter',	".+\.$image_formats_regexp",		'output_file'],
+			['open_parenthesis',	'^$',								'done'],
+			['open_parenthesis',	'\)',								'close_parenthesis'],
+			['open_parenthesis',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+			['open_parenthesis',	'[-+][a-zA-Z]+',					'action'],
+			['open_parenthesis',	".+\.(?:$image_formats_regexp)",	'output_file'],
 
-			['output_file',	'^$',								'done'],
+			['operator',			'^$',								'done'],
+			['operator',			'[-+][a-zA-Z]+',					'action'],
+			['operator',			".+\.(?:$image_formats_regexp)",	'output_file'],
 
-			['done',		'^$',								'done'],
+			['output_file',			'^$',								'done'],
+
+			['parameter',			'^$',								'done'],
+			['parameter',			'\(',								'open_parenthesis'],
+			['parameter',			'\)',								'close_parenthesis'],
+			['parameter',			'[-+][a-zA-Z]+',					'action'],
+			['parameter',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+			['parameter',			".+\.(?:$image_formats_regexp)",	'output_file'],
+
+			['reaction',			'^$',								'done'],
+			['reaction',			'[-+][a-zA-Z]+',					'action'],
+			['reaction',			'\(',								'open_parenthesis'],
+			['reaction',			'\)',								'close_parenthesis'],
+			['reaction',			'\d+x\d+',							'parameter'],
+			['reaction',			'\d+%x\d+%',						'parameter'],
+			['reaction',			'\d+%',								'parameter'],
+			['reaction',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+			['reaction',			'[a-zA-Z][-a-zA-Z]+',				'parameter'],
+
+			['start',				'convert|mogrify',					'command'],
 		],
 	);
 	my(@candidate) =
@@ -333,10 +396,11 @@ sub run
 		'convert logo: canvas:none +clone output.png', # 5.
 		'convert xc: -gravity East output.png', # 6.
 		'convert rose.jpg rose.png', # 7.
-	#	'convert rose.jpg -resize 50% rose.png', # 8.
-	#	'convert label.gif -compose Plus button.gif', # 9.
-	#	'convert logo: -size 320x85 ( +clone canvas:none -shade 110x90 ) output.png', # 10.
-	#	'convert logo: -size 320x85 ( canvas:none +clone -shade 110x90 ) output.png', # 11.
+		'convert rose.jpg -resize 50% rose.png', # 8.
+		'convert rose.jpg -resize 60%x40% rose.png', # 9.
+		'convert label.gif -compose Plus button.gif', # 10.
+		'convert logo: -size 320x85 ( +clone canvas:none -shade 110x90 ) output.png', # 11.
+		'convert logo: -size 320x85 ( canvas:none +clone -shade 110x90 ) output.png', # 12.
 	);
 
 	my($count, $candidate);
@@ -344,7 +408,7 @@ sub run
 
 	for my $i (0 .. $#candidate)
 	{
-		next if ($i != 1);
+		next if ($i != 12);
 
 		$count		= 0;
 		$candidate	= $candidate[$i];
@@ -555,35 +619,35 @@ Xor
 
 @@ image_formats
 3fr
-a
 aai
 ai
 art
 arw
 avi
 avs
-b
-bgr
+a
 bgra
 bgro
-bmp
+bgr
 bmp2
 bmp3
+bmp
 brf
-c
-cal
+b
 cals
+cal
 canvas
 caption
 cin
 cip
 clip
-cmyk
 cmyka
+cmyk
 cr2
 crw
 cur
 cut
+c
 data
 dcm
 dcr
@@ -607,23 +671,23 @@ fax
 fits
 fractal
 fts
-g
 g3
 gif
 gif87
 gradient
 gray
 gv
+g
 h
 hald
 hdr
 histogram
 hrz
-htm
 html
+htm
 icb
-ico
 icon
+ico
 iiq
 info
 inline
