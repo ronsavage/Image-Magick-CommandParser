@@ -8,23 +8,17 @@ use warnings  qw(FATAL utf8);    # Fatalize encoding glitches.
 use Data::Dumper::Concise; # For Dumper();
 use Data::Section::Simple 'get_data_section';
 
-use File::Slurper 'read_lines';
-
-use Image::Magick::CommandParser::Actions;
-
 use Log::Handler;
-
-use Marpa::R2;
 
 use Moo;
 
 use Set::Array;
 
-use Try::Tiny;
+use Set::FA::Element;
 
-use Types::Standard qw/Any Bool HashRef Str/;
+use Types::Standard qw/Any HashRef Str/;
 
-has action_with_parameters =>
+has image_formats =>
 (
 	default  => sub{return {} },
 	is       => 'rw',
@@ -32,43 +26,11 @@ has action_with_parameters =>
 	required => 0,
 );
 
-has action_with_strings =>
-(
-	default  => sub{return {} },
-	is       => 'rw',
-	isa      => HashRef,
-	required => 0,
-);
-
-has command =>
+has image_formats_regexp =>
 (
 	default  => sub{return ''},
 	is       => 'rw',
-	isa      => Any,
-	required => 0,
-);
-
-has compose_parameters =>
-(
-	default  => sub{return {} },
-	is       => 'rw',
-	isa      => HashRef,
-	required => 0,
-);
-
-has grammar =>
-(
-	default  => sub{return ''},
-	is       => 'rw',
-	isa      => Any, # 'Marpa::R2::Scanless::G'.
-	required => 0,
-);
-
-has list_option =>
-(
-	default  => sub{return {} },
-	is       => 'rw',
-	isa      => HashRef,
+	isa      => Str,
 	required => 0,
 );
 
@@ -96,29 +58,15 @@ has minlevel =>
 	required => 0,
 );
 
-has print_report =>
+has stack =>
 (
-	default  => sub{return 0},
+	default  => sub{return Set::Array -> new},
 	is       => 'rw',
-	isa      => Bool,
+	isa      => Any,
 	required => 0,
 );
 
-has recce =>
-(
-	default  => sub{return ''},
-	is       => 'rw',
-	isa      => Any, # 'Marpa::R2::Scanless::R'.
-	required => 0,
-);
-
-has result =>
-(
-	default  => sub{return {} },
-	is       => 'rw',
-	isa      => HashRef,
-	required => 0,
-);
+my($myself); # For use inside functions.
 
 our $VERSION = '1.00';
 
@@ -127,7 +75,24 @@ our $VERSION = '1.00';
 sub BUILD
 {
 	my($self)	= @_;
-	my($list)	= get_data_section('action_with_parameters');
+	$myself		= $self;
+
+	if (! defined $self -> logger)
+	{
+		$self -> logger(Log::Handler -> new);
+		$self -> logger -> add
+		(
+			screen =>
+			{
+				maxlevel       => $self -> maxlevel,
+				message_layout => '%m',
+				minlevel       => $self -> minlevel,
+				utf8           => 1,
+			}
+		);
+	}
+
+	my($list) = get_data_section('image_formats');
 
 	my(%list);
 
@@ -136,100 +101,86 @@ sub BUILD
 		$list{lc $_} = 1;
 	}
 
-	$self -> action_with_parameters({%list});
-
-	$list = get_data_section('action_with_strings');
-
-	for (split(/\n/, $list) )
-	{
-		$list{lc $_} = 1;
-	}
-
-	$self -> action_with_strings({%list});
-
-	$list = get_data_section('compose_parameters');
-
-	for (split(/\n/, $list) )
-	{
-		$list{lc $_} = 1;
-	}
-
-	$self -> compose_parameters({%list});
-
-	$list = get_data_section('list_options');
-
-	for (split(/\n/, $list) )
-	{
-		$list{lc $_} = 1;
-	}
-
-	$self -> list_option({%list});
-
-	#my($bnf)	= get_data_section('image_magick_bnf');
-	my($bnf)	= join("\n", read_lines('data/command.line.options.bnf') );
-
-	$self -> grammar
-	(
-		Marpa::R2::Scanless::G -> new({source => \$bnf})
-	);
+	$self -> image_formats({%list});
+	$self -> image_formats_regexp(join('|', sort keys %list) );
 
 } # End of BUILD.
 
-# --------------------------------------------------
+# ----------------------------------------------
+# Warning: action() a function, not a method.
 
-sub _init
+sub action
 {
-	my($self, %options) = @_;
+	my($dfa)	= @_;
+	my($name)	= 'action';
+	my($match)	= $dfa -> match;
 
-	# Reset whatever so the object can be re-used.
+	$myself -> stack -> push
+	({
+		token	=> $match,
+		type	=> $name,
+	});
 
-	$self -> recce
-	(
-		Marpa::R2::Scanless::R -> new
-		({
-			grammar				=> $self -> grammar,
-			ranking_method		=> 'high_rule_only',
-			semantics_package	=> 'Image::Magick::CommandParser::Actions',
-			#trace_terminals	=> 99,
-		})
-	);
+	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
 
-	# Allow run(command => '...', minlevel => '...', maxlevel => '...').
+} # End of action.
 
-	$self -> logger(Log::Handler -> new);
-	$self -> logger -> add
-	(
-		screen =>
-		{
-			maxlevel       => $options{maxlevel} ? $options{maxlevel} : $self -> maxlevel,
-			message_layout => '%m',
-			minlevel       => $options{minlevel} ? $options{minlevel} : $self -> minlevel,
-			utf8           => 1,
-		}
-	);
+# ----------------------------------------------
+# Warning: command() a function, not a method.
 
-	# Strip off any output file name.
+sub command
+{
+	my($dfa)	= @_;
+	my($name)	= 'command';
+	my($match)	= $dfa -> match;
 
-	my($command)			= $options{command} ? $options{command} : $self -> command;
-	$command				=~ s/^\s+//;
-	$command				=~ s/\s+$//;
-	my($output_file_name)	= '';
-	my($image_regexp)		= '^.+\s+(.+?\.(?:' . join('|', split/\n/, get_data_section('image_formats') ) . '))$';
-	$image_regexp			= qr/$image_regexp/;
+	$myself -> stack -> push
+	({
+		token	=> $match,
+		type	=> $name,
+	});
 
-	if ($command =~ $image_regexp)
-	{
-		$output_file_name	= $1;
-		$command			= substr($command, 0, - length($output_file_name) - 1);
+	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
 
-		$self -> log(debug => "Output file: $output_file_name");
-	}
+} # End of command.
 
-	$self -> command($command);
+# ----------------------------------------------
+# Warning: done() a function, not a method.
 
-	return ($command, $output_file_name);
+sub done
+{
+	my($dfa)	= @_;
+	my($name)	= 'done';
+	my($match)	= $dfa -> match;
 
-} # End of _init.
+	$myself -> stack -> push
+	({
+		token	=> $match,
+		type	=> $name,
+	});
+
+	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
+
+} # End of done.
+
+# ----------------------------------------------
+# Warning: input_file() a function, not a method.
+
+sub input_file
+{
+	my($dfa)	= @_;
+	my($name)	= 'input_file';
+	my($match)	= $dfa -> match;
+
+	$myself -> stack -> push
+	({
+		token	=> $match,
+		type	=> $name,
+	});
+
+	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
+
+} # End of input_file.
 
 # --------------------------------------------------
 
@@ -241,451 +192,177 @@ sub log
 
 } # End of log.
 
-# --------------------------------------------------
+# ----------------------------------------------
+# Warning: output_file() a function, not a method.
 
-sub _post_process_1
+sub output_file
 {
-	my($self, $cache, $result) = @_;
+	my($dfa)	= @_;
+	my($name)	= 'output_file';
+	my($match)	= $dfa -> match;
 
-	# Firstly, we handle most cases.
-	# And the first step is to move the stack's items into an array
-	# so later we can more simply check for the end of the array.
+	$myself -> stack -> push
+	({
+		token	=> $match,
+		type	=> $name,
+	});
 
-	my(@item)			= $$cache{items} -> print;
-	my($list_option)	= $self -> list_option;
+	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
 
-	my($action);
-	my($item);
-	my(@option, @operator);
-	my(@param_0, $param_0, @param_1, @param);
+} # End of output_file.
 
-	for $item (@item)
-	{
-		$param_0	= defined($$item{param}[0]) ? $$item{param}[0] : '';
-		$action		= $$item{action};
+# ----------------------------------------------
+# Warning: operator() a function, not a method.
 
-		if ($action eq 'action_set')
-		{
-			@operator	= ();
-			@param		= ();
-
-			for my $param (@{$$item{param} })
-			{
-				if ($param =~ /^[a-zA-Z][-a-zA-Z]+:/)
-				{
-					push @operator, $param;
-				}
-				elsif ( ($#param >= 0) && $$list_option{$param[$#param]})
-				{
-					push @operator, $param;
-				}
-				else
-				{
-					push @param, $param;
-				}
-			}
-
-			if ($#param >= 0)
-			{
-				push @option,
-				{
-					action	=> $action,
-					param	=> [@param],
-				};
-			}
-
-			if ($#operator >= 0)
-			{
-				push @option,
-				{
-					action	=> 'operator',
-					param	=> [@operator],
-				};
-			}
-		}
-		elsif ($action eq 'command')
-		{
-			$$result{command} = $param_0;
-		}
-		elsif ($action eq 'input_file')
-		{
-			$$result{input_file} = $param_0;
-		}
-		elsif ($action eq 'operator')
-		{
-			push @option,
-			{
-				action	=> $action,
-				param	=> [$param_0],
-			};
-		}
-		else
-		{
-			push @option,
-			{
-				action	=> $action,
-				param	=> $$item{param},
-			};
-		}
-	}
-
-	$$cache{options} = [@option];
-
-	$self -> log(debug => '# _post_process_1');
-	$self -> report($cache);
-
-} # End of _post_process_1.
-
-# --------------------------------------------------
-
-sub _post_process_2
+sub operator
 {
-	my($self, $cache, $result) = @_;
+	my($dfa)	= @_;
+	my($name)	= 'operator';
+	my($match)	= $dfa -> match;
 
-	# Secondly, we look for actions which necessarily have options,
-	# such as '-gravity East'. These will have been parsed as
-	# '- gravity' and 'East'. So here we re-combine all of them,
-	# even if the above code split some of them.
-	# This is done because without it we have huge amounts of ambiguity.
+	$myself -> stack -> push
+	({
+		token	=> $match,
+		type	=> $name,
+	});
 
-	my($action_with_parameters)	= $self -> action_with_parameters;
-	my(@option)					= @{$$cache{options} };
+	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
 
-	my($action);
-	my(@field);
-	my($item);
-	my($next_action, $next_item);
-	my(@param_0, $param_0, @param_1, @param);
+} # End of operator.
 
-	# Since we fiddle $i within the loop, we can't use 'for $i (0 .. $#item)',
-	# since in that case Perl will not adjust the # of times thru the loop.
+# ----------------------------------------------
+# Warning: parameter() a function, not a method.
 
-	for (my $i = 0; $i <= $#option; $i++)
-	{
-		$item		= $option[$i];
-		$action		= $$item{action};
-		@param_0	= @{$$item{param} };
-
-		if ( ($action ne 'action_set') || ($i == $#option) || ($#param_0 > 1) || ! $$action_with_parameters{$param_0[1]})
-		{
-			push @field, $item;
-
-			next;
-		}
-
-		$next_item		= $option[$i + 1];
-		$next_action	= $$next_item{action};
-		@param_1		= @{$$next_item{param} };
-
-		if ( ($next_action ne 'operator') || ($#param_1 != 0) )
-		{
-			push @field, $item;
-
-			next;
-		}
-
-		$$item{param} = [@param_0, $param_1[0]];
-
-		push @field, $item;
-
-		# Having processed the next element, we fiddle $i so that the loop skips that element.
-
-		$i++;
-	}
-
-	$$cache{options} = [@field];
-
-	$self -> log(debug => '# _post_process_2');
-	$self -> report($cache);
-
-} # End of _post_process_2.
-
-# --------------------------------------------------
-
-sub _post_process_3
+sub parameter
 {
-	my($self, $cache, $result) = @_;
+	my($dfa)	= @_;
+	my($name)	= 'parameter';
+	my($match)	= $dfa -> match;
 
-	# There are some actions - format, label - which take strings as parameters,
-	# and these strings are split on whitespace, so now we scan the output so far looking for
-	# sequences of 'operator' actions, whose parameters are the bits and pieces of those strings.
+	$myself -> stack -> push
+	({
+		token	=> $match,
+		type	=> $name,
+	});
 
-	my($action_with_strings)	= $self -> action_with_strings;
-	my(@option)					= @{$$cache{options} };
+	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
 
-	my($action);
-	my(@field, $finished);
-	my($item);
-	my($next_action, $next_item);
-	my(@param_0, $param_0, @param_1, @param);
-	my(@string);
-
-	for (my $i = 0; $i <= $#option; $i++)
-	{
-		$item		= $option[$i];
-		$action		= $$item{action};
-		@param_0	= @{$$item{param} };
-
-		if ( ($action ne 'action_set') || ($i == $#option) || ($#param_0 < 1) || ! $$action_with_strings{$param_0[1]})
-		{
-			push @field, $item;
-
-			next;
-		}
-
-		# So here we loop over all the operators which follow 'format' or 'label',
-		# concatenating the parameters util we find the one which:
-		# o Starts with @.
-		# o Ends with '"'.
-
-		$finished	= 0;
-		@string		= defined($param_0[2]) ? $param_0[2] : (); # The first param after '-' + 'format' or 'label'.
-
-		do
-		{
-			$next_item		= $option[$i + 1];
-			$next_action	= $$next_item{action};
-			@param_1		= @{$$next_item{param} };
-
-			if ( ($next_action ne 'operator') || ($#param_1 != 0) )
-			{
-				$finished = 1;
-			}
-			else
-			{
-				push @string, shift @param_1;
-
-				$finished = 1 if ($string[$#string] =~ /(@|\"$)/); # The \ is for Ultraedit's syntax hiliter.
-
-				if ($finished)
-				{
-					$string[0]			=~ s/^\"//; # The \ is for Ultraedit's syntax hiliter.
-					$string[$#string]	=~ s/\"$//; # The \ is for Ultraedit's syntax hiliter.
-					$$item{param}		= [@param_0[0 .. 1], join(' ', @string)];
-				}
-			}
-
-			push @field, $item if ($finished);
-
-			$i++;
-
-		} until $finished;
-	}
-
-	$$cache{options} = [@field];
-
-	$self -> log(debug => '# _post_process_3');
-	$self -> report($cache);
-
-} # End of _post_process_3.
-
-# --------------------------------------------------
-
-sub _post_process_4
-{
-	my($self, $cache, $result) = @_;
-
-	# Next, we deal with options such as 'compose', which have parameters,
-	# but which also have a default, so they may appear without any parameter.
-
-	my($compose_parameters)	= $self -> compose_parameters;
-	my(@option)				= @{$$cache{options} };
-
-	# Since we fiddle $i within the loop, we can't use 'for $i (0 .. $#item)',
-	# since in that case Perl will not adjust the # of times thru the loop.
-
-	my($action);
-	my(@field);
-	my($item);
-	my($next_action, $next_item);
-	my(@param_0, $param_0, @param_1, @param);
-
-	for (my $i = 0; $i <= $#option; $i++)
-	{
-		$item		= $option[$i];
-		$action		= $$item{action};
-		@param_0	= @{$$item{param} };
-
-		if ( ($action ne 'action_set') || ($i == $#option) || ($#param_0 < 1) || ($param_0[1] ne 'compose') )
-		{
-			push @field, $item;
-
-			next;
-		}
-
-		$next_item		= $option[$i + 1];
-		$next_action	= $$next_item{action};
-		@param_1		= @{$$next_item{param} };
-		$param_0		= $param_1[0];
-
-		if ( ($next_action ne 'operator') || ($#param_1 != 0) || ! $$compose_parameters{lc $param_0})
-		{
-			push @field, $item;
-
-			next;
-		}
-
-		$$item{param} = [@param_0, $param_0];
-
-		push @field, $item;
-
-		# Having processed the next element, we fiddle $i so that the loop skips that element.
-
-		$i++;
-	}
-
-	$$cache{options} = [@field];
-
-	$self -> log(debug => '# _post_process_4');
-	$self -> report($cache);
-
-} # End of _post_process_4.
-
-# --------------------------------------------------
-
-sub _process_ambiguous
-{
-	my($self, $cache, $output_file_name) = @_;
-	my($count) = 0;
-
-	my($item);
-	my($param);
-	my(@stack);
-
-	while (my $value = $self -> recce -> value($cache) )
-	{
-		$self -> _process_unambiguous($cache, $output_file_name);
-
-		push @stack, $self -> result;
-
-		$self -> report($cache) if ($self -> print_report);
-
-		$$cache{items} = Set::Array -> new;
-	}
-
-	# Eliminate duplicates from @stack.
-
-	my(@result)		= shift @stack;
-	my($standard)	= Dumper($result[0]);
-
-	while (my $item = shift @stack)
-	{
-		if (Dumper($item) ne $standard)
-		{
-			push @result, $item;
-		}
-	}
-
-	if ($#result > 0)
-	{
-		$self -> log(info => "Ambiguous results: \n" . Dumper(@result) );
-
-		die "Error: Cannot handle some types of ambiguity\n";
-	}
-
-	$self -> result($result[0]);
-
-} # End of _process_ambiguous.
-
-# --------------------------------------------------
-
-sub _process_unambiguous
-{
-	my($self, $cache, $output_file_name) = @_;
-	my($result)			=
-	{
-		command		=> '',
-		input_file	=> '',
-		output_file	=> '',
-		options		=> [],
-	};
-
-	$self -> _post_process_1($cache, $result);
-	$self -> _post_process_2($cache, $result);
-	$self -> _post_process_3($cache, $result);
-	$self -> _post_process_4($cache, $result);
-
-	$$result{output_file}	= $$cache{output_file};
-	$$result{options}		= $$cache{options};
-
-	$self -> result($result);
-
-} # End of _process_unambiguous.
-
-# ------------------------------------------------
-
-sub report
-{
-	my($self, $cache)	= @_;
-	my($format)			= '# %-20s  %-s';
-
-	$self -> log(debug => '# ' . ('-' x 50) );
-	$self -> log(debug => sprintf($format, 'Action', 'Params') );
-
-	for my $item (@{$$cache{options} })
-	{
-		$self -> log(debug => sprintf($format, $$item{action}, join(', ', @{$$item{param} }) ) );
-	}
-
-	$self -> log(debug => '# ' . ('-' x 50) );
-
-} # End of report.
+} # End of parameter.
 
 # ------------------------------------------------
 
 sub run
 {
-	my($self, %options)	= @_;
-	my(@command)		= $self -> _init(%options);
-	my($output_file)	= length($command[1]) ? $command[1] : '';
-	my($message)		= "$command[0] $output_file";
+	my($self, %options)			= @_;
+	my($image_formats_regexp)	= $self -> image_formats_regexp;
+	my($dfa)					= Set::FA::Element -> new
+	(
+		accepting	=> ['done'],
+		actions		=>
+		{
+			action =>
+			{
+				entry	=> \&action,
+			},
+			command =>
+			{
+				entry	=> \&command,
+			},
+			done =>
+			{
+				entry	=> \&done,
+			},
+			input_file =>
+			{
+				entry	=> \&input_file,
+			},
+			output_file =>
+			{
+				entry	=> \&output_file,
+			},
+			operator =>
+			{
+				entry	=> \&operator,
+			},
+			parameter =>
+			{
+				entry	=> \&parameter,
+			},
+		},
+		die_on_loop	=> 1,
+		maxlevel	=> 'debug',
+		start		=> 'start',
+		transitions	=>
+		[
+			['start',		'convert|mogrify',					'command'],
 
-	$self -> log(info => "Command: $message");
+			['command',		'^$',								'done'],
+			['command',		'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]*',		'input_file'],
 
-	try
+			['input_file',	'^$',								'done'],
+			['input_file',	'[-+][a-zA-Z]+',					'action'],
+			['input_file',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+			['input_file',	".+\.$image_formats_regexp",			'output_file'],
+
+			['action',		'^$',								'done'],
+			['action',		'\d+x\d+',							'parameter'],
+			['action',		'[a-zA-Z][-a-zA-Z]+',				'parameter'],
+			['action',		'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+
+			['operator',	'^$',								'done'],
+			['operator',	'[-+][a-zA-Z]+',					'action'],
+			['operator',	".+\.$image_formats_regexp",			'output_file'],
+
+			['parameter',	'^$',								'done'],
+			['parameter',	'[-+][a-zA-Z]+',					'action'],
+			['parameter',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+			['parameter',	".+\.$image_formats_regexp",		'output_file'],
+
+			['output_file',	'^$',								'done'],
+
+			['done',		'^$',								'done'],
+		],
+	);
+	my(@candidate) =
+	(
+		'convert logo:', # 0.
+		'convert logo: output.png', # 1.
+		'convert logo: -size 320x85 output.png', # 2.
+		'convert logo: -size 320x85 -shade 110x90 output.png', # 3.
+		'convert logo: -size 320x85 canvas:none -shade 110x90 output.png', # 4.
+		'convert logo: canvas:none +clone output.png', # 5.
+		'convert xc: -gravity East output.png', # 6.
+		'convert rose.jpg rose.png', # 7.
+	#	'convert rose.jpg -resize 50% rose.png', # 8.
+	#	'convert label.gif -compose Plus button.gif', # 9.
+	#	'convert logo: -size 320x85 ( +clone canvas:none -shade 110x90 ) output.png', # 10.
+	#	'convert logo: -size 320x85 ( canvas:none +clone -shade 110x90 ) output.png', # 11.
+	);
+
+	my($count, $candidate);
+	my(@field);
+
+	for my $i (0 .. $#candidate)
 	{
-		$self -> recce -> read(\$command[0]);
+		next if ($i != 1);
+
+		$count		= 0;
+		$candidate	= $candidate[$i];
+		@field		= split(/\s+/, $candidate);
+
+		print "Processing input string: $candidate\n";
+
+		for my $field (@field)
+		{
+			print "Field: $field\n";
+
+			$dfa -> step($field);
+		}
 	}
-	catch
-	{
-		die "$_\n";
-	};
 
-	my($ambiguity_metric)	= $self -> recce -> ambiguity_metric;
-	my($cache)				=
-	{
-		items		=> Set::Array -> new,
-		logger		=> $self -> logger,
-		output_file	=> $output_file,
-	};
-
-	if ($ambiguity_metric <= 0)
-	{
-		my($line, $column)	= $self -> recce -> line_column();
-		my($whole_length)	= length $command[0];
-		my($suffix)			= substr($command[0], ($whole_length - 100) );
-		my($suffix_length)	= length $suffix;
-		my($s)				= $suffix_length == 1 ? 'char' : "$suffix_length chars";
-		my($message)		= "Call to ambiguity_metric() returned $ambiguity_metric (i.e. an error). \n"
-			. "Marpa exited at (line, column) = ($line, $column) within the input string. \n"
-			. "Input length: $whole_length. Last $s of input: '$suffix'";
-
-		$self -> log(error => "Error. Parse failed. $message");
-	}
-	elsif ($ambiguity_metric == 1)
-	{
-		$self -> log(debug => 'Parse is unambiguous');
-		$self -> recce -> value($cache);
-		$self -> _process_unambiguous($cache, $command[1]);
-		$self -> report($cache) if ($self -> print_report);
-		$self -> log(info => "Result: \n" . Dumper($self -> result) );
-	}
-	else
-	{
-		$self -> log(info => 'Warning: Parse is ambiguous');
-		$self -> _process_ambiguous($cache, $command[1]);
-		$self -> log(info => "Result: \n" . Dumper($self -> result) );
-	}
+	$self -> log(debug => 'At end, current state: ' . $dfa -> current);
+	$self -> log(debug => "Processed input string: $candidate");
+	$self -> log(debug => "token => $$_{token}. type => $$_{type}.") for $self -> stack -> print;
 
 	# Return 0 for success and 1 for failure.
 
@@ -1098,58 +775,6 @@ y
 ycbcr
 ycbcra
 yuv
-
-@@ image_magick_bnf
-:default				::= action => ::first
-
-#lexeme default			= latm => 1		# Longest Acceptable Token Match.
-
-# G1-level rules.
-
-:start					::= command_and_options
-
-command_and_options		::= command_name input_file_name rule_set
-
-command_name			::= 'convert'					action => command
-							| 'mogrify'					action => command
-
-input_file_name			::= string						action => input_file
-input_file_name			::=								action => input_file
-
-rule_set				::= rule*
-
-rule					::= action_set
-							| open_parenthesis
-							| close_parenthesis
-
-action_set				::= sign string parameter_set	action => action_set
-
-sign					::= minus_sign					action => sign
-							| plus_sign
-
-parameter_set			::= string+
-
-close_parenthesis		::= close_paren					action => close_parenthesis
-
-open_parenthesis		::= open_paren					action => open_parenthesis
-
-# L0-level rules (lexemes) in alphabetical order.
-
-close_paren				~ ')'
-
-open_paren				~ '('
-
-minus_sign				~ '-'
-
-plus_sign				~ '+'
-
-string					~ string_char+
-string_char				~ [^-+\(\)]
-
-# L0 lexemes for the boilerplate.
-
-:discard				~ whitespace
-whitespace				~ [\s]+
 
 @@ list_options
 Align

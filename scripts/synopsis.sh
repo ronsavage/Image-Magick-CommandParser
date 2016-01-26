@@ -1,3 +1,3 @@
 #!/bin/bash
 
-perl -Ilib scripts/synopsis.pl debug
+perl -Ilib scripts/synopsis.pl
