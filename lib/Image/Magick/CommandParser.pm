@@ -332,18 +332,24 @@ sub run
 			['action',				'[-+][a-zA-Z]+',					'reaction'],
 			['action',				'\(',								'open_parenthesis'],
 			['action',				'\)',								'close_parenthesis'],
-			['action',				'\d+x\d+',							'parameter'],
+			['action',				'[\"\'].*[\"\']',					'parameter'],
+			['action',				'\@.+',								'parameter'],
 			['action',				'\d+%x\d+%',						'parameter'],
 			['action',				'\d+%',								'parameter'],
-			['action',				'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+			['action',				'\d+x\d+',							'parameter'],
+			['action',				'\d+',								'parameter'],
 			['action',				'[a-zA-Z][-a-zA-Z]+',				'parameter'],
+			['action',				'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+			['action',				".+\.(?:$image_formats_regexp)",	'output_file'],
 
 			['command',				'^$',								'done'],
+			['command',				'[-+][a-zA-Z]+',					'action'],
 			['command',				".+\.(?:$image_formats_regexp)",	'input_file'],
 
 			['done',				'^$',								'done'],
 
 			['input_file',			'^$',								'done'],
+			['input_file',			'\(',								'open_parenthesis'],
 			['input_file',			'[-+][a-zA-Z]+',					'action'],
 			['input_file',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
 			['input_file',			".+\.(?:$image_formats_regexp)",	'output_file'],
@@ -401,18 +407,46 @@ sub run
 		'convert label.gif -compose Plus button.gif', # 10.
 		'convert logo: -size 320x85 ( +clone canvas:none -shade 110x90 ) output.png', # 11.
 		'convert logo: -size 320x85 ( canvas:none +clone -shade 110x90 ) output.png', # 12.
+		'convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) button.gif', # 13.
+		'convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) ( -clone 0 -shade 110x50 -normalize -channel BG -fx 0 +channel -matte ) -delete 0 +swap -compose Multiply -composite button.gif', # 14.
+		'convert -label @t/info.txt magick:rose -format "%l label" rose.png', # 15.
+		'convert -background lightblue -fill blue -font FreeSerif -pointsize 72 -label Marpa Marpa.png', # 16.
+		'convert -background lightblue -fill blue -font DejaVu-Serif-Italic -pointsize 72 -label Marpa Marpa.png', # 17.
+		'convert magick:logo -label "%m:%f %wx%h" logo.png', # 18.
+		"convert magick:logo -label '%m:%f %wx%h' logo.png", # 19.
+		'convert magick:logo -label "%m:%f %wx%h %n" logo.png', # 20.
+		"convert magick:logo -label '%m:%f %wx%h %n' logo.png", # 21.
 	);
 
 	my($count, $candidate);
-	my(@field);
+	my(@field, $finished);
+	my($limit);
+	my($quote);
 
 	for my $i (0 .. $#candidate)
 	{
-		next if ($i != 12);
+		next if ($i != 21);
 
-		$count		= 0;
 		$candidate	= $candidate[$i];
 		@field		= split(/\s+/, $candidate);
+		$limit		= $#field;
+
+		for (my $j = 0; $j < $limit; $j++)
+		{
+			next if (substr($field[$j], 0, 1) !~ /([\"\'])/); # The \ are for UltraEdit's syntax hiliter.
+
+			$quote	= $1;
+			my($k)	= $j;
+
+			while ( (++$k <= $limit) && ($field[$k] !~ /$quote$/) ) {};
+
+			if ($k <= $limit)
+			{
+				splice(@field, $j, $k - $j + 1, join(' ', @field[$j .. $k]) );
+
+				$limit -= $k - $j;
+			}
+		}
 
 		print "Processing input string: $candidate\n";
 
@@ -424,9 +458,11 @@ sub run
 		}
 	}
 
-	$self -> log(debug => 'At end, current state: ' . $dfa -> current);
-	$self -> log(debug => "Processed input string: $candidate");
-	$self -> log(debug => "token => $$_{token}. type => $$_{type}.") for $self -> stack -> print;
+	$count = 0;
+
+	$self -> log(info => 'At end, current state: ' . $dfa -> current);
+	$self -> log(info => "Processed input string: $candidate");
+	$self -> log(info => "@{[++$count]}: token => $$_{token}. type => $$_{type}.") for $self -> stack -> print;
 
 	# Return 0 for success and 1 for failure.
 
