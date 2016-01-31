@@ -9,8 +9,6 @@
 #convert logo: canvas:none +clone output.png
 #convert xc: -gravity East output.png
 #convert rose.jpg rose.png
-#convert rose.jpg -resize 50% rose.png
-#convert rose.jpg -resize 60%x40% rose.png
 #convert label.gif -compose Plus button.gif
 #convert logo: -size 320x85 ( +clone canvas:none -shade 110x90 ) output.png
 #convert logo: -size 320x85 ( canvas:none +clone -shade 110x90 ) output.png
@@ -21,3 +19,5 @@
 #convert magick:rose -label @t/info.txt -format "%l label" rose.png
 #convert magick:logo -label "%m:%f %wx%h" logo.png
 #convert magick:logo -label "%m:%f %wx%h %n" logo.png
+#convert rose.jpg -resize 50% rose.png
+#convert rose.jpg -resize 60%x40% rose.png

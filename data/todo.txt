@@ -1,0 +1,16 @@
+TODO
+====
+
+o Split things like geometry. So 500x600 => 500, 600.
+
+o Handle:
+- Globbing
+- Explicit image format
+- Built-in patterns
+- STDIN etc
+- Frames
+- Image regions
+- File name references such as @file.list.txt and image-%d.jpg[1-5]
+- Stream buffering
+- Output file name is optional
+- label:"Text" and text:-'[0]'

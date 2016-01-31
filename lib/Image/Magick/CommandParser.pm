@@ -18,6 +18,22 @@ use Set::FA::Element;
 
 use Types::Standard qw/Any HashRef Str/;
 
+has built_in_images =>
+(
+	default  => sub{return ''},
+	is       => 'rw',
+	isa      => Str,
+	required => 0,
+);
+
+has dfa =>
+(
+	default  => sub{return ''},
+	is       => 'rw',
+	isa      => Any,
+	required => 0,
+);
+
 has image_formats_regexp =>
 (
 	default  => sub{return ''},
@@ -84,9 +100,142 @@ sub BUILD
 		);
 	}
 
-	my($list) = get_data_section('image_formats');
+	my($list) = get_data_section('built_in_images');
+
+	$self -> built_in_images(join('|', split(/\n/, $list) ) );
+
+	my($built_in_images) = $self -> built_in_images;
+
+	# Warning: Do not sort these formats. Things like 'o' must come after all /o.+/.
+
+	$list = get_data_section('image_formats');
 
 	$self -> image_formats_regexp(join('|', split(/\n/, $list) ) );
+
+	my($image_formats_regexp) = $self -> image_formats_regexp;
+
+	$self -> dfa
+	(
+		Set::FA::Element -> new
+		(
+			accepting	=> ['done'],
+			actions		=>
+			{
+				action =>
+				{
+					entry	=> \&action,
+				},
+				close_parenthesis =>
+				{
+					entry	=> \&close_parenthesis,
+				},
+				command =>
+				{
+					entry	=> \&command,
+				},
+				done =>
+				{
+					entry	=> \&done,
+				},
+				input_file =>
+				{
+					entry	=> \&input_file,
+				},
+				open_parenthesis =>
+				{
+					entry	=> \&open_parenthesis,
+				},
+				operator =>
+				{
+					entry	=> \&operator,
+				},
+				output_file =>
+				{
+					entry	=> \&output_file,
+				},
+				parameter =>
+				{
+					entry	=> \&parameter,
+				},
+				reaction =>
+				{
+					entry	=> \&action, # Sic.
+				},
+			},
+			die_on_loop	=> 1,
+			maxlevel	=> $self -> maxlevel,
+			start		=> 'start',
+			transitions	=>
+			[
+				['action',				'^$',								'done'],
+				['action',				'[-+][a-zA-Z]+',					'reaction'],
+				['action',				'\(',								'open_parenthesis'],
+				['action',				'\)',								'close_parenthesis'],
+				['action',				'[\"\'].*[\"\']',					'parameter'],
+				['action',				'\@.+',								'parameter'],
+				['action',				'\d+\%x\d+\%',						'parameter'],
+				['action',				'(?:\d+x)?\d+%',					'parameter'],
+				['action',				'\d+x\d+',							'parameter'],
+				['action',				'\d+',								'parameter'],
+				['action',				"magick:(?:$built_in_images)",		'output_file'],
+				['action',				"(?:$built_in_images):",			'output_file'],
+				['action',				'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+				['action',				".+\.(?:$image_formats_regexp)",	'output_file'],
+				['action',				'[a-zA-Z][-a-zA-Z]+',				'parameter'],
+
+				['command',				'^$',								'done'],
+				['command',				'[-+][a-zA-Z]+',					'action'],
+				['command',				"magick:(?:$built_in_images)",		'input_file'],
+				['command',				"(?:$built_in_images):",			'input_file'],
+				['command',				".+\.(?:$image_formats_regexp)",	'input_file'],
+
+				['done',				'^$',								'done'],
+
+				['input_file',			'^$',								'done'],
+				['input_file',			'\(',								'open_parenthesis'],
+				['input_file',			'[-+][a-zA-Z]+',					'action'],
+				['input_file',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+				['input_file',			".+\.(?:$image_formats_regexp)",	'output_file'],
+
+				['close_parenthesis',	'^$',								'done'],
+				['close_parenthesis',	'\(',								'open_parenthesis'],
+				['close_parenthesis',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+				['close_parenthesis',	'[-+][a-zA-Z]+',					'action'],
+				['close_parenthesis',	".+\.(?:$image_formats_regexp)",	'output_file'],
+
+				['open_parenthesis',	'^$',								'done'],
+				['open_parenthesis',	'\)',								'close_parenthesis'],
+				['open_parenthesis',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+				['open_parenthesis',	'[-+][a-zA-Z]+',					'action'],
+				['open_parenthesis',	".+\.(?:$image_formats_regexp)",	'output_file'],
+
+				['operator',			'^$',								'done'],
+				['operator',			'[-+][a-zA-Z]+',					'action'],
+				['operator',			".+\.(?:$image_formats_regexp)",	'output_file'],
+
+				['output_file',			'^$',								'done'],
+
+				['parameter',			'^$',								'done'],
+				['parameter',			'\(',								'open_parenthesis'],
+				['parameter',			'\)',								'close_parenthesis'],
+				['parameter',			'[-+][a-zA-Z]+',					'action'],
+				['parameter',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+				['parameter',			".+\.(?:$image_formats_regexp)",	'output_file'],
+
+				['reaction',			'^$',								'done'],
+				['reaction',			'[-+][a-zA-Z]+',					'action'],
+				['reaction',			'\(',								'open_parenthesis'],
+				['reaction',			'\)',								'close_parenthesis'],
+				['reaction',			'\d+x\d+',							'parameter'],
+				['reaction',			'\d+%x\d+%',						'parameter'],
+				['reaction',			'\d+%',								'parameter'],
+				['reaction',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+				['reaction',			'[a-zA-Z][-a-zA-Z]+',				'parameter'],
+
+				['start',				'convert|mogrify',					'command'],
+			],
+		)
+	);
 
 } # End of BUILD.
 
@@ -273,196 +422,56 @@ sub parameter
 
 # ------------------------------------------------
 
+sub result
+{
+	my($self) = @_;
+
+	return join(' ', map{$$_{token} } $self -> stack -> print);
+
+} # End of result.
+
+# ------------------------------------------------
+
 sub run
 {
-	my($self, %options)			= @_;
-	my($image_formats_regexp)	= $self -> image_formats_regexp;
-	my($dfa)					= Set::FA::Element -> new
-	(
-		accepting	=> ['done'],
-		actions		=>
-		{
-			action =>
-			{
-				entry	=> \&action,
-			},
-			close_parenthesis =>
-			{
-				entry	=> \&close_parenthesis,
-			},
-			command =>
-			{
-				entry	=> \&command,
-			},
-			done =>
-			{
-				entry	=> \&done,
-			},
-			input_file =>
-			{
-				entry	=> \&input_file,
-			},
-			open_parenthesis =>
-			{
-				entry	=> \&open_parenthesis,
-			},
-			operator =>
-			{
-				entry	=> \&operator,
-			},
-			output_file =>
-			{
-				entry	=> \&output_file,
-			},
-			parameter =>
-			{
-				entry	=> \&parameter,
-			},
-			reaction =>
-			{
-				entry	=> \&action, # Sic.
-			},
-		},
-		die_on_loop	=> 1,
-		maxlevel	=> 'debug',
-		start		=> 'start',
-		transitions	=>
-		[
-			['action',				'^$',								'done'],
-			['action',				'[-+][a-zA-Z]+',					'reaction'],
-			['action',				'\(',								'open_parenthesis'],
-			['action',				'\)',								'close_parenthesis'],
-			['action',				'[\"\'].*[\"\']',					'parameter'],
-			['action',				'\@.+',								'parameter'],
-			['action',				'\d+%x\d+%',						'parameter'],
-			['action',				'\d+%',								'parameter'],
-			['action',				'\d+x\d+',							'parameter'],
-			['action',				'\d+',								'parameter'],
-			['action',				'[a-zA-Z][-a-zA-Z]+',				'parameter'],
-			['action',				'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
-			['action',				".+\.(?:$image_formats_regexp)",	'output_file'],
+	my($self, $candidate)	= @_;
+	my(@field)				= split(/\s+/, $candidate);
+	my($limit)				= $#field;
 
-			['command',				'^$',								'done'],
-			['command',				'[-+][a-zA-Z]+',					'action'],
-			['command',				".+\.(?:$image_formats_regexp)",	'input_file'],
+	$self -> log(debug => "# 1 Processing input string: <$candidate>");
 
-			['done',				'^$',								'done'],
+	# Reconstruct strings like 'a b' which have been split just above.
+	# This code does not handle escaped spaces.
 
-			['input_file',			'^$',								'done'],
-			['input_file',			'\(',								'open_parenthesis'],
-			['input_file',			'[-+][a-zA-Z]+',					'action'],
-			['input_file',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
-			['input_file',			".+\.(?:$image_formats_regexp)",	'output_file'],
-
-			['close_parenthesis',	'^$',								'done'],
-			['close_parenthesis',	'\(',								'open_parenthesis'],
-			['close_parenthesis',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
-			['close_parenthesis',	'[-+][a-zA-Z]+',					'action'],
-			['close_parenthesis',	".+\.(?:$image_formats_regexp)",	'output_file'],
-
-			['open_parenthesis',	'^$',								'done'],
-			['open_parenthesis',	'\)',								'close_parenthesis'],
-			['open_parenthesis',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
-			['open_parenthesis',	'[-+][a-zA-Z]+',					'action'],
-			['open_parenthesis',	".+\.(?:$image_formats_regexp)",	'output_file'],
-
-			['operator',			'^$',								'done'],
-			['operator',			'[-+][a-zA-Z]+',					'action'],
-			['operator',			".+\.(?:$image_formats_regexp)",	'output_file'],
-
-			['output_file',			'^$',								'done'],
-
-			['parameter',			'^$',								'done'],
-			['parameter',			'\(',								'open_parenthesis'],
-			['parameter',			'\)',								'close_parenthesis'],
-			['parameter',			'[-+][a-zA-Z]+',					'action'],
-			['parameter',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
-			['parameter',			".+\.(?:$image_formats_regexp)",	'output_file'],
-
-			['reaction',			'^$',								'done'],
-			['reaction',			'[-+][a-zA-Z]+',					'action'],
-			['reaction',			'\(',								'open_parenthesis'],
-			['reaction',			'\)',								'close_parenthesis'],
-			['reaction',			'\d+x\d+',							'parameter'],
-			['reaction',			'\d+%x\d+%',						'parameter'],
-			['reaction',			'\d+%',								'parameter'],
-			['reaction',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
-			['reaction',			'[a-zA-Z][-a-zA-Z]+',				'parameter'],
-
-			['start',				'convert|mogrify',					'command'],
-		],
-	);
-	my(@candidate) =
-	(
-		'convert logo:', # 0.
-		'convert logo: output.png', # 1.
-		'convert logo: -size 320x85 output.png', # 2.
-		'convert logo: -size 320x85 -shade 110x90 output.png', # 3.
-		'convert logo: -size 320x85 canvas:none -shade 110x90 output.png', # 4.
-		'convert logo: canvas:none +clone output.png', # 5.
-		'convert xc: -gravity East output.png', # 6.
-		'convert rose.jpg rose.png', # 7.
-		'convert rose.jpg -resize 50% rose.png', # 8.
-		'convert rose.jpg -resize 60%x40% rose.png', # 9.
-		'convert label.gif -compose Plus button.gif', # 10.
-		'convert logo: -size 320x85 ( +clone canvas:none -shade 110x90 ) output.png', # 11.
-		'convert logo: -size 320x85 ( canvas:none +clone -shade 110x90 ) output.png', # 12.
-		'convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) button.gif', # 13.
-		'convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) ( -clone 0 -shade 110x50 -normalize -channel BG -fx 0 +channel -matte ) -delete 0 +swap -compose Multiply -composite button.gif', # 14.
-		'convert -label @t/info.txt magick:rose -format "%l label" rose.png', # 15.
-		'convert -background lightblue -fill blue -font FreeSerif -pointsize 72 -label Marpa Marpa.png', # 16.
-		'convert -background lightblue -fill blue -font DejaVu-Serif-Italic -pointsize 72 -label Marpa Marpa.png', # 17.
-		'convert magick:logo -label "%m:%f %wx%h" logo.png', # 18.
-		"convert magick:logo -label '%m:%f %wx%h' logo.png", # 19.
-		'convert magick:logo -label "%m:%f %wx%h %n" logo.png', # 20.
-		"convert magick:logo -label '%m:%f %wx%h %n' logo.png", # 21.
-	);
-
-	my($count, $candidate);
-	my(@field, $finished);
-	my($limit);
+	my($finished);
 	my($quote);
 
-	for my $i (0 .. $#candidate)
+	for (my $j = 0; $j < $limit; $j++)
 	{
-		next if ($i != 21);
+		next if (substr($field[$j], 0, 1) !~ /([\"\'])/); # The \ are for UltraEdit's syntax hiliter.
 
-		$candidate	= $candidate[$i];
-		@field		= split(/\s+/, $candidate);
-		$limit		= $#field;
+		$quote	= $1;
+		my($k)	= $j;
 
-		for (my $j = 0; $j < $limit; $j++)
+		while ( (++$k <= $limit) && ($field[$k] !~ /$quote$/) ) {};
+
+		if ($k <= $limit)
 		{
-			next if (substr($field[$j], 0, 1) !~ /([\"\'])/); # The \ are for UltraEdit's syntax hiliter.
+			splice(@field, $j, $k - $j + 1, join(' ', @field[$j .. $k]) );
 
-			$quote	= $1;
-			my($k)	= $j;
-
-			while ( (++$k <= $limit) && ($field[$k] !~ /$quote$/) ) {};
-
-			if ($k <= $limit)
-			{
-				splice(@field, $j, $k - $j + 1, join(' ', @field[$j .. $k]) );
-
-				$limit -= $k - $j;
-			}
-		}
-
-		print "Processing input string: $candidate\n";
-
-		for my $field (@field)
-		{
-			print "Field: $field\n";
-
-			$dfa -> step($field);
+			$limit -= $k - $j;
 		}
 	}
 
-	$count = 0;
+	$self -> log(debug => "# 2 Processing input string: <$candidate>");
 
-	$self -> log(info => 'At end, current state: ' . $dfa -> current);
-	$self -> log(info => "Processed input string: $candidate");
-	$self -> log(info => "@{[++$count]}: token => $$_{token}. type => $$_{type}.") for $self -> stack -> print;
+	for my $field (@field)
+	{
+		$self -> dfa -> step($field);
+	}
+
+	$self -> log(info => '# At end, current state: ' . $self -> dfa -> current);
+	$self -> log(info => "# Processed input string: $candidate");
 
 	# Return 0 for success and 1 for failure.
 
@@ -583,6 +592,13 @@ pointsize
 @@ action_with_strings
 format
 label
+
+@@ built_in_images
+granite
+logo
+netscape
+rose
+wizard
 
 @@ compose_parameters
 Atop
@@ -732,8 +748,8 @@ isobrl
 isobrl6
 jng
 jnx
-jpe
 jpeg
+jpe
 jpg
 jps
 json
@@ -748,8 +764,8 @@ mac
 magick
 map
 mask
-mat
 matte
+mat
 mef
 miff
 mkv
@@ -768,24 +784,24 @@ mvg
 nef
 nrw
 null
-o
 orf
 otb
 otf
-pal
+o
 palm
+pal
 pam
 pango
 pattern
 pbm
-pcd
 pcds
+pcd
 pcl
 pct
 pcx
 pdb
-pdf
 pdfa
+pdf
 pef
 pes
 pfa
@@ -797,50 +813,50 @@ pict
 pix
 pjpeg
 plasma
-png
 png00
 png24
 png32
 png48
 png64
 png8
+png
 pnm
 ppm
 preview
-ps
 ps2
 ps3
 psb
 psd
+ps
 pwp
-r
 radial-gradient
 raf
 ras
 raw
-rgb
 rgba
 rgbo
+rgb
 rgf
 rla
 rle
 rmf
 rw2
-scr
+r
 screenshot
+scr
 sct
 sfw
 sgi
 shtml
-six
 sixel
+six
 sparse-color
 sr2
 srf
 stegano
 sun
-svg
 svgz
+svg
 text
 tga
 thumbnail
@@ -849,8 +865,8 @@ tim
 ttc
 ttf
 txt
-ubrl
 ubrl6
+ubrl
 uil
 uyvy
 vda
@@ -862,18 +878,18 @@ vst
 wbmp
 wmv
 wpg
-x
 x3f
 xbm
-xc
 xcf
+xc
 xpm
 xps
 xv
 xwd
+x
 y
-ycbcr
 ycbcra
+ycbcr
 yuv
 
 @@ list_options
