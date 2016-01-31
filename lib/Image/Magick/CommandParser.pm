@@ -225,6 +225,8 @@ sub BUILD
 				['command',				".+\\.(?:$image_formats)",				'input_file'],
 				['command',				'^-$',									'input_file'],
 				['command',				"(?:$image_formats):-",					'input_file'],
+				['command',				"(?:$image_formats):fd:\\d+",			'input_file'],
+				['command',				'fd:\\d+',								'input_file'],
 				['command',				'[-+][a-zA-Z]+',						'action'],
 
 				['done',				'^$',									'done'],

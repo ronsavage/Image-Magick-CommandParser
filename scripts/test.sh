@@ -43,3 +43,6 @@ perl -Ilib t/test.t 40
 perl -Ilib t/test.t 41
 perl -Ilib t/test.t 42
 perl -Ilib t/test.t 43
+perl -Ilib t/test.t 44
+perl -Ilib t/test.t 45
+perl -Ilib t/test.t 46 debug

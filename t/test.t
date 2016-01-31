@@ -184,6 +184,18 @@ my(@test) =
 	count	=> 43,
 	input	=> 'convert gif:- -size 320x85 output.png',
 },
+{
+	count	=> 44,
+	input	=> 'convert fd:3 -size 320x85 output.png',
+},
+{
+	count	=> 45,
+	input	=> 'convert gif:fd:3 -size 320x85 output.png',
+},
+{
+	count	=> 46,
+	input	=> 'convert fd:3 png:fd:4 gif:fd:5 fd:6 -append output.png',
+},
 );
 my($limit)		= shift;
 my($maxlevel)	= shift || 'notice';
