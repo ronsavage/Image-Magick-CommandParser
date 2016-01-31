@@ -1,16 +1,22 @@
 TODO
 ====
 
-o Split things like geometry. So 500x600 => 500, 600.
-
-o Handle:
+o Input file formats:
 - Globbing
-- Explicit image format
+- Explicit image format, e.g. rgb:file_name
 - Built-in patterns
 - STDIN etc
 - Frames
 - Image regions
-- File name references such as @file.list.txt and image-%d.jpg[1-5]
+- File name references such as image-%d.jpg[1-5]
 - Stream buffering
-- Output file name is optional
+- Output file name being optional
 - label:"Text" and text:-'[0]'
+
+o Expand contents of:
+- -label @t/info.txt.
+- File name references such as @file.list.txt
+
+o One day:
+- Split things like geometry. So 500x600 => 500, 600.
+

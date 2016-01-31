@@ -168,6 +168,22 @@ my(@test) =
 	count	=> 39,
 	input	=> 'convert logo: -size 320x85> output.png',
 },
+{
+	count	=> 40,
+	input	=> 'convert pattern:bricks -size 320x85 output.png',
+},
+{
+	count	=> 41,
+	input	=> 'convert rgb:camera.image -size 320x85 output.png',
+},
+{
+	count	=> 42,
+	input	=> 'convert - -size 320x85 output.png',
+},
+{
+	count	=> 43,
+	input	=> 'convert gif:- -size 320x85 output.png',
+},
 );
 my($limit)		= shift;
 my($maxlevel)	= shift || 'notice';

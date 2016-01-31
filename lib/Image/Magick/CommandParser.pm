@@ -66,6 +66,14 @@ has minlevel =>
 	required => 0,
 );
 
+has patterns =>
+(
+	default  => sub{return ''},
+	is       => 'rw',
+	isa      => Str,
+	required => 0,
+);
+
 has pseudo_image_formats =>
 (
 	default  => sub{return ''},
@@ -121,6 +129,12 @@ sub BUILD
 	$self -> image_formats(join('|', split(/\n/, $list) ) );
 
 	my($image_formats) = $self -> image_formats;
+
+	$list = get_data_section('patterns');
+
+	$self -> patterns(join('|', split(/\n/, $list) ) );
+
+	my($patterns) = $self -> patterns;
 
 	$list = get_data_section('pseudo_image_formats');
 
@@ -203,10 +217,14 @@ sub BUILD
 				['action',				'[a-zA-Z][-a-zA-Z]+',					'parameter'],
 
 				['command',				'^$',									'done'],
+				['command',				'rgb:(?:.+)',							'input_file'],
 				['command',				"magick:(?:$built_in_images)",			'input_file'],
 				['command',				"(?:$built_in_images):",				'input_file'],
+				['command',				"pattern:(?:$patterns)",				'input_file'],
 				['command',				"(?:$pseudo_image_formats):(?:.*)",		'input_file'],
 				['command',				".+\\.(?:$image_formats)",				'input_file'],
+				['command',				'^-$',									'input_file'],
+				['command',				"(?:$image_formats):-",					'input_file'],
 				['command',				'[-+][a-zA-Z]+',						'action'],
 
 				['done',				'^$',									'done'],
@@ -991,6 +1009,62 @@ Units
 Validate
 VirtualPixel
 Weight
+
+@@ patterns
+bricks
+checkerboard
+circles
+crosshatch
+crosshatch30
+crosshatch45
+fishscales
+gray0
+gray5
+gray10
+gray15
+gray20
+gray25
+gray30
+gray35
+gray40
+gray45
+gray50
+gray55
+gray60
+gray65
+gray70
+gray75
+gray80
+gray85
+gray90
+gray95
+gray100
+hexagons
+horizontal
+horizontal2
+horizontal3
+horizontalsaw
+hs_bdiagonal
+hs_cross
+hs_diagcross
+hs_fdiagonal
+hs_horizontal
+hs_vertical
+left30
+left45
+leftshingle
+octagons
+right30
+right45
+rightshingle
+smallfishscales
+vertical
+vertical2
+vertical3
+verticalbricks
+verticalleftshingle
+verticalrightshingle
+verticalsaw
 
 @@ pseudo_image_formats
 canvas

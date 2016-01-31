@@ -35,3 +35,11 @@ perl -Ilib t/test.t 32
 perl -Ilib t/test.t 33
 perl -Ilib t/test.t 34
 perl -Ilib t/test.t 35
+perl -Ilib t/test.t 36
+perl -Ilib t/test.t 37
+perl -Ilib t/test.t 38
+perl -Ilib t/test.t 39
+perl -Ilib t/test.t 40
+perl -Ilib t/test.t 41
+perl -Ilib t/test.t 42
+perl -Ilib t/test.t 43
