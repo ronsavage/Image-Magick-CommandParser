@@ -34,7 +34,7 @@ has dfa =>
 	required => 0,
 );
 
-has image_formats_regexp =>
+has image_formats =>
 (
 	default  => sub{return ''},
 	is       => 'rw',
@@ -61,6 +61,14 @@ has maxlevel =>
 has minlevel =>
 (
 	default  => sub{return 'error'},
+	is       => 'rw',
+	isa      => Str,
+	required => 0,
+);
+
+has pseudo_image_formats =>
+(
+	default  => sub{return ''},
 	is       => 'rw',
 	isa      => Str,
 	required => 0,
@@ -110,9 +118,15 @@ sub BUILD
 
 	$list = get_data_section('image_formats');
 
-	$self -> image_formats_regexp(join('|', split(/\n/, $list) ) );
+	$self -> image_formats(join('|', split(/\n/, $list) ) );
 
-	my($image_formats_regexp) = $self -> image_formats_regexp;
+	my($image_formats) = $self -> image_formats;
+
+	$list = get_data_section('pseudo_image_formats');
+
+	$self -> pseudo_image_formats(join('|', split(/\n/, $list) ) );
+
+	my($pseudo_image_formats) = $self -> pseudo_image_formats;
 
 	$self -> dfa
 	(
@@ -167,27 +181,32 @@ sub BUILD
 			start		=> 'start',
 			transitions	=>
 			[
+				# Warning: If you patch this, copy the patch down to 'reaction'.
+
 				['action',				'^$',								'done'],
 				['action',				'[-+][a-zA-Z]+',					'reaction'],
 				['action',				'\(',								'open_parenthesis'],
 				['action',				'\)',								'close_parenthesis'],
 				['action',				'[\"\'].*[\"\']',					'parameter'],
 				['action',				'\@.+',								'parameter'],
-				['action',				'\d+\%x\d+\%',						'parameter'],
-				['action',				'(?:\d+x)?\d+%',					'parameter'],
+				['action',				'\d+\%x\d+%',						'parameter'],
+				['action',				'\d+x\d+%',							'parameter'],
+				['action',				'\d+\%x\d+',						'parameter'],
+				['action',				'\d+%',								'parameter'],
 				['action',				'\d+x\d+',							'parameter'],
 				['action',				'\d+',								'parameter'],
 				['action',				"magick:(?:$built_in_images)",		'output_file'],
 				['action',				"(?:$built_in_images):",			'output_file'],
 				['action',				'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
-				['action',				".+\.(?:$image_formats_regexp)",	'output_file'],
+				['action',				".+\\.(?:$image_formats)",			'output_file'],
 				['action',				'[a-zA-Z][-a-zA-Z]+',				'parameter'],
 
 				['command',				'^$',								'done'],
-				['command',				'[-+][a-zA-Z]+',					'action'],
 				['command',				"magick:(?:$built_in_images)",		'input_file'],
 				['command',				"(?:$built_in_images):",			'input_file'],
-				['command',				".+\.(?:$image_formats_regexp)",	'input_file'],
+				['command',				"(?:$pseudo_image_formats):(?:.*)",	'input_file'],
+				['command',				".+\\.(?:$image_formats)",			'input_file'],
+				['command',				'[-+][a-zA-Z]+',					'action'],
 
 				['done',				'^$',								'done'],
 
@@ -195,23 +214,23 @@ sub BUILD
 				['input_file',			'\(',								'open_parenthesis'],
 				['input_file',			'[-+][a-zA-Z]+',					'action'],
 				['input_file',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
-				['input_file',			".+\.(?:$image_formats_regexp)",	'output_file'],
+				['input_file',			".+\\.(?:$image_formats)",			'output_file'],
 
 				['close_parenthesis',	'^$',								'done'],
 				['close_parenthesis',	'\(',								'open_parenthesis'],
 				['close_parenthesis',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
 				['close_parenthesis',	'[-+][a-zA-Z]+',					'action'],
-				['close_parenthesis',	".+\.(?:$image_formats_regexp)",	'output_file'],
+				['close_parenthesis',	".+\\.(?:$image_formats)",			'output_file'],
 
 				['open_parenthesis',	'^$',								'done'],
 				['open_parenthesis',	'\)',								'close_parenthesis'],
 				['open_parenthesis',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
 				['open_parenthesis',	'[-+][a-zA-Z]+',					'action'],
-				['open_parenthesis',	".+\.(?:$image_formats_regexp)",	'output_file'],
+				['open_parenthesis',	".+\\.(?:$image_formats)",			'output_file'],
 
 				['operator',			'^$',								'done'],
 				['operator',			'[-+][a-zA-Z]+',					'action'],
-				['operator',			".+\.(?:$image_formats_regexp)",	'output_file'],
+				['operator',			".+\\.(?:$image_formats)",			'output_file'],
 
 				['output_file',			'^$',								'done'],
 
@@ -220,16 +239,26 @@ sub BUILD
 				['parameter',			'\)',								'close_parenthesis'],
 				['parameter',			'[-+][a-zA-Z]+',					'action'],
 				['parameter',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
-				['parameter',			".+\.(?:$image_formats_regexp)",	'output_file'],
+				['parameter',			".+\\.(?:$image_formats)",			'output_file'],
+
+				# Warning: If you patch this, copy the patch up to 'action'.
 
 				['reaction',			'^$',								'done'],
 				['reaction',			'[-+][a-zA-Z]+',					'action'],
 				['reaction',			'\(',								'open_parenthesis'],
 				['reaction',			'\)',								'close_parenthesis'],
+				['reaction',			'[\"\'].*[\"\']',					'parameter'],
+				['reaction',			'\@.+',								'parameter'],
+				['reaction',			'\d+\%x\d+%',						'parameter'],
+				['reaction',			'\d+x\d+%',							'parameter'],
+				['reaction',			'\d+\%x\d+',						'parameter'],
+				['action',				'\d+%',								'parameter'],
 				['reaction',			'\d+x\d+',							'parameter'],
-				['reaction',			'\d+%x\d+%',						'parameter'],
-				['reaction',			'\d+%',								'parameter'],
+				['reaction',			'\d+',								'parameter'],
+				['reaction',			"magick:(?:$built_in_images)",		'output_file'],
+				['reaction',			"(?:$built_in_images):",			'output_file'],
 				['reaction',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',		'operator'],
+				['reaction',			".+\\.(?:$image_formats)",			'output_file'],
 				['reaction',			'[a-zA-Z][-a-zA-Z]+',				'parameter'],
 
 				['start',				'convert|mogrify',					'command'],
@@ -438,8 +467,6 @@ sub run
 	my(@field)				= split(/\s+/, $candidate);
 	my($limit)				= $#field;
 
-	$self -> log(debug => "# 1 Processing input string: <$candidate>");
-
 	# Reconstruct strings like 'a b' which have been split just above.
 	# This code does not handle escaped spaces.
 
@@ -462,8 +489,6 @@ sub run
 			$limit -= $k - $j;
 		}
 	}
-
-	$self -> log(debug => "# 2 Processing input string: <$candidate>");
 
 	for my $field (@field)
 	{
@@ -966,3 +991,32 @@ Units
 Validate
 VirtualPixel
 Weight
+
+@@ pseudo_image_formats
+canvas
+caption
+clip
+clipboard
+fractal
+gradient
+hald
+histogram
+label
+map
+mask
+matte
+null
+pango
+plasma
+preview
+print
+scan
+radial_gradient
+scanx
+screenshot
+stegano
+tile
+unique
+vid
+win
+x

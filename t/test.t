@@ -46,7 +46,7 @@ my(@test) =
 },
 {
 	count	=> 9,
-	input	=> 'convert xc: -gravity East output.png',
+	input	=> 'convert gradient:red-green -gravity East output.png',
 },
 {
 	count	=> 10,
@@ -96,11 +96,18 @@ my(@test) =
 	count	=> 21,
 	input	=> 'convert rose.jpg -resize 60%x40% rose.png',
 },
-#		'convert -background lightblue -fill blue -font FreeSerif -pointsize 72 -label Marpa Marpa.png', # 14.
-#		'convert -background lightblue -fill blue -font DejaVu-Serif-Italic -pointsize 72 -label Marpa Marpa.png', # 15.
+{
+	count	=> 22,
+	input	=> 'convert -background lightblue -fill blue -font FreeSerif -pointsize 72 -label Marpa Marpa.png',
+},
+{
+	count	=> 23,
+	input	=> 'convert -background lightblue -fill blue -font DejaVu-Serif-Italic -pointsize 72 -label Marpa Marpa.png',
+}
 );
-my($parser)	= Image::Magick::CommandParser -> new;
-my($limit)	= shift;
+my($limit)		= shift;
+my($maxlevel)	= shift || 'notice';
+my($parser)		= Image::Magick::CommandParser -> new(maxlevel => $maxlevel);
 
 my($got);
 my($result);
@@ -115,7 +122,7 @@ for my $test (@test)
 	{
 		$got = $parser -> result;
 
-		is_deeply($got, $$test{input}, $$test{input});
+		is_deeply($got, $$test{input}, "$$test{count}: $$test{input}");
 	}
 	else
 	{
