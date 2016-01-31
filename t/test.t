@@ -103,7 +103,71 @@ my(@test) =
 {
 	count	=> 23,
 	input	=> 'convert -background lightblue -fill blue -font DejaVu-Serif-Italic -pointsize 72 -label Marpa Marpa.png',
-}
+},
+{
+	count	=> 24,
+	input	=> 'convert logo: -size 320x85^ output.png',
+},
+{
+	count	=> 25,
+	input	=> 'convert logo: -size 320x85! output.png',
+},
+{
+	count	=> 26,
+	input	=> 'convert logo: -size 320x85< output.png',
+},
+{
+	count	=> 27,
+	input	=> 'convert logo: -size 320x85> output.png',
+},
+{
+	count	=> 28,
+	input	=> 'convert logo: -size 320x85+0+0 output.png',
+},
+{
+	count	=> 29,
+	input	=> 'convert rose.jpg -resize 50%+0+0 rose.png',
+},
+{
+	count	=> 30,
+	input	=> 'convert rose.jpg -resize 60x40%+0+0 rose.png',
+},
+{
+	count	=> 31,
+	input	=> 'convert rose.jpg -resize 60%x40+0+0 rose.png',
+},
+{
+	count	=> 32,
+	input	=> 'convert rose.jpg -resize 60%x40%+0+0 rose.png',
+},
+{
+	count	=> 33,
+	input	=> 'convert rose.jpg -resize 50%!+0+0 rose.png',
+},
+{
+	count	=> 34,
+	input	=> 'convert rose.jpg -resize 60x40%<+0+0 rose.png',
+},
+{
+	count	=> 35,
+	input	=> 'convert rose.jpg -resize 60%x40>+0+0 rose.png',
+},
+{
+	count	=> 36,
+	input	=> 'convert logo: -size 320x85^ output.png',
+},
+{
+	count	=> 37,
+	input	=> 'convert logo: -size 320x85! output.png',
+},
+{
+	count	=> 38,
+	input	=> 'convert logo: -size 320x85< output.png',
+},
+{
+	count	=> 39,
+	input	=> 'convert logo: -size 320x85> output.png',
+},
 );
 my($limit)		= shift;
 my($maxlevel)	= shift || 'notice';
