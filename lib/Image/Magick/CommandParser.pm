@@ -26,6 +26,14 @@ has built_in_images =>
 	required => 0,
 );
 
+has command =>
+(
+	default  => sub{return ''},
+	is       => 'rw',
+	isa      => Str,
+	required => 0,
+);
+
 has dfa =>
 (
 	default  => sub{return ''},
@@ -142,6 +150,8 @@ sub BUILD
 
 	my($pseudo_image_formats) = $self -> pseudo_image_formats;
 
+	# Crank up the DFA.
+
 	$self -> dfa
 	(
 		Set::FA::Element -> new
@@ -163,7 +173,7 @@ sub BUILD
 				},
 				command =>
 				{
-					entry	=> \&command,
+					entry	=> \&kommand,
 				},
 				done =>
 				{
@@ -281,8 +291,8 @@ sub BUILD
 				['input_file_1',		"(?:$image_formats):-",					'input_file'],
 				['input_file_1',		"(?:$image_formats):fd:\\d+",			'input_file'],
 				['input_file_1',		'fd:\\d+',								'input_file'],
-				['input_file',			'[-+][a-zA-Z]+',						'action'],
-				['input_file',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
+				['input_file_1',		'[-+][a-zA-Z]+',						'action'],
+				['input_file_1',		'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
 
 				['close_parenthesis',	'^$',									'done'],
 				['close_parenthesis',	'\(',									'open_parenthesis'],
@@ -357,25 +367,6 @@ sub close_parenthesis
 # ----------------------------------------------
 # Warning: this a function, not a method.
 
-sub command
-{
-	my($dfa)	= @_;
-	my($name)	= 'command';
-	my($match)	= $dfa -> match;
-
-	$myself -> stack -> push
-	({
-		token	=> $match,
-		type	=> $name,
-	});
-
-	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
-
-} # End of command.
-
-# ----------------------------------------------
-# Warning: this a function, not a method.
-
 sub done
 {
 	my($dfa)	= @_;
@@ -410,6 +401,25 @@ sub input_file
 	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
 
 } # End of input_file.
+
+# ----------------------------------------------
+# Warning: this a function, not a method.
+
+sub kommand
+{
+	my($dfa)	= @_;
+	my($name)	= 'command';
+	my($match)	= $dfa -> match;
+
+	$myself -> stack -> push
+	({
+		token	=> $match,
+		type	=> $name,
+	});
+
+	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
+
+} # End of kommand.
 
 # --------------------------------------------------
 
@@ -511,9 +521,29 @@ sub result
 
 sub run
 {
-	my($self, $candidate)	= @_;
-	my(@field)				= split(/\s+/, $candidate);
-	my($limit)				= $#field;
+	my($self, %options) = @_;
+
+	# Strip off any output file name.
+
+	my($command)			= $options{command} ? $options{command} : $self -> command;
+	$command				=~ s/^\s+//;
+	$command				=~ s/\s+$//;
+	my($output_file_name)	= '';
+	my($image_regexp)		= '^.+\s+(.+?\.(?:' . join('|', split/\n/, get_data_section('image_formats') ) . '))$';
+	$image_regexp			= qr/$image_regexp/;
+
+	if ($command =~ $image_regexp)
+	{
+		$output_file_name	= $1;
+		$command			= substr($command, 0, - length($output_file_name) - 1);
+
+		$self -> log(debug => "Output file: $output_file_name");
+	}
+
+	$self -> command($command);
+
+	my(@field)	= split(/\s+/, $command);
+	my($limit)	= $#field;
 
 	# Reconstruct strings like 'a b' which have been split just above.
 	# This code does not handle escaped spaces.
@@ -544,7 +574,16 @@ sub run
 	}
 
 	$self -> log(info => '# At end, current state: ' . $self -> dfa -> current);
-	$self -> log(info => "# Processed input string: $candidate");
+	$self -> log(info => "# Processed input string: $command");
+
+	if (length($output_file_name) > 0)
+	{
+		$myself -> stack -> push
+		({
+			token	=> $output_file_name,
+			type	=> 'output_file_name',
+		});
+	}
 
 	# Return 0 for success and 1 for failure.
 

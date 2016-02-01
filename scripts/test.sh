@@ -7,7 +7,7 @@ perl -Ilib t/test.t 4
 perl -Ilib t/test.t 5
 perl -Ilib t/test.t 6
 perl -Ilib t/test.t 7
-perl -Ilib t/test.t 8 debug
+perl -Ilib t/test.t 8
 perl -Ilib t/test.t 9
 perl -Ilib t/test.t 10
 perl -Ilib t/test.t 11
@@ -45,4 +45,4 @@ perl -Ilib t/test.t 42
 perl -Ilib t/test.t 43
 perl -Ilib t/test.t 44
 perl -Ilib t/test.t 45
-perl -Ilib t/test.t 46 debug
+perl -Ilib t/test.t 46

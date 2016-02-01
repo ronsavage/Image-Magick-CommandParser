@@ -13,188 +13,188 @@ use Test::Stream -Classic;
 my(@test) =
 (
 {
+	command	=> 'convert logo:',
 	count	=> 1,
-	input	=> 'convert logo:',
 },
 {
+	command	=> 'convert logo: output.png',
 	count	=> 2,
-	input	=> 'convert logo: output.png',
 },
 {
+	command	=> 'convert logo: -size 320x85 output.png',
 	count	=> 3,
-	input	=> 'convert logo: -size 320x85 output.png',
 },
 {
+	command	=> 'convert logo: -size 320x85 -shade 110x90 output.png',
 	count	=> 4,
-	input	=> 'convert logo: -size 320x85 -shade 110x90 output.png',
 },
 {
+	command	=> 'convert logo: -size 320x85 canvas:none -shade 110x90 output.png',
 	count	=> 5,
-	input	=> 'convert logo: -size 320x85 canvas:none -shade 110x90 output.png',
 },
 {
+	command	=> 'convert logo: -size 320x85 ( +clone canvas:none -shade 110x90 ) output.png',
 	count	=> 6,
-	input	=> 'convert logo: -size 320x85 ( +clone canvas:none -shade 110x90 ) output.png',
 },
 {
+	command	=> 'convert logo: -size 320x85 ( canvas:none +clone -shade 110x90 ) output.png',
 	count	=> 7,
-	input	=> 'convert logo: -size 320x85 ( canvas:none +clone -shade 110x90 ) output.png',
 },
 {
+	command	=> 'convert logo: canvas:none +clone output.png',
 	count	=> 8,
-	input	=> 'convert logo: canvas:none +clone output.png',
 },
 {
+	command	=> 'convert gradient:red-green -gravity East output.png',
 	count	=> 9,
-	input	=> 'convert gradient:red-green -gravity East output.png',
 },
 {
+	command	=> 'convert rose.jpg rose.png',
 	count	=> 10,
-	input	=> 'convert rose.jpg rose.png',
 },
 {
+	command	=> 'convert label.gif -compose Plus button.gif',
 	count	=> 11,
-	input	=> 'convert label.gif -compose Plus button.gif',
 },
 {
+	command	=> 'convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) button.gif',
 	count	=> 12,
-	input	=> 'convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) button.gif',
 },
 {
+	command	=> 'convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) ( -clone 0 -shade 110x50 -normalize -channel BG -fx 0 +channel -matte ) -delete 0 +swap -compose Multiply -composite button.gif',
 	count	=> 13,
-	input	=> 'convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) ( -clone 0 -shade 110x50 -normalize -channel BG -fx 0 +channel -matte ) -delete 0 +swap -compose Multiply -composite button.gif',
 },
 {
+	command	=> 'convert magick:logo -label "%m:%f %wx%h" logo.png',
 	count	=> 14,
-	input	=> 'convert magick:logo -label "%m:%f %wx%h" logo.png',
 },
 {
+	command	=> 'convert magick:logo -label "%m:%f %wx%h %n" logo.png',
 	count	=> 15,
-	input	=> 'convert magick:logo -label "%m:%f %wx%h %n" logo.png',
 },
 {
+	command	=> 'convert magick:rose -label @t/info.txt -format "%l label" rose.png',
 	count	=> 16,
-	input	=> 'convert magick:rose -label @t/info.txt -format "%l label" rose.png',
 },
 {
+	command	=> 'convert -label @t/info.txt magick:rose -format "%l label" rose.png',
 	count	=> 17,
-	input	=> 'convert -label @t/info.txt magick:rose -format "%l label" rose.png',
 },
 {
+	command	=> 'convert rose.jpg -resize 50% rose.png',
 	count	=> 18,
-	input	=> 'convert rose.jpg -resize 50% rose.png',
 },
 {
+	command	=> 'convert rose.jpg -resize 60x40% rose.png',
 	count	=> 19,
-	input	=> 'convert rose.jpg -resize 60x40% rose.png',
 },
 {
+	command	=> 'convert rose.jpg -resize 60%x40 rose.png',
 	count	=> 20,
-	input	=> 'convert rose.jpg -resize 60%x40 rose.png',
 },
 {
+	command	=> 'convert rose.jpg -resize 60%x40% rose.png',
 	count	=> 21,
-	input	=> 'convert rose.jpg -resize 60%x40% rose.png',
 },
 {
+	command	=> 'convert -background lightblue -fill blue -font FreeSerif -pointsize 72 -label Marpa Marpa.png',
 	count	=> 22,
-	input	=> 'convert -background lightblue -fill blue -font FreeSerif -pointsize 72 -label Marpa Marpa.png',
 },
 {
+	command	=> 'convert -background lightblue -fill blue -font DejaVu-Serif-Italic -pointsize 72 -label Marpa Marpa.png',
 	count	=> 23,
-	input	=> 'convert -background lightblue -fill blue -font DejaVu-Serif-Italic -pointsize 72 -label Marpa Marpa.png',
 },
 {
+	command	=> 'convert logo: -size 320x85^ output.png',
 	count	=> 24,
-	input	=> 'convert logo: -size 320x85^ output.png',
 },
 {
+	command	=> 'convert logo: -size 320x85! output.png',
 	count	=> 25,
-	input	=> 'convert logo: -size 320x85! output.png',
 },
 {
+	command	=> 'convert logo: -size 320x85< output.png',
 	count	=> 26,
-	input	=> 'convert logo: -size 320x85< output.png',
 },
 {
+	command	=> 'convert logo: -size 320x85> output.png',
 	count	=> 27,
-	input	=> 'convert logo: -size 320x85> output.png',
 },
 {
+	command	=> 'convert logo: -size 320x85+0+0 output.png',
 	count	=> 28,
-	input	=> 'convert logo: -size 320x85+0+0 output.png',
 },
 {
+	command	=> 'convert rose.jpg -resize 50%+0+0 rose.png',
 	count	=> 29,
-	input	=> 'convert rose.jpg -resize 50%+0+0 rose.png',
 },
 {
+	command	=> 'convert rose.jpg -resize 60x40%+0+0 rose.png',
 	count	=> 30,
-	input	=> 'convert rose.jpg -resize 60x40%+0+0 rose.png',
 },
 {
+	command	=> 'convert rose.jpg -resize 60%x40+0+0 rose.png',
 	count	=> 31,
-	input	=> 'convert rose.jpg -resize 60%x40+0+0 rose.png',
 },
 {
+	command	=> 'convert rose.jpg -resize 60%x40%+0+0 rose.png',
 	count	=> 32,
-	input	=> 'convert rose.jpg -resize 60%x40%+0+0 rose.png',
 },
 {
+	command	=> 'convert rose.jpg -resize 50%!+0+0 rose.png',
 	count	=> 33,
-	input	=> 'convert rose.jpg -resize 50%!+0+0 rose.png',
 },
 {
+	command	=> 'convert rose.jpg -resize 60x40%<+0+0 rose.png',
 	count	=> 34,
-	input	=> 'convert rose.jpg -resize 60x40%<+0+0 rose.png',
 },
 {
+	command	=> 'convert rose.jpg -resize 60%x40>+0+0 rose.png',
 	count	=> 35,
-	input	=> 'convert rose.jpg -resize 60%x40>+0+0 rose.png',
 },
 {
+	command	=> 'convert logo: -size 320x85^ output.png',
 	count	=> 36,
-	input	=> 'convert logo: -size 320x85^ output.png',
 },
 {
+	command	=> 'convert logo: -size 320x85! output.png',
 	count	=> 37,
-	input	=> 'convert logo: -size 320x85! output.png',
 },
 {
+	command	=> 'convert logo: -size 320x85< output.png',
 	count	=> 38,
-	input	=> 'convert logo: -size 320x85< output.png',
 },
 {
+	command	=> 'convert logo: -size 320x85> output.png',
 	count	=> 39,
-	input	=> 'convert logo: -size 320x85> output.png',
 },
 {
+	command	=> 'convert pattern:bricks -size 320x85 output.png',
 	count	=> 40,
-	input	=> 'convert pattern:bricks -size 320x85 output.png',
 },
 {
+	command	=> 'convert rgb:camera.image -size 320x85 output.png',
 	count	=> 41,
-	input	=> 'convert rgb:camera.image -size 320x85 output.png',
 },
 {
+	command	=> 'convert - -size 320x85 output.png',
 	count	=> 42,
-	input	=> 'convert - -size 320x85 output.png',
 },
 {
+	command	=> 'convert gif:- -size 320x85 output.png',
 	count	=> 43,
-	input	=> 'convert gif:- -size 320x85 output.png',
 },
 {
+	command	=> 'convert fd:3 -size 320x85 output.png',
 	count	=> 44,
-	input	=> 'convert fd:3 -size 320x85 output.png',
 },
 {
+	command	=> 'convert gif:fd:3 -size 320x85 output.png',
 	count	=> 45,
-	input	=> 'convert gif:fd:3 -size 320x85 output.png',
 },
 {
+	command	=> 'convert fd:3 png:fd:4 gif:fd:5 fd:6 -append output.png',
 	count	=> 46,
-	input	=> 'convert fd:3 png:fd:4 gif:fd:5 fd:6 -append output.png',
 },
 );
 my($limit)		= shift || 0;
@@ -208,13 +208,13 @@ for my $test (@test)
 {
 	next if ($$test{count} != $limit);
 
-	$result = $parser -> run($$test{input});
+	$result = $parser -> run(command => $$test{command});
 
 	if ($result == 0)
 	{
 		$got = $parser -> result;
 
-		is_deeply($got, $$test{input}, "$$test{count}: $$test{input}");
+		is_deeply($got, $$test{command}, "$$test{count}: $$test{command}");
 	}
 	else
 	{
