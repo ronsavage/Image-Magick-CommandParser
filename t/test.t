@@ -197,7 +197,7 @@ my(@test) =
 	input	=> 'convert fd:3 png:fd:4 gif:fd:5 fd:6 -append output.png',
 },
 );
-my($limit)		= shift;
+my($limit)		= shift || 0;
 my($maxlevel)	= shift || 'notice';
 my($parser)		= Image::Magick::CommandParser -> new(maxlevel => $maxlevel);
 
