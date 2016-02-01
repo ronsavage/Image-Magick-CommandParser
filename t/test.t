@@ -1,6 +1,7 @@
 use strict;
 use warnings;
 
+use File::Glob ':bsd_glob';
 use File::Spec;
 use File::Temp;
 
@@ -223,3 +224,7 @@ for my $test (@test)
 }
 
 done_testing;
+
+my(@file_list) = bsd_glob('colors/*.png');
+
+note "Glob: $_" for @file_list;

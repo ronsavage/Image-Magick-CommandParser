@@ -3,14 +3,11 @@ TODO
 
 o Input file formats:
 - Globbing
-- Explicit image format, e.g. rgb:file_name
-- Built-in patterns
 - STDIN etc
 - Frames
 - Image regions
 - File name references such as image-%d.jpg[1-5]
 - Stream buffering
-- Output file name being optional
 - label:"Text" and text:-'[0]'
 
 o Expand contents of:
