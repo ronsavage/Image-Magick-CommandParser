@@ -256,6 +256,7 @@ sub BUILD
 				['action_1',			'[a-zA-Z][-a-zA-Z]+',					'parameter'],
 
 				['command',				'^$',									'done'],
+				['command',				'.*(?:\\*|\\?)',						'file_glob'],
 				['command',				'rgb:(?:.+)',							'input_file'],
 				['command',				"magick:(?:$built_in_images)",			'input_file'],
 				['command',				"(?:$built_in_images):",				'input_file'],
@@ -272,7 +273,7 @@ sub BUILD
 
 				['file_glob',			'^$',									'done'],
 				['file_glob',			'\(',									'open_parenthesis'],
-				['file_glob',			'(:[*?])',								'file_glob'],
+				['file_glob',			'.*(?:\\*|\\?)',						'file_glob'],
 				['file_glob',			'rgb:(?:.+)',							'input_file_1'],
 				['file_glob',			"magick:(?:$built_in_images)",			'input_file_1'],
 				['file_glob',			"(?:$built_in_images):",				'input_file_1'],
@@ -287,8 +288,8 @@ sub BUILD
 				['file_glob',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
 
 				['input_file',			'^$',									'done'],
+				['input_file',			'.*(?:\\*|\\?)',						'file_glob'],
 				['input_file',			'\(',									'open_parenthesis'],
-				['input_file',			'(:[*?])',								'file_glob'],
 				['input_file',			'rgb:(?:.+)',							'input_file_1'],
 				['input_file',			"magick:(?:$built_in_images)",			'input_file_1'],
 				['input_file',			"(?:$built_in_images):",				'input_file_1'],
@@ -303,6 +304,7 @@ sub BUILD
 				['input_file',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
 
 				['input_file_1',		'^$',									'done'],
+				['input_file_1',		'.*(?:\\*|\\?)',						'file_glob'],
 				['input_file_1',		'\(',									'open_parenthesis'],
 				['input_file_1',		'rgb:(?:.+)',							'input_file'],
 				['input_file_1',		"magick:(?:$built_in_images)",			'input_file'],
@@ -342,7 +344,7 @@ sub BUILD
 				['parameter',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
 				['parameter',			".+\\.(?:$image_formats)",				'output_file'],
 
-				['start',				'convert|mogrify',						'command'],
+				['start',				'(?:convert|mogrify)',					'command'],
 			],
 		)
 	);
@@ -423,8 +425,6 @@ sub file_glob
 			type	=> $name,
 		});
 	}
-
-	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
 
 } # End of file_glob.
 

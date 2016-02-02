@@ -245,13 +245,14 @@ my(@test) =
 {
 	command	=> 'convert colors/*s*.png -append output.png',
 	count	=> 47,
-	glob	=> 'colors/fuchsia.png colors/silver.png',
+	glob	=> 'convert colors/fuchsia.png colors/silver.png -append output.png',
 },
 );
 my($limit)		= shift || 0;
 my($maxlevel)	= shift || 'notice';
 my($parser)		= Image::Magick::CommandParser -> new(maxlevel => $maxlevel);
 
+my($expected);
 my($got);
 my($result);
 
@@ -263,9 +264,10 @@ for my $test (@test)
 
 	if ($result == 0)
 	{
-		$got = $parser -> result;
+		$got		= $parser -> result;
+		$expected	= $$test{glob} ? $$test{glob} : $$test{command};
 
-		is_deeply($got, $$test{command}, "$$test{count}: $$test{command}");
+		is_deeply($got, $expected, "$$test{count}: $expected");
 	}
 	else
 	{

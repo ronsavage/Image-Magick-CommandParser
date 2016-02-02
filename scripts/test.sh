@@ -46,3 +46,4 @@ perl -Ilib t/test.t 43
 perl -Ilib t/test.t 44
 perl -Ilib t/test.t 45
 perl -Ilib t/test.t 46
+perl -Ilib t/test.t 47
