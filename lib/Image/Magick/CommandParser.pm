@@ -18,7 +18,7 @@ use Set::Array;
 
 use Set::FA::Element;
 
-use Types::Standard qw/Any HashRef Str/;
+use Types::Standard qw/Any ArrayRef HashRef Str/;
 
 has built_in_images =>
 (
@@ -41,6 +41,14 @@ has dfa =>
 	default  => sub{return ''},
 	is       => 'rw',
 	isa      => Any,
+	required => 0,
+);
+
+has field =>
+(
+	default  => sub{return []},
+	is       => 'rw',
+	isa      => ArrayRef,
 	required => 0,
 );
 
@@ -417,6 +425,11 @@ sub file_glob
 	my($name)	= 'input_file';
 	my($match)	= $dfa -> match;
 
+	# Warning! Do not use (sort bsd_glob($match) ),
+	# when bs_glob() returns the unglobbed 'colors/*s*.png'.
+	# You can use (sort map{$_} bsd_glob($match) )
+	# but the result is ASCII sorted (by default) anyway.
+
 	for my $file (bsd_glob($match) )
 	{
 		$myself -> stack -> push
@@ -613,7 +626,13 @@ sub run
 		}
 	}
 
-	for my $field (@field)
+	# Here we jam @field into an attribute of the object because input like @include.me
+	# means the contents of that file have to be interpolated into the input stream.
+	# The interpolation takes place in function (not method) parameter().
+
+	$self -> field([@field]);
+
+	for my $field (@{$self -> field})
 	{
 		$self -> dfa -> step($field);
 	}
