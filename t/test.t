@@ -1,7 +1,6 @@
 use strict;
 use warnings;
 
-use File::Glob ':bsd_glob';
 use File::Spec;
 use File::Temp;
 
@@ -16,186 +15,237 @@ my(@test) =
 {
 	command	=> 'convert logo:',
 	count	=> 1,
+	glob	=> '',
 },
 {
 	command	=> 'convert logo: output.png',
 	count	=> 2,
+	glob	=> '',
 },
 {
 	command	=> 'convert logo: -size 320x85 output.png',
 	count	=> 3,
+	glob	=> '',
 },
 {
 	command	=> 'convert logo: -size 320x85 -shade 110x90 output.png',
 	count	=> 4,
+	glob	=> '',
 },
 {
 	command	=> 'convert logo: -size 320x85 canvas:none -shade 110x90 output.png',
 	count	=> 5,
+	glob	=> '',
 },
 {
 	command	=> 'convert logo: -size 320x85 ( +clone canvas:none -shade 110x90 ) output.png',
 	count	=> 6,
+	glob	=> '',
 },
 {
 	command	=> 'convert logo: -size 320x85 ( canvas:none +clone -shade 110x90 ) output.png',
 	count	=> 7,
+	glob	=> '',
 },
 {
 	command	=> 'convert logo: canvas:none +clone output.png',
 	count	=> 8,
+	glob	=> '',
 },
 {
 	command	=> 'convert gradient:red-green -gravity East output.png',
 	count	=> 9,
+	glob	=> '',
 },
 {
 	command	=> 'convert rose.jpg rose.png',
 	count	=> 10,
+	glob	=> '',
 },
 {
 	command	=> 'convert label.gif -compose Plus button.gif',
 	count	=> 11,
+	glob	=> '',
 },
 {
 	command	=> 'convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) button.gif',
 	count	=> 12,
+	glob	=> '',
 },
 {
 	command	=> 'convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) ( -clone 0 -shade 110x50 -normalize -channel BG -fx 0 +channel -matte ) -delete 0 +swap -compose Multiply -composite button.gif',
 	count	=> 13,
+	glob	=> '',
 },
 {
 	command	=> 'convert magick:logo -label "%m:%f %wx%h" logo.png',
 	count	=> 14,
+	glob	=> '',
 },
 {
 	command	=> 'convert magick:logo -label "%m:%f %wx%h %n" logo.png',
 	count	=> 15,
+	glob	=> '',
 },
 {
 	command	=> 'convert magick:rose -label @t/info.txt -format "%l label" rose.png',
 	count	=> 16,
+	glob	=> '',
 },
 {
 	command	=> 'convert -label @t/info.txt magick:rose -format "%l label" rose.png',
 	count	=> 17,
+	glob	=> '',
 },
 {
 	command	=> 'convert rose.jpg -resize 50% rose.png',
 	count	=> 18,
+	glob	=> '',
 },
 {
 	command	=> 'convert rose.jpg -resize 60x40% rose.png',
 	count	=> 19,
+	glob	=> '',
 },
 {
 	command	=> 'convert rose.jpg -resize 60%x40 rose.png',
 	count	=> 20,
+	glob	=> '',
 },
 {
 	command	=> 'convert rose.jpg -resize 60%x40% rose.png',
 	count	=> 21,
+	glob	=> '',
 },
 {
 	command	=> 'convert -background lightblue -fill blue -font FreeSerif -pointsize 72 -label Marpa Marpa.png',
 	count	=> 22,
+	glob	=> '',
 },
 {
 	command	=> 'convert -background lightblue -fill blue -font DejaVu-Serif-Italic -pointsize 72 -label Marpa Marpa.png',
 	count	=> 23,
+	glob	=> '',
 },
 {
 	command	=> 'convert logo: -size 320x85^ output.png',
 	count	=> 24,
+	glob	=> '',
 },
 {
 	command	=> 'convert logo: -size 320x85! output.png',
 	count	=> 25,
+	glob	=> '',
 },
 {
 	command	=> 'convert logo: -size 320x85< output.png',
 	count	=> 26,
+	glob	=> '',
 },
 {
 	command	=> 'convert logo: -size 320x85> output.png',
 	count	=> 27,
+	glob	=> '',
 },
 {
 	command	=> 'convert logo: -size 320x85+0+0 output.png',
 	count	=> 28,
+	glob	=> '',
 },
 {
 	command	=> 'convert rose.jpg -resize 50%+0+0 rose.png',
 	count	=> 29,
+	glob	=> '',
 },
 {
 	command	=> 'convert rose.jpg -resize 60x40%+0+0 rose.png',
 	count	=> 30,
+	glob	=> '',
 },
 {
 	command	=> 'convert rose.jpg -resize 60%x40+0+0 rose.png',
 	count	=> 31,
+	glob	=> '',
 },
 {
 	command	=> 'convert rose.jpg -resize 60%x40%+0+0 rose.png',
 	count	=> 32,
+	glob	=> '',
 },
 {
 	command	=> 'convert rose.jpg -resize 50%!+0+0 rose.png',
 	count	=> 33,
+	glob	=> '',
 },
 {
 	command	=> 'convert rose.jpg -resize 60x40%<+0+0 rose.png',
 	count	=> 34,
+	glob	=> '',
 },
 {
 	command	=> 'convert rose.jpg -resize 60%x40>+0+0 rose.png',
 	count	=> 35,
+	glob	=> '',
 },
 {
 	command	=> 'convert logo: -size 320x85^ output.png',
 	count	=> 36,
+	glob	=> '',
 },
 {
 	command	=> 'convert logo: -size 320x85! output.png',
 	count	=> 37,
+	glob	=> '',
 },
 {
 	command	=> 'convert logo: -size 320x85< output.png',
 	count	=> 38,
+	glob	=> '',
 },
 {
 	command	=> 'convert logo: -size 320x85> output.png',
 	count	=> 39,
+	glob	=> '',
 },
 {
 	command	=> 'convert pattern:bricks -size 320x85 output.png',
 	count	=> 40,
+	glob	=> '',
 },
 {
 	command	=> 'convert rgb:camera.image -size 320x85 output.png',
 	count	=> 41,
+	glob	=> '',
 },
 {
 	command	=> 'convert - -size 320x85 output.png',
 	count	=> 42,
+	glob	=> '',
 },
 {
 	command	=> 'convert gif:- -size 320x85 output.png',
 	count	=> 43,
+	glob	=> '',
 },
 {
 	command	=> 'convert fd:3 -size 320x85 output.png',
 	count	=> 44,
+	glob	=> '',
 },
 {
 	command	=> 'convert gif:fd:3 -size 320x85 output.png',
 	count	=> 45,
+	glob	=> '',
 },
 {
 	command	=> 'convert fd:3 png:fd:4 gif:fd:5 fd:6 -append output.png',
 	count	=> 46,
+	glob	=> '',
+},
+{
+	command	=> 'convert colors/*s*.png -append output.png',
+	count	=> 47,
+	glob	=> 'colors/fuchsia.png colors/silver.png',
 },
 );
 my($limit)		= shift || 0;
@@ -224,7 +274,3 @@ for my $test (@test)
 }
 
 done_testing;
-
-my(@file_list) = bsd_glob('colors/*.png');
-
-note "Glob: $_" for @file_list;

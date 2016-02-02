@@ -8,6 +8,8 @@ use warnings  qw(FATAL utf8);    # Fatalize encoding glitches.
 use Data::Dumper::Concise; # For Dumper();
 use Data::Section::Simple 'get_data_section';
 
+use File::Glob ':bsd_glob';
+
 use Log::Handler;
 
 use Moo;
@@ -179,6 +181,10 @@ sub BUILD
 				{
 					entry	=> \&done,
 				},
+				file_glob =>
+				{
+					entry	=> \&file_glob,
+				},
 				input_file =>
 				{
 					entry	=> \&input_file,
@@ -264,8 +270,25 @@ sub BUILD
 
 				['done',				'^$',									'done'],
 
+				['file_glob',			'^$',									'done'],
+				['file_glob',			'\(',									'open_parenthesis'],
+				['file_glob',			'(:[*?])',								'file_glob'],
+				['file_glob',			'rgb:(?:.+)',							'input_file_1'],
+				['file_glob',			"magick:(?:$built_in_images)",			'input_file_1'],
+				['file_glob',			"(?:$built_in_images):",				'input_file_1'],
+				['file_glob',			"pattern:(?:$patterns)",				'input_file_1'],
+				['file_glob',			"(?:$pseudo_image_formats):(?:.*)",		'input_file_1'],
+				['file_glob',			".+\\.(?:$image_formats)",				'input_file_1'],
+				['file_glob',			'^-$',									'input_file_1'],
+				['file_glob',			"(?:$image_formats):-",					'input_file_1'],
+				['file_glob',			"(?:$image_formats):fd:\\d+",			'input_file_1'],
+				['file_glob',			'fd:\\d+',								'input_file_1'],
+				['file_glob',			'[-+][a-zA-Z]+',						'action'],
+				['file_glob',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
+
 				['input_file',			'^$',									'done'],
 				['input_file',			'\(',									'open_parenthesis'],
+				['input_file',			'(:[*?])',								'file_glob'],
 				['input_file',			'rgb:(?:.+)',							'input_file_1'],
 				['input_file',			"magick:(?:$built_in_images)",			'input_file_1'],
 				['input_file',			"(?:$built_in_images):",				'input_file_1'],
@@ -382,6 +405,28 @@ sub done
 	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
 
 } # End of done.
+
+# ----------------------------------------------
+# Warning: this a function, not a method.
+
+sub file_glob
+{
+	my($dfa)	= @_;
+	my($name)	= 'input_file';
+	my($match)	= $dfa -> match;
+
+	for my $file (bsd_glob($match) )
+	{
+		$myself -> stack -> push
+		({
+			token	=> $file,
+			type	=> $name,
+		});
+	}
+
+	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
+
+} # End of file_glob.
 
 # ----------------------------------------------
 # Warning: this a function, not a method.
