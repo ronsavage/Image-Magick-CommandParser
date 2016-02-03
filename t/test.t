@@ -88,14 +88,14 @@ my(@test) =
 	glob	=> '',
 },
 {
-	command	=> 'convert magick:rose -label @t/info.txt -format "%l label" rose.png',
+	command	=> 'convert magick:rose -label @t/label.1.txt -format "%l label" rose.png',
 	count	=> 16,
-	glob	=> '',
+	glob	=> 'convert magick:rose -label "%wx%h" -format "%l label" rose.png',
 },
 {
-	command	=> 'convert -label @t/info.txt magick:rose -format "%l label" rose.png',
+	command	=> 'convert -label @t/label.1.txt magick:rose -format "%l label" rose.png',
 	count	=> 17,
-	glob	=> '',
+	glob	=> 'convert -label "%wx%h" magick:rose -format "%l label" rose.png',
 },
 {
 	command	=> 'convert rose.jpg -resize 50% rose.png',

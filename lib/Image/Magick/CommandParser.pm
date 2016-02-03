@@ -9,6 +9,7 @@ use Data::Dumper::Concise; # For Dumper();
 use Data::Section::Simple 'get_data_section';
 
 use File::Glob ':bsd_glob';
+use File::Slurper 'read_lines';
 
 use Log::Handler;
 
@@ -175,7 +176,7 @@ sub BUILD
 				},
 				action_1 =>
 				{
-					entry	=> \&action, # Sic.
+					entry	=> \&action,
 				},
 				close_parenthesis =>
 				{
@@ -232,7 +233,7 @@ sub BUILD
 				['action',				'\(',									'open_parenthesis'],
 				['action',				'\)',									'close_parenthesis'],
 				['action',				'[\"\'].*[\"\']',						'parameter'],
-				['action',				'\@.+',									'parameter'],
+				['action',				'\@.+',									'action_1'],
 				['action',				'\d+%x\d+%[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
 				['action',				'x\d+%[!<>^]?(?:[-+]\d+[-+]\d+)?',		'parameter'],
 				['action',				'\d+%(?:x\d+)?[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
@@ -251,7 +252,7 @@ sub BUILD
 				['action_1',			'\(',									'open_parenthesis'],
 				['action_1',			'\)',									'close_parenthesis'],
 				['action_1',			'[\"\'].*[\"\']',						'parameter'],
-				['action_1',			'\@.+',									'parameter'],
+				['action_1',			'\@.+',									'action'],
 				['action_1',			'\d+%x\d+%[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
 				['action_1',			'x\d+%[!<>^]?(?:[-+]\d+[-+]\d+)?',		'parameter'],
 				['action_1',			'\d+%(?:x\d+)?[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
@@ -368,13 +369,23 @@ sub action
 	my($name)	= 'action';
 	my($match)	= $dfa -> match;
 
-	$myself -> stack -> push
-	({
-		token	=> $match,
-		type	=> $name,
-	});
+	$myself -> log(debug => "'$name' matched '$match'");
 
-	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
+	if (substr($match, 0, 1) eq '@')
+	{
+		my($field) = $myself -> field;
+
+		$myself -> field([join(' ', read_lines substr($match, 1) ), @$field]);
+	}
+	else
+	{
+		$myself -> stack -> push
+		({
+			token	=> $match,
+			type	=> $name,
+		});
+	}
+
 
 } # End of action.
 
@@ -387,13 +398,13 @@ sub close_parenthesis
 	my($name)	= 'close_parenthesis';
 	my($match)	= $dfa -> match;
 
+	$myself -> log(debug => "'$name' matched '$match'");
+
 	$myself -> stack -> push
 	({
 		token	=> $match,
 		type	=> $name,
 	});
-
-	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
 
 } # End of close_parenthesis.
 
@@ -406,13 +417,13 @@ sub done
 	my($name)	= 'done';
 	my($match)	= $dfa -> match;
 
+	$myself -> log(debug => "'$name' matched '$match'");
+
 	$myself -> stack -> push
 	({
 		token	=> $match,
 		type	=> $name,
 	});
-
-	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
 
 } # End of done.
 
@@ -424,6 +435,8 @@ sub file_glob
 	my($dfa)	= @_;
 	my($name)	= 'input_file';
 	my($match)	= $dfa -> match;
+
+	$myself -> log(debug => "'$name' matched '$match'");
 
 	# Warning! Do not use (sort bsd_glob($match) ),
 	# when bs_glob() returns the unglobbed 'colors/*s*.png'.
@@ -450,13 +463,13 @@ sub input_file
 	my($name)	= 'input_file';
 	my($match)	= $dfa -> match;
 
+	$myself -> log(debug => "'$name' matched '$match'");
+
 	$myself -> stack -> push
 	({
 		token	=> $match,
 		type	=> $name,
 	});
-
-	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
 
 } # End of input_file.
 
@@ -469,13 +482,13 @@ sub kommand
 	my($name)	= 'command';
 	my($match)	= $dfa -> match;
 
+	$myself -> log(debug => "'$name' matched '$match'");
+
 	$myself -> stack -> push
 	({
 		token	=> $match,
 		type	=> $name,
 	});
-
-	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
 
 } # End of kommand.
 
@@ -498,13 +511,13 @@ sub open_parenthesis
 	my($name)	= 'open_parenthesis';
 	my($match)	= $dfa -> match;
 
+	$myself -> log(debug => "'$name' matched '$match'");
+
 	$myself -> stack -> push
 	({
 		token	=> $match,
 		type	=> $name,
 	});
-
-	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
 
 } # End of open_parenthesis.
 
@@ -517,13 +530,13 @@ sub output_file
 	my($name)	= 'output_file';
 	my($match)	= $dfa -> match;
 
+	$myself -> log(debug => "'$name' matched '$match'");
+
 	$myself -> stack -> push
 	({
 		token	=> $match,
 		type	=> $name,
 	});
-
-	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
 
 } # End of output_file.
 
@@ -536,13 +549,13 @@ sub operator
 	my($name)	= 'operator';
 	my($match)	= $dfa -> match;
 
+	$myself -> log(debug => "'$name' matched '$match'");
+
 	$myself -> stack -> push
 	({
 		token	=> $match,
 		type	=> $name,
 	});
-
-	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
 
 } # End of operator.
 
@@ -555,13 +568,13 @@ sub parameter
 	my($name)	= 'parameter';
 	my($match)	= $dfa -> match;
 
+	$myself -> log(debug => "'$name' matched '$match'");
+
 	$myself -> stack -> push
 	({
 		token	=> $match,
 		type	=> $name,
 	});
-
-	$myself -> log(debug => "'$name' matched '" . $dfa -> match . "'");
 
 } # End of parameter.
 
@@ -632,7 +645,7 @@ sub run
 
 	$self -> field([@field]);
 
-	for my $field (@{$self -> field})
+	while (my $field = shift @{$self -> field})
 	{
 		$self -> dfa -> step($field);
 	}
