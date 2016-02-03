@@ -238,7 +238,7 @@ sub BUILD
 				['action',				'x\d+%[!<>^]?(?:[-+]\d+[-+]\d+)?',		'parameter'],
 				['action',				'\d+%(?:x\d+)?[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
 				['action',				'\d+x\d+%?[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
-				['action',				'\d+',									'parameter'],
+				['action',				'-?\d+.*',								'parameter'],
 				['action',				"magick:(?:$built_in_images)",			'output_file'],
 				['action',				"(?:$built_in_images):",				'output_file'],
 				['action',				'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
@@ -257,7 +257,7 @@ sub BUILD
 				['action_1',			'x\d+%[!<>^]?(?:[-+]\d+[-+]\d+)?',		'parameter'],
 				['action_1',			'\d+%(?:x\d+)?[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
 				['action_1',			'\d+x\d+%?[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
-				['action_1',			'\d+',									'parameter'],
+				['action_1',			'-?\d+.*',								'parameter'],
 				['action_1',			"magick:(?:$built_in_images)",			'output_file'],
 				['action_1',			"(?:$built_in_images):",				'output_file'],
 				['action_1',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
@@ -619,7 +619,6 @@ sub run
 	# Reconstruct strings like 'a b' which have been split just above.
 	# This code does not handle escaped spaces.
 
-	my($finished);
 	my($quote);
 
 	for (my $j = 0; $j < $limit; $j++)
@@ -642,12 +641,26 @@ sub run
 	# Here we jam @field into an attribute of the object because input like @include.me
 	# means the contents of that file have to be interpolated into the input stream.
 	# The interpolation takes place in function (not method) parameter().
+	# And we use $finished to allow for stand-alone 0 to be a field.
 
 	$self -> field([@field]);
 
-	while (my $field = shift @{$self -> field})
+	my($finished) = 0;
+
+	my($field);
+
+	while (! $finished)
 	{
-		$self -> dfa -> step($field);
+		$field = shift @{$self -> field};
+
+		if (! defined $field)
+		{
+			$finished = 1;
+		}
+		else
+		{
+			$self -> dfa -> step($field);
+		}
 	}
 
 	$self -> log(info => '# At end, current state: ' . $self -> dfa -> current);

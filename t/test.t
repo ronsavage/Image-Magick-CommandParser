@@ -247,6 +247,16 @@ my(@test) =
 	count	=> 47,
 	glob	=> 'convert colors/fuchsia.png colors/silver.png -append output.png',
 },
+{
+	command	=> 'convert label.gif +clone 0,4,5 button.gif',
+	count	=> 48,
+	glob	=> '',
+},
+{
+	command	=> 'convert label.gif +clone -1 button.gif',
+	count	=> 49,
+	glob	=> '',
+},
 );
 my($limit)		= shift || 0;
 my($maxlevel)	= shift || 'notice';
