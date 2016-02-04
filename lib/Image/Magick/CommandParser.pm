@@ -689,63 +689,366 @@ sub run
 
 =head1 NAME
 
-C<Image::Magick::CommandParser> - Parse any command line used by ImageMagick
+C<Image::Magick::CommandParser> - Parse any command line acceptable to convert or mogrify
 
 =head1 Synopsis
 
+This is scripts/synopsis.pl:
+
+	#!/usr/bin/env perl
+
+	use feature 'say';
+	use strict;
+	use warnings;
+	use warnings qw(FATAL utf8);
+
+	use Image::Magick::CommandParser;
+
+	# ----------------------------------------------
+
+	my($command)	= 'convert colors/*s*.png -append output.png';
+	my($processor)	= Image::Magick::CommandParser -> new
+	(
+		command		=> $command,
+		maxlevel	=> 'notice',
+	);
+
+	$processor -> run;
+
+	say 'Input:  ', $command;
+	say 'Result: ', $processor -> result;
+
+With its output (after running in the distro dir, with access to colors/*.png):
+
+	Input:  convert colors/*s*.png -append output.png
+	Result: convert colors/fuchsia.png colors/silver.png -append output.png
 
 =head1 Description
 
+C<Image::Magick::CommandParser> is a stand-alone parser for command lines acceptable to the
+L<Imagemagick|https://imagemagick.org> programs C<convert> and C<mogrify>.
 
-=head1 Distributions
+It aims to handle all constructs supported by Imagemagick itself, but it's vital to understand
+that this module does not use any component of Imagemagick. Hence the I<stand-alone> just above.
 
+In particular the output is a stack, accessible via the C<< $object -> stack >> feature, which
+returns an array of hashrefs.
+
+The stack is managed by an object of type L<Set::Array>. See the L</FAQ> for details.
+
+The result - as a space-separated string - is returned by L</result()>.
+
+Consult the L</FAQ> and t/test.t for specific examples of command line options supported. A few of
+them are included here:
+
+=over 4
+
+=item o All command options of the form [-+][a-zA-Z]+
+
+=item o Redirecting input from files
+
+=over 4
+
+=item o convert magick:rose -label @t/label.1.txt -format "%l label" rose.png
+
+=back
+
+=item o File globbing
+
+=over 4
+
+=item o convert colors/*s*.png -append output.png
+
+=back
+
+=item o Explicit image format
+
+=over 4
+
+=item o convert rgb:camera.image -size 320x85 output.png
+
+=back
+
+=item o Built-in images and patterns
+
+=over 4
+
+=item o convert pattern:bricks -size 320x85 output.png
+
+=back
+
+=item o Standard input and output
+
+=over 4
+
+=item o convert gif:- -size 320x85 output.png
+
+=back
+
+=item o File handle numbers
+
+=over 4
+
+=item o convert fd:3 png:fd:4 gif:fd:5 fd:6 -append output.png
+
+=back
+
+=item o The apparently endless variations of the geometry parameter
+
+Samples:
+
+=over 4
+
+=item o 320x85
+
+=item o 50%
+
+=item o 60%x40
+
+=item o 320x85+0+0
+
+=item o 60x40%+0+0
+
+=item o 50%!+0+0
+
+=back
+
+=item o Built-in special files
+
+Samples:
+
+=over 4
+
+=item o logo:
+
+=item o magick:rose
+
+=back
+
+=item o Output label format strings
+
+=over 4
+
+=item o convert magick:rose -label "%wx%h" -format "%l label" rose.png
+
+=back
+
+=item o The image stack and cloning
+
+=over 4
+
+=item o convert label.gif ( +clone -shade 110x90 -normalize -negate +clone -compose Plus -composite ) button.gif
+
+=item o convert label.gif +clone 0,4,5 button.gif
+
+=back
+
+=back
+
+Imagemagick has a web page, L<http://imagemagick.org/script/command-line-processing.php>, dedicated
+to the features available in its command line processing code. Please report any cases where this
+module does not support one of those features.
+
+=head1 Installation
+
+Install C<Image::Magick::CommandParser> as you would for any C<Perl> module:
+
+Run:
+
+	cpanm Image::Magick::CommandParser
+
+or run:
+
+	sudo cpan Image::Magick::CommandParser
+
+or unpack the distro, and then:
+
+	perl Makefile.PL
+	make (or dmake or nmake)
+	make test
+	make install
 
 =head1 Constructor and Initialization
 
+Call C<new()> as C<< my($parser) = Image::Magick::CommandParser -> new(k1 => v1, k2 => v2, ...) >>.
+
+It returns a new object of type C<Image::Magick::CommandParser>.
+
+Key-value pairs accepted in the parameter list (see also the corresponding methods
+[e.g. L</command([$string])>]):
+
+=over 4
+
+=item o command => $string
+
+The command string to process.
+
+Default: ''.
+
+=item o logger => $logger_object
+
+Specify a logger object.
+
+The default value triggers creation of an object of type L<Log::Handler> which outputs to the
+screen.
+
+To disable logging, just set I<logger> to the empty string.
+
+Default: undef.
+
+=item o maxlevel => $level
+
+This option is only used if an object of type L<Log::Handler> is created. See I<logger> above.
+
+See also L<Log::Handler::Levels>.
+
+Nothing is printed by default.
+
+Default: 'notice'. Typical value is 'debug' and 'info'.
+
+=item o minlevel => $level
+
+This option is only used if an object of type L<Log::Handler> is created. See I<logger> above.
+
+See also L<Log::Handler::Levels>.
+
+Default: 'error'.
+
+No lower levels are used.
+
+=back
 
 =head1 Methods
 
+=head2 command([$string])
+
+Here, the [] indicate an optional parameter.
+
+Get or set the command line string to be processed.
+
+=head2 log($level, $s)
+
+Calls $self -> logger -> log($level => $s) if ($self -> logger).
+
+=head2 logger([$logger_object])
+
+Here, the [] indicate an optional parameter.
+
+Get or set the logger object.
+
+To disable logging, just set logger to the empty string.
+
+This logger is passed to L<GraphViz2>.
+
+Note: C<logger> is a parameter to new().
+
+=head2 maxlevel([$string])
+
+Here, the [] indicate an optional parameter.
+
+Get or set the value used by the logger object.
+
+This option is only used if an object of type L<Log::Handler> is created. See
+L<Log::Handler::Levels>.
+
+Note: C<maxlevel> is a parameter to new().
+
+=head2 minlevel([$string])
+
+Here, the [] indicate an optional parameter.
+
+Get or set the value used by the logger object.
+
+This option is only used if an object of type L<Log::Handler> is created. See
+L<Log::Handler::Levels>.
+
+Note: C<minlevel> is a parameter to new().
+
+=head2 new()
+
+The constructor. See L</Constructor and Initialization>.
+
+=head2 result()
+
+Returns a string of space-separated tokens, as output by the parser.
+
+There is C<result()> in its entirety:
+
+	sub result
+	{
+		my($self) = @_;
+
+		return join(' ', map{$$_{token} } $self -> stack -> print);
+
+	} # End of result.
+
+=head2 stack()
+
+This returns an object of type L<Set::Array>, which you can use to iterate over the items output
+by the parser.
+
+See L</result()> just above for how to use this object.
 
 =head1 FAQ
 
-=head1 Troubleshooting
+=head2 What is the format of stack items?
 
-=head2 I'm having problems with single- 'v' double-quotes on the command line
+They are hashrefs, with these keys:
 
-When using something like -label "%m:%f %wx%h", you have to use double-quotes.
+=over 4
 
-As an experiment, I patched the code to allow single- or double- quotes, but it did not work.
+=item o token
 
-=head2 I'm having problems with the '-compose' option
+This is the token extracted from the command line.
 
-This module returns '-compose' as 2 separate element in the C<options> arrayref:
+Note: In the cases of file globbing and redirection of input from a file, these token are I<after>
+expansion of such items.
 
-	options =>
-	[
-		{
-			name => "action_set",
-			param =>
-			[
-				"-",
-				"compose"
-			]
-		},
-		{
-			name => "operator",
-			param =>
-			[
-				"Plus"
-			]
-		}
-	]
+=item o type
+
+This is my classification of the type of token detected. The values taken by C<type> are:
+
+=over 4
+
+=item o action
+
+=item o close_parenthesis
+
+=item o command
+
+=item o done
+
+In this case, the C<token> will be the empty string.
+
+=item o input_file
+
+This is used for both explicit file names and for each file name produced by expanding globs.
+
+=item o open_parenthesis
+
+=item o output_file
+
+=item o operator
+
+=item o parameter
+
+=back
+
+=back
 
 =head1 See Also
 
-L<https://metacpan.org/pod/Image::Magick::Chart>
+L<Imager>
 
-L<https://metacpan.org/pod/Image::Magick::PolyText>
+L<Image::Magick::Chart>
 
-L<https://metacpan.org/pod/Image::Magick::Tiler>
+L<Image::Magick::PolyText>
+
+L<Image::Magick::Tiler>
+
+L<Set::Array>
+
+L<Set::FA::Element>
 
 =head1 Machine-Readable Change Log
 

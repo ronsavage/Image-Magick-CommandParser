@@ -13,7 +13,7 @@ my(%params) =
 	($] ge '5.005') ?
 	(
 		AUTHOR   => 'Ron Savage (ron@savage.net.au)',
-		ABSTRACT => 'Parse any command line used by ImageMagick',
+		ABSTRACT => 'Parse any command line acceptable to convert or mogrify',
 	) : (),
 	clean =>
 	{

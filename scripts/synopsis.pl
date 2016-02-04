@@ -9,7 +9,7 @@ use Image::Magick::CommandParser;
 
 # ----------------------------------------------
 
-my($command)	= 'convert fd:3 png:fd:4 gif:fd:5 fd:6 -append output.png';
+my($command)	= 'convert colors/*s*.png -append output.png';
 my($processor)	= Image::Magick::CommandParser -> new
 (
 	command		=> $command,
