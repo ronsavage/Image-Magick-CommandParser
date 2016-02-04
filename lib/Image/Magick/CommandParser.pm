@@ -243,6 +243,7 @@ sub BUILD
 				['action',				"(?:$built_in_images):",				'output_file'],
 				['action',				'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
 				['action',				".+\\.(?:$image_formats)",				'output_file'],
+				['action',				"(?:$image_formats):-",					'output_file'],
 				['action',				'[a-zA-Z][-a-zA-Z]+',					'parameter'],
 
 				# Warning: If you patch 'action_1', copy the patch up to 'action'.
@@ -262,6 +263,7 @@ sub BUILD
 				['action_1',			"(?:$built_in_images):",				'output_file'],
 				['action_1',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
 				['action_1',			".+\\.(?:$image_formats)",				'output_file'],
+				['action_1',			"(?:$image_formats):-",					'output_file'],
 				['action_1',			'[a-zA-Z][-a-zA-Z]+',					'parameter'],
 
 				['command',				'^$',									'done'],
@@ -296,6 +298,8 @@ sub BUILD
 				['file_glob',			'[-+][a-zA-Z]+',						'action'],
 				['file_glob',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
 
+				# Warning: If you patch 'input_file', copy the patch down to 'input_file_1'.
+
 				['input_file',			'^$',									'done'],
 				['input_file',			'.*(?:\\*|\\?)',						'file_glob'],
 				['input_file',			'\(',									'open_parenthesis'],
@@ -311,6 +315,8 @@ sub BUILD
 				['input_file',			'fd:\\d+',								'input_file_1'],
 				['input_file',			'[-+][a-zA-Z]+',						'action'],
 				['input_file',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
+
+				# Warning: If you patch 'input_file_1', copy the patch up to 'input_file'.
 
 				['input_file_1',		'^$',									'done'],
 				['input_file_1',		'.*(?:\\*|\\?)',						'file_glob'],
@@ -333,16 +339,19 @@ sub BUILD
 				['close_parenthesis',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
 				['close_parenthesis',	'[-+][a-zA-Z]+',						'action'],
 				['close_parenthesis',	".+\\.(?:$image_formats)",				'output_file'],
+				['close_parenthesis',	"(?:$image_formats):-",					'output_file'],
 
 				['open_parenthesis',	'^$',									'done'],
 				['open_parenthesis',	'\)',									'close_parenthesis'],
 				['open_parenthesis',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
 				['open_parenthesis',	'[-+][a-zA-Z]+',						'action'],
 				['open_parenthesis',	".+\\.(?:$image_formats)",				'output_file'],
+				['open_parenthesis',	"(?:$image_formats):-",					'output_file'],
 
 				['operator',			'^$',									'done'],
 				['operator',			'[-+][a-zA-Z]+',						'action'],
 				['operator',			".+\\.(?:$image_formats)",				'output_file'],
+				['operator',			"(?:$image_formats):-",					'output_file'],
 
 				['output_file',			'^$',									'done'],
 
@@ -352,6 +361,7 @@ sub BUILD
 				['parameter',			'[-+][a-zA-Z]+',						'action'],
 				['parameter',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
 				['parameter',			".+\\.(?:$image_formats)",				'output_file'],
+				['parameter',			"(?:$image_formats):-",					'output_file'],
 
 				['start',				'(?:convert|mogrify)',					'command'],
 			],
@@ -783,6 +793,8 @@ them are included here:
 
 =item o convert gif:- -size 320x85 output.png
 
+=item o convert magick:logo -size 320x85 gif:-
+
 =back
 
 =item o File handle numbers
@@ -1037,9 +1049,15 @@ This is used for both explicit file names and for each file name produced by exp
 
 =back
 
+=head2 Why do you use pairs of states such as 'action' and 'action_1'?
+
+The way L<Set::FA::Element> was designed, it will not move from a state to the same state when the
+input matches. So, to trigger the entry or exit subs, I have to rock back-and-forth between 2
+states which are more-or-less identical.
+
 =head1 Trouble-shooting
 
-=head2 This module does not support regions specified as '@100000'
+=head2 Regions specified as '@100000' are not supported
 
 So, you must put the '@' at the end of the region:
 

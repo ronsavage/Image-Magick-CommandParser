@@ -79,6 +79,7 @@ my(@test) =
 },
 {
 	command	=> 'convert magick:logo -label "%m:%f %wx%h" logo.png',
+	comment	=> q|See also test 51, which switches " and '|,
 	count	=> 14,
 	glob	=> '',
 },
@@ -260,6 +261,17 @@ my(@test) =
 {
 	command	=> q|convert magick:logo -resize '10000@' wiz10000.png|,
 	count	=> 50,
+	glob	=> '',
+},
+{
+	command	=> "convert magick:logo -label '%m:%f %wx%h' logo.png",
+	comment	=> q|See also test 14, which switches " and '|,
+	count	=> 51,
+	glob	=> '',
+},
+{
+	command	=> 'convert magick:logo -size 320x85 gif:-',
+	count	=> 52,
 	glob	=> '',
 },
 );

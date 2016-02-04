@@ -50,3 +50,5 @@ perl -Ilib t/test.t 47
 perl -Ilib t/test.t 48
 perl -Ilib t/test.t 49
 perl -Ilib t/test.t 50
+perl -Ilib t/test.t 51
+perl -Ilib t/test.t 52
