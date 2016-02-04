@@ -257,6 +257,11 @@ my(@test) =
 	count	=> 49,
 	glob	=> '',
 },
+{
+	command	=> q|convert magick:logo -resize '10000@' wiz10000.png|,
+	count	=> 50,
+	glob	=> '',
+},
 );
 my($limit)		= shift || 0;
 my($maxlevel)	= shift || 'notice';

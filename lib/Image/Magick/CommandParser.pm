@@ -847,7 +847,8 @@ Samples:
 
 Imagemagick has a web page, L<http://imagemagick.org/script/command-line-processing.php>, dedicated
 to the features available in its command line processing code. Please report any cases where this
-module does not support one of those features.
+module does not support one of those features. BUt see L</Trouble-shooting> before reporting an
+issue, since there I list a few special cases.
 
 =head1 Installation
 
@@ -1001,7 +1002,7 @@ They are hashrefs, with these keys:
 
 This is the token extracted from the command line.
 
-Note: In the cases of file globbing and redirection of input from a file, these token are I<after>
+Note: In the cases of file globbing and redirection of input from a file, these tokens are I<after>
 expansion of such items.
 
 =item o type
@@ -1035,6 +1036,14 @@ This is used for both explicit file names and for each file name produced by exp
 =back
 
 =back
+
+=head1 Trouble-shooting
+
+=head2 This module does not support regions specified as '@100000'
+
+So, you must put the '@' at the end of the region:
+
+	convert magick:logo -resize '10000@' wiz10000.png
 
 =head1 See Also
 
