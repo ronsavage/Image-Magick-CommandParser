@@ -264,7 +264,7 @@ my(@test) =
 	glob	=> '',
 },
 {
-	command	=> "convert magick:logo -label '%m:%f %wx%h' logo.png",
+	command	=> q|convert magick:logo -label '%m:%f %wx%h' logo.png|,
 	comment	=> q|See also test 14, which switches " and '|,
 	count	=> 51,
 	glob	=> '',

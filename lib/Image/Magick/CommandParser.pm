@@ -29,6 +29,14 @@ has built_in_images =>
 	required => 0,
 );
 
+has built_in_patterns =>
+(
+	default  => sub{return ''},
+	is       => 'rw',
+	isa      => Str,
+	required => 0,
+);
+
 has command =>
 (
 	default  => sub{return ''},
@@ -80,14 +88,6 @@ has maxlevel =>
 has minlevel =>
 (
 	default  => sub{return 'error'},
-	is       => 'rw',
-	isa      => Str,
-	required => 0,
-);
-
-has patterns =>
-(
-	default  => sub{return ''},
 	is       => 'rw',
 	isa      => Str,
 	required => 0,
@@ -149,11 +149,11 @@ sub BUILD
 
 	my($image_formats) = $self -> image_formats;
 
-	$list = get_data_section('patterns');
+	$list = get_data_section('built_in_patterns');
 
-	$self -> patterns(join('|', split(/\n/, $list) ) );
+	$self -> built_in_patterns(join('|', split(/\n/, $list) ) );
 
-	my($patterns) = $self -> patterns;
+	my($built_in_patterns) = $self -> built_in_patterns;
 
 	$list = get_data_section('pseudo_image_formats');
 
@@ -241,9 +241,9 @@ sub BUILD
 				['action',				'-?\d+.*',								'parameter'],
 				['action',				"magick:(?:$built_in_images)",			'output_file'],
 				['action',				"(?:$built_in_images):",				'output_file'],
-				['action',				'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
 				['action',				".+\\.(?:$image_formats)",				'output_file'],
 				['action',				"(?:$image_formats):-",					'output_file'],
+				['action',				'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
 				['action',				'[a-zA-Z][-a-zA-Z]+',					'parameter'],
 
 				# Warning: If you patch 'action_1', copy the patch up to 'action'.
@@ -261,9 +261,9 @@ sub BUILD
 				['action_1',			'-?\d+.*',								'parameter'],
 				['action_1',			"magick:(?:$built_in_images)",			'output_file'],
 				['action_1',			"(?:$built_in_images):",				'output_file'],
-				['action_1',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
 				['action_1',			".+\\.(?:$image_formats)",				'output_file'],
 				['action_1',			"(?:$image_formats):-",					'output_file'],
+				['action_1',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
 				['action_1',			'[a-zA-Z][-a-zA-Z]+',					'parameter'],
 
 				['command',				'^$',									'done'],
@@ -271,7 +271,7 @@ sub BUILD
 				['command',				'rgb:(?:.+)',							'input_file'],
 				['command',				"magick:(?:$built_in_images)",			'input_file'],
 				['command',				"(?:$built_in_images):",				'input_file'],
-				['command',				"pattern:(?:$patterns)",				'input_file'],
+				['command',				"pattern:(?:$built_in_patterns)",		'input_file'],
 				['command',				"(?:$pseudo_image_formats):(?:.*)",		'input_file'],
 				['command',				".+\\.(?:$image_formats)",				'input_file'],
 				['command',				'^-$',									'input_file'],
@@ -288,7 +288,7 @@ sub BUILD
 				['file_glob',			'rgb:(?:.+)',							'input_file_1'],
 				['file_glob',			"magick:(?:$built_in_images)",			'input_file_1'],
 				['file_glob',			"(?:$built_in_images):",				'input_file_1'],
-				['file_glob',			"pattern:(?:$patterns)",				'input_file_1'],
+				['file_glob',			"pattern:(?:$built_in_patterns)",		'input_file_1'],
 				['file_glob',			"(?:$pseudo_image_formats):(?:.*)",		'input_file_1'],
 				['file_glob',			".+\\.(?:$image_formats)",				'input_file_1'],
 				['file_glob',			'^-$',									'input_file_1'],
@@ -306,7 +306,7 @@ sub BUILD
 				['input_file',			'rgb:(?:.+)',							'input_file_1'],
 				['input_file',			"magick:(?:$built_in_images)",			'input_file_1'],
 				['input_file',			"(?:$built_in_images):",				'input_file_1'],
-				['input_file',			"pattern:(?:$patterns)",				'input_file_1'],
+				['input_file',			"pattern:(?:$built_in_patterns)",		'input_file_1'],
 				['input_file',			"(?:$pseudo_image_formats):(?:.*)",		'input_file_1'],
 				['input_file',			".+\\.(?:$image_formats)",				'input_file_1'],
 				['input_file',			'^-$',									'input_file_1'],
@@ -324,7 +324,7 @@ sub BUILD
 				['input_file_1',		'rgb:(?:.+)',							'input_file'],
 				['input_file_1',		"magick:(?:$built_in_images)",			'input_file'],
 				['input_file_1',		"(?:$built_in_images):",				'input_file'],
-				['input_file_1',		"pattern:(?:$patterns)",				'input_file'],
+				['input_file_1',		"pattern:(?:$built_in_patterns)",		'input_file'],
 				['input_file_1',		"(?:$pseudo_image_formats):(?:.*)",		'input_file'],
 				['input_file_1',		".+\\.(?:$image_formats)",				'input_file'],
 				['input_file_1',		'^-$',									'input_file'],
@@ -1063,6 +1063,12 @@ So, you must put the '@' at the end of the region:
 
 	convert magick:logo -resize '10000@' wiz10000.png
 
+=head2 Frame references are not supported
+
+So, this won't work:
+
+	convert 'images.gif[0]' image.png
+
 =head1 See Also
 
 L<Imager>
@@ -1113,18 +1119,6 @@ Australian copyright (c) 2016, Ron Savage.
 =cut
 
 __DATA__
-@@ action_with_parameters
-background
-compress
-fill
-font
-gravity
-pointsize
-
-@@ action_with_strings
-format
-label
-
 @@ built_in_images
 granite
 logo
@@ -1132,74 +1126,61 @@ netscape
 rose
 wizard
 
-@@ compose_parameters
-Atop
-Blend
-Blur
-Bumpmap
-ChangeMask
-Clear
-ColorBurn
-ColorDodge
-Colorize
-CopyBlack
-CopyBlue
-CopyCyan
-CopyGreen
-Copy
-CopyMagenta
-CopyOpacity
-CopyRed
-CopyYellow
-Darken
-DarkenIntensity
-DivideDst
-DivideSrc
-Dst
-Difference
-Displace
-Dissolve
-Distort
-DstAtop
-DstIn
-DstOut
-DstOver
-Exclusion
-HardLight
-HardMix
-Hue
-In
-Lighten
-LightenIntensity
-LinearBurn
-LinearDodge
-LinearLight
-Luminize
-Mathematics
-MinusDst
-MinusSrc
-Modulate
-ModulusAdd
-ModulusSubtract
-Multiply
-None
-Out
-Overlay
-Over
-PegtopLight
-PinLight
-Plus
-Replace
-Saturate
-Screen
-SoftLight
-Src
-SrcAtop
-SrcIn
-SrcOut
-SrcOver
-VividLight
-Xor
+@@ built_in_patterns
+bricks
+checkerboard
+circles
+crosshatch
+crosshatch30
+crosshatch45
+fishscales
+gray0
+gray5
+gray10
+gray15
+gray20
+gray25
+gray30
+gray35
+gray40
+gray45
+gray50
+gray55
+gray60
+gray65
+gray70
+gray75
+gray80
+gray85
+gray90
+gray95
+gray100
+hexagons
+horizontal
+horizontal2
+horizontal3
+horizontalsaw
+hs_bdiagonal
+hs_cross
+hs_diagcross
+hs_fdiagonal
+hs_horizontal
+hs_vertical
+left30
+left45
+leftshingle
+octagons
+right30
+right45
+rightshingle
+smallfishscales
+vertical
+vertical2
+vertical3
+verticalbricks
+verticalleftshingle
+verticalrightshingle
+verticalsaw
 
 @@ image_formats
 3fr
@@ -1423,137 +1404,6 @@ y
 ycbcra
 ycbcr
 yuv
-
-@@ list_options
-Align
-Alpha
-Boolean
-Cache
-Channel
-Class
-ClipPath
-Coder
-Color
-Colorspace
-Command
-Compliance
-Complex
-Compose
-Compress
-Configure
-DataType
-Debug
-Decoration
-Delegate
-Direction
-Dispose
-Distort
-Dither
-Endian
-Evaluate
-FillRule
-Filter
-Font
-Format
-Function
-Gradient
-Gravity
-Intensity
-Intent
-Interlace
-Interpolate
-Kernel
-Layers
-LineCap
-LineJoin
-List
-Locale
-LogEvent
-Log
-Magic
-Method
-Metric
-Mime
-Mode
-Morphology
-Module
-Noise
-Orientation
-PixelIntensity
-Policy
-PolicyDomain
-PolicyRights
-Preview
-Primitive
-QuantumFormat
-Resource
-SparseColor
-Statistic
-Storage
-Stretch
-Style
-Threshold
-Type
-Units
-Validate
-VirtualPixel
-Weight
-
-@@ patterns
-bricks
-checkerboard
-circles
-crosshatch
-crosshatch30
-crosshatch45
-fishscales
-gray0
-gray5
-gray10
-gray15
-gray20
-gray25
-gray30
-gray35
-gray40
-gray45
-gray50
-gray55
-gray60
-gray65
-gray70
-gray75
-gray80
-gray85
-gray90
-gray95
-gray100
-hexagons
-horizontal
-horizontal2
-horizontal3
-horizontalsaw
-hs_bdiagonal
-hs_cross
-hs_diagcross
-hs_fdiagonal
-hs_horizontal
-hs_vertical
-left30
-left45
-leftshingle
-octagons
-right30
-right45
-rightshingle
-smallfishscales
-vertical
-vertical2
-vertical3
-verticalbricks
-verticalleftshingle
-verticalrightshingle
-verticalsaw
 
 @@ pseudo_image_formats
 canvas
