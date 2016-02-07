@@ -1075,6 +1075,14 @@ states which are more-or-less identical.
 
 =head1 Trouble-shooting
 
+=head2 Installation failure
+
+I had a failure when installing the module on my laptop for the 1st time. The problem was that,
+somehow, during the installation of L<Image::Magick>, root had become the owner of a directory
+under the control of perlbrew. To fix this, I had to do:
+
+	sudo chown ron:ron /home/ron/perl5/perlbrew/perls/perl-5.20.2/lib/site_perl/5.20.2/x86_64-linux/auto/Image/Magick
+
 =head2 Regions specified as '@100000' are not supported
 
 So, you must put the '@' at the end of the region:
