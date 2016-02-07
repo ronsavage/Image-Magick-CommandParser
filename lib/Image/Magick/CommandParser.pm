@@ -1129,7 +1129,7 @@ L<https://rt.cpan.org/Public/Dist/Display.html?Name=Image::Magick::CommandParser
 
 =head1 Author
 
-L<Tree::Cladogram> was written by Ron Savage I<E<lt>ron@savage.net.auE<gt>> in 2016.
+C<Image::Magick::CommandParser> was written by Ron Savage I<E<lt>ron@savage.net.auE<gt>> in 2016.
 
 My homepage: L<http://savage.net.au/>
 
