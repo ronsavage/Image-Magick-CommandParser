@@ -103,7 +103,7 @@ has pseudo_image_formats =>
 
 has stack =>
 (
-	default  => sub{return Set::Array -> new},
+	default  => sub{return []},
 	is       => 'rw',
 	isa      => Any,
 	required => 0,
@@ -134,239 +134,6 @@ sub BUILD
 			}
 		);
 	}
-
-	my($list) = get_data_section('built_in_images');
-
-	$self -> built_in_images(join('|', split(/\n/, $list) ) );
-
-	my($built_in_images) = $self -> built_in_images;
-
-	# Warning: Do not sort these formats. Things like 'o' must come after all /o.+/.
-
-	$list = get_data_section('image_formats');
-
-	$self -> image_formats(join('|', split(/\n/, $list) ) );
-
-	my($image_formats) = $self -> image_formats;
-
-	$list = get_data_section('built_in_patterns');
-
-	$self -> built_in_patterns(join('|', split(/\n/, $list) ) );
-
-	my($built_in_patterns) = $self -> built_in_patterns;
-
-	$list = get_data_section('pseudo_image_formats');
-
-	$self -> pseudo_image_formats(join('|', split(/\n/, $list) ) );
-
-	my($pseudo_image_formats) = $self -> pseudo_image_formats;
-
-	# Crank up the DFA.
-
-	$self -> dfa
-	(
-		Set::FA::Element -> new
-		(
-			accepting	=> ['done'],
-			actions		=>
-			{
-				action =>
-				{
-					entry	=> \&action,
-				},
-				action_1 =>
-				{
-					entry	=> \&action,
-				},
-				close_parenthesis =>
-				{
-					entry	=> \&close_parenthesis,
-				},
-				command =>
-				{
-					entry	=> \&kommand,
-				},
-				done =>
-				{
-					entry	=> \&done,
-				},
-				file_glob =>
-				{
-					entry	=> \&file_glob,
-				},
-				input_file =>
-				{
-					entry	=> \&input_file,
-				},
-				input_file_1 =>
-				{
-					entry	=> \&input_file,
-				},
-				open_parenthesis =>
-				{
-					entry	=> \&open_parenthesis,
-				},
-				operator =>
-				{
-					entry	=> \&operator,
-				},
-				output_file =>
-				{
-					entry	=> \&output_file,
-				},
-				parameter =>
-				{
-					entry	=> \&parameter,
-				},
-			},
-			die_on_loop	=> 1,
-			maxlevel	=> $self -> maxlevel,
-			start		=> 'start',
-			transitions	=>
-			[
-				# Current state			Regexp testing input					New state
-				#
-				# Warning: If you patch 'action', copy the patch down to 'action_1'.
-
-				['action',				'^$',									'done'],
-				['action',				'[-+][a-zA-Z]+',						'action_1'],
-				['action',				'\(',									'open_parenthesis'],
-				['action',				'\)',									'close_parenthesis'],
-				['action',				'[\"\'].*[\"\']',						'parameter'],
-				['action',				'\@.+',									'action_1'],
-				['action',				'\d+%x\d+%[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
-				['action',				'x\d+%[!<>^]?(?:[-+]\d+[-+]\d+)?',		'parameter'],
-				['action',				'\d+%(?:x\d+)?[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
-				['action',				'\d+x\d+%?[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
-				['action',				'-?\d+.*',								'parameter'],
-				['action',				"magick:(?:$built_in_images)",			'output_file'],
-				['action',				"(?:$built_in_images):",				'output_file'],
-				['action',				".+\\.(?:$image_formats)",				'output_file'],
-				['action',				"(?:$image_formats):-",					'output_file'],
-				['action',				'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
-				['action',				'[a-zA-Z][-a-zA-Z]+',					'parameter'],
-
-				# Warning: If you patch 'action_1', copy the patch up to 'action'.
-
-				['action_1',			'^$',									'done'],
-				['action_1',			'[-+][a-zA-Z]+',						'action'],
-				['action_1',			'\(',									'open_parenthesis'],
-				['action_1',			'\)',									'close_parenthesis'],
-				['action_1',			'[\"\'].*[\"\']',						'parameter'],
-				['action_1',			'\@.+',									'action'],
-				['action_1',			'\d+%x\d+%[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
-				['action_1',			'x\d+%[!<>^]?(?:[-+]\d+[-+]\d+)?',		'parameter'],
-				['action_1',			'\d+%(?:x\d+)?[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
-				['action_1',			'\d+x\d+%?[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
-				['action_1',			'-?\d+.*',								'parameter'],
-				['action_1',			"magick:(?:$built_in_images)",			'output_file'],
-				['action_1',			"(?:$built_in_images):",				'output_file'],
-				['action_1',			".+\\.(?:$image_formats)",				'output_file'],
-				['action_1',			"(?:$image_formats):-",					'output_file'],
-				['action_1',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
-				['action_1',			'[a-zA-Z][-a-zA-Z]+',					'parameter'],
-
-				['command',				'^$',									'done'],
-				['command',				'.*(?:\\*|\\?)',						'file_glob'],
-				['command',				'rgb:(?:.+)',							'input_file'],
-				['command',				"magick:(?:$built_in_images)",			'input_file'],
-				['command',				"(?:$built_in_images):",				'input_file'],
-				['command',				"pattern:(?:$built_in_patterns)",		'input_file'],
-				['command',				"(?:$pseudo_image_formats):(?:.*)",		'input_file'],
-				['command',				".+\\.(?:$image_formats)",				'input_file'],
-				['command',				'^-$',									'input_file'],
-				['command',				"(?:$image_formats):-",					'input_file'],
-				['command',				"(?:$image_formats):fd:\\d+",			'input_file'],
-				['command',				'fd:\\d+',								'input_file'],
-				['command',				'[-+][a-zA-Z]+',						'action'],
-
-				['done',				'^$',									'done'],
-
-				['file_glob',			'^$',									'done'],
-				['file_glob',			'\(',									'open_parenthesis'],
-				['file_glob',			'.*(?:\\*|\\?)',						'file_glob'],
-				['file_glob',			'rgb:(?:.+)',							'input_file_1'],
-				['file_glob',			"magick:(?:$built_in_images)",			'input_file_1'],
-				['file_glob',			"(?:$built_in_images):",				'input_file_1'],
-				['file_glob',			"pattern:(?:$built_in_patterns)",		'input_file_1'],
-				['file_glob',			"(?:$pseudo_image_formats):(?:.*)",		'input_file_1'],
-				['file_glob',			".+\\.(?:$image_formats)",				'input_file_1'],
-				['file_glob',			'^-$',									'input_file_1'],
-				['file_glob',			"(?:$image_formats):-",					'input_file_1'],
-				['file_glob',			"(?:$image_formats):fd:\\d+",			'input_file_1'],
-				['file_glob',			'fd:\\d+',								'input_file_1'],
-				['file_glob',			'[-+][a-zA-Z]+',						'action'],
-				['file_glob',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
-
-				# Warning: If you patch 'input_file', copy the patch down to 'input_file_1'.
-
-				['input_file',			'^$',									'done'],
-				['input_file',			'.*(?:\\*|\\?)',						'file_glob'],
-				['input_file',			'\(',									'open_parenthesis'],
-				['input_file',			'rgb:(?:.+)',							'input_file_1'],
-				['input_file',			"magick:(?:$built_in_images)",			'input_file_1'],
-				['input_file',			"(?:$built_in_images):",				'input_file_1'],
-				['input_file',			"pattern:(?:$built_in_patterns)",		'input_file_1'],
-				['input_file',			"(?:$pseudo_image_formats):(?:.*)",		'input_file_1'],
-				['input_file',			".+\\.(?:$image_formats)",				'input_file_1'],
-				['input_file',			'^-$',									'input_file_1'],
-				['input_file',			"(?:$image_formats):-",					'input_file_1'],
-				['input_file',			"(?:$image_formats):fd:\\d+",			'input_file_1'],
-				['input_file',			'fd:\\d+',								'input_file_1'],
-				['input_file',			'[-+][a-zA-Z]+',						'action'],
-				['input_file',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
-
-				# Warning: If you patch 'input_file_1', copy the patch up to 'input_file'.
-
-				['input_file_1',		'^$',									'done'],
-				['input_file_1',		'.*(?:\\*|\\?)',						'file_glob'],
-				['input_file_1',		'\(',									'open_parenthesis'],
-				['input_file_1',		'rgb:(?:.+)',							'input_file'],
-				['input_file_1',		"magick:(?:$built_in_images)",			'input_file'],
-				['input_file_1',		"(?:$built_in_images):",				'input_file'],
-				['input_file_1',		"pattern:(?:$built_in_patterns)",		'input_file'],
-				['input_file_1',		"(?:$pseudo_image_formats):(?:.*)",		'input_file'],
-				['input_file_1',		".+\\.(?:$image_formats)",				'input_file'],
-				['input_file_1',		'^-$',									'input_file'],
-				['input_file_1',		"(?:$image_formats):-",					'input_file'],
-				['input_file_1',		"(?:$image_formats):fd:\\d+",			'input_file'],
-				['input_file_1',		'fd:\\d+',								'input_file'],
-				['input_file_1',		'[-+][a-zA-Z]+',						'action'],
-				['input_file_1',		'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
-
-				['close_parenthesis',	'^$',									'done'],
-				['close_parenthesis',	'\(',									'open_parenthesis'],
-				['close_parenthesis',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
-				['close_parenthesis',	'[-+][a-zA-Z]+',						'action'],
-				['close_parenthesis',	".+\\.(?:$image_formats)",				'output_file'],
-				['close_parenthesis',	"(?:$image_formats):-",					'output_file'],
-
-				['open_parenthesis',	'^$',									'done'],
-				['open_parenthesis',	'\)',									'close_parenthesis'],
-				['open_parenthesis',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
-				['open_parenthesis',	'[-+][a-zA-Z]+',						'action'],
-				['open_parenthesis',	".+\\.(?:$image_formats)",				'output_file'],
-				['open_parenthesis',	"(?:$image_formats):-",					'output_file'],
-
-				['operator',			'^$',									'done'],
-				['operator',			'[-+][a-zA-Z]+',						'action'],
-				['operator',			".+\\.(?:$image_formats)",				'output_file'],
-				['operator',			"(?:$image_formats):-",					'output_file'],
-
-				['output_file',			'^$',									'done'],
-
-				['parameter',			'^$',									'done'],
-				['parameter',			'\(',									'open_parenthesis'],
-				['parameter',			'\)',									'close_parenthesis'],
-				['parameter',			'[-+][a-zA-Z]+',						'action'],
-				['parameter',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
-				['parameter',			".+\\.(?:$image_formats)",				'output_file'],
-				['parameter',			"(?:$image_formats):-",					'output_file'],
-
-				['start',				'(?:convert|mogrify)',					'command'],
-			],
-		)
-	);
 
 } # End of BUILD.
 
@@ -512,6 +279,247 @@ sub log
 
 } # End of log.
 
+# --------------------------------------------------
+
+sub new_machine
+{
+	my($self)	= @_;
+	my($list)	= get_data_section('built_in_images');
+
+	$self -> built_in_images(join('|', split(/\n/, $list) ) );
+
+	my($built_in_images) = $self -> built_in_images;
+
+	# Warning: Do not sort these formats. Things like 'o' must come after all /o.+/.
+
+	$list = get_data_section('image_formats');
+
+	$self -> image_formats(join('|', split(/\n/, $list) ) );
+
+	my($image_formats) = $self -> image_formats;
+
+	$list = get_data_section('built_in_patterns');
+
+	$self -> built_in_patterns(join('|', split(/\n/, $list) ) );
+
+	my($built_in_patterns) = $self -> built_in_patterns;
+
+	$list = get_data_section('pseudo_image_formats');
+
+	$self -> pseudo_image_formats(join('|', split(/\n/, $list) ) );
+
+	my($pseudo_image_formats)	= $self -> pseudo_image_formats;
+	my($transitions)			=
+	[
+		# Current state			Regexp testing input					New state
+		#
+		# Warning: If you patch 'action', copy the patch down to 'action_1'.
+
+		['action',				'^$',									'done'],
+		['action',				'[-+][a-zA-Z]+',						'action_1'],
+		['action',				'\(',									'open_parenthesis'],
+		['action',				'\)',									'close_parenthesis'],
+		['action',				'[\"\'].*[\"\']',						'parameter'],
+		['action',				'\@.+',									'action_1'],
+		['action',				'\d+%x\d+%[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
+		['action',				'x\d+%[!<>^]?(?:[-+]\d+[-+]\d+)?',		'parameter'],
+		['action',				'\d+%(?:x\d+)?[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
+		['action',				'\d+x\d+%?[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
+		['action',				'-?\d+.*',								'parameter'],
+		['action',				"magick:(?:$built_in_images)",			'output_file'],
+		['action',				"(?:$built_in_images):",				'output_file'],
+		['action',				".+\\.(?:$image_formats)",				'output_file'],
+		['action',				"(?:$image_formats):-",					'output_file'],
+		['action',				'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
+		['action',				'[a-zA-Z][-a-zA-Z]+',					'parameter'],
+
+		# Warning: If you patch 'action_1', copy the patch up to 'action'.
+
+		['action_1',			'^$',									'done'],
+		['action_1',			'[-+][a-zA-Z]+',						'action'],
+		['action_1',			'\(',									'open_parenthesis'],
+		['action_1',			'\)',									'close_parenthesis'],
+		['action_1',			'[\"\'].*[\"\']',						'parameter'],
+		['action_1',			'\@.+',									'action'],
+		['action_1',			'\d+%x\d+%[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
+		['action_1',			'x\d+%[!<>^]?(?:[-+]\d+[-+]\d+)?',		'parameter'],
+		['action_1',			'\d+%(?:x\d+)?[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
+		['action_1',			'\d+x\d+%?[!<>^]?(?:[-+]\d+[-+]\d+)?',	'parameter'],
+		['action_1',			'-?\d+.*',								'parameter'],
+		['action_1',			"magick:(?:$built_in_images)",			'output_file'],
+		['action_1',			"(?:$built_in_images):",				'output_file'],
+		['action_1',			".+\\.(?:$image_formats)",				'output_file'],
+		['action_1',			"(?:$image_formats):-",					'output_file'],
+		['action_1',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
+		['action_1',			'[a-zA-Z][-a-zA-Z]+',					'parameter'],
+
+		['command',				'^$',									'done'],
+		['command',				'.*(?:\\*|\\?)',						'file_glob'],
+		['command',				'rgb:(?:.+)',							'input_file'],
+		['command',				"magick:(?:$built_in_images)",			'input_file'],
+		['command',				"(?:$built_in_images):",				'input_file'],
+		['command',				"pattern:(?:$built_in_patterns)",		'input_file'],
+		['command',				"(?:$pseudo_image_formats):(?:.*)",		'input_file'],
+		['command',				".+\\.(?:$image_formats)",				'input_file'],
+		['command',				'^-$',									'input_file'],
+		['command',				"(?:$image_formats):-",					'input_file'],
+		['command',				"(?:$image_formats):fd:\\d+",			'input_file'],
+		['command',				'fd:\\d+',								'input_file'],
+		['command',				'[-+][a-zA-Z]+',						'action'],
+
+		['done',				'^$',									'done'],
+
+		['file_glob',			'^$',									'done'],
+		['file_glob',			'\(',									'open_parenthesis'],
+		['file_glob',			'.*(?:\\*|\\?)',						'file_glob'],
+		['file_glob',			'rgb:(?:.+)',							'input_file_1'],
+		['file_glob',			"magick:(?:$built_in_images)",			'input_file_1'],
+		['file_glob',			"(?:$built_in_images):",				'input_file_1'],
+		['file_glob',			"pattern:(?:$built_in_patterns)",		'input_file_1'],
+		['file_glob',			"(?:$pseudo_image_formats):(?:.*)",		'input_file_1'],
+		['file_glob',			".+\\.(?:$image_formats)",				'input_file_1'],
+		['file_glob',			'^-$',									'input_file_1'],
+		['file_glob',			"(?:$image_formats):-",					'input_file_1'],
+		['file_glob',			"(?:$image_formats):fd:\\d+",			'input_file_1'],
+		['file_glob',			'fd:\\d+',								'input_file_1'],
+		['file_glob',			'[-+][a-zA-Z]+',						'action'],
+		['file_glob',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
+
+		# Warning: If you patch 'input_file', copy the patch down to 'input_file_1'.
+
+		['input_file',			'^$',									'done'],
+		['input_file',			'.*(?:\\*|\\?)',						'file_glob'],
+		['input_file',			'\(',									'open_parenthesis'],
+		['input_file',			'rgb:(?:.+)',							'input_file_1'],
+		['input_file',			"magick:(?:$built_in_images)",			'input_file_1'],
+		['input_file',			"(?:$built_in_images):",				'input_file_1'],
+		['input_file',			"pattern:(?:$built_in_patterns)",		'input_file_1'],
+		['input_file',			"(?:$pseudo_image_formats):(?:.*)",		'input_file_1'],
+		['input_file',			".+\\.(?:$image_formats)",				'input_file_1'],
+		['input_file',			'^-$',									'input_file_1'],
+		['input_file',			"(?:$image_formats):-",					'input_file_1'],
+		['input_file',			"(?:$image_formats):fd:\\d+",			'input_file_1'],
+		['input_file',			'fd:\\d+',								'input_file_1'],
+		['input_file',			'[-+][a-zA-Z]+',						'action'],
+		['input_file',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
+
+		# Warning: If you patch 'input_file_1', copy the patch up to 'input_file'.
+
+		['input_file_1',		'^$',									'done'],
+		['input_file_1',		'.*(?:\\*|\\?)',						'file_glob'],
+		['input_file_1',		'\(',									'open_parenthesis'],
+		['input_file_1',		'rgb:(?:.+)',							'input_file'],
+		['input_file_1',		"magick:(?:$built_in_images)",			'input_file'],
+		['input_file_1',		"(?:$built_in_images):",				'input_file'],
+		['input_file_1',		"pattern:(?:$built_in_patterns)",		'input_file'],
+		['input_file_1',		"(?:$pseudo_image_formats):(?:.*)",		'input_file'],
+		['input_file_1',		".+\\.(?:$image_formats)",				'input_file'],
+		['input_file_1',		'^-$',									'input_file'],
+		['input_file_1',		"(?:$image_formats):-",					'input_file'],
+		['input_file_1',		"(?:$image_formats):fd:\\d+",			'input_file'],
+		['input_file_1',		'fd:\\d+',								'input_file'],
+		['input_file_1',		'[-+][a-zA-Z]+',						'action'],
+		['input_file_1',		'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
+
+		['close_parenthesis',	'^$',									'done'],
+		['close_parenthesis',	'\(',									'open_parenthesis'],
+		['close_parenthesis',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
+		['close_parenthesis',	'[-+][a-zA-Z]+',						'action'],
+		['close_parenthesis',	".+\\.(?:$image_formats)",				'output_file'],
+		['close_parenthesis',	"(?:$image_formats):-",					'output_file'],
+
+		['open_parenthesis',	'^$',									'done'],
+		['open_parenthesis',	'\)',									'close_parenthesis'],
+		['open_parenthesis',	'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
+		['open_parenthesis',	'[-+][a-zA-Z]+',						'action'],
+		['open_parenthesis',	".+\\.(?:$image_formats)",				'output_file'],
+		['open_parenthesis',	"(?:$image_formats):-",					'output_file'],
+
+		['operator',			'^$',									'done'],
+		['operator',			'[-+][a-zA-Z]+',						'action'],
+		['operator',			".+\\.(?:$image_formats)",				'output_file'],
+		['operator',			"(?:$image_formats):-",					'output_file'],
+
+		['output_file',			'^$',									'done'],
+
+		['parameter',			'^$',									'done'],
+		['parameter',			'\(',									'open_parenthesis'],
+		['parameter',			'\)',									'close_parenthesis'],
+		['parameter',			'[-+][a-zA-Z]+',						'action'],
+		['parameter',			'[a-zA-Z][-a-zA-Z]+:[a-zA-Z]+',			'operator'],
+		['parameter',			".+\\.(?:$image_formats)",				'output_file'],
+		['parameter',			"(?:$image_formats):-",					'output_file'],
+
+		['start',				'(?:convert|mogrify)',					'command'],
+	];
+
+	# Crank up the DFA.
+
+	$self -> dfa
+	(
+		Set::FA::Element -> new
+		(
+			accepting	=> ['done'],
+			actions		=>
+			{
+				action =>
+				{
+					entry	=> \&action,
+				},
+				action_1 =>
+				{
+					entry	=> \&action,
+				},
+				close_parenthesis =>
+				{
+					entry	=> \&close_parenthesis,
+				},
+				command =>
+				{
+					entry	=> \&kommand,
+				},
+				done =>
+				{
+					entry	=> \&done,
+				},
+				file_glob =>
+				{
+					entry	=> \&file_glob,
+				},
+				input_file =>
+				{
+					entry	=> \&input_file,
+				},
+				input_file_1 =>
+				{
+					entry	=> \&input_file,
+				},
+				open_parenthesis =>
+				{
+					entry	=> \&open_parenthesis,
+				},
+				operator =>
+				{
+					entry	=> \&operator,
+				},
+				output_file =>
+				{
+					entry	=> \&output_file,
+				},
+				parameter =>
+				{
+					entry	=> \&parameter,
+				},
+			},
+			die_on_loop	=> 1,
+			maxlevel	=> $self -> maxlevel,
+			start		=> 'start',
+			transitions	=> $transitions,
+		)
+	);
+
+} # End of new_machine.
+
 # ----------------------------------------------
 # Warning: this a function, not a method.
 
@@ -603,6 +611,11 @@ sub result
 sub run
 {
 	my($self, %options) = @_;
+
+	# The reason for resetting these each time is so the object can be reused.
+
+	$self -> new_machine;
+	$self -> stack(Set::Array -> new);
 
 	# Strip off any output file name.
 
@@ -994,6 +1007,11 @@ There is C<result()> in its entirety:
 		return join(' ', map{$$_{token} } $self -> stack -> print);
 
 	} # End of result.
+
+=head2 run()
+
+Run the parser on the command provided by C<< new(command => '...') >> or provided by calling
+L</command([$string])> before calling C<run()>.
 
 =head2 stack()
 

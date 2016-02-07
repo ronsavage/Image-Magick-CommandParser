@@ -285,7 +285,9 @@ my($result);
 
 for my $test (@test)
 {
-	next if ($$test{count} != $limit);
+	# Use this trick to run the tests one-at-a-time. See scripts/test.sh.
+
+	next if ( ($limit > 0) && ($$test{count} != $limit) );
 
 	$result = $parser -> run(command => $$test{command});
 
