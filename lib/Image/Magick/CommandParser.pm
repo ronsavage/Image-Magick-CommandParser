@@ -754,12 +754,15 @@ L<Imagemagick|https://imagemagick.org> programs C<convert> and C<mogrify>.
 It aims to handle all constructs supported by Imagemagick itself, but it's vital to understand
 that this module does not use any component of Imagemagick. Hence the I<stand-alone> just above.
 
-In particular the output is a stack, accessible via the C<< $object -> stack >> feature, which
+In particular the output is a stack, accessible via the C<< $object -> stack >> method, which
 returns an array of hashrefs.
 
 The stack is managed by an object of type L<Set::Array>. See the L</FAQ> for details.
 
-The result - as a space-separated string - is returned by L</result()>.
+The result - as a space-separated string of tokens detected in the command - is returned by
+L</result()>.
+
+The actual parsing is done with L<Set::FA::Element>.
 
 Consult the L</FAQ> and t/test.t for specific examples of command line options supported. A few of
 them are included here:
@@ -872,7 +875,7 @@ Samples:
 
 Imagemagick has a web page, L<http://imagemagick.org/script/command-line-processing.php>, dedicated
 to the features available in its command line processing code. Please report any cases where this
-module does not support one of those features. BUt see L</Trouble-shooting> before reporting an
+module does not support one of those features. But see L</Trouble-shooting> before reporting an
 issue, since there I list a few special cases.
 
 =head1 Installation
@@ -1010,8 +1013,15 @@ There is C<result()> in its entirety:
 
 =head2 run()
 
+Returns 0 for success and 1 for failure.
+
 Run the parser on the command provided by C<< new(command => '...') >> or provided by calling
 L</command([$string])> before calling C<run()>.
+
+If the return value is 0, call L</result()> to get a string corresponding to the input, or process
+the stack directly by calling L</stack()>.
+
+Globs etc in the input will be represented by multiple items in the stack.
 
 =head2 stack()
 
