@@ -8,7 +8,7 @@ use warnings  qw(FATAL utf8);    # Fatalize encoding glitches.
 use Data::Dumper::Concise; # For Dumper();
 use Data::Section::Simple 'get_data_section';
 
-use File::Glob ':glob';
+use File::Glob;
 use File::Slurper 'read_lines';
 
 use Log::Handler;
@@ -215,13 +215,11 @@ sub file_glob
 
 	$myself -> log(debug => "'$name' matched '$match'");
 
-	# Warning! Do not use (sort bsd_glob($match) ), when bs_glob() returns the unglobbed 'colors/*s*.png'.
+	# Warning! Do not use (sort bsd_glob($match) ), when bs_glob() returns the unglobbed 'colors/*s*.png'
+	# in test 47.
 	# You can use (sort map{$_} bsd_glob($match) ) but the result is ASCII sorted (by default) anyway.
-	# Note for V 1.01. I've reverted to just glob in the use statement, since bsd_glob was only introduced
-	# in Perl V 5.16. And note that I use glob in list context, not the dangerous scalar context.
-	# That's why test 47 works.
 
-	for my $file (glob($match) )
+	for my $file (File::Glob::bsd_glob($match) )
 	{
 		$myself -> stack -> push
 		({
