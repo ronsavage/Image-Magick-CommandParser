@@ -111,7 +111,7 @@ has stack =>
 
 my($myself); # For use inside functions.
 
-our $VERSION = '1.01';
+our $VERSION = '1.02';
 
 # -----------------------------------------------
 
