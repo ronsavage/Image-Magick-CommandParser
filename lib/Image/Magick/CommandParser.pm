@@ -1,11 +1,9 @@
 package Image::Magick::CommandParser;
 
 use strict;
-use utf8;
 use warnings;
 use warnings  qw(FATAL utf8);    # Fatalize encoding glitches.
 
-use Data::Dumper::Concise; # For Dumper();
 use Data::Section::Simple 'get_data_section';
 
 use File::Glob;
@@ -111,7 +109,7 @@ has stack =>
 
 my($myself); # For use inside functions.
 
-our $VERSION = '1.02';
+our $VERSION = '1.03';
 
 # -----------------------------------------------
 
@@ -719,7 +717,6 @@ This is scripts/synopsis.pl:
 
 	#!/usr/bin/env perl
 
-	use feature 'say';
 	use strict;
 	use warnings;
 	use warnings qw(FATAL utf8);
@@ -737,8 +734,8 @@ This is scripts/synopsis.pl:
 
 	$processor -> run;
 
-	say 'Input:  ', $command;
-	say 'Result: ', $processor -> result;
+	print 'Input:  ', $command, "\n";
+	print 'Result: ', $processor -> result, "\n";
 
 With its output (after running in the distro dir, with access to colors/*.png):
 

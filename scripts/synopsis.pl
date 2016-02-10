@@ -1,6 +1,5 @@
 #!/usr/bin/env perl
 
-use feature 'say';
 use strict;
 use warnings;
 use warnings qw(FATAL utf8);
@@ -18,5 +17,5 @@ my($processor)	= Image::Magick::CommandParser -> new
 
 $processor -> run;
 
-say 'Input:  ', $command;
-say 'Result: ', $processor -> result;
+print 'Input:  ', $command, "\n";
+print 'Result: ', $processor -> result, "\n";

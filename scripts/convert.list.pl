@@ -1,6 +1,5 @@
 #!/usr/bin/env perl
 
-use feature 'say';
 use strict;
 use warnings;
 use warnings qw(FATAL utf8);
@@ -22,6 +21,7 @@ for my $item (@$list)
 
 for my $list (sort keys %list)
 {
-	say "$list:";
-	say "\t$_" for @{$list{$list} };
+	print "$list: \n";
+	print "\t$_" for @{$list{$list} };
+	print "\n";
 }
