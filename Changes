@@ -1,5 +1,14 @@
 Revision history for Perl extension Image::Magick::CommandParser.
 
+1.04  2016-08-14T11:33:00
+	- Stop using Test::Stream. Use Test::More shipped in the Test::Simple distro.
+		See RT#116933. Thanx to Chad Granum.
+	- Update version #s in pre-reqs.
+	- Adopt new repo structure. For details, see
+		http://savage.net.au/Ron/html/My.Workflow.for.Building.Distros.html.
+	- Update .gitignore and MANIFEST.SKIP.
+	- Add File::Spec and File::Temp to TEST_REQUIRES.
+
 1.03  2016-02-10T13:47:00
 	- Add missing pre-reqs to Makefile.PL.
 	- Remove redundant 'use' statements in various places.

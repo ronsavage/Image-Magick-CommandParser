@@ -33,20 +33,22 @@ my(%params) =
 		'Data::Section::Simple'	=> 0.07,
 		'File::Glob'			=> 0,
 		'File::Slurper'			=> 0.008,
-		'File::Spec'			=> 0,
-		'File::Temp'			=> 0,
 		'Getopt::Long'			=> 0,
-		'Log::Handler'			=> 0.84,
-		'Moo'					=> 2.000002,
+		'Log::Handler'			=> 0.88,
+		'Moo'					=> 2.002004,
 		'Set::Array'			=> 0.30,
 		'Set::FA::Element'		=> 2.00,
 		'Pod::Usage'			=> 1.67,
 		'strict'				=> 0,
-		'Test::More'			=> 1.001014,
-		'Test::Stream'			=> 1.302026,
-		'Test::Pod'				=> 1.48,
-		'Types::Standard'		=> 1.00000,
+		'Types::Standard'		=> 1.00005,
 		'warnings'				=> 0,
+	},
+	TEST_REQUIRES =>
+	{
+		'File::Spec'		=> 0,
+		'File::Temp'		=> 0,
+		'Test::Pod'			=> 1.51,
+		'Test::Simple'		=> 1.302052, # For Test::More.
 	},
 	VERSION_FROM => 'lib/Image/Magick/CommandParser.pm',
 );
@@ -62,17 +64,17 @@ if ($ExtUtils::MakeMaker::VERSION ge '6.46')
 	{
 		'meta-spec' =>
 		{
-		'version' => 2,
+			version => 2,
 		},
-		resources   =>
+		resources =>
 		{
-		'bugtracker' => 'https://rt.cpan.org/Public/Dist/Display.html?Name=Image-Magick-CommandParser',
-		'license' => 'http://opensource.org/licenses/Artistic-2.0',
-			repository =>
+			bugtracker	=> 'https://rt.cpan.org/Public/Dist/Display.html?Name=Image-Magick-CommandParser',
+			license		=> 'http://dev.perl.org/licenses/',
+			repository	=>
 			{
-		'type' => 'git',
-		'url' => 'https://github.com/ronsavage/Image-Magick-CommandParser.git',
-		'web' => 'https://github.com/ronsavage/Image-Magick-CommandParser',
+				type	=> 'git',
+				url		=> 'https://github.com/ronsavage/Image-Magick-CommandParser.git',
+				web		=> 'https://github.com/ronsavage/Image-Magick-CommandParser',
 			},
 		},
 	};
