@@ -6,7 +6,7 @@ use File::Temp;
 
 use Image::Magick::CommandParser;
 
-use Test::Stream -Classic;
+use Test::More;
 
 # ------------------------------------------------
 
