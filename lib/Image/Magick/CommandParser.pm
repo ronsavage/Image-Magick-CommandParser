@@ -709,7 +709,7 @@ sub run
 
 =head1 NAME
 
-C<Image::Magick::CommandParser> - Parse any command line acceptable to convert or mogrify
+Image::Magick::CommandParser - Parse any command line acceptable to convert or mogrify
 
 =head1 Synopsis
 
